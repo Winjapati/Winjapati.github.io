@@ -189,5 +189,48 @@
       </aside>
     </div>
   </div>
+  <script>
+    // Simple renderer for abridged CV pulling from JSON files placed beside this HTML
+    async function loadJSON(name){
+      const res = await fetch(name);
+      if(!res.ok) throw new Error("Failed to load "+name);
+      return await res.json();
+    }
+    function li(entry){
+      const year = entry.year ? ` <span class="muted">(${entry.year})</span>` : "";
+      return `<li class="list-item">${entry.raw}${year}</li>`;
+    }
+    function renderList(id, items, cap){
+      const target = document.getElementById(id);
+      if(!target) return;
+      const slice = cap ? items.slice(0, cap) : items;
+      target.innerHTML = `<ul class="tight">${slice.map(li).join('')}</ul>`;
+    }
+
+    (async () => {
+      try {
+        const [apps, edu, pubs, grants, students, teaching, talks, service] = await Promise.all([
+          loadJSON('appointments.json'),
+          loadJSON('education.json'),
+          loadJSON('publications.json'),
+          loadJSON('grants.json'),
+          loadJSON('students.json'),
+          loadJSON('teaching.json'),
+          loadJSON('talks.json'),
+          loadJSON('service.json')
+        ]);
+
+        renderList('apps_list', apps, 12);
+        renderList('edu_list', edu, 6);
+        // Publications: allow filter by year/type via hash params later; cap for abridged view
+        renderList('pubs_list', pubs, 15);
+        renderList('grants_list', grants, 10);
+        renderList('students_list', students, 12);
+        renderList('teaching_list', teaching, 12);
+        renderList('talks_list', talks, 12);
+        renderList('service_list', service, 12);
+      } catch(e){ console.error(e); }
+    })();
+  </script>
 </body>
 </html>
