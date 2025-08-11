@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Andrew Byrd — Research</title>
+  <meta name="description" content="Research: publications, grant awards, and invited talks." />
+  <link rel="icon" href="data:," />
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#111418; --muted:#586174; --line:#e6e9ef; --accent:#2f5cff; --maxw:1100px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; color:var(--fg); background:var(--bg);
+         font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:var(--maxw); margin:0 auto; padding:28px 16px 64px}
+    header{display:flex; gap:12px; align-items:baseline; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:12px; margin-bottom:16px}
+    h1{font-size:1.8rem; margin:0}
+    .muted{color:var(--muted)}
+    .grid{display:grid; gap:20px}
+    @media(min-width:980px){.grid{grid-template-columns:240px 1fr}}
+    aside{position:sticky; top:12px; align-self:start}
+    .card{background:#fafbfe; border:1px solid var(--line); border-radius:14px; padding:12px 14px}
+    .yearlist a{display:block; padding:6px 8px; border-radius:8px; color:var(--fg)}
+    .yearlist a:hover{background:#f1f3f9}
+    .controls{display:flex; gap:8px; flex-wrap:wrap}
+    .chip{display:inline-block; padding:6px 10px; border:1px solid var(--line); border-radius:999px; color:var(--fg); text-decoration:none}
+    .chip.active,.chip:hover{border-color:#cfd5e2}
+    .section h2{margin:.2rem 0 .6rem}
+    .entry{padding:10px 12px; border-left:3px solid transparent; border-radius:6px; margin:2px 0}
+    .entry:hover{background:#f6f8ff}
+    .entry .title{font-weight:600}
+    .entry .meta{font-size:.95rem}
+    .entry .abstract{font-size:.95rem; color:var(--muted)}
+    .badge{display:inline-block; font-size:.8rem; padding:2px 8px; border-radius:999px; background:#eef1fb; border:1px solid #e2e6f7; margin-left:6px}
+    .yearblock{margin:18px 0}
+    .hr{height:1px; background:var(--line); margin:10px 0}
+    .legend{font-size:.95rem}
+    @media print{
+      header, aside, .controls{display:none}
+      body{font-size:12px}
+      .wrap{padding:0}
+      .entry{padding:0}
+      .badge{border:none; background:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Research</h1>
+        <div class="muted">Publications · Grants · Talks</div>
+      </div>
+      <nav class="controls" aria-label="Filters">
+        <a href="#" class="chip active" data-filter="all">All</a>
+        <a href="#" class="chip" data-filter="publications">Publications</a>
+        <a href="#" class="chip" data-filter="grants">Grants</a>
+        <a href="#" class="chip" data-filter="talks">Talks</a>
+      </nav>
+    </header>
+
+    <div class="grid">
+      <aside>
+        <div class="card">
+          <h3>By Year</h3>
+          <div id="yearlist" class="yearlist"></div>
+        </div>
+        <div class="card legend">
+          <strong>Legend</strong><br>
+          <span class="badge">journal</span> peer‑reviewed journal<br>
+          <span class="badge">chapter</span> book chapter<br>
+          <span class="badge">proceedings</span> conference proceedings
+        </div>
+      </aside>
+
+      <main>
+        <section id="publications" class="section">
+          <h2>Publications</h2>
+          <div id="pubs_container"></div>
+        </section>
+        <div class="hr"></div>
+        <section id="grants" class="section">
+          <h2>Grants & Awards</h2>
+          <div id="grants_container"></div>
+        </section>
+        <div class="hr"></div>
+        <section id="talks" class="section">
+          <h2>Invited Talks</h2>
+          <div id="talks_container"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    async function loadJSON(name){
+      const res = await fetch(name);
+      if(!res.ok) return [];
+      return await res.json();
+    }
+    const byYear = (arr) => {
+      const map = new Map();
+      for(const a of arr){
+        const y = a.year || 'No Year';
+        if(!map.has(y)) map.set(y, []);
+        map.get(y).push(a);
+      }
+      // Sort years descending; 'No Year' last
+      const years = Array.from(map.keys()).sort((a,b)=>{
+        if(a==='No Year') return 1; if(b==='No Year') return -1;
+        return Number(b)-Number(a);
+      });
+      return {years, map};
+    };
+
+    const badgeFor = (type)=> type? `<span class="badge">${type}</span>`: '';
+
+    function entryHTML(e){
+      const y = e.year? ` <span class="muted">(${e.year})</span>`: '';
+      return `<div class="entry" data-type="${e.type||''}">
+        <div class="title">${e.raw}${y} ${badgeFor(e.type)}</div>
+        ${e.abstract? `<div class="abstract">${e.abstract}</div>`: ''}
+        ${e.in? `<div class="meta">in: ${e.in}</div>`: ''}
+      </div>`;
+    }
+
+    function renderBlocks(containerId, data){
+      const {years, map} = byYear(data);
+      const container = document.getElementById(containerId);
+      container.innerHTML = years.map(y=>{
+        const items = map.get(y).map(entryHTML).join('');
+        return `<div class="yearblock" id="year-${y}"><h3>${y}</h3>${items}</div>`;
+      }).join('');
+    }
+
+    function renderYearNav(years){
+      const ylist = document.getElementById('yearlist');
+      ylist.innerHTML = years.map(y => `<a href="#year-${y}">${y}</a>`).join('');
+    }
+
+    function setFilter(which){
+      for(const chip of document.querySelectorAll('.chip')){
+        chip.classList.toggle('active', chip.dataset.filter===which || (which==='all' && chip.dataset.filter==='all'));
+      }
+      const sections = ['publications','grants','talks'];
+      for(const id of sections){
+        const show = which==='all' || which===id;
+        document.getElementById(id).style.display = show? 'block':'none';
+      }
+    }
+
+    (async () => {
+      const [pubs, grants, talks] = await Promise.all([
+        loadJSON('publications.json'),
+        loadJSON('grants.json'),
+        loadJSON('talks.json')
+      ]);
+
+      renderBlocks('pubs_container', pubs);
+      renderBlocks('grants_container', grants);
+      renderBlocks('talks_container', talks);
+
+      // Build a unified year nav from publications by default
+      const {years} = byYear(pubs);
+      renderYearNav(years);
+
+      document.querySelectorAll('.chip').forEach(ch=>{
+        ch.addEventListener('click', (e)=>{ e.preventDefault(); setFilter(ch.dataset.filter); });
+      });
+    })();
+  </script>
+</body>
+</html>
