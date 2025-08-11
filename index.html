@@ -1,22 +1,84 @@
 <!doctype html>
 <html lang="en">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Andrew Byrd</title>
-<link rel="icon" href="data:,">
-<style>
-  body{font:16px/1.6 system-ui;margin:3rem auto;max-width:700px;padding:0 1rem}
-  h1{margin:0 0 .2rem 0} .muted{opacity:.7}
-  nav a{margin-right:1rem}
-</style>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Andrew Byrd — Linguistics</title>
+  <meta name="description" content="Andrew Byrd — linguistics, historical IE, computation." />
+  <link rel="icon" href="data:,"><style>
+    :root{
+      --bg:#0b0c0f; --fg:#e6e7ea; --muted:#9aa0a6; --card:#13151b; --accent:#7aa2ff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; color:var(--fg); background:radial-gradient(1200px 600px at 20% -10%, #1b1f2e 0, #0b0c0f 55%) fixed}
+    .wrap{max-width:820px; margin:0 auto; padding:56px 20px 80px}
+    header{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:28px}
+    .brand{display:flex; align-items:center; gap:14px}
+    .avatar{width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,#3a7bd5,#00d2ff); display:grid; place-items:center; color:#fff; font-weight:700}
+    h1{font-size:1.75rem; line-height:1.2; margin:0}
+    .muted{color:var(--muted)}
+    nav a{color:var(--muted); text-decoration:none; margin-left:16px}
+    nav a:hover{color:var(--fg)}
+    .card{background:var(--card); border:1px solid #1f2330; border-radius:16px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .grid{display:grid; gap:16px}
+    @media(min-width:800px){.grid{grid-template-columns:1.2fr .8fr}}
+    a.button{display:inline-block; padding:10px 14px; border-radius:12px; border:1px solid #2a2f40; text-decoration:none; color:var(--fg)}
+    a.button:hover{border-color:#3a4056}
+    .accent{color:var(--accent)}
+    footer{margin-top:48px; color:var(--muted); font-size:.95rem}
+    code{background:#0f1117; padding:2px 6px; border-radius:6px; border:1px solid #1f2330}
+  </style>
+</head>
 <body>
-  <h1>Hi, I’m Andrew.</h1>
-  <p class="muted">Linguistics, historical IE, computation.</p>
-  <nav>
-    <a href="about.html">About</a>
-    <a href="projects.html">Projects</a>
-    <a href="cv.pdf">CV</a>
-  </nav>
-  <p>Welcome to my GitHub Pages site.</p>
-</body>
-</html>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="avatar">AB</div>
+        <div>
+          <h1>Andrew Byrd</h1>
+          <div class="muted">Linguistics • Historical IE • Computation</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#projects">Projects</a>
+        <a href="#publications">Publications</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <h2>About</h2>
+        <p>I study Indo‑European historical linguistics and computational methods. This site is a simple landing page hosted on <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub Pages</a>.</p>
+        <p>
+          <a class="button" href="cv.pdf">Download CV</a>
+          <a class="button" href="https://github.com/Winjapati" target="_blank" rel="noreferrer">GitHub</a>
+        </p>
+      </section>
+
+      <aside class="card">
+        <h3>Links</h3>
+        <ul>
+          <li><a href="https://scholar.google.com/" target="_blank" rel="noreferrer">Google Scholar</a></li>
+          <li><a href="mailto:andrew@example.edu">andrew@example.edu</a></li>
+        </ul>
+        <p class="muted">Replace placeholders with your real links/email.</p>
+      </aside>
+    </div>
+
+    <section id="projects" class="card" style="margin-top:16px">
+      <h2>Selected Projects</h2>
+      <ul>
+        <li><strong>DERBi PIE</strong> — open database of PIE roots and reflexes.</li>
+        <li><strong>Verb paradigms</strong> — code for generating PIE thematic paradigms.</li>
+        <li><strong>Decipherment course</strong> — materials blending historical linguistics and computation.</li>
+      </ul>
+    </section>
+
+    <section id="publications" class="card" style="margin-top:16px">
+      <h2>Publications</h2>
+      <p>Add a short list or link out to a fuller bibliography.</p>
+    </section>
+
+    <section id="con
