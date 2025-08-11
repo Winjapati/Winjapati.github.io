@@ -4,31 +4,61 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Andrew Byrd — Linguistics</title>
-  <meta name="description" content="Andrew Byrd — Indo-European linguistics, historical phonology, computation, conlangs." />
-  <link rel="icon" href="data:,">
+  <meta name="description" content="Andrew Byrd — linguistics, historical Indo-European, computation." />
+  <link rel="icon" href="data:," />
   <style>
-    :root{
+    :root {
       --bg:#ffffff; --fg:#111418; --muted:#586174; --card:#f6f7fb; --accent:#3558ff;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0; font:16px/1.7 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; color:var(--fg); background:var(--bg)}
-    .wrap{max-width:820px; margin:0 auto; padding:56px 20px 80px}
-    header{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:28px}
-    .brand{display:flex; align-items:center; gap:14px}
-    .avatar{width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,#3a7bd5,#00d2ff); display:grid; place-items:center; color:#fff; font-weight:700}
-    h1{font-size:1.75rem; line-height:1.2; margin:0}
-    .muted{color:var(--muted)}
-    nav a{color:var(--fg); text-decoration:none; margin-left:16px; padding:6px 10px; border-radius:8px}
-    nav a:hover{background:#eef1fb}
-    .card{background:var(--card); border:1px solid #e2e4eb; border-radius:16px; padding:20px; box-shadow:0 4px 14px rgba(0,0,0,.06)}
-    .grid{display:grid; gap:16px}
-    @media(min-width:800px){.grid{grid-template-columns:1.2fr .8fr}}
-    a.button{display:inline-block; padding:10px 14px; border-radius:12px; border:1px solid #d0d4e4; text-decoration:none; color:var(--fg)}
-    a.button:hover{border-color:#b5bbd1}
-    .accent{color:var(--accent)}
-    footer{margin-top:48px; color:var(--muted); font-size:.95rem}
-    code{background:#f1f3f9; padding:2px 6px; border-radius:6px; border:1px solid #e2e4eb}
+    * { box-sizing: border-box }
+    html, body { height: 100% }
+    body {
+      margin: 0;
+      font: 16px/1.7 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--fg);
+      background: var(--bg);
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 56px 20px 80px }
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; margin-bottom: 28px;
+    }
+    .brand { display: flex; align-items: center; gap: 14px }
+    .avatar {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg,#3a7bd5,#00d2ff);
+      display: grid; place-items: center; color: #fff; font-weight: 700;
+    }
+    h1 { font-size: 1.75rem; line-height: 1.2; margin: 0 }
+    .muted { color: var(--muted) }
+    nav a {
+      color: var(--fg); text-decoration: none; margin-left: 16px;
+      padding: 6px 10px; border-radius: 8px;
+    }
+    nav a:hover { background: #eef1fb }
+    .card {
+      background: var(--card); border: 1px solid #e2e4eb;
+      border-radius: 16px; padding: 20px; box-shadow: 0 4px 14px rgba(0,0,0,.06);
+    }
+    .grid { display: grid; gap: 20px }
+    @media(min-width: 800px) {
+      .grid { grid-template-columns: 1.2fr .8fr; align-items: start; }
+    }
+    a.button {
+      display: inline-block; padding: 10px 14px; border-radius: 12px;
+      border: 1px solid #d0d4e4; text-decoration: none; color: var(--fg);
+    }
+    a.button:hover { border-color: #b5bbd1 }
+    .accent { color: var(--accent) }
+    footer { margin-top: 48px; color: var(--muted); font-size: .95rem }
+    code {
+      background: #f1f3f9; padding: 2px 6px; border-radius: 6px;
+      border: 1px solid #e2e4eb;
+    }
+    img.profile {
+      width: 100%; height: auto; border-radius: 12px;
+      border: 1px solid #e2e4eb; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
   </style>
 </head>
 <body>
@@ -42,22 +72,24 @@
         </div>
       </div>
       <nav>
-        <a href="short_cv.html">Short CV</a>
+        <a href="short_cv.html">Short CV</a>
         <a href="research.html">Research</a>
         <a href="public_engagement.html">Public Engagement</a>
         <a href="teaching.html">Teaching</a>
       </nav>
     </header>
 
-    <section class="card">
-      <h2>About</h2>
-      <p>My primary research focus is the creation and application of innovative approaches to solve difficult problems in historical linguistics. I also work to educate the public about Proto‑Indo‑European (PIE) and historical linguistics through constructed languages and other forms of outreach.</p>
-      <p>I am Associate Professor of Linguistics at the University of Kentucky, specializing in Indo‑European historical linguistics and computational methods. This site provides quick access to my CV, research, public engagement, and teaching materials.</p>
-    </section>
+    <div class="grid">
+      <section class="card">
+        <h2>About</h2>
+        <p>My primary research focus is the creation and application of innovative approaches to solve difficult problems in historical linguistics. I also work to educate the public about Proto-Indo-European (PIE) and historical linguistics through constructed languages and other forms of outreach.</p>
+        <p>I am Associate Professor of Linguistics at the University of Kentucky, specializing in Indo-European historical linguistics and computational methods. This site provides quick access to my CV, research, public engagement, and teaching materials.</p>
+      </section>
 
-    <footer>
-      <p>Deployed with GitHub Pages at <code>https://winjapati.github.io/</code>.</p>
-    </footer>
+      <aside>
+        <img src="amb_2025.jpg" alt="Andrew M. Byrd" class="profile" />
+      </aside>
+    </div>
   </div>
 </body>
 </html>
