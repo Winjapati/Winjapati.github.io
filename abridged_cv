@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Andrew Byrd — Abridged CV</title>
+  <meta name="description" content="Abridged academic CV for Andrew Byrd (Linguistics, historical Indo‑European, computation)." />
+  <link rel="icon" href="data:," />
+  <style>
+    /* --- Base (light, high‑readability) --- */
+    :root{
+      --bg:#ffffff; --fg:#111418; --muted:#586174; --line:#e6e9ef; --accent:#2f5cff;
+      --maxw:940px; --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; color:var(--fg); background:var(--bg);
+         font:16px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji"}
+    .wrap{max-width:var(--maxw); margin:0 auto; padding:32px 18px 64px}
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    h1,h2,h3{line-height:1.25; margin:0 0 .4rem 0}
+    h1{font-size:1.9rem}
+    h2{font-size:1.35rem; margin-top:2rem}
+    h3{font-size:1.05rem; margin-top:1rem}
+    p{margin:.4rem 0 .8rem}
+    .muted{color:var(--muted)}
+    .topbar{display:flex; flex-wrap:wrap; align-items:center; gap:12px; justify-content:space-between; padding-bottom:14px; border-bottom:1px solid var(--line); margin-bottom:18px}
+    .id{display:flex; align-items:flex-start; gap:14px}
+    .avatar{width:56px; height:56px; border-radius:50%; background:#f2f5ff; display:grid; place-items:center; font-weight:700}
+    .nav{display:flex; flex-wrap:wrap; gap:10px}
+    .chip{display:inline-block; padding:8px 10px; border:1px solid var(--line); border-radius:999px; color:var(--fg); text-decoration:none}
+    .chip:hover{border-color:#ced3dd}
+
+    /* Layout */
+    .grid{display:grid; gap:18px}
+    @media(min-width:880px){
+      .grid{grid-template-columns:2fr 1fr}
+      aside{padding-left:14px; border-left:1px solid var(--line)}
+    }
+
+    .section{padding:14px 0}
+    .card{background:#fafbfe; border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px}
+    ul.tight{margin:.2rem 0 .6rem 1.1rem}
+    ul.tight>li{margin:.15rem 0}
+    .list-item{break-inside:avoid}
+    .tag{display:inline-block; padding:2px 8px; border-radius:999px; background:#eef1fb; border:1px solid #e2e6f7; font-size:.82rem}
+
+    /* Print styles */
+    @media print{
+      :root{--maxw:auto}
+      body{font-size:12px}
+      .topbar,.chip{border:none}
+      .chip{padding:0}
+      .nav{display:none}
+      a{color:inherit; text-decoration:none}
+      .card{border:none; background:transparent; padding:0}
+      h2{margin-top:1rem}
+      .wrap{padding:0}
+      header{margin-bottom:.2in}
+      .grid{grid-template-columns:1.6fr 1fr}
+      .section{page-break-inside:avoid}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="id">
+        <div class="avatar">AB</div>
+        <div>
+          <h1>Andrew M. Byrd</h1>
+          <div class="muted">Associate Professor of Linguistics · University of Kentucky</div>
+          <div class="muted">Linguistics · Historical Indo‑European · Computation</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a class="chip" href="#appointments">Appointments</a>
+        <a class="chip" href="#education">Education</a>
+        <a class="chip" href="#pubs">Selected Publications</a>
+        <a class="chip" href="#grants">Grants & Awards</a>
+        <a class="chip" href="#students">Supervision</a>
+        <a class="chip" href="#teaching">Teaching</a>
+        <a class="chip" href="#talks">Invited Talks</a>
+        <a class="chip" href="#service">Service</a>
+        <a class="chip" href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <div class="grid">
+      <main>
+        <section id="summary" class="section card">
+          <h2>Profile</h2>
+          <p>Historical linguist specializing in Indo‑European, with projects at the intersection of phonology, morphology, and computation. Two NEH grants (2018, 2024) focused on public‑facing resources and digital scholarship.</p>
+          <p class="muted">This is an abridged CV. A full list of publications and grants is available on request / via your website.</p>
+        </section>
+
+        <section id="appointments" class="section card">
+          <h2>Appointments</h2>
+          <ul class="tight">
+            <li class="list-item"><strong>Associate Professor of Linguistics</strong>, University of Kentucky, 2010–present</li>
+            <li class="list-item">(Add prior roles, visiting positions, program leadership, etc.)</li>
+          </ul>
+        </section>
+
+        <section id="education" class="section card">
+          <h2>Education</h2>
+          <ul class="tight">
+            <li class="list-item"><strong>Ph.D., Linguistics</strong> — Institution, Year. Dissertation: <em>Title</em>.</li>
+            <li class="list-item"><strong>M.A., Linguistics</strong> — Institution, Year.</li>
+            <li class="list-item"><strong>B.A.</strong> — Institution, Year.</li>
+          </ul>
+        </section>
+
+        <section id="pubs" class="section card">
+          <h2>Selected Publications</h2>
+          <p class="muted">Representative items only. Use a separate Publications page for a full bibliography.</p>
+          <ul class="tight">
+            <li class="list-item">Author, A. (Year). <strong>Article title</strong>. <em>Journal</em> volume(issue): pages. <span class="tag">journal</span></li>
+            <li class="list-item">Author, A. (Year). <strong>Chapter title</strong>. In <em>Editor</em> (ed.), Book, Publisher. <span class="tag">chapter</span></li>
+            <li class="list-item">Author, A. (Year). <strong>Proceedings title</strong>. <em>Conference</em>. <span class="tag">proceedings</span></li>
+          </ul>
+        </section>
+
+        <section id="grants" class="section card">
+          <h2>Grants & Awards</h2>
+          <ul class="tight">
+            <li class="list-item"><strong>NEH Digital Projects for the Public</strong> (2018). Role: PI. Project: <em>Title</em>.</li>
+            <li class="list-item"><strong>NEH Digital Humanities Advancement Grant</strong> (2024). Role: PI. Project: <em>DERBi PIE</em>.</li>
+            <li class="list-item">(Other internal/external awards.)</li>
+          </ul>
+        </section>
+
+        <section id="students" class="section card">
+          <h2>Supervision (Selected)</h2>
+          <ul class="tight">
+            <li class="list-item"><strong>Ph.D.</strong> Student Name — Dissertation title (Year). Role: Chair/Co‑chair.</li>
+            <li class="list-item"><strong>M.A.</strong> Student Name — Thesis title (Year). Role: Advisor.</li>
+          </ul>
+        </section>
+
+        <section id="teaching" class="section card">
+          <h2>Teaching (Recent)</h2>
+          <ul class="tight">
+            <li class="list-item"><strong>Computation for Linguists</strong> (semester/years)</li>
+            <li class="list-item"><strong>Decipherment</strong> (planned/semester)</li>
+            <li class="list-item"><strong>Historical Linguistics / Indo‑European</strong> (years)</li>
+          </ul>
+        </section>
+
+        <section id="talks" class="section card">
+          <h2>Invited Talks (Selected)</h2>
+          <ul class="tight">
+            <li class="list-item">Title — Venue, Institution (Year).</li>
+            <li class="list-item">Title — Venue, Institution (Year).</li>
+          </ul>
+        </section>
+
+        <section id="service" class="section card">
+          <h2>Service</h2>
+          <ul class="tight">
+            <li class="list-item">Editorial board / Journal reviewing (venues)</li>
+            <li class="list-item">Departmental / College committees</li>
+            <li class="list-item">Public‑facing outreach and digital scholarship</li>
+          </ul>
+        </section>
+      </main>
+
+      <aside>
+        <section class="section card">
+          <h2>Contact</h2>
+          <p>Department of Linguistics<br>University of Kentucky<br>Lexington, KY</p>
+          <p>Email: <a href="mailto:andrew@example.edu">andrew@example.edu</a><br>
+             GitHub: <a href="https://github.com/Winjapati" target="_blank" rel="noreferrer">@Winjapati</a></p>
+          <p><a href="./" aria-label="Home">← Home</a> · <a href="#" onclick="window.print();return false;">Print</a></p>
+        </section>
+
+        <section class="section card">
+          <h2>Keywords</h2>
+          <p class="muted">Indo‑European · Phonology · Morphology · Historical linguistics · Computational methods · Databases</p>
+        </section>
+
+        <section class="section card">
+          <h2>Downloads</h2>
+          <ul class="tight">
+            <li><a href="cv.pdf">Full CV (PDF)</a></li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>
