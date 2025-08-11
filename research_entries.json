@@ -1,38 +1,520 @@
 [
   {
+    "year": 2025,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: CURATE award, $5,000, to continue work on DERBi PIE.",
+    "url": null,
+    "abstract": ""
+  },
+  {
     "year": 2024,
     "category": "Grant (External)",
-    "text": "Grant: NEH Digital Humanities Advancement Grant",
-    "url": "https://apps.neh.gov/PublicQuery/AwardDetail.aspx?gn=HAA-303944-25"
+    "text": "Grant: NEH Digital Humanities Advancement Grant — (with Danny Law, University of Texas, Austin), $75,000, to work on the development of a DERBi PIE prototype",
+    "url": "https://apps.neh.gov/PublicQuery/AwardDetail.aspx?gn=HAA-303944-25",
+    "abstract": ""
+  },
+  {
+    "year": 2024,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: Research and Creative Activities Support Program award (with Allison Burkette), $5,000, to build an OCR program to digitize linguistic texts.",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2024,
+    "category": "Talk",
+    "text": "Talk: An Immersive Approach to Teaching Indo-European Studies (with Brenna Reinhart Byrd) — UCLA Indo-European Studies Seminar, Los Angeles, CA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2024,
+    "category": "Talk",
+    "text": "Talk: The Business of Making Conlangs (with Brenna Reinhart Byrd) — UTA guest lecture in Constructed Languages, Austin, TX",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2024,
+    "category": "Talk",
+    "text": "Talk: Being a Public Scholar in Linguistics — UGA Graduate Student Invited Talk, Athens, GA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2024,
+    "category": "Conference Talk",
+    "text": "Conference Talk: Representing Semantic Relationships in Ancient IE Languages: A Pilot Study (with Anton Vinogradov and Gabriel Wallace) — 35th UCLA Indo-European Conference, Los Angeles, CA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2023,
+    "category": "Publication",
+    "text": "Publication: The Indo-Iranian labial-enlarged causative suffix: Indic -(ā)páya-, Eastern Iranian *-(ā)\\textsubarch{ua\\textsubarch{i}a}-, and Proto-Caspian *-\\={aw\\={e}n}- — Indo-European Linguistics 11",
+    "url": "https://brill.com/view/journals/ieul/aop/article-10.1163-22125892-bja10025/article-10.1163-22125892-bja10025.xml",
+    "abstract": ""
+  },
+  {
+    "year": 2023,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: Broadening our Funded Research Base in Arts and Sciences, $20,000, to continue work on DERBi PIE.",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2023,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: Research and Creative Activities Support Program award (with Allison Burkette), $5,000, to build an OCR program to digitize linguistic texts.",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2023,
+    "category": "Talk",
+    "text": "Talk: LECS: Reconstructing Proto-Caspian Causative Suffix ... — Allameh Tabataba'i University, Tehran, Iran",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2023,
+    "category": "Talk",
+    "text": "Talk: Constructed Languages and World['] Building in Video Games (with Brenna Reinhart Byrd) — UK",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2022,
+    "category": "Publication",
+    "text": "Publication: The Use of the Google Suite in LIN 200: How To Create Your Own Language — Greater Faculties: A Review of Teaching and Learning 3",
+    "url": "https://uknowledge.uky.edu/greaterfaculties/vol3/iss1/12",
+    "abstract": ""
+  },
+  {
+    "year": 2021,
+    "category": "Publication",
+    "text": "Publication: Mistake Captioning: A Machine Learning Approach For Detecting Mistakes And Generating Instructive Feedback — Proceedings of Recent Advances in Natural Language Processing, September 1--3, 2021",
+    "url": "https://ranlp.org/ranlp2021/proceedings-20Sep.pdf",
+    "abstract": ""
+  },
+  {
+    "year": 2021,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: Alternative Textbook Grant Program award (with Brenna Reinhart Byrd), $2,500, to create a free textbook that teaches about PIE through immersion.",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2021,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: UK Arts & Sciences Innovative Teaching Award",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2021,
+    "category": "Conference Talk",
+    "text": "Conference Talk: Connecting Lexical Aspect and Morphology in Proto-Indo-European (with Tara Singh) — LCUGA7, Athens, GA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2020,
+    "category": "Publication",
+    "text": "Publication: Teaching Proto-Indo-European as a Constructed Language — Jeffrey Penske, Amy Fountain, and Nathan Sanders (eds.), Language Invention in Linguistics Pedagogy",
+    "url": "https://oxford.universitypressscholarship.com/view/10.1093/oso/9780198829874.001.0001/oso-9780198829874-chapter-12",
+    "abstract": ""
+  },
+  {
+    "year": 2020,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: Research and Creative Activities Support Program award (with Brenna Reinhart Byrd), $3,000, for work on {\\it Roots of the Ancients}.",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2020,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: Teachers Who Made a Difference Award",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2020,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: Alternative Textbook Grant Program award (with Brenna Reinhart Byrd), $2,500, to create a free textbook that teaches about PIE through immersion.",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2020,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: CELT Teaching Innovation Institute award, $6,000.",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2020,
+    "category": "Talk",
+    "text": "Talk: Using Proto-Indo-European as a Conlang in Video Games & the Classroom — University of Louisville",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2020,
+    "category": "Talk",
+    "text": "Talk: Conlanging Proto-Indo-European: An Immersive Experience within Prehistory (with Brenna Reinhart Byrd) — 2020 MLA Conference, Seattle, WA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2019,
+    "category": "Publication",
+    "text": "Publication: Motivating Lindeman’s Law — Adam Alvah Catt, Ronald I. Kim, and Brent Vine (eds.), QAZZU warrai. Anatolian and Indo-European Studies in Honor of Kazuhiko Yoshida",
+    "url": "http://speakingprimal.com/wp-content/uploads/2019/12/Byrd-Motivating-Lindemans-Law.pdf",
+    "abstract": ""
+  },
+  {
+    "year": 2019,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: Alternative Textbook Grant Program award (with Brenna Reinhart Byrd), $2,500, to create a free textbook that teaches about PIE through immersion.",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2019,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: Research and Creative Activities Support Program award (with Brenna Reinhart Byrd), $5,000, for work on {\\it The Anatolian Trail: Roots of the Ancients}.",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2019,
+    "category": "Talk",
+    "text": "Talk: Making the Esoteric Exoteric ... — Marshall College of Liberal Arts R&C Conference, keynote",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2019,
+    "category": "Talk",
+    "text": "Talk: Making PIE for the People: Far Cry Primal, Vikings, and The Anatolian Trail — University of Richmond",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2019,
+    "category": "Conference Talk",
+    "text": "Conference Talk: Transparent Learning through Video Game Puzzles: Making Indo-European Studies Accessible (with Brenna R. Byrd) — 2019 Pedagogicon, Richmond, KY",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2018,
+    "category": "Publication",
+    "text": "Publication: A Markedly Different Approach: an Experimental Look at the Rarity of PIE */b/ — Proceedings of the 29 Annual UCLA Indo-European Conference",
+    "url": "http://box2018.temp.domains/ speakjb5/wp-content/uploads/2018/03/Barnett-Byrd-A-Markedly-Different-Approach.pdf",
+    "abstract": ""
   },
   {
     "year": 2018,
     "category": "Publication",
     "text": "Publication: 121. The Phonology of Proto-Indo-European — Handbook of Comparative and Historical Indo-European Linguistics vol. 3",
-    "url": "https://www.degruyter.com/view/product/487972"
+    "url": "https://www.degruyter.com/view/product/487972",
+    "abstract": ""
   },
   {
     "year": 2018,
     "category": "Grant (External)",
-    "text": "Grant: NEH Digital Projects for the Public Discovery Grant",
-    "url": "https://apps.neh.gov/publicquery/AwardDetail.aspx?gn=MD-263922-19"
+    "text": "Grant: NEH Digital Projects for the Public Discovery Grant — $30,000, to work on the development of The Anatolian Trail: an Indo-European Adventure",
+    "url": "https://apps.neh.gov/publicquery/AwardDetail.aspx?gn=MD-263922-19",
+    "abstract": ""
+  },
+  {
+    "year": 2018,
+    "category": "Conference Talk",
+    "text": "Conference Talk: The Anatolian Trail: An Interactive Introduction to Proto-Indo-European (with Brenna R. Byrd) — ACTFL, New Orleans, LA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2018,
+    "category": "Conference Talk",
+    "text": "Conference Talk: The Gilaki Causative Suffix -be(:)-: Its Function and Origins (with Zia Khoshsirat) — 30th UCLA Indo-European Conference, Los Angeles, CA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2018,
+    "category": "Conference Talk",
+    "text": "Conference Talk: An Empirical Look at the Rarity of PIE */b/ (with Phillip Barnett) — ECIEC 37, Ann Arbor, MI",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2017,
+    "category": "Publication",
+    "text": "Publication: The Rules of Reconstruction: Making our Etymologies More Grounded — Etymology and the European Lexicon, Proceedings of the 14 Fachtagung of the Indogermanische Gesellschaft, 17-22 September 2012, Copenhagen, Denmark",
+    "url": "https://reichert-verlag.de/buchreihen/sprachwissenschaft_reihen/sprachwissenschaft_akten_der_fachtagung_der_indogermanischen_gesellschaft/9783954902026_etymology_and_the_european_lexikon-detail",
+    "abstract": ""
+  },
+  {
+    "year": 2017,
+    "category": "Talk",
+    "text": "Talk: Reconstructing the Proto-Indo-European Stop System: An Experimental Approach — Princeton University",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2017,
+    "category": "Talk",
+    "text": "Talk: Resurrecting a Dead Language for Far Cry Primal (with Brenna Reinhart Byrd) — Centre College convocation",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2017,
+    "category": "Conference Talk",
+    "text": "Conference Talk: A Markedly Different Solution: ... (with Phillip Barnett) — 29th UCLA Indo-European Conference, Los Angeles, CA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2016,
+    "category": "Publication",
+    "text": "Publication: Tavet Tat Satyam. Studies in Honor of Jared S. Klein on the Occasion of His Seventieth Birthday — Ann Arbor & New York: Beech Stave Press",
+    "url": "http://www.beechstave.com/tavet.htm",
+    "abstract": ""
+  },
+  {
+    "year": 2016,
+    "category": "Publication",
+    "text": "Publication: Stressful Conversions: Internal Derivation within the Compositional Approach — Tavet Tat Satyam. Studies in Honor of Jared S. Klein on the Occasion of His Seventieth Birthday",
+    "url": "http://www.beechstave.com/tavet.htm",
+    "abstract": ""
+  },
+  {
+    "year": 2016,
+    "category": "Publication",
+    "text": "Publication: Schwa Indogermanicum and Compensatory Lengthening — Sahasram Ati Srajas. Indo-Iranian and Indo-European Studies in Honor of Stephanie W. Jamison",
+    "url": "http://www.beechstave.com/sahas.htm",
+    "abstract": ""
+  },
+  {
+    "year": 2016,
+    "category": "Talk",
+    "text": "Talk: The Wenja Language from Far Cry Primal (with Brenna Reinhart Byrd) — OMG!con, featured panelist",
+    "url": null,
+    "abstract": ""
   },
   {
     "year": 2015,
     "category": "Publication",
-    "text": "Book: The Indo-European Syllable — Leiden: Brill",
-    "url": "http://www.beechstave.com/tavet.htm"
+    "text": "Publication: The Indo-European Syllable — Leiden: Brill",
+    "url": "http://www.beechstave.com/tavet.htm",
+    "abstract": ""
+  },
+  {
+    "year": 2015,
+    "category": "Conference Talk",
+    "text": "Conference Talk: Motivating Lindeman’s Law — 27th UCLA Indo-European Conference, Los Angeles, CA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2015,
+    "category": "Conference Talk",
+    "text": "Conference Talk: Extrametricality and Non-Local Compensatory Lengthening: The Case of Szemerényi’s Law (with Ryan Sandell) — 89th LSA, Portland, OR",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2014,
+    "category": "Talk",
+    "text": "Talk: Vowels vs. Vader: Exploring the Light and Dark Sides of Indo-European (with Joshua T. Katz) — Kentucky Foreign Language Conference, keynote",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2014,
+    "category": "Conference Talk",
+    "text": "Conference Talk: Raising a Language from the Dead: On Teaching IE Linguistics in the Age of the Internet — 29th Interdisciplinary Conf. in the Humanities, Carrollton, GA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2014,
+    "category": "Conference Talk",
+    "text": "Conference Talk: Stressful Conversions: ... (with Joseph Rhyne) — 26th UCLA Indo-European Conference, Los Angeles, CA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2014,
+    "category": "Conference Talk",
+    "text": "Conference Talk: In Defense of Szemerényi’s Law (with Ryan Sandell) — ECIEC 33, Blacksburg, VA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2013,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: Southeastern Conference Visiting Faculty Travel Grant, $2500.",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2013,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: Academic Planning, Analytics and Technologies Grant, $1500, to develop an introductory course in Linguistics.",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2013,
+    "category": "Talk",
+    "text": "Talk: Speaking Proto-Indo-European: ... — Centre College convocation",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2013,
+    "category": "Talk",
+    "text": "Talk: The Phonology of Proto-Indo-European. ... (SEC Faculty Exchange Seminar Series) — University of Georgia, Athens",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2013,
+    "category": "Talk",
+    "text": "Talk: A Crazy Rule in PIE? A Closer Look at the Saussure Effect — 10th Annual OSU Linguistics Symposium, Columbus, OH",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2013,
+    "category": "Conference Talk",
+    "text": "Conference Talk: Accounting for the Absence of Expected Lengthened Grade: Szemerényi's Law in Word-Medial Position — 2013 Arbeitstagung der Indogermanischen Gesellschaft, Leiden",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2013,
+    "category": "Conference Talk",
+    "text": "Conference Talk: The Indo-European Homeland Hypothesis ... (with Darin Arrick and Victoria Milam) — SECOL LXXX, Spartanburg, SC",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2012,
+    "category": "Publication",
+    "text": "Publication: Deriving Dreams from the Divine: Hittite tesha-/zash(a)i- — Historische Sprachforschung 124",
+    "url": "http://rootsofeurope.ku.dk/english/activities/sound_of_indo-european/",
+    "abstract": ""
+  },
+  {
+    "year": 2012,
+    "category": "Conference Talk",
+    "text": "Conference Talk: It's Complicated: the Relationship between Syllabification & Morphology in PIE — 24th UCLA Indo-European Conference, Los Angeles, CA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2012,
+    "category": "Conference Talk",
+    "text": "Conference Talk: The Use of Linguistic Typology and Universals in IE Linguistics ... — SECOL LXXIX, Lexington, KY",
+    "url": null,
+    "abstract": ""
   },
   {
     "year": 2011,
     "category": "Publication",
-    "text": "Publication: Deriving Dreams from the Divine: Hittite tesha-/zash(a)i- — Historische Sprachforschung 124",
-    "url": "http://rootsofeurope.ku.dk/english/activities/sound_of_indo-european/"
+    "text": "Publication: Predicting Indo-European Syllabification through Phonotactic Analysis — The Sound of Indo European - selected papers from the conference, held in Copenhagen 16-19 April 2009",
+    "url": "http://rootsofeurope.ku.dk/english/activities/sound_of_indo-european/",
+    "abstract": ""
+  },
+  {
+    "year": 2011,
+    "category": "Conference Talk",
+    "text": "Conference Talk: A Fresh Look at Pinault’s Law — 23rd UCLA Indo-European Conference, Los Angeles, CA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2011,
+    "category": "Conference Talk",
+    "text": "Conference Talk: 'Laryngeal Vocalization’ as Schwa Epenthesis: Why does Compensatory Lengthening not Occur? — ECIEC 30, Cambridge, MA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2010,
+    "category": "Publication",
+    "text": "Publication: Motivating Sievers’ Law — Proceedings of the 21 Annual UCLA Indo-European Conference",
+    "url": "https://www.academia.edu/1166462/Motivating_Sievers_Law",
+    "abstract": ""
+  },
+  {
+    "year": 2009,
+    "category": "Conference Talk",
+    "text": "Conference Talk: Motivating Sievers’ Law in a Stratal OT Framework — 21st UCLA Indo-European Conference, Los Angeles, CA.",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2009,
+    "category": "Conference Talk",
+    "text": "Conference Talk: Predicting PIE Syllabification through Phonotactic Analysis — The Sound of Indo-European Conference, Copenhagen, Denmark",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2009,
+    "category": "Conference Talk",
+    "text": "Conference Talk: Deriving Dreams from the Divine: Hittite tesha-/zash(a)i- — 219th AOS, Albuquerque, NM",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2008,
+    "category": "Conference Talk",
+    "text": "Conference Talk: Towards a Predictive and Explanatory Theory of Laryngeal Deletion in Proto-Indo-European — ECIEC 27, Athens, GA",
+    "url": null,
+    "abstract": ""
   },
   {
     "year": 2006,
     "category": "Publication",
     "text": "Publication: Return to Dative anmaimm — Ériu 56",
-    "url": "https://bill.celt.dias.ie/vol4/displayObject.php?TreeID=3182"
+    "url": "https://bill.celt.dias.ie/vol4/displayObject.php?TreeID=3182",
+    "abstract": ""
+  },
+  {
+    "year": 2006,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: UCLA Graduate Research Mentorship Award. (2005-2006)",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2005,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: Linguistic Society of America Summer Institute Fellowship.",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2004,
+    "category": "Conference Talk",
+    "text": "Conference Talk: The Long Dative Singular of Neuter n-Stems in Old Irish — 16th UCLA Indo-European Conference, Los Angeles, CA",
+    "url": null,
+    "abstract": ""
+  },
+  {
+    "year": 2003,
+    "category": "Grant/Award (Internal)",
+    "text": "Award: Fulbright Fellowship for Study in Pavia, Italy, at l'Università degli Studi di Pavia. (2002-2003)",
+    "url": null,
+    "abstract": ""
   }
 ]
