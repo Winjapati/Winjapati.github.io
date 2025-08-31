@@ -22,8 +22,11 @@
     header { display: flex; align-items: baseline; justify-content: space-between; padding: 18px 0 8px }
     h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 }
     .muted { color: var(--muted) }
+    /* Turn the layout into a 2-column auto-flowing card grid */
     .grid { display: grid; gap: 20px }
-    @media(min-width: 900px) { .grid { grid-template-columns: 1.2fr .8fr } }
+    @media (min-width: 900px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+    }
     .card {
       background: var(--card); border: 1px solid var(--line);
       border-radius: 16px; padding: 18px; box-shadow: 0 4px 14px rgba(0,0,0,.06);
@@ -39,7 +42,6 @@
 <body>
 
   <!-- Site-wide nav (with Home link) -->
-  
   <nav class="top">
     <a href="index.html">← Home</a>
     <a href="research.html">Research</a>
@@ -47,143 +49,104 @@
     <a href="teaching.html">Teaching</a>
   </nav>
 
-
   <div class="wrap">
     <header>
-  <div>
-    <h1>Abridged CV</h1>
-    <div class="muted">Andrew Byrd — Historical Linguistics · Conlangs · Computation</div>
-    <p class="small" style="margin-top:6px;">
-      <a href="CV_AMB_full.pdf" target="_blank" style="font-weight:bold; color:var(--accent);">
-        Download Full CV (PDF)
-      </a>
-    </p>
-  </div>
-</header>
-    
-    
+      <div>
+        <h1>Abridged CV</h1>
+        <div class="muted">Andrew Byrd — Historical Linguistics · Conlangs · Computation</div>
+        <p class="small" style="margin-top:6px;">
+          <a href="CV_AMB_full.pdf" target="_blank" style="font-weight:bold; color:var(--accent);">
+            Download Full CV (PDF)
+          </a>
+        </p>
+      </div>
+    </header>
 
-
-    
-
+    <!-- All cards live directly under .grid now -->
     <div class="grid">
-      <main>
-        <section class="card">
-          <h2>Profile</h2>
-          <p class="small">
-            My primary research focus is the creation and application of innovative approaches to solve difficult problems in historical linguistics.
-            I also work to educate the public about Proto-Indo-European (PIE) and historical linguistics through constructed languages and other forms of outreach.
-          </p>
-        </section>
+      <section class="card">
+        <h2>Profile</h2>
+        <p class="small">
+          My primary research focus is the creation and application of innovative approaches to solve difficult problems in historical linguistics.
+      </p>  <p>
+          I also work to educate the public about Proto-Indo-European (PIE) and historical linguistics through constructed languages and other forms of outreach.
+        </p>
+      </section>
 
-        <section class="card">
-          <h2>Positions</h2>
-          <ul>
-            <li><strong>Associate Professor of Linguistics</strong>, University of Kentucky, 2017-present</li>
-            <li><strong>Assistant Professor of Linguistics</strong>, University of Kentucky, 2014-2017</li>
-            <li><strong>Lecturer of Linguistics</strong>, University of Kentucky, 2011-2014</li>
-            <!-- Add earlier/other positions here if you want -->
-          </ul>
-        </section>
+      <section class="card">
+        <h2>Positions</h2>
+        <ul>
+          <li><strong>Associate Professor of Linguistics</strong>, University of Kentucky, 2017-present</li>
+          <li><strong>Assistant Professor of Linguistics</strong>, University of Kentucky, 2014-2017</li>
+          <li><strong>Lecturer of Linguistics</strong>, University of Kentucky, 2011-2014</li>
+        </ul>
+      </section>
 
-        <section class="card">
-          <h2>Selected Publications</h2>
-          <ul>
+      <section class="card">
+        <h2>Selected Publications</h2>
+        <ul>
+          <li>
+            <a href=https://www.ziakhoshsirat.com/>Z. Khoshsirat</a> &amp; A. M. Byrd. “The Indo-Iranian labial-enlarged causative suffix: Indic <em>-(ā)páya-</em>, Eastern Iranian *-(ā)u̯ai̯a-, and Proto-Caspian *-āwēn-” <em>Indo-European Linguistics</em> 11: 1–32 (2023).
+            <span class="pill">Journal</span>
+          </li>
+          <li>
+            <a href=https://github.com/garyyo>A. Vinogradov</a>, A. M. Byrd, and <a href=https://engr.uky.edu/people/brent-harrison>Brent Harrison</a>. “Mistake Captioning: A Machine Learning Approach for Detecting Mistakes And Generating Instructive Feedback.”
+            <em>Proceedings of Recent Advances in Natural Language Processing, September 1-3, 2021,</em> 1455-1462 (2021).
+            <span class="pill">Teaching</span>
+          </li>
+          <li>
+            A. M. Byrd and <a href=https://mcl.as.uky.edu/users/brbr224>B.R. Byrd</a>. “Teaching Proto-Indo-European as a Constructed Language.”
+            <em>Language Invention in Linguistics Pedagogy</em>, 186–207. (2020).
+            <span class="pill">Teaching</span>
+          </li>
+          <li>
+            <em>The Indo-European Syllable</em>. Leiden: Brill (2015).
+          </li>
+        </ul>
+        <p class="small">Full list: see <a href="research.html">Research</a>.</p>
+      </section>
 
-               <li>
-              Z. Khoshsirat &amp; A. M. Byrd. “The Indo-Iranian labial-enlarged causative suffix: Indic -(ā)páya-, Eastern Iranian *-(ā)u̯ai̯a-, and Proto-Caspian *-āwēn-” <em>Indo-European Linguistics</em> 11: 1–32 (2023).
-              <span class="pill">Journal</span>
-            </li>
-            <li>
-              A. M. Byrd. “The Use of the Google Suite in LIN 200: How To Create Your Own Language.”
-              <em>Greater Faculties: A Review of Teaching and Learning</em> 3, Article 12 (2022).
-              <span class="pill">Teaching</span>
-            </li>
-             <li>
-              A. Vinogradov, A. M. Byrd, and Brent Harrison. “Mistake Captioning: A Machine Learning Approach for Detecting Mistakes And Generating Instructive Feedback.”
-              <em>Proceedings of Recent Advances in Natural Language Processing, September 1-3, 2021,</em> 1455-1462 (2021).
-              <span class="pill">Teaching</span>
-            </li>         
-             <li>
-              A. M. Byrd and B.R. Byrd. “Teaching Proto-Indo-European as a Constructed Language.”
-              <em>Language Invention in Linguistics Pedagogy</em>, 186–207. (2020).
-              <span class="pill">Teaching</span>
-            </li>         
-            <li>
-              “121. The Phonology of Proto-Indo-European.” <em>Handbook of Comparative and Historical Indo-European Linguistics</em>, vol. 3, 2056–79 (2018).
-              <span class="pill">Chapter</span>
-            </li>
-            <li>
-              <em>The Indo-European Syllable</em>. Leiden: Brill (2015).
-            </li>
-            <!-- Add more if you want; keep it selective -->
-          </ul>
+      <section class="card">
+        <h2>Recent Grants &amp; Awards</h2>
+        <ul>
+          <li><strong>CURATE award</strong>, $5,000 — DERBi PIE (2025).</li>
+          <li><strong>NEH Digital Humanities Advancement Grant</strong> (with <a href=https://liberalarts.utexas.edu/linguistics/faculty/dal725> Danny Law</a>), $75,000 — DERBi PIE prototype (2024).</li>
+          <li><strong>RCASP</strong> (with <a href=https://linguistics.as.uky.edu/users/abu258>Allison Burkette</a>), $5,000 — OCR for linguistic texts (2024).</li>
+          <li><strong>Broadening Our Funded Research Base in A&amp;S</strong>, $20,000 — DERBi PIE (2023).</li>
+        </ul>
+      </section>
 
-          <p class="small">
-            Full list: see <a href="research.html">Research</a>.
-          </p>
-        </section>
-
-        <section class="card">
-          <h2>Recent Grants &amp; Awards</h2>
-          <ul>
-            <li><strong>CURATE award</strong>, $5,000 — DERBi PIE (2025).</li>
-            <li><strong>NEH Digital Humanities Advancement Grant</strong> (with Danny Law), $75,000 — DERBi PIE prototype (2024).</li>
-            <li><strong>RCASP</strong> (with Allison Burkette), $5,000 — OCR for linguistic texts (2024).</li>
-            <li><strong>Broadening Our Funded Research Base in A&amp;S</strong>, $20,000 — DERBi PIE (2023).</li>
-            <!-- trim/expand as you like -->
-          </ul>
-        </section>
-
-        <section class="card">
-          <h2>Teaching</h2>
-          <p class="small">
-            Regular courses include: 
-            <ul>
+      <section class="card">
+        <h2>Teaching</h2>
+        <p class="small">Regular courses include:</p>
+        <ul>
           <li>An Immersive Introduction to Proto-Indo-European</li>
           <li>Phonological Analysis</li>
           <li>How to Create Your Own Language</li>
           <li>Writing Systems</li>
-            </ul>
-          </p>
-          <p class="small">
-            Details, past syllabi, and advising: <a href="teaching.html">Teaching page</a>.
-          </p>
-        </section>
+        </ul>
+        <p class="small">
+          Details, past syllabi, and advising: <a href="teaching.html">Teaching page</a>.
+        </p>
+      </section>
 
-        <section class="card">
-          <h2>Public Engagement</h2>
-          <p class="small">
-            Work includes language creation and consulting for games and media (e.g., <em>Far Cry Primal</em>; <em>Flintlock: Siege of Dawn</em>), translations/performances in PIE, and media interviews.
-            See the <a href="public_engagement.html">Public Engagement</a> page for a full timeline and links.
-          </p>
-        </section>
+      <section class="card">
+        <h2>Public Engagement</h2>
+        <p class="small">
+          Work includes language creation and consulting for games and media (e.g., <em>Far Cry Primal</em>; <em>Flintlock: Siege of Dawn</em>), translations/performances in PIE, and media interviews.
+          See the <a href="public_engagement.html">Public Engagement</a> page for a full timeline and links.
+        </p>
+      </section>
 
-      </main>
-
-      <aside>
-        <section class="card">
-          <h2>Quick Links</h2>
-          <ul>
-            <li><a href="research.html">Research</a></li>
-            <li><a href="public_engagement.html">Public Engagement</a></li>
-            <li><a href="teaching.html">Teaching</a></li>
-          </ul>
-        </section>
-
-        <!-- If you want a headshot here, uncomment and point to your image
-        <section class="card">
-          <img src="AMB_2025.JPG" alt="Andrew M. Byrd" style="width:100%; height:auto; border-radius:12px; border:1px solid var(--line);" />
-        </section>
-        -->
-
-        <!-- Contact block (fill in if you want it public)
-        <section class="card">
-          <h2>Contact</h2>
-          <p class="small">Email: <a href="mailto:YOU@uky.edu">YOU@uky.edu</a></p>
-        </section>
-        -->
-      </aside>
+     <!-- <section class="card">
+        <h2>Quick Links</h2>
+        <ul>
+          <li><a href="research.html">Research</a></li>
+          <li><a href="public_engagement.html">Public Engagement</a></li>
+          <li><a href="teaching.html">Teaching</a></li>
+        </ul>
+      </section> -->
+      
     </div>
   </div>
 </body>
