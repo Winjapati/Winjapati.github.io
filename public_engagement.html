@@ -31,6 +31,31 @@
     .yearlist a:hover{background:#f1f3f9}
     .hr{height:1px; background:var(--line); margin:10px 0}
     @media print{header,aside,.controls{display:none}; body{font-size:12px}}
+   /* Match short_cv nav */
+    nav.top {
+      background: #f6f7fb;
+      border-bottom: 1px solid var(--line);
+      padding: 10px 12px;
+    }
+    nav.top a {
+      color: var(--fg);
+      margin-right: 14px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+    nav.top a:hover { background: #eef1fb }
+    
+    /* Match short_cv header spacing/size */
+    header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 18px 0 8px;
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 }
   </style>
 </head>
 <body>
