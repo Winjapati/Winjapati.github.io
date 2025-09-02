@@ -56,6 +56,7 @@
       margin-bottom: 0;
     }
     h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 }
+    .abstract { margin-top: 6px; color: var(--muted); font-size: .95rem; }
   </style>
 </head>
 <body>
@@ -148,6 +149,21 @@
       const filtered = MASTER.filter(e => (e.category||'').toLowerCase() === which.toLowerCase());
       render('container', filtered);
     }
+
+    function entryHTML(e){
+      const y = e.year ? ` <span class="muted">(${e.year})</span>` : '';
+      const inner = `${e.text}${y}`;
+      const linked = e.url ? `<a href="${e.url}" target="_blank" rel="noreferrer noopener">${inner}</a>` : inner;
+      const cat = (e.category||'').toLowerCase();
+      const abs = (e.abstract && e.abstract.trim())
+        ? `<div class="abstract">${e.abstract}</div>`
+        : '';
+      return `<div class="entry" data-cat="${cat}">
+                <div class="title">${linked}</div>
+                ${abs}
+              </div>`;
+    }
+
 
     (async()=>{
       MASTER = await load();
