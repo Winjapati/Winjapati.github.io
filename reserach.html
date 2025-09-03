@@ -1,0 +1,199 @@
+html = """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Andrew Byrd — Research</title>
+  <meta name="description" content="Research: publications, grants, and talks." />
+  <link rel="icon" href="data:," />
+  <style>
+    :root{ --bg:#fff; --fg:#111418; --muted:#586174; --line:#e6e9ef; --accent:#2f5cff; --maxw:1100px }
+    *{box-sizing:border-box}
+    body{margin:0; color:var(--fg); background:var(--bg); font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:var(--maxw); margin:0 auto; padding:28px 16px 64px}
+
+    /* Default header (will be overridden by the "short_cv" header tweaks below) */
+    header{display:flex; gap:12px; align-items:baseline; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:12px; margin-bottom:16px}
+    h1{font-size:1.8rem; margin:0}
+
+    .muted{color:var(--muted)}
+    .controls{display:flex; gap:8px; flex-wrap:wrap}
+    .chip{display:inline-block; padding:6px 10px; border:1px solid var(--line); border-radius:999px; color:var(--fg); text-decoration:none}
+    .chip.active,.chip:hover{border-color:#cfd5e2}
+    .grid{display:grid; gap:20px}
+    @media(min-width:980px){.grid{grid-template-columns:260px 1fr}}
+    aside{position:sticky; top:12px; align-self:start}
+    .card{background:#fafbfe; border:1px solid var(--line); border-radius:14px; padding:12px 14px}
+    .yearlist a{display:block; padding:6px 8px; border-radius:8px; color:var(--fg)}
+    .yearlist a:hover{background:#f1f3f9}
+    .yearblock{margin:18px 0}
+    .entry{padding:10px 12px; border-left:3px solid transparent; border-radius:6px; margin:2px 0}
+    .entry:hover{background:#f6f8ff}
+    .entry .title{font-weight:600}
+    .hr{height:1px; background:var(--line); margin:10px 0}
+    @media print{header,aside,.controls{display:none}; body{font-size:12px}}
+
+    /* Match short_cv nav */
+    nav.top {
+      background: #f6f7fb;
+      border-bottom: 1px solid var(--line);
+      padding: 10px 12px;
+    }
+    nav.top a {
+      color: var(--fg);
+      margin-right: 14px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+    nav.top a:hover { background: #eef1fb }
+
+    /* Match short_cv header spacing/size */
+    header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 18px 0 8px;
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 }
+
+    /* Abstract + small caps helpers */
+    .abstract { margin-top: 6px; color: var(--muted); font-size: .95rem; }
+    .sc { font-variant: small-caps; font-feature-settings: "smcp" 1; }
+  </style>
+</head>
+<body>
+
+  <nav class="top">
+    <a href="index.html">← Home</a>
+    <a href="short_cv.html">CV</a>
+    <a href="public_engagement.html">Public Engagement</a>
+    <a href="teaching.html"><strong>Teaching</strong></a>
+  </nav>
+
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Research</h1>
+        <div class="muted">Publications · Grants · Talks — default: newest → oldest</div>
+      </div>
+      <nav class="controls" id="controls" aria-label="Category filters"></nav>
+    </header>
+
+    <div class="grid">
+      <aside>
+        <div class="card">
+          <h3>By Year</h3>
+          <div id="yearlist" class="yearlist"></div>
+        </div>
+        <div class="card">
+          <strong>Notes</strong>
+          <p class="muted">This page lists items newest-first, and lets you filter by category (Publication, Grant, Award, Talk, etc.).</p>
+        </div>
+      </aside>
+
+      <main>
+        <section class="section">
+          <div id="container"></div>
+          <div id="error" class="muted" style="margin-top:12px;"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    async function load(){
+      try{
+        // Cache-busting query param ensures you see fresh JSON while testing locally.
+        const res = await fetch('research_entries.json?ts=' + Date.now(), { cache: 'no-store' });
+        if(!res.ok) throw new Error('Missing research_entries.json');
+        const data = await res.json();
+        console.log('Loaded entries:', data.length);
+        return data;
+      }catch(e){
+        console.error(e);
+        const err = document.getElementById('error');
+        if(err) err.textContent = '⚠️ ' + (e && e.message ? e.message : 'Failed to load research_entries.json');
+        return [];
+      }
+    }
+
+    const byYear = (arr)=>{
+      const m = new Map();
+      for(const e of arr){
+        const y = e.year || 'No Year';
+        if(!m.has(y)) m.set(y, []);
+        m.get(y).push(e);
+      }
+      const years = Array.from(m.keys()).sort((a,b)=>{
+        if(a==='No Year') return 1;
+        if(b==='No Year') return -1;
+        return Number(b)-Number(a);
+      });
+      return {years, m};
+    };
+
+    function entryHTML(e){
+      const y = e.year ? ` <span class="muted">(${e.year})</span>` : '';
+      const inner = `${e.text}${y}`;
+      const linked = e.url ? `<a href="\${e.url}" target="_blank" rel="noreferrer noopener">${inner}</a>` : inner;
+      const cat = (e.category||'').toLowerCase();
+      const abs = (e.abstract && e.abstract.trim())
+        ? `<div class="abstract">${e.abstract}</div>`
+        : '';
+      return `<div class="entry" data-cat="${cat}">
+                <div class="title">${linked}</div>
+                ${abs}
+              </div>`;
+    }
+
+    function render(containerId, data){
+      const {years, m} = byYear(data);
+      const container = document.getElementById(containerId);
+      container.innerHTML = years.map(y=>{
+        const items = (m.get(y)||[]).map(entryHTML).join('');
+        if(!items) return '';
+        return `<div class="yearblock" id="year-${y}"><h3>${y}</h3>${items}</div>`;
+      }).join('');
+      document.getElementById('yearlist').innerHTML = years.map(y=>`<a href="#year-${y}">${y}</a>`).join('');
+    }
+
+    function buildChips(data){
+      const cats = Array.from(new Set(data.map(e => (e.category||'').trim()).filter(Boolean))).sort();
+      const controls = document.getElementById('controls');
+      const chips = [`<a href="#" class="chip active" data-filter="all">All</a>`]
+        .concat(cats.map(c => `<a href="#" class="chip" data-filter="${c}">${c}</a>`))
+        .join('');
+      controls.innerHTML = chips;
+      controls.querySelectorAll('.chip').forEach(ch => ch.addEventListener('click', ev => {
+        ev.preventDefault(); setFilter(ch.dataset.filter);
+      }));
+    }
+
+    let MASTER = [];
+    function setFilter(which){
+      document.querySelectorAll('.chip').forEach(ch => {
+        ch.classList.toggle('active', ch.dataset.filter===which || (which==='all' && ch.dataset.filter==='all'));
+      });
+      if(which==='all') { render('container', MASTER); return; }
+      const filtered = MASTER.filter(e => (e.category||'').toLowerCase() === which.toLowerCase());
+      render('container', filtered);
+    }
+
+    (async()=>{
+      MASTER = await load();
+      MASTER.sort((a,b)=> (b.year||0)-(a.year||0));
+      buildChips(MASTER);
+      render('container', MASTER);
+    })();
+  </script>
+</body>
+</html>
+"""
+with open('/mnt/data/research.html', 'w', encoding='utf-8') as f:
+    f.write(html)
+print("Saved to /mnt/data/research.html")
