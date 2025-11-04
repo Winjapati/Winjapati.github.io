@@ -1,0 +1,174 @@
+# Create an HTML file for Andrew with 35 class links and 7 homework links, clean academic style
+from datetime import date
+
+html = f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LIN 301 · Class Index</title>
+  <meta name="description" content="Index of classes and homework for LIN 301." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {{
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --ink: #0f172a;
+      --muted: #475569;
+      --brand: #1e40af;
+      --brand-2: #0ea5e9;
+      --ring: rgba(2,132,199,.35);
+      --card-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(15,23,42,.06);
+      --radius: 16px;
+    }}
+    * {{ box-sizing: border-box; }}
+    html, body {{ height: 100%; }}
+    body {{
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }}
+    .wrap {{ max-width: 1100px; margin: 0 auto; padding: 2.5rem 1rem 4rem; }}
+    header {{ margin-bottom: 2rem; }}
+    .title {{ font-family: Merriweather, Georgia, serif; font-size: clamp(1.75rem, 2.3vw, 2.6rem); margin: 0; letter-spacing: .2px; }}
+    .subtitle {{ margin: .35rem 0 0; color: var(--muted); font-weight: 400; }}
+    nav.breadcrumbs {{ margin-top: .75rem; font-size: .95rem; color: var(--muted); }}
+    nav.breadcrumbs a {{ color: var(--brand); text-decoration: none; }}
+    nav.breadcrumbs a:hover {{ text-decoration: underline; }}
+    .section {{ background: var(--panel); border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 1.25rem; margin-top: 1.25rem; }}
+    .section h2 {{ margin: .25rem 0 1rem; font-size: 1.25rem; letter-spacing: .2px; }}
+    .grid {{
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: .75rem;
+    }}
+    .card {{
+      display: block;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: .9rem 1rem;
+      text-decoration: none;
+      color: var(--ink);
+      transition: transform .08s ease, box-shadow .12s ease, border-color .12s ease;
+    }}
+    .card:hover {{
+      transform: translateY(-2px);
+      border-color: #bfdbfe;
+      box-shadow: 0 2px 8px rgba(30,64,175,.12), 0 12px 28px rgba(2,132,199,.10);
+    }}
+    .card small {{ display: block; color: var(--muted); margin-top: .25rem; font-size: .85rem; }}
+    .badge {{
+      display: inline-block;
+      font-size: .75rem;
+      padding: .2rem .5rem;
+      border-radius: 999px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e3a8a;
+      margin-left: .4rem;
+      vertical-align: middle;
+    }}
+    .homework-list {{
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: .75rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }}
+    .hw-item a {{
+      display: block;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: .9rem 1rem;
+      text-decoration: none;
+      color: var(--ink);
+      transition: transform .08s ease, box-shadow .12s ease, border-color .12s ease;
+    }}
+    .hw-item a:hover {{
+      transform: translateY(-2px);
+      border-color: #fed7aa;
+      box-shadow: 0 2px 8px rgba(245,158,11,.12), 0 12px 28px rgba(234,88,12,.10);
+    }}
+    footer {{ margin-top: 2.25rem; color: var(--muted); font-size: .9rem; }}
+    .note {{ margin-top: .75rem; font-size: .9rem; color: var(--muted); }}
+    code {{ background: #f1f5f9; border-radius: 6px; padding: .12rem .35rem; }}
+    @media (prefers-reduced-motion: reduce) {{
+      .card, .hw-item a {{ transition: none; }}
+    }}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1 class="title">LIN 301 <span class="badge">Fall 2025</span></h1>
+      <p class="subtitle">Computation for Linguists — Class &amp; Homework Index</p>
+      <nav class="breadcrumbs">
+        <a href="/">Home</a> / <strong>LIN 301 Index</strong>
+      </nav>
+    </header>
+
+    <section class="section" aria-labelledby="classes">
+      <h2 id="classes">Classes (1–35)</h2>
+      <div class="grid">
+"""
+
+# Add 35 class cards with placeholder hrefs that match likely GitHub Pages/Quarto paths
+# Use slug format like: /301_Fall_2025/Slides/01_intro/01_intro.html
+def class_slug(n):
+    return f"{n:02d}"
+
+for i in range(1, 36):
+    slug = class_slug(i)
+    # reasonable, easily replaceable placeholders
+    href = f"./Slides/{slug}/class_{slug}.html"
+    html += f'''        <a class="card" href="{href}" target="_self" rel="nofollow">
+          <strong>Class {i:02d}</strong>
+          <small>Slides: <code>Slides/{slug}/class_{slug}.html</code></small>
+        </a>
+'''
+
+html += """      </div>
+      <p class="note">Tip: Replace each link with your actual slide path (Quarto revealjs or HTML). Keep the <code>Slides/NN/</code> pattern for consistency.</p>
+    </section>
+
+    <section class="section" aria-labelledby="homework">
+      <h2 id="homework">Homeworks (7)</h2>
+      <ul class="homework-list">
+"""
+
+# Add 7 homework items with plausible paths
+for i in range(1, 8):
+    href = f"./Homework/HW{i}/hw{i}.html"
+    html += f'''        <li class="hw-item">
+          <a href="{href}" target="_self" rel="nofollow">
+            <strong>Homework {i}</strong>
+            <small>Details: <code>Homework/HW{i}/hw{i}.html</code></small>
+          </a>
+        </li>
+'''
+
+html += f"""      </ul>
+      <p class="note">You can point these to <code>.qmd</code>, <code>.ipynb</code>, or <code>.pdf</code> deliverables as needed; the visible text won't change.</p>
+    </section>
+
+    <footer>
+      <div>Last updated {date.today().isoformat()}.</div>
+      <div class="note">Style mirrors your usual minimalist academic aesthetic: clean typography, subtle color, and simple cards. Edit colors in <code>:root</code> to match your palette.</div>
+    </footer>
+  </div>
+</body>
+</html>
+"""
+
+path = "/mnt/data/lin301_index.html"
+with open(path, "w", encoding="utf-8") as f:
+    f.write(html)
+
+path
