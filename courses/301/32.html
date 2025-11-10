@@ -544,7 +544,7 @@ Dr.&nbsp;Andrew M. Byrd
 <section id="rule-based-matching-verbs-of-violence-e.g." class="slide level2 center">
 <h2>Rule-Based Matching (verbs of violence, e.g.)</h2>
 <ul>
-<li>Convert the string on the previous slide into a list:</li>
+<li>Copy the list on the previous slide.</li>
 <li>Then return to the code from before. Add a couple additional violent verbs to the VP to see if the list is comprehensive enough.</li>
 </ul>
 <div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a><span class="im">import</span> spacy</span>
@@ -552,9 +552,9 @@ Dr.&nbsp;Andrew M. Byrd
 <span id="cb6-3"><a href=""></a></span>
 <span id="cb6-4"><a href=""></a>nlp <span class="op">=</span> spacy.load(<span class="st">"en_core_web_sm"</span>)</span>
 <span id="cb6-5"><a href=""></a></span>
-<span id="cb6-6"><a href=""></a><span class="co"># Insert code here to create a list called "violent_verb_lemmas"</span></span>
+<span id="cb6-6"><a href=""></a><span class="co"># Paste the list here.</span></span>
 <span id="cb6-7"><a href=""></a></span>
-<span id="cb6-8"><a href=""></a>patterns <span class="op">=</span> [nlp(v) <span class="cf">for</span> v <span class="kw">in</span> violent_verb_lemmas]</span>
+<span id="cb6-8"><a href=""></a>patterns <span class="op">=</span> [nlp(v) <span class="cf">for</span> v <span class="kw">in</span> violent_vs]</span>
 <span id="cb6-9"><a href=""></a>matcher <span class="op">=</span> PhraseMatcher(nlp.vocab, attr<span class="op">=</span><span class="st">"LEMMA"</span>)</span>
 <span id="cb6-10"><a href=""></a>doc <span class="op">=</span> nlp(<span class="st">"They punched, kicked, and attacked the intruder before fleeing."</span>)</span>
 <span id="cb6-11"><a href=""></a>matcher.add(<span class="st">"VIOLENCE"</span>, patterns)</span>
