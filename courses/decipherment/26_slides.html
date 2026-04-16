@@ -1,0 +1,2066 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="26_slides_files/libs/clipboard/clipboard.min.js"></script>
+<script src="26_slides_files/libs/quarto-html/tabby.min.js"></script>
+<script src="26_slides_files/libs/quarto-html/popper.min.js"></script>
+<script src="26_slides_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="26_slides_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="26_slides_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="26_slides_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="26_slides_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.5.57">
+
+  <meta name="author" content="Dr.&nbsp;Andrew M. Byrd">
+  <title>Decipherment</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="26_slides_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="26_slides_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="26_slides_files/libs/revealjs/dist/theme/quarto.css">
+  <link rel="stylesheet" href="header_shrink.css">
+  <link href="26_slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="26_slides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="26_slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="26_slides_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Decipherment</h1>
+  <p class="subtitle">Day 26: Proto-Indo-European, the Vinča Script, and Working on Video Games</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Dr.&nbsp;Andrew M. Byrd 
+</div>
+</div>
+</div>
+
+</section><section id="TOC">
+<nav role="doc-toc"> 
+<h2 id="toc-title">Plan for the Day</h2>
+<ul>
+<li><a href="#/reminder" id="/toc-reminder">Reminder</a></li>
+<li><a href="#/far-cry-primal" id="/toc-far-cry-primal">Far Cry Primal</a></li>
+<li><a href="#/who-were-the-proto-indo-europeans" id="/toc-who-were-the-proto-indo-europeans">Who Were the Proto-Indo-Europeans?</a></li>
+<li><a href="#/reconstructing-pie-culture" id="/toc-reconstructing-pie-culture">Reconstructing PIE culture</a></li>
+<li><a href="#/reconstructing-the-pie-homeland" id="/toc-reconstructing-the-pie-homeland">Reconstructing the PIE Homeland</a></li>
+<li><a href="#/back-to-primal" id="/toc-back-to-primal">Back to Primal</a></li>
+<li><a href="#/the-vinča-script" id="/toc-the-vinča-script">The Vinča “Script”</a></li>
+</ul>
+</nav>
+</section>
+<section>
+<section id="reminder" class="title-slide slide level1 center">
+<h1>Reminder</h1>
+
+</section>
+<section id="reminder-1" class="slide level2 center">
+<h2>Reminder</h2>
+<p><br> <br></p>
+<blockquote>
+<p>Next week: original decipherment week! Attendance required.</p>
+</blockquote>
+</section>
+<section id="today" class="slide level2 center">
+<h2>Today</h2>
+<ul>
+<li><em>Far Cry Primal</em> (2016)</li>
+<li>PIE time</li>
+<li>The Vinča script</li>
+</ul>
+</section></section>
+<section>
+<section id="far-cry-primal" class="title-slide slide level1 center">
+<h1>Far Cry Primal</h1>
+
+</section>
+<section id="what-is-far-cry-primal-2016" class="slide level2 center">
+<h2>What is Far Cry Primal (2016)?</h2>
+
+<img data-src="images/wk_10_slide26_img22.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="the-three-tribes" class="slide level2 center">
+<h2>The Three Tribes</h2>
+
+<img data-src="https://preview.redd.it/what-are-your-thoughts-on-the-theory-that-the-wenja-tribe-v0-3td4mztqi1vg1.png?width=882&amp;format=png&amp;auto=webp&amp;s=eaadc1fd9817b208de367f227036ec7eea1d06fe" class="quarto-figure quarto-figure-center r-stretch"><p><br> <strong>Wenja</strong></p>
+</section>
+<section id="the-three-tribes-1" class="slide level2 center">
+<h2>The Three Tribes</h2>
+<p><img src="https://static0.polygonimages.com/wordpress/wp-content/uploads/chorus/uploads/chorus_asset/file/15667642/far-cry-primal-ull-screenshot_1920.0.0.1487760147.jpg?q=50&amp;fit=crop&amp;w=1600&amp;h=900&amp;dpr=1.5"><br> <strong>Udam</strong></p>
+</section>
+<section id="the-three-tribes-2" class="slide level2 center">
+<h2>The Three Tribes</h2>
+
+<img data-src="https://www.ancientworldmagazine.com/site/assets/files/1299/batari-1.1400x0.jpg" class="quarto-figure quarto-figure-center r-stretch"><p><br> <strong>Izila</strong></p>
+</section>
+<section id="wenja-udam-speak-winja" class="slide level2 center">
+<h2>Wenja &amp; Udam speak Winja</h2>
+<div style="text-align: center;">
+<iframe width="800" height="450" src="https://www.youtube.com/embed/BPoat_PKYsI" title="Wenja &amp; Udam speak Winja" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+</div>
+</section>
+<section id="izila-speak-his-hilax" class="slide level2 center">
+<h2>Izila speak His-hilax</h2>
+<div style="text-align: center;">
+<iframe width="800" height="450" src="https://www.youtube.com/embed/TwJc6e95axU?start=36" title="Izila speak His-hilax" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+</div>
+</section>
+<section id="conlangs" class="slide level2 center">
+<h2>ConLangs</h2>
+<p>Both Wenja &amp; Izila are <strong>conlangs</strong></p>
+<blockquote>
+<p><strong>Conlang</strong> = “constructed language” vs.&nbsp;“natural language”</p>
+</blockquote>
+</section>
+<section id="conlangs-artistic-languages" class="slide level2 center">
+<h2>ConLangs: Artistic Languages</h2>
+
+<img data-src="https://i.ebayimg.com/images/g/OLcAAOSwSWViaIiB/s-l1200.jpg" class="r-stretch quarto-figure-center"><p class="caption">One ring to…</p></section>
+<section id="conlangs-artistic-languages-1" class="slide level2 center">
+<h2>ConLangs: Artistic Languages</h2>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Na%27vi_River_Journey_-_Disney%27s_Animal_Kingdom_04.jpg" class="r-stretch quarto-figure-center"><p class="caption">Na’vi</p></section>
+<section id="what-are-wenja-izila" class="slide level2 center">
+<h2>What Are Wenja &amp; Izila?</h2>
+<p>Artistic conlangs based in reality — both based on <strong>Proto-Indo-European</strong>, source of:</p>
+<ul>
+<li>English</li>
+<li>Spanish</li>
+<li>Russian</li>
+<li>Farsi</li>
+<li>Greek</li>
+<li>Hindi, etc.</li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+</section></section>
+<section>
+<section id="who-were-the-proto-indo-europeans" class="title-slide slide level1 center">
+<h1>Who Were the Proto-Indo-Europeans?</h1>
+
+</section>
+<section id="indo-european-migrations" class="slide level2 center">
+<h2>Indo-European Migrations</h2>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Indo-European_expansions1.jpg/960px-Indo-European_expansions1.jpg?_=20240424011810" class="r-stretch quarto-figure-center"><p class="caption">PIE migrations</p></section>
+<section id="the-indo-european-languages" class="slide level2 center">
+<h2>The Indo-European Languages</h2>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Indo-European_Language_Family_Branches_in_Eurasia.png/960px-Indo-European_Language_Family_Branches_in_Eurasia.png?_=20260326221939" class="r-stretch quarto-figure-center"><p class="caption">IE Languages</p></section>
+<section id="how-do-we-even-know-what-pie-looked-like" class="slide level2 center">
+<h2>How Do We Even Know What PIE Looked Like?</h2>
+<ul>
+<li>We compare segments across languages and set up <strong>correspondence sets</strong>:</li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 14%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Greek</th>
+<th>Latin</th>
+<th>Sanskrit</th>
+<th>English</th>
+<th>Old Irish</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em>pʰrāter</em></td>
+<td><em>frāter</em></td>
+<td><em>bʰrātar</em></td>
+<td><em>brother</em></td>
+<td><em>bráthair</em></td>
+<td>‘brother’</td>
+</tr>
+<tr class="even">
+<td><em>pʰer-</em></td>
+<td><em>fer-</em></td>
+<td><em>bʰar-</em></td>
+<td><em>bear</em></td>
+<td><em>-ber</em></td>
+<td>‘carry’</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="how-do-we-even-know-what-pie-looked-like-1" class="slide level2 center">
+<h2>How Do We Even Know What PIE Looked Like?</h2>
+<p><strong>Reconstructed forms:</strong></p>
+<ul>
+<li>PIE: <strong>*bʰraχter</strong></li>
+<li>PIE: <strong>*bʰer-</strong></li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 14%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Greek</th>
+<th>Latin</th>
+<th>Sanskrit</th>
+<th>English</th>
+<th>Old Irish</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em>pʰrāter</em></td>
+<td><em>frāter</em></td>
+<td><em>bʰrātar</em></td>
+<td><em>brother</em></td>
+<td><em>bráthair</em></td>
+<td>‘brother’</td>
+</tr>
+<tr class="even">
+<td><em>pʰer-</em></td>
+<td><em>fer-</em></td>
+<td><em>bʰar-</em></td>
+<td><em>bear</em></td>
+<td><em>-ber</em></td>
+<td>‘carry’</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="why-pie-for-primal-and-not-caveman-english" class="slide level2 center">
+<h2>Why PIE for Primal (and Not Caveman English)?</h2>
+
+<img data-src="https://www.courierpress.com/gcdn/presto/2022/11/12/PEVC/dcb5089b-85d1-452a-9791-1e769a0d9486-GeicoCaveman_Photo_009.png?width=300&amp;height=358&amp;fit=crop&amp;format=pjpg&amp;auto=webp" class="r-stretch quarto-figure-center"><p class="caption">Geico Caveman</p></section>
+<section id="why-me" class="slide level2 center">
+<h2>Why Me?</h2>
+
+<img data-src="https://www.usatoday.com/gcdn/-mm-/9926edcead02eac1aa103477522a3da2b16df44d/c=0-12-633-369/local/-/media/USATODAY/GenericImages/2013/09/30/1380554866000-Screen-Shot-2013-09-30-at-82627-AM.jpg?width=633&amp;height=357&amp;fit=crop&amp;format=pjpg&amp;auto=webp" class="r-stretch quarto-figure-center"><p class="caption">Archaeology Magazine, 2013</p></section></section>
+<section>
+<section id="reconstructing-pie-culture" class="title-slide slide level1 center">
+<h1>Reconstructing PIE culture</h1>
+
+</section>
+<section id="reconstructing-pie-culture-1" class="slide level2 center">
+<h2>Reconstructing PIE culture</h2>
+<p><br> &gt; Proto-words give us a look at what those speakers had access to in their environment</p>
+</section>
+<section id="reconstructing-proto-languages" class="slide level2 center">
+<h2>Reconstructing Proto-Languages</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Language</th>
+<th>Word</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>English</td>
+<td><em>water</em></td>
+</tr>
+<tr class="even">
+<td>Sanskrit</td>
+<td><em>udan-</em></td>
+</tr>
+<tr class="odd">
+<td>Slavic</td>
+<td><em>voda</em></td>
+</tr>
+<tr class="even">
+<td>Hittite</td>
+<td><em>watar</em></td>
+</tr>
+<tr class="odd">
+<td>Greek</td>
+<td><em>hydro-</em></td>
+</tr>
+<tr class="even">
+<td>Italic</td>
+<td><em>utur</em></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>&lt; PIE *wodr ‘water’</p>
+</blockquote>
+</section>
+<section id="further-unsurprising-etyma" class="slide level2 center">
+<h2>Further Unsurprising Etyma</h2>
+<p><strong>Numbers:</strong></p>
+<p><br></p>
+<p>*hoínos, *dwṓh, *tréyes, *kʷétwores, *pénkʷe, *séḱs, *séptm̩, *hoḱtoh, *néwn̩, *déḱm̩, *ḱm</p>
+</section>
+<section id="further-unsurprising-etyma-1" class="slide level2 center">
+<h2>Further Unsurprising Etyma</h2>
+<p><br></p>
+<p><strong>Seasons:</strong></p>
+<p>*wet- ‘year’, *ǵʰei-, *wésr̩, *sem-</p>
+<blockquote>
+<p>wether/veteran, Himalayas, vernal, summer</p>
+</blockquote>
+</section>
+<section id="beyond-phonemes" class="slide level2 center">
+<h2>Beyond Phonemes</h2>
+<p>We can discuss anything cultural that is reconstructable:</p>
+<ul>
+<li>kinship</li>
+<li>class</li>
+<li>religion</li>
+<li>art</li>
+<li>where these people come from (their homeland)</li>
+</ul>
+</section>
+<section id="beyond-phonemes-problems" class="slide level2 center">
+<h2>Beyond Phonemes — Problems</h2>
+<p>Problems in reconstructing culture?</p>
+<ul>
+<li>Culture remains the same; cognates are lost</li>
+<li>Cognates are retained; culture / original values change</li>
+</ul>
+</section>
+<section id="beyond-phonemes-problems-1" class="slide level2 center">
+<h2>Beyond Phonemes — Problems</h2>
+<ul>
+<li>Cultures easily mixed
+<ul>
+<li>Germanic, Celtic traditions &amp; religion affected by spread of Roman empire and Christianity</li>
+<li>Hittites by Near Eastern neighbors</li>
+<li>Romans by Greeks</li>
+<li>Indic speakers by original residents of India (Dravidian culture)</li>
+</ul></li>
+</ul>
+</section>
+<section id="reconstructing-pie-society-kinship" class="slide level2 center">
+<h2>Reconstructing PIE Society — Kinship</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 44%">
+<col style="width: 55%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Reconstructed</th>
+<th>Reflexes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>*pəχtér- ‘father’</td>
+<td>Skt. <em>pitar-</em>, Lat. <em>pater-</em>, OIr. <em>athair</em></td>
+</tr>
+<tr class="even">
+<td>*átta ‘daddy’</td>
+<td>Hitt. <em>atta</em>, Gk. <em>átta</em>, OCS <em>otice</em>, Alb. <em>at</em></td>
+</tr>
+<tr class="odd">
+<td>*mā́ter- ‘mother’</td>
+<td>Skt. <em>mātar-</em>, Gk. <em>mēter-</em>, Lat. <em>māter-</em>, OIr. <em>máthair</em></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reconstructing-pie-society-kinship-1" class="slide level2 center">
+<h2>Reconstructing PIE Society — Kinship</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 44%">
+<col style="width: 55%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Reconstructed</th>
+<th>Reflexes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>*bʰráχter- ‘brother’</td>
+<td>Skt. <em>bhrātar-</em>, Gk. <em>phrēter-</em>, Lat. <em>frāter</em>, Arm. <em>ełbayr</em></td>
+</tr>
+<tr class="even">
+<td>*swésor- ‘sister’</td>
+<td>Skt. <em>svasar-</em>, Gk. <em>eor-</em>, Lat. <em>soror</em>, OIr. <em>siur</em></td>
+</tr>
+<tr class="odd">
+<td>*nép(o)t- ‘grandson, nephew’</td>
+<td>Skt. <em>napat-</em>, Lat. <em>nepot-</em>, OIr. <em>nïæ</em>, OE <em>neffa</em></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reconstructing-pie-society-kinship-2" class="slide level2 center">
+<h2>Reconstructing PIE Society — Kinship</h2>
+<p>PIE society = the <strong>Omaha system</strong> (patrilineal exogamous society)</p>
+<ul>
+<li><strong>patrilineal</strong>: descent is reckoned through father’s line</li>
+<li><strong>patrilocal</strong>: spouses taken from outside the kin group</li>
+<li><strong>patriarchal</strong>: men hold the power, women excluded from it</li>
+</ul>
+</section>
+<section id="reconstructing-pie-society-kinship-3" class="slide level2 center">
+<h2>Reconstructing PIE Society — Kinship</h2>
+<p><strong>IE Marriage:</strong></p>
+<ul>
+<li>‘to lead a wife’ = ‘marry’; cf.&nbsp;Lat. <em>uxōrem ducere</em></li>
+<li>Indicates leading the wife from her old clan to the new one of her husband’s</li>
+</ul>
+</section>
+<section id="reconstructing-pie-society-class" class="slide level2 center">
+<h2>Reconstructing PIE Society — Class</h2>
+<ul>
+<li>*teutáχ ‘people, tribe’ &gt; OIr. <em>tiuth</em>, PGerm. *θiuð- (Germ. <em>Deut-sch</em>), Lat. <em>tōtus</em> ‘all’</li>
+<li>*ʁrḗḱs ‘king, head of the *teutáh2’ &gt; Lat. <em>rēx</em> ‘king’, OIr. <em>rí</em> ‘king’, Gaul. <em>rīx</em>, Skt. <em>rāj-</em> ‘king’, Av. <em>bǝrǝzi-rāz-</em> ‘ruling in the heights’</li>
+<li>*póts ‘master’ &gt; Gk. <em>des-pot-ēs</em> ‘master of the house (<em>dem</em>)’, Lat. <em>potiri</em> ‘be master, be able’, Skt. <em>pátyati</em> ‘rules’</li>
+</ul>
+</section>
+<section id="reconstructing-pie-society-class-1" class="slide level2 center">
+<h2>Reconstructing PIE Society — Class</h2>
+<p><strong>‘give’ and ‘take’:</strong></p>
+<ul>
+<li>*nem- (Gk. <em>németai</em> ‘allots’ vs.&nbsp;Germ. <em>nehmen</em> ‘take’)</li>
+<li>*ai- (TochB <em>ai-</em> ‘give’ vs.&nbsp;Gk. <em>aínumai</em> ‘I take’)</li>
+</ul>
+<p><strong>Reciprocity</strong> extremely important in PIE society — between guest/host, poet/patron, gods/humans</p>
+</section>
+<section id="reconstructing-pie-society-class-2" class="slide level2 center">
+<h2>Reconstructing PIE Society — Class</h2>
+<p>Each party of reciprocal relationship bound by *bʰeidʰ- ‘trust’:</p>
+<ul>
+<li>‘trust’ <em>fidēs</em>, Eng. <em>bide</em> ‘stay, remain; trust, rely’</li>
+<li>‘treaty’ <em>foedus</em>, Alb. <em>besë</em> ‘truce in a blood feud’</li>
+</ul>
+<p><strong>Hospitality:</strong> no distinct term for ‘stranger’ and ‘host’ — rather *gʰóstis ‘guest/host’ &gt; Lat. <em>hostis</em>, Eng. <em>guest</em></p>
+</section>
+<section id="reconstructing-pie-society-class-guest-host-violations" class="slide level2 center">
+<h2>Reconstructing PIE Society — Class: Guest-Host Violations</h2>
+<p>Violations of ‘guest-host’ relationship throughout Indo-European societies:</p>
+<ul>
+<li><strong>Old Irish:</strong> refusing to give hospitality = crime demanding payment of the offended person’s full honor-price; same penalty as serious injury/murder</li>
+<li><strong>Greek:</strong> Cyclops in the <em>Odyssey</em> — the greatest offense? Eating his guests!</li>
+<li><strong>Greek:</strong> Paris vs.&nbsp;Meneleos in the <em>Iliad</em> — the greatest offense? Stealing Helen away</li>
+</ul>
+</section>
+<section id="reconstructing-pie-society-religion" class="slide level2 center">
+<h2>Reconstructing PIE Society — Religion</h2>
+<p><strong>Man (‘human’):</strong> *dʰǵʰmon- ‘earthling’</p>
+<blockquote>
+<p>Lat. <em>homō</em>, OIr. <em>duine</em> ‘human’, OE <em>guma</em>, Lith. <em>žmuõ</em> ‘person’</p>
+</blockquote>
+<p>Derivative of *dʰéĝʰōm ‘earth’ &gt; Hitt. <em>tēkan</em>, Gk. <em>kʰtʰōn</em>, Skt. <em>kṣām</em></p>
+<p>*mr̥tó-, *mórto- ‘mortal’ &gt; Lat. <em>mortuus</em>, Arm. <em>mard</em> ‘man’, Gk. <em>mortós</em>, Skt. <em>márta-</em> ‘mortal’</p>
+<blockquote>
+<p>cf.&nbsp;Eng. <em>murder</em></p>
+</blockquote>
+</section>
+<section id="reconstructing-pie-society-religion-1" class="slide level2 center">
+<h2>Reconstructing PIE Society — Religion</h2>
+<p>*deiwos ‘god’, derivative of *dyew- ‘shine’:</p>
+<blockquote>
+<p>OIr. <em>día</em>, Lat. <em>deus</em>, Lith. <em>diẽvas</em>, Hitt. <em>sius</em>, Skt. <em>deva-</em></p>
+</blockquote>
+</section>
+<section id="reconstructing-pie-society-religion-2" class="slide level2 center">
+<h2>Reconstructing PIE Society — Religion</h2>
+<p><strong>Father Sky</strong> *dyḗws pəχtḗr &gt; Skt. <em>dyàuṣ pítar-</em>, Gk. <em>Zéus patēr</em>, Lat. <em>Iūppiter</em>, Illyrian <em>Dei-pátrous</em></p>
+</section>
+<section id="reconstructing-pie-society-religion-3" class="slide level2 center">
+<h2>Reconstructing PIE Society — Religion</h2>
+<p><strong>Dawn</strong> *χáusōs &gt; Ved. <em>Uṣās</em>, Gk. <em>Ēōs</em>, Lat. <em>Aurōra</em>, Lith. <em>Aušrine</em></p>
+</section>
+<section id="reconstructing-pie-society-religion-4" class="slide level2 center">
+<h2>Reconstructing PIE Society — Religion</h2>
+<p><strong>Pastoral god</strong> *páχusōn ‘pastoral god’ &gt; Gk. <em>Pān</em>, Skt. <em>Pūṣā(n)</em> (epithet: “the goat borne”)</p>
+</section>
+<section id="reconstructing-pie-society-religion-horse-ritual" class="slide level2 center">
+<h2>Reconstructing PIE Society — Religion: Horse Ritual</h2>
+<p><strong>Sanskrit <em>aśvamedha</em>:</strong> Sacrifice of stallion that excels on the right-hand side of the yoke, ritual copulations with it by the queen, cutting it up and distributing it to participants</p>
+<p><strong>Roman <em>October Equus</em>:</strong> Sacrifice of right-hand horse of the victorious team in a chariot race to Mars</p>
+<p><strong>Irish <em>feis</em>:</strong> Copulation of king with a mare, which is then killed, boiled and cut into parts, distributed for eating</p>
+</section>
+<section id="reconstructing-pie-society-religion-hittite-laws" class="slide level2 center">
+<h2>Reconstructing PIE Society — Religion: Hittite Laws</h2>
+<blockquote>
+<p>From the Hittite Laws:</p>
+<ul>
+<li>If a man has sexual relations with a cow, it is an unpermitted sexual pairing; he shall be put to death.</li>
+<li>If a man has sexual relations with a sheep, it is an unpermitted sexual pairing; he shall be put to death.</li>
+<li>If anyone has sexual relations with a pig or a dog, he shall die.</li>
+<li><strong>If a man has sexual relations with either a horse or a mule, it is not an offense.</strong></li>
+</ul>
+</blockquote>
+</section>
+<section id="reconstructing-pie-society-horses" class="slide level2 center">
+<h2>Reconstructing PIE Society — Horses</h2>
+<p><br></p>
+<blockquote>
+<p><strong>Based on these… interesting… facts, what cultural practice would you reconstruct for PIE?</strong></p>
+</blockquote>
+</section>
+<section id="reconstructing-pie-society-poetry" class="slide level2 center">
+<h2>Reconstructing PIE Society — Poetry</h2>
+<p><strong>Dragon-slaying myth:</strong></p>
+<ul>
+<li><strong>Vedic:</strong> Indra, head of the Hindu pantheon, slays the serpent Vr̥tra to free the waters trapped in his mountain lair</li>
+<li><strong>Germanic:</strong> dragons are ‘hoarders of treasures’</li>
+<li><strong>Greek:</strong> Perseus slays the Gorgon Medusa, who has snakes for hair and turns people to stone</li>
+</ul>
+</section>
+<section id="reconstructing-pie-society-poetry-1" class="slide level2 center">
+<h2>Reconstructing PIE Society — Poetry</h2>
+<p><strong>Formula:</strong> *hégʷʰent hógʷʰim ‘(he) killed the serpent’</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Language</th>
+<th>Form</th>
+<th>Gloss</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Vedic</td>
+<td><em>áhann áhim</em></td>
+<td>‘he (Indra) slew the serpent’</td>
+</tr>
+<tr class="even">
+<td>Greek</td>
+<td><em>épephnen te Gorgóna</em></td>
+<td>‘he slew the Gorgon’</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reconstructing-pie-society-poetry-2" class="slide level2 center">
+<h2>Reconstructing PIE Society — Poetry</h2>
+<p><strong>Formula:</strong> *hégʷʰent hógʷʰim ’(he) killed the serpen</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 34%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Language</th>
+<th>Form</th>
+<th>Gloss</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Avestan</td>
+<td><em>yō janaṯ ažīm dahākǝm</em></td>
+<td>‘who slew Aži Dahāka’</td>
+</tr>
+<tr class="even">
+<td>Hittite</td>
+<td><em>nu=kan MUŠilluyankan kuenta</em></td>
+<td>‘and he slew Illuyanka (the serpent)’</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="what-did-pie-sound-like" class="slide level2 center">
+<h2>What did PIE sound like?</h2>
+
+<img data-src="https://dfv15viv1b723.cloudfront.net/johtolankoja_juurillemme.jpg" class="r-stretch quarto-figure-center"><p class="caption">Espoo, Finland: Clues to Our Roots exhibition</p></section>
+<section id="what-did-pie-sound-like-1" class="slide level2 smaller center">
+<h2>What did PIE sound like?</h2>
+<blockquote>
+<p>A son was born from Father Sky and the Broad Earth.<br>
+Thunderer, by name.<br>
+He drinks mead with the immortal gods.<br>
+He has protected men and livestock, the two-footed and the four-footed,<br>
+<strong>He killed the Serpent!</strong></p>
+<p>I remember him,<br>
+The undefeated Thunderer,<br>
+He who defeats enemies,<br>
+He whom the Broad Earth bore,<br>
+<strong>He killed the Serpent!</strong></p>
+<p>A serpent was born in the water, in the depths, in the darkness.<br>
+At first, the Serpent overcame the Thunderer and the Immortal gods.<br>
+He killed men and livestock, the two-footed and the four-footed.<br>
+The Thunderer escaped and received the hammer from the Fashioner.<br>
+<strong>He killed the Serpent!</strong></p>
+</blockquote>
+</section>
+<section id="performers" class="slide level2 center">
+<h2>Performers</h2>
+<ul>
+<li><a href="https://phillbarnett.com/">Phill Barnett</a></li>
+<li><a href="https://publires.unicatt.it/en/persons/riccardo-ginevra">Riccardo Ginevra</a></li>
+<li><a href="https://winjapati.github.io/">Andrew M. Byrd</a></li>
+</ul>
+</section>
+<section id="what-did-pie-sound-like-2" class="slide level2 center">
+<h2>What did PIE sound like?</h2>
+<iframe data-external="1" src="https://www.youtube.com/embed/J1SXeSHY9p0" width="100%" height="500" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</section>
+<section id="what-did-pie-sound-like-3" class="slide level2 smaller center">
+<h2>What did PIE sound like?</h2>
+<p>Memónh₂a tóm,<br>
+N̥tr̥h₂tóm Tn̥h₂ántm̥,<br>
+H₁i̯ós ḱétrums tr̥h₂uti,<br>
+H₁i̯óm Pl̥th₂ús Dʰéǵʰōm bʰeret,<br>
+<strong>H₁é gʷʰent h₁ógʷʰim!</strong></p>
+<p><br></p>
+<p>Suh₂nús Pəh₂trés Diu̯és Pl̥th₂áu̯s-kʷe Dʰəǵʰmés ǵn̥h₁to.<br>
+Tn̥h₂ánts h₁nómn̥.<br>
+Médhu n̥mr̥tṓi̯s déi̯u̯ōi̯s pibh₃oti.<br>
+U̯íh₁roms péḱuh₂-kʷe pēh₂st, du̯ipédm̥s kʷétu̯rpedm̥s-kʷe pēh₂st.<br>
+<strong>H₁é gʷʰent h₁ógʷʰim!</strong></p>
+<p><br></p>
+<p>Ǵn̥h₁tó h₁ógʷʰis udéni, bʰudʰnói, h₁régʷesu.<br>
+H₁ógʷʰis próteros Tn̥h₂ántm̥ N̥mr̥tóms déi̯u̯oms-kʷe tr̥h₂ut.<br>
+H₁é gʷʰent u̯íh₁roms péḱuh₂-kʷe, du̯ipédm̥s kʷétu̯r̥pedm̥s-kʷe.<br>
+Tn̥h₂ánts bʰunékt u̯áǵrom-kʷe Tu̯r̥ḱtrés dēḱt.<br>
+<strong>H₁é gʷʰent h₁ógʷʰim!</strong></p>
+</section>
+<section id="do-you-recognize-any-words" class="slide level2 center">
+<h2>Do you recognize any words?</h2>
+<div class="columns">
+<div class="column">
+<p><strong>English</strong></p>
+<p>A son was born from Father Sky and the Broad Earth<br>
+Thunderer, by name<br>
+He drinks mead with the immortal gods<br>
+He protects men and livestock</p>
+</div><div class="column">
+<p><strong>PIE</strong></p>
+<p>Suh₂nús Pəh₂trés Diu̯és Pl̥th₂áu̯s-kʷe Dhəǵhmés ǵn̥h₁to<br>
+Tn̥h₂ánts h₁nómn̥<br>
+Médhu n̥mr̥tṓi̯s déi̯u̯ōi̯s pibh₃oti<br>
+U̯íh₁roms péḱuh₂-kʷe pēh₂st</p>
+</div></div>
+</section>
+<section id="do-you-recognize-any-words-1" class="slide level2 center">
+<h2>Do you recognize any words?</h2>
+<div class="columns">
+<div class="column">
+<p><strong>English</strong></p>
+<p>I remember him<br>
+The undefeated Thunderer<br>
+He who defeats enemies<br>
+He whom the Broad Earth bore<br>
+He killed the Serpent!</p>
+</div><div class="column">
+<p><strong>PIE</strong></p>
+<p>Memónh₂a tóm<br>
+N̥tr̥h₂tóm Tn̥h₂ántm̥<br>
+H₁i̯ós ḱétrums tr̥h₂uti<br>
+H₁i̯óm Pl̥th₂ús Dhéǵhōm bheret<br>
+H₁é gʷhent h₁ógʷhim</p>
+</div></div>
+</section>
+<section id="do-you-recognize-any-words-2" class="slide level2 center">
+<h2>Do you recognize any words?</h2>
+<div class="columns">
+<div class="column">
+<p><strong>English</strong></p>
+<p>A serpent was born in the water, in the depths, in the darkness.<br>
+At first, the Serpent overcame the Thunderer and the Immortal gods.</p>
+</div><div class="column">
+<p><strong>PIE</strong></p>
+<p>Ǵn̥h₁tó h₁ógʷʰis udéni, bʰudʰnói, h₁régʷesu.<br>
+H₁ógʷʰis próteros Tn̥h₂ántm̥ N̥mr̥tóms déi̯u̯oms-kʷe tr̥h₂ut.</p>
+</div></div>
+</section>
+<section id="do-you-recognize-any-words-3" class="slide level2 center">
+<h2>Do you recognize any words?</h2>
+<div class="columns">
+<div class="column">
+<p><strong>English</strong></p>
+<p>He killed men and livestock, the two-footed and the four-footed.<br>
+The Thunderer escaped and received the hammer from the Fashioner.</p>
+</div><div class="column">
+<p><strong>PIE</strong></p>
+<p>H₁é gʷʰent u̯íh₁roms péḱuh₂-kʷe, du̯ipédm̥s kʷétu̯r̥pedm̥s-kʷe.</p>
+<p>Tn̥h₂ánts bʰunékt u̯áǵrom-kʷe Tu̯r̥ḱtrés dēḱt.</p>
+<p>H₁é gʷʰent h₁ógʷʰim!</p>
+</div></div>
+</section>
+<section id="how-do-you-connect-words-together" class="slide level2 center">
+<h2>How do you connect words together?</h2>
+<p><br></p>
+<blockquote>
+<p>By identifying <strong>regular patterns</strong>.</p>
+</blockquote>
+</section>
+<section id="identifying-phonological-changes" class="slide level2 center">
+<h2>Identifying Phonological Changes</h2>
+<div class="columns">
+<div class="column">
+<p><strong>PIE</strong></p>
+<p>tó-<br>
+tn̥h₂ánt-<br>
+tr̥h₂u-<br>
+-t</p>
+</div><div class="column">
+<p><strong>English</strong></p>
+<p>the / this / that<br>
+thunder<br>
+through<br>
+-th (<em>giveth</em>)</p>
+</div></div>
+</section>
+<section id="pie-latin-comparison" class="slide level2 center">
+<h2>PIE → Latin comparison</h2>
+<div class="columns">
+<div class="column">
+<p><strong>PIE</strong></p>
+<p>tó-<br>
+tn̥h₂ánt-<br>
+tr̥h₂u-<br>
+-t</p>
+</div><div class="column">
+<p><strong>Latin</strong></p>
+<p>is-te<br>
+tonare<br>
+trans<br>
+est</p>
+</div></div>
+</section>
+<section id="pie-d-english" class="slide level2 center">
+<h2>PIE *d → English</h2>
+<div class="columns">
+<div class="column">
+<p><strong>PIE</strong></p>
+<p>Diu̯-<br>
+du̯i-<br>
+deḱ-<br>
+u̯ed-</p>
+</div><div class="column">
+<p><strong>English</strong></p>
+<p>Tuesday<br>
+twice / twin<br>
+take<br>
+water</p>
+</div></div>
+</section>
+<section id="pie-d-latin" class="slide level2 center">
+<h2>PIE *d → Latin</h2>
+<div class="columns">
+<div class="column">
+<p><strong>PIE</strong></p>
+<p>Diu̯-<br>
+du̯i-<br>
+deḱ-<br>
+u̯ed-</p>
+</div><div class="column">
+<p><strong>Latin</strong></p>
+<p>deus<br>
+bi-<br>
+dexter / doceo<br>
+unda</p>
+</div></div>
+</section>
+<section id="pie-dʰ-english" class="slide level2 center">
+<h2>PIE *dʰ → English</h2>
+<div class="columns">
+<div class="column">
+<p><strong>PIE</strong></p>
+<p>bʰudʰnó-<br>
+dʰeh₁-<br>
+dʰu̯or-<br>
+dʰeiǵʰ-</p>
+</div><div class="column">
+<p><strong>English</strong></p>
+<p>bottom<br>
+do<br>
+door<br>
+dough</p>
+</div></div>
+</section>
+<section id="pie-dʰ-latin" class="slide level2 center">
+<h2>PIE *dʰ → Latin</h2>
+<div class="columns">
+<div class="column">
+<p><strong>PIE</strong></p>
+<p>bʰudʰnó-<br>
+dʰeh₁-<br>
+dʰu̯or-<br>
+dʰeiǵʰ-</p>
+</div><div class="column">
+<p><strong>Latin</strong></p>
+<p>fundus<br>
+facio<br>
+for-<br>
+fict-</p>
+</div></div>
+</section>
+<section id="evolution-of-pie-stops" class="slide level2 center">
+<h2>Evolution of PIE Stops</h2>
+<ol type="1">
+<li><p>t → th (θ)</p></li>
+<li><p>d → t</p></li>
+<li><p>dʰ → d</p></li>
+</ol>
+</section>
+<section id="what-types-of-sounds-are-t-d-and-th-θ" class="slide level2 center">
+<h2>What types of sounds are t, d and th (θ)?</h2>
+
+<img data-src="https://home.cc.umanitoba.ca/~krussll/phonetics/ipa/img/ipachartc.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="evolution-of-pie-stops-1" class="slide level2 center">
+<h2>Evolution of PIE Stops</h2>
+<ol type="1">
+<li><p><strong>Voiceless stop</strong> t → <strong>Voiceless fricative</strong> th (θ)</p></li>
+<li><p><strong>Voiced stop</strong> d → <strong>Voiceless stop</strong> t</p></li>
+<li><p><strong>Voiced aspirated stop</strong> dʰ → <strong>Voiced stop</strong> d</p></li>
+</ol>
+</section>
+<section id="voiceless-stop-voiceless-fricative" class="slide level2 center">
+<h2>Voiceless Stop &gt; Voiceless Fricative</h2>
+<ol type="1">
+<li>PIE <em>pod-</em> &nbsp;&nbsp;&nbsp; &gt; &nbsp;&nbsp;&nbsp; Eng. <em>foot</em></li>
+<li>PIE <em>ḱm̥tóm</em> &nbsp;&nbsp; &gt; &nbsp;&nbsp;&nbsp; Eng. <em>hundred</em></li>
+<li>PIE <em>kan-</em> &nbsp;&nbsp;&nbsp; &gt; &nbsp;&nbsp;&nbsp; Eng. <em>hen</em></li>
+<li>PIE <em>(s)kʷalo-</em> &gt; &nbsp;&nbsp;&nbsp; Eng. <em>whale</em></li>
+</ol>
+</section>
+<section id="voiced-stop-voiceless-stop" class="slide level2 center">
+<h2>Voiced Stop &gt; Voiceless Stop</h2>
+<ol type="1">
+<li>PIE <em>dʰub-</em> &nbsp;&nbsp;&nbsp; &gt; &nbsp;&nbsp;&nbsp; Eng. <em>deep</em></li>
+<li>PIE <em>ǵombʰo-</em> &nbsp;&gt; &nbsp;&nbsp;&nbsp; Eng. <em>comb</em></li>
+<li>PIE <em>gel-</em> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt; &nbsp;&nbsp;&nbsp; Eng. <em>cool, cold, chill</em></li>
+<li>PIE <em>gʷen-</em> &nbsp;&nbsp;&nbsp;&nbsp;&gt; &nbsp;&nbsp;&nbsp; Eng. <em>queen</em></li>
+</ol>
+</section>
+<section id="voiced-aspirated-stop-voiced-stop" class="slide level2 center">
+<h2>Voiced Aspirated Stop &gt; Voiced Stop</h2>
+<ol type="1">
+<li>PIE <em>ǵombʰo-</em> &nbsp;&nbsp; &gt; &nbsp;&nbsp;&nbsp; Eng. <em>comb</em></li>
+<li>PIE <em>ǵʰans-</em> &nbsp;&nbsp;&nbsp;&nbsp; &gt; &nbsp;&nbsp;&nbsp; Eng. <em>goose</em></li>
+<li>PIE <em>gʰabʰ-</em> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt; &nbsp;&nbsp;&nbsp; Eng. <em>give</em></li>
+<li>PIE <em>gʷʰen-</em> &nbsp;&nbsp;&nbsp;&nbsp; &gt; &nbsp;&nbsp;&nbsp; Eng. <em>bane</em></li>
+</ol>
+</section>
+<section id="grimms-law-full-picture" class="slide level2 center">
+<h2>Grimm’s Law (full picture)</h2>
+<style>
+.smalltable table {
+  font-size: 0.7em;
+}
+</style>
+<div class="columns">
+<div class="column">
+<p><strong>Voiceless → Fricative</strong></p>
+<div class="smalltable">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>PIE</th>
+<th>Eng</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>p</td>
+<td>f</td>
+</tr>
+<tr class="even">
+<td>t</td>
+<td>th</td>
+</tr>
+<tr class="odd">
+<td>k</td>
+<td>h</td>
+</tr>
+<tr class="even">
+<td>kʷ</td>
+<td>wh</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div><div class="column">
+<p><strong>Voiced → Voiceless</strong></p>
+<div class="smalltable">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>PIE</th>
+<th>Eng</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>b</td>
+<td>p</td>
+</tr>
+<tr class="even">
+<td>d</td>
+<td>t</td>
+</tr>
+<tr class="odd">
+<td>g</td>
+<td>k</td>
+</tr>
+<tr class="even">
+<td>gʷ</td>
+<td>kʷ</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div><div class="column">
+<p><strong>Voiced Aspirate → Voiced</strong></p>
+<div class="smalltable">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>PIE</th>
+<th>Eng</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bʰ</td>
+<td>b</td>
+</tr>
+<tr class="even">
+<td>dʰ</td>
+<td>d</td>
+</tr>
+<tr class="odd">
+<td>gʰ</td>
+<td>g</td>
+</tr>
+<tr class="even">
+<td>gʷʰ</td>
+<td>b</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></div>
+</section>
+<section id="together-what-do-these-words-become" class="slide level2 center">
+<h2>Together: what do these words become?</h2>
+<ul>
+<li><em>gʰostis</em> → PGmc → English ______<br>
+</li>
+<li><em>kǝptos</em> → PGmc → English ______</li>
+</ul>
+</section>
+<section id="with-your-neighbor-how-do-the-consonants-change" class="slide level2 center">
+<h2>With your neighbor: how do the consonants change?</h2>
+<p>Fill in the Proto-Germanic forms:</p>
+<ol type="1">
+<li><p>PIE <em>porḱos</em> ‘pig’ → PGmc. <em>___ ar ___ az</em></p></li>
+<li><p>PIE <em>ḱǝptos</em> ‘grabbed’ → PGmc. <em>___ a ___ taz</em></p></li>
+<li><p>PIE <em>kʷī-</em> ‘to rest’ → PGmc. <em>___ ī-(laz)</em></p></li>
+<li><p>PIE <em>samǝdʰos</em> → PGmc. <em>sam ___ az</em></p></li>
+<li><p>PIE <em>bʰéreti</em> ‘carries’ → PGmc. *___ ere ___*</p></li>
+</ol>
+</section></section>
+<section>
+<section id="reconstructing-the-pie-homeland" class="title-slide slide level1 center">
+<h1>Reconstructing the PIE Homeland</h1>
+
+</section>
+<section id="reconstructing-pie-society-the-homeland" class="slide level2 center">
+<h2>Reconstructing PIE Society — The Homeland</h2>
+<blockquote>
+<p>Where and when did the PIE people live?</p>
+</blockquote>
+</section>
+<section id="reconstructing-pie-society-the-homeland-1" class="slide level2 center">
+<h2>Reconstructing PIE Society — The Homeland</h2>
+<p>To find out where the Indo-Europeans came from, you need to:</p>
+<ol type="1">
+<li>Know what technologies / culture / environmental awareness they possessed</li>
+<li>Know <em>when</em> they came from</li>
+<li>Line the two up to see what’s most likely</li>
+<li>Double check with the archaeological record</li>
+</ol>
+</section>
+<section id="reconstructing-pie-society-the-homeland-fauna" class="slide level2 center">
+<h2>Reconstructing PIE Society — The Homeland: Fauna</h2>
+<p><strong>Did they domesticate animals?</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Reconstructed</th>
+<th>Reflexes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>*gʷṓws ‘cow’</td>
+<td>Eng. <em>cow</em>, Lat. <em>bovine</em></td>
+</tr>
+<tr class="even">
+<td>*χówis ‘sheep’</td>
+<td>Eng. <em>ewe</em>, Lat. <em>ovine</em></td>
+</tr>
+<tr class="odd">
+<td>*ḱwón/ḱun- ‘dog’</td>
+<td>Eng. <em>hound</em>, Lat. <em>canine</em></td>
+</tr>
+<tr class="even">
+<td>*pórḱo- ‘pig’</td>
+<td>Eng. <em>farrow</em> ‘litter of pigs’, Lat. <em>pork</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Other reconstructable fauna:</strong> bear, fox, wolf, beaver (*bʰébʰro-), otter, hedgehog, elk, eagle, vulture, pheasant, stork, owl, turtle, frog, salmon, trout, bees, louse, mouse…</p>
+</section>
+<section id="reconstructing-pie-society-the-homeland-technology" class="slide level2 center">
+<h2>Reconstructing PIE Society — The Homeland: Technology</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Reconstructed</th>
+<th>Reflexes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>*náχu- ‘boat’</td>
+<td>Lat. <em>navis</em>, Gk. <em>naus</em></td>
+</tr>
+<tr class="even">
+<td>*χr̩ǵento- ‘silver’</td>
+<td>Lat. <em>argentum</em>, Gaul. <em>arganto-</em></td>
+</tr>
+<tr class="odd">
+<td>*heḱwos ‘horse’</td>
+<td>Lat. <em>equus</em>, Gk. <em>hippos</em>, Skt. <em>aśvas</em></td>
+</tr>
+<tr class="even">
+<td>*kʷekʷlos ‘wheel’</td>
+<td>Skt. <em>cakrám</em>, Gk. <em>kúklos</em>, Eng. <em>wheel</em></td>
+</tr>
+<tr class="odd">
+<td>*aḱs- ‘axle’</td>
+<td>Eng. <em>axle</em>, Gk. <em>axon</em>, Skt. <em>aksas</em></td>
+</tr>
+<tr class="even">
+<td>*yugóm ‘yoke’</td>
+<td>Eng. <em>yoke</em>, Lat. <em>iugum</em>, Gk. <em>zugon</em></td>
+</tr>
+<tr class="odd">
+<td>*rotχo- ‘chariot’</td>
+<td>Skt. <em>ratha-</em>; cf.&nbsp;Lat. <em>rota</em> ‘wheel’</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reconstructing-pie-culture-the-homeland-environment" class="slide level2 center">
+<h2>Reconstructing PIE Culture — The Homeland: Environment</h2>
+<p><strong>Climate:</strong> temperate (*sneigʷʰ- ‘snow’ &gt; Eng. <em>snow</em>, Germ. <em>Schnee</em>, Sp. <em>nieve</em>)</p>
+<p><strong>Reconstructable flora:</strong></p>
+<ul>
+<li>Tree *d(o)ru</li>
+<li>Birch *bʰerHǵ-</li>
+<li>Beech *bʰāgo-</li>
+<li>Mistletoe *mizd-</li>
+<li>Elder, Oak, Hazel, Cherry, etc.</li>
+</ul>
+</section>
+<section id="sowhat-does-this-tell-us-about-the-homeland" class="slide level2 center">
+<h2>So…What Does This Tell Us About the Homeland?</h2>
+<blockquote>
+<p><strong>What part of the world would YOU reconstruct the PIE people as living in?</strong></p>
+<p>Trees? Dogs? Beavers? Snow?</p>
+</blockquote>
+</section>
+<section id="the-usual-story" class="slide level2 center">
+<h2>The Usual Story</h2>
+<ul>
+<li>Earliest Date: <strong>3500–3400 BCE</strong></li>
+<li>Khvalynsk: Evidence of Horse Sacrifice, <strong>4500 BCE</strong></li>
+<li>Horse-Head Maces: <strong>4200 BCE</strong></li>
+<li>Evidence of Riding: <strong>3600–3000 BCE</strong></li>
+</ul>
+</section>
+<section id="how-can-we-prove-horseback-riding" class="slide level2 center">
+<h2>How Can We Prove Horseback Riding?</h2>
+<p><br></p>
+<blockquote>
+<p>What is needed to ride horses?</p>
+</blockquote>
+</section>
+<section id="how-can-we-prove-horseback-riding-1" class="slide level2 center">
+<h2>How Can We Prove Horseback Riding?</h2>
+
+<img data-src="images/26_horse_teeth_0.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="how-can-we-prove-horseback-riding-2" class="slide level2 center">
+<h2>How Can We Prove Horseback Riding?</h2>
+
+<img data-src="images/26_horse_teeth.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="the-yamnaya" class="slide level2 center">
+<h2>The Yamnaya</h2>
+
+<img data-src="images/26_yamnaya_map.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="yamnaya-dna-evidence" class="slide level2 center">
+<h2>Yamnaya &amp; DNA Evidence</h2>
+
+<img data-src="images/26_yamnaya_skull.png" class="quarto-figure quarto-figure-center r-stretch"><p><a href="http://www.nytimes.com/2015/06/16/science/dna-deciphers-roots-of-modern-europeans.html">NYT: DNA Deciphers Roots of Modern Europeans</a></p>
+</section></section>
+<section>
+<section id="back-to-primal" class="title-slide slide level1 center">
+<h1>Back to Primal</h1>
+
+</section>
+<section id="how-did-we-make-wenja-and-izila" class="slide level2 center">
+<h2>How did we make Wenja and Izila?</h2>
+<ul>
+<li>Two languages, but very similar in structure.</li>
+</ul>
+</section>
+<section id="making-izila" class="slide level2 center">
+<h2>Making Izila</h2>
+<ul>
+<li>Stay as true to PIE as possible</li>
+<li>Avoid overlong words</li>
+<li>Eliminate grammar that is unnecessary for in-game translation</li>
+<li>Make as phonologically distinct from Wenja as possible</li>
+<li>Not too hard — actors have to pronounce it!</li>
+</ul>
+</section>
+<section id="making-wenja-udam" class="slide level2 center">
+<h2>Making Wenja &amp; Udam</h2>
+<p>Design to be more archaic: <strong>proto-PIE</strong></p>
+<p><strong>How?</strong> Identify archaic alternations in PIE and assume them to be part of an earlier stage of the language.</p>
+<ul>
+<li><em>kick–kicked, kiss–kissed</em> (regular) vs.&nbsp;<em>sing–sang–sung, ring–rang–rung</em> (alternation)</li>
+<li>cf.&nbsp;Lat. <em>tego</em> ‘cover’ ~ <em>toga</em> ‘covering’</li>
+<li>Alternation goes back to PIE</li>
+</ul>
+<p><strong>Example:</strong> <em>kwis</em> ‘who’, <em>kwid</em> ‘what’, etc. = question words → Wenja <strong>ku</strong> ‘?’</p>
+</section>
+<section id="final-product" class="slide level2 center">
+<h2>Final Product</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 44%">
+<col style="width: 55%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Version</th>
+<th>Text</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>English</strong></td>
+<td>Once there was a king. He was childless. The king wanted a son. He asked his priest: “May a son be born to me!”</td>
+</tr>
+<tr class="even">
+<td><strong>PIE</strong></td>
+<td><em>ʁrḗḱs hest; só n̥putlós. ʁrḗḱs súχnum wl̥nhto. tósi̯o ǵʰéutorm̥ prēḱst: “súχnus moi̯ ǵn̥hyetōd!”</em></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="final-product-1" class="slide level2 center">
+<h2>Final Product</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 44%">
+<col style="width: 55%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Version</th>
+<th>Text</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Izila</strong></td>
+<td><em>hréks hest; só nputlós. hréks súxnum welhet. tósyo blágmenəm préket: “súxnus moy génhetu!”</em></td>
+</tr>
+<tr class="even">
+<td><strong>Wenja</strong></td>
+<td><em>sams fraji. san putila. fraji sushnu walha. si-blajiman pracha: “u sushnu miyi janha!”</em></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="audio-recordings" class="slide level2 center">
+<h2>Audio Recordings</h2>
+
+<img data-src="images/26_audio_studio.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="working-with-actors" class="slide level2 center">
+<h2>Working with Actors</h2>
+
+<img data-src="images/26_b_teaching.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="filming-the-scenes" class="slide level2 center">
+<h2>Filming the Scenes</h2>
+
+<img data-src="images/26_filming.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="and-we-got-to-make-cool-scenes-like-this-one" class="slide level2 center">
+<h2>And we got to make cool scenes like this one</h2>
+<iframe data-external="1" src="https://www.youtube.com/embed/EjbH-nSYoes" width="100%" height="500" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</section>
+<section id="was-there-a-writing-system" class="slide level2 center">
+<h2>Was there a writing system?</h2>
+<p><br></p>
+<blockquote>
+<p>Yes, but not one that’s canon.</p>
+</blockquote>
+</section>
+<section id="the-primal-script" class="slide level2 center">
+<h2>The Primal Script</h2>
+
+<!-- ## The Primal Script -->
+<!-- ![](images/wk_10_slide26_img23.png){fig-align="center"} -->
+<!-- ## The Primal Script -->
+<!-- ![](images/wk_10_slide26_img24.png) -->
+<img data-src="images/wk_10_slide25_img21.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="the-primal-script-1" class="slide level2 center">
+<h2>The Primal Script</h2>
+
+<img data-src="images/wk_10_slide28_img25.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="the-primal-script-2" class="slide level2 center">
+<h2>The Primal Script</h2>
+
+<img data-src="images/wk_10_slide29_img26.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="the-primal-script-3" class="slide level2 center">
+<h2>The Primal Script</h2>
+
+<img data-src="images/wk_10_slide29_img27.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="the-primal-script-4" class="slide level2 center">
+<h2>The Primal Script</h2>
+
+<img data-src="images/wk_10_slide30_img28.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="the-primal-script-5" class="slide level2 center">
+<h2>The Primal Script</h2>
+
+<img data-src="images/wk_10_slide31_img29.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="the-primal-script-6" class="slide level2 center">
+<h2>The Primal Script</h2>
+
+<img data-src="images/wk_10_slide31_img30.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="the-primal-script-7" class="slide level2 center">
+<h2>The Primal Script</h2>
+
+<img data-src="images/wk_10_slide31_img31.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="the-primal-script-8" class="slide level2 center">
+<h2>The Primal Script</h2>
+<p>smarkaka:mw:<sup>MAN</sup>WENJApaty:hay:nawa: kraybaty:<sup>TRIBE</sup>WENJAs#</p>
+
+<img data-src="images/wk_10_slide32_img32.png" class="quarto-figure quarto-figure-center r-stretch"></section></section>
+<section>
+<section id="the-vinča-script" class="title-slide slide level1 center">
+<h1>The Vinča “Script”</h1>
+
+</section>
+<section id="where-did-i-get-those-symbols" class="slide level2 center">
+<h2>Where did I get those symbols?</h2>
+
+<img data-src="images/wk_10_slide33_img33.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="where-did-i-get-those-symbols-1" class="slide level2 center">
+<h2>Where did I get those symbols?</h2>
+
+<img data-src="images/wk_10_slide33_img34.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="what-is-the-vinča-script" class="slide level2 center">
+<h2>What Is the Vinča Script?</h2>
+<ul>
+<li>Also called the <strong>Old European Script</strong> or <strong>Danube Script</strong></li>
+<li>Found on pottery, figurines, and artifacts throughout the <strong>Central Balkans</strong></li>
+<li>Centered around the Vinča culture, southeast of modern Belgrade</li>
+<li>Symbols date to <strong>8000–6500 years ago</strong> (6000–4500 BCE)</li>
+<li>Over <strong>700 distinct signs</strong> identified</li>
+</ul>
+</section>
+<section id="where-was-it-found" class="slide level2 center">
+<h2>Where Was It Found?</h2>
+<ul>
+<li>Spread across a wide area: modern-day Serbia, Romania, Bulgaria, Greece</li>
+</ul>
+
+<img data-src="images/wk_3_slide63_img24.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="where-was-it-found-1" class="slide level2 center">
+<h2>Where Was It Found?</h2>
+<ul>
+<li>Found consistently across sites separated by hundreds of miles</li>
+<li>Symbols appear on:
+<ul>
+<li>Pottery and ceramic vessels</li>
+<li>Figurines (especially anthropomorphic ones)</li>
+<li>Spindle whorls and weights</li>
+<li>Fired clay tablets</li>
+</ul></li>
+</ul>
+</section>
+<section id="the-tărtăria-tablets" class="slide level2 center">
+<h2>The Tărtăria Tablets</h2>
+<ul>
+<li>Discovered in <strong>1961</strong> in Tartaria, Romania</li>
+<li>Three small clay tablets with incised symbols</li>
+</ul>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Tartaria_amulet_retouched.PNG" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="the-tărtăria-tablets-1" class="slide level2 center">
+<h2>The Tărtăria Tablets</h2>
+<ul>
+<li>Dated to around <strong>5300 BCE</strong> — older than early Sumerian writing</li>
+<li>Sparked debate: did writing originate in Europe, not Mesopotamia?</li>
+<li><strong>Problem:</strong> likely not writing in any meaningful sense</li>
+</ul>
+</section>
+<section id="what-do-the-symbols-look-like" class="slide level2 center">
+<h2>What Do the Symbols Look Like?</h2>
+<ul>
+<li>Largely <strong>geometric</strong>: lines, chevrons, spirals, crosses, meanders</li>
+<li>Some appear <strong>pictographic</strong> (resembling plants, animals, humans)</li>
+<li>No clear directionality — no consistent left-to-right or top-to-bottom</li>
+<li>No obvious <strong>syntax</strong> — symbols don’t combine in rule-governed ways</li>
+</ul>
+</section>
+<section id="hunting-scene" class="slide level2 center">
+<h2>Hunting Scene?</h2>
+
+<img data-src="images/wk_3_slide64_img25.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="is-it-writing" class="slide level2 center">
+<h2>Is It Writing?</h2>
+<p>For something to count as <strong>writing</strong>, it must:</p>
+<ol type="1">
+<li>Represent <strong>language</strong> — specific words, sounds, or grammar</li>
+<li>Be <strong>decipherable</strong> by someone who knows the language</li>
+<li>Show <strong>systematic</strong> correspondence between symbol and meaning</li>
+</ol>
+<p>Vinča symbols meet <strong>none</strong> of these criteria conclusively</p>
+</section>
+<section id="that-said-its-not-just-random-symbols" class="slide level2 center">
+<h2>That said, it’s not just random symbols!</h2>
+<blockquote>
+<p>Shan Winn: “Internal analysis of the Vinca signs supports the conclusion that the signs are conventionalised and standardised, and that they represent a corpus of signs known and used over a wide area for several centuries.”</p>
+</blockquote>
+<p>Likely isn’t writing — it’s <strong>proto-writing</strong>: conveys a message, but isn’t language</p>
+</section>
+<section id="slide-65" class="slide level2 center">
+<h2>Slide 65</h2>
+<p>Shan Winn</p>
+<p>“Internal analysis of the Vinca signs supports the conclusion that the signs are conventionalised and standarised, and that they represent a corpus of signs known and used over a wide area for several centuries.”</p>
+<p>Likely isn’t writing – it’s proto-writing Conveys a message, but isn’t language</p>
+</section>
+<section id="want-to-learn-more" class="slide level2 center">
+<h2>Want to Learn More?</h2>
+<p><a href="http://speakingprimal.blogspot.com/2016/04/winja-warshta-kwati-samkwayha-lija-how.html">speakingprimal.blogspot.com</a></p>
+<div class="quarto-auto-generated-content">
+<div class="footer footer-default">
+
+</div>
+</div>
+</section></section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="26_slides_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="26_slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="26_slides_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="26_slides_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="26_slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="26_slides_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="26_slides_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="26_slides_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="26_slides_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="26_slides_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
