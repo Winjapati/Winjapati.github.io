@@ -32,6 +32,8 @@
     .entry{padding:10px 12px; border-left:3px solid transparent; border-radius:6px; margin:2px 0}
     .entry:hover{background:#f6f8ff}
     .entry .title{font-weight:600}
+    .pdf-link{display:inline-block; margin-left:6px; padding:1px 8px; border:1px solid var(--line); border-radius:999px; font-size:.78rem; font-weight:600; color:var(--accent); text-decoration:none; vertical-align:middle}
+    .pdf-link:hover{background:#eef1fb; text-decoration:none}
     .hr{height:1px; background:var(--line); margin:10px 0}
     @media print{header,aside,.controls{display:none}; body{font-size:12px}}
 
@@ -141,12 +143,13 @@
       const y = e.year ? ` <span class="muted">(${e.year})</span>` : '';
       const inner = `${e.text}${y}`;
       const linked = e.url ? `<a href="${e.url}" target="_blank" rel="noreferrer noopener">${inner}</a>` : inner;
+      const pdfLink = e.pdf ? ` <a href="${e.pdf}" target="_blank" rel="noreferrer noopener" class="pdf-link">PDF</a>` : '';
       const cat = (e.category||'').toLowerCase();
       const abs = (e.abstract && e.abstract.trim())
         ? `<div class="abstract">${e.abstract}</div>`
         : '';
       return `<div class="entry" data-cat="${cat}">
-                <div class="title">${linked}</div>
+                <div class="title">${linked}${pdfLink}</div>
                 ${abs}
               </div>`;
     }
