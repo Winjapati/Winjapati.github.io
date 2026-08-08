@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mini Site — HTML Basics</title>
+</head>
+<body>
+  <!-- 1) HEADINGS & PARAGRAPHS -->
+  <h1>My Mini Site</h1>
+  <p>Hello! This is a paragraph. It has <em>emphasis</em> and <strong>strong</strong> text.</p>
+
+  <!-- 2) LINKS (attributes: href, optional target) -->
+  <h2>Links</h2>
+  <p>
+    Visit <a href="https://example.com">Example</a>.  
+    (Try adding <code>target="_blank"</code> yourself to open in a new tab.)
+  </p>
+
+  <!-- 3) IMAGE (void element + required alt) -->
+  <h2>Image</h2>
+  <p>
+    <img src="https://picsum.photos/200/120" alt="A random placeholder image">
+  </p>
+
+  <!-- 4) LISTS -->
+  <h2>My TODO List</h2>
+  <ul>
+    <li>Write a paragraph</li>
+    <li>Add one link</li>
+    <li>Insert an image with a good <code>alt</code> description</li>
+  </ul>
+
+  <!-- 5) NESTING (inline inside block) -->
+  <h2>Nesting</h2>
+  <p>Inside this paragraph there is an <a href="#top">inline link</a> and some <em>inline emphasis</em>.</p>
+
+  <!-- 6) BLOCK vs INLINE (tiny inline styles just for boxes) -->
+  <h2>Block vs Inline (visual)</h2>
+  <div style="border:2px dashed #ccc; padding:.5rem; margin:.3rem 0;">
+    <h3 style="margin:.2rem 0;">This heading is block</h3>
+    <p style="margin:.2rem 0;">This paragraph is block</p>
+    <ul style="margin:.2rem 0;">
+      <li>List is block</li>
+    </ul>
+  </div>
+  <p>
+    Inline examples: 
+    <em style="outline:1px dotted #999; padding:0 .1rem;">em</em>,
+    <strong style="outline:1px dotted #999; padding:0 .1rem;">strong</strong>,
+    <a href="#" style="outline:1px dotted #999; padding:0 .1rem;">link</a>
+    all sit within the same line of this paragraph.
+  </p>
+
+  <hr>
+
+  <p id="top"></p>
+</body>
+</html>

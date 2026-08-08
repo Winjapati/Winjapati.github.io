@@ -1,0 +1,87 @@
+/* =========================
+   Stinky’s CSS (gentle start)
+   - Uses variables + named colors
+   - Minimal “magic numbers”
+   ========================= */
+
+/* ---- Design tokens (change these, change the vibe) ---- */
+:root {
+  /* Palette (named colors for now) */
+  --brand-brown: brown;
+  --brand-gold: goldenrod;
+  --paper: oldlace;      /* warm page background */
+  --ink: black;          /* default text color */
+
+  /* Layout & rhythm */
+  --page-width: 60ch;    /* ~60 characters per line for readability */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+
+  /* Rounding */
+  --radius: 12px;
+}
+
+/* ===== Base ===== */
+html { font-family: Georgia, serif; }
+body { margin: 0; color: var(--ink); background: var(--paper); }
+img  { max-width: 100%; height: auto; display: block; }
+
+/* ===== Layout ===== */
+main   { max-width: var(--page-width); margin: 0 auto; padding: var(--space-3); }
+header { position: sticky; top: 0; background: var(--paper); border-bottom: 1px solid rgba(0,0,0,0.12); }
+
+/* ===== Nav ===== */
+nav { display: flex; gap: var(--space-2); justify-content: center; padding: calc(var(--space-2) * 0.75) 0; }
+nav a { padding: 0.25rem 0.5rem; border-radius: 6px; color: var(--brand-gold); text-decoration: none; }
+nav a:hover { background: rgba(218,165,32,0.15); /* goldenrod tint */ }
+
+/* ===== Typography ===== */
+h1 { font-size: 2rem; margin: var(--space-1) 0 0; color: var(--brand-brown); text-align: center; }
+h2 { font-size: 1.5rem; margin: var(--space-4) 0 var(--space-2); color: var(--brand-brown); }
+p  { margin: 0 0 var(--space-2); line-height: 1.6; }
+
+/* ===== Sections (gentle background “zones”) ===== */
+section  { padding: var(--space-3); border-radius: var(--radius); }
+#about   { background: mistyrose;   }
+#cheeses { background: cornsilk;    }
+#shop    { background: honeydew;    }
+#contact { background: aliceblue;   }
+
+/* ===== Cheese list ===== */
+#cheeses ul {
+  list-style: disc;
+  padding: var(--space-2) var(--space-3);
+  background: white;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 10px;
+}
+#cheeses li {
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed rgba(0,0,0,0.15);
+}
+#cheeses li:last-child { border-bottom: 0; }
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: var(--space-2);
+  color: rgba(0,0,0,0.65);
+  border-top: 1px solid rgba(0,0,0,0.12);
+}
+
+/* =========================
+   Optional: “upgrade” the palette later
+   Swap named colors for precise hex values.
+   Uncomment and adjust if/when you want finer control.
+========================= */
+/*
+:root {
+  --brand-brown: #503030;   // richer heading color
+  --brand-gold:  #d49c00;   // cheese-gold accent
+  --paper:       #fdfcf8;   // warm background
+  --ink:         #2a1a0f;   // deep brown text
+}
+nav a:hover { background: #fff4cc; }  // subtle gold hover
+*/

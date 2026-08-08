@@ -1,0 +1,4 @@
+/* Shrink all h1, h2, h3 across slides */
+.reveal h1 { font-size: 2em; }   /* default ~3em */
+.reveal h2 { font-size: 1.6em; } /* default ~2.11em */
+.reveal h3 { font-size: 1.3em; } /* default ~1.55em */
