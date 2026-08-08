@@ -1,4 +1,4 @@
-html = """<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -140,7 +140,7 @@ html = """<!doctype html>
     function entryHTML(e){
       const y = e.year ? ` <span class="muted">(${e.year})</span>` : '';
       const inner = `${e.text}${y}`;
-      const linked = e.url ? `<a href="\${e.url}" target="_blank" rel="noreferrer noopener">${inner}</a>` : inner;
+      const linked = e.url ? `<a href="${e.url}" target="_blank" rel="noreferrer noopener">${inner}</a>` : inner;
       const cat = (e.category||'').toLowerCase();
       const abs = (e.abstract && e.abstract.trim())
         ? `<div class="abstract">${e.abstract}</div>`
@@ -193,7 +193,3 @@ html = """<!doctype html>
   </script>
 </body>
 </html>
-"""
-with open('/mnt/data/research.html', 'w', encoding='utf-8') as f:
-    f.write(html)
-print("Saved to /mnt/data/research.html")
