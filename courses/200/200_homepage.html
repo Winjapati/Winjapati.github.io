@@ -79,16 +79,24 @@
       const MAX_CLASSES = 60; // upper bound to probe for
       const grid = document.getElementById('classGrid');
       const emptyMsg = document.getElementById('classEmpty');
+      let found = 0;
+      const shown = []; // class numbers currently in the grid, kept sorted
 
+      // Each probe resolves independently and inserts its own card the moment
+      // it succeeds, rather than waiting for every probe to finish — that way
+      // Class 1 (etc.) shows up almost instantly instead of the whole grid
+      // staying blank until the slowest of the ~60 parallel requests returns.
+      // Cards are inserted in numeric order regardless of which probe happens
+      // to resolve first.
       async function probe(i) {
         const href = `${i}.html`;
         let html;
         try {
           const res = await fetch(href, { cache: 'no-store' });
-          if (!res.ok) return null;
+          if (!res.ok) return;
           html = await res.text();
         } catch (e) {
-          return null;
+          return;
         }
         const doc = new DOMParser().parseFromString(html, 'text/html');
         const rawTitle = (doc.querySelector('title')?.textContent
@@ -97,24 +105,29 @@
         // Strip a leading "Class N" / "LIN 200" style prefix if the page's own
         // title already repeats it, so the card doesn't show it twice.
         const topic = rawTitle.replace(/^LIN\s*200[\s:–—-]*/i, '').trim();
-        return { i, href, topic };
-      }
 
-      const results = await Promise.all(
-        Array.from({ length: MAX_CLASSES }, (_, idx) => probe(idx + 1))
-      );
-
-      let found = 0;
-      for (const r of results) {
-        if (!r) continue;
         found++;
         const a = document.createElement('a');
         a.className = 'card';
-        a.href = r.href;
-        a.innerHTML = `<span class="label">Class ${r.i}</span>` +
-                      (r.topic ? `<span class="topic">${r.topic}</span>` : '');
-        grid.appendChild(a);
+        a.href = href;
+        a.innerHTML = `<span class="label">Class ${i}</span>` +
+                      (topic ? `<span class="topic">${topic}</span>` : '');
+
+        let pos = shown.length;
+        for (let k = 0; k < shown.length; k++) {
+          if (shown[k] > i) { pos = k; break; }
+        }
+        if (pos < grid.children.length) {
+          grid.insertBefore(a, grid.children[pos]);
+        } else {
+          grid.appendChild(a);
+        }
+        shown.splice(pos, 0, i);
       }
+
+      await Promise.all(
+        Array.from({ length: MAX_CLASSES }, (_, idx) => probe(idx + 1))
+      );
 
       if (found === 0) emptyMsg.style.display = 'block';
     })();
