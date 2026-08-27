@@ -68,47 +68,52 @@
     // that page's own <title> (or <h1>) as the topic label. No manual editing of
     // this file is needed as new classes are posted — just add N.html and it
     // will show up here automatically the next time the page loads.
+    //
+    // All candidate pages are probed in PARALLEL (not one-at-a-time): a sequential
+    // loop with cache-busted fetches was taking ~30s once it had to walk several
+    // 404s past the last real class to confirm there were no more. Firing every
+    // probe at once and waiting for them all cuts that down to roughly one
+    // round-trip, since the browser/GitHub Pages happily handles many concurrent
+    // requests over HTTP/2.
     (async function buildClassGrid(){
-      const MAX_CLASSES = 60;       // upper bound to probe for
-      const MAX_CONSECUTIVE_MISSES = 8; // stop early once we hit a long gap past the last found class
+      const MAX_CLASSES = 60; // upper bound to probe for
       const grid = document.getElementById('classGrid');
       const emptyMsg = document.getElementById('classEmpty');
-      let misses = 0;
-      let found = 0;
 
-      for (let i = 1; i <= MAX_CLASSES; i++) {
+      async function probe(i) {
         const href = `${i}.html`;
-        let ok = false, topic = '';
+        let html;
         try {
           const res = await fetch(href, { cache: 'no-store' });
-          if (res.ok) {
-            ok = true;
-            const html = await res.text();
-            const doc = new DOMParser().parseFromString(html, 'text/html');
-            const rawTitle = (doc.querySelector('title')?.textContent
-                            || doc.querySelector('h1')?.textContent
-                            || '').trim();
-            // Strip a leading "Class N" / "LIN 200" style prefix if the page's own
-            // title already repeats it, so the card doesn't show it twice.
-            topic = rawTitle.replace(/^LIN\s*200[\s:–—-]*/i, '').trim();
-          }
+          if (!res.ok) return null;
+          html = await res.text();
         } catch (e) {
-          ok = false;
+          return null;
         }
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const rawTitle = (doc.querySelector('title')?.textContent
+                        || doc.querySelector('h1')?.textContent
+                        || '').trim();
+        // Strip a leading "Class N" / "LIN 200" style prefix if the page's own
+        // title already repeats it, so the card doesn't show it twice.
+        const topic = rawTitle.replace(/^LIN\s*200[\s:–—-]*/i, '').trim();
+        return { i, href, topic };
+      }
 
-        if (ok) {
-          misses = 0;
-          found++;
-          const a = document.createElement('a');
-          a.className = 'card';
-          a.href = href;
-          a.innerHTML = `<span class="label">Class ${i}</span>` +
-                        (topic ? `<span class="topic">${topic}</span>` : '');
-          grid.appendChild(a);
-        } else {
-          misses++;
-          if (found > 0 && misses >= MAX_CONSECUTIVE_MISSES) break;
-        }
+      const results = await Promise.all(
+        Array.from({ length: MAX_CLASSES }, (_, idx) => probe(idx + 1))
+      );
+
+      let found = 0;
+      for (const r of results) {
+        if (!r) continue;
+        found++;
+        const a = document.createElement('a');
+        a.className = 'card';
+        a.href = r.href;
+        a.innerHTML = `<span class="label">Class ${r.i}</span>` +
+                      (r.topic ? `<span class="topic">${r.topic}</span>` : '');
+        grid.appendChild(a);
       }
 
       if (found === 0) emptyMsg.style.display = 'block';
