@@ -1,0 +1,57 @@
+# Navigation & Location
+
+⦁	pwd → print working directory (shows "where you are")
+⦁	ls → list contents of current directory
+⦁	ls -l → long listing (permissions, owner, size, dates)
+⦁	ls -a → show hidden files
+⦁	cd foldername → change directory into foldername
+⦁	cd .. → go up one directory
+⦁	cd ~ → jump to your home directory
+⦁	cd / → moves to your "top level" directory
+⦁	arrow up → fills in the previous command(s) entered
+
+
+# Creating & Removing
+
+⦁	mkdir newfolder → make directory
+⦁	touch file.txt → create an empty file (or update timestamp)
+⦁	rm file.txt → remove file
+⦁	rmdir emptyfolder → remove an empty folder
+⦁	rm -r folder → remove a folder and everything in it (⚠ dangerous!)
+⦁	curl -O https://example.com/file.txt → downloads a file
+⦁	curl -o myfile.txt https://example.com/file.txt → save as myfile.txt
+⦁	source example.sh → run ".sh" file in the Terminal
+
+
+
+# Viewing & Editing
+
+⦁	cat file.txt → print file contents to screen
+⦁	less file.txt → scroll through file contents (press q to quit)
+⦁	head file.txt → show first 10 lines
+⦁	tail file.txt → show last 10 lines
+
+# Copying & Moving
+
+⦁	cp old.txt new.txt → copy file
+⦁	mv oldname.txt newname.txt → rename or move file
+⦁	mv file.txt folder/ → move file into folder
+
+
+# Searching & Finding
+
+⦁	grep "word" file.txt → search for "word" inside a file
+⦁	grep -r "word" folder/ → search recursively in a folder
+⦁	find . -name "*.txt" → find all .txt files in current directory
+⦁	ls *.txt → lists all files that have any characters and end in  ".txt"
+⦁	ls a*.txt → lists all files that start with "a" and end in  ".txt"
+⦁	ls a*t → lists all files that start with "a" and end in  "t"
+
+
+# Other Useful
+
+⦁	clear → clear the terminal screen
+⦁	history → show past commands
+⦁	!23 → rerun command #23 from history
+⦁	echo "Hello" → print text to screen (or into files with > redirect)
+⦁	man ls → manual/help page for ls (works for most commands; quit with q)
