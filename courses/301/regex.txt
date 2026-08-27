@@ -1,0 +1,45 @@
+# Basic Regex with grep -E
+
+⦁	grep -E "pattern" file.txt → search using Extended Regular Expressions
+⦁	grep -Eo "pattern" file.txt → print only the matching text, not the whole line
+⦁	grep -Ec "pattern" file.txt → print a count of matching lines
+
+
+# Matching Characters
+
+⦁	. → matches any single character (e.g., "c.t" matches "cat", "cot", "cut")
+⦁	[aou] → matches any one of the listed characters (e.g., "c[aou]t" matches "cat", "cot", "cut")
+⦁	[^ao] → matches any character EXCEPT the ones listed
+⦁	[a-q] → matches any character in that range (works for letters or digits, e.g., [0-9])
+⦁	\s → matches any whitespace character (space, tab, etc.)
+
+
+# Word Boundaries
+
+⦁	\<cat → matches "cat" only at the start of a word
+⦁	cat\> → matches "cat" only at the end of a word
+⦁	\<cat\> → matches "cat" as a whole word only (not inside "concatenate")
+
+
+# Repetition
+
+⦁	cats? → matches "cat" or "cats" (the "s" is optional)
+⦁	(ab)+ → one or more repetitions of "ab"
+
+
+# Anchors
+
+⦁	^cat → matches lines that START with "cat"
+⦁	cat$ → matches lines that END with "cat"
+
+
+# Alternation & Backreferences
+
+⦁	(Alice|Rabbit) → matches "Alice" OR "Rabbit"
+⦁	([tp])\1 → \1 repeats whatever the first group ([tp]) matched, so this matches "tt" or "pp"
+
+
+# Escaping Special Characters
+
+⦁	\? → matches a literal question mark (since ? is normally a special character)
+⦁	\. → matches a literal period (since . is normally "any character")
