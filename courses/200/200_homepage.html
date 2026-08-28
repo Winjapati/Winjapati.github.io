@@ -22,14 +22,16 @@
     section{margin:26px 0}
     h2{font-size:1.2rem; margin:0 0 12px}
     p.intro{max-width:70ch}
-    .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:12px}
-    .card{
-      display:block; background:var(--card); border:1px solid var(--line);
-      border-radius:12px; padding:12px 14px; color:var(--fg); text-decoration:none;
+    .list{display:flex; flex-direction:column; gap:8px}
+    .row{
+      display:flex; align-items:baseline; gap:10px;
+      background:var(--card); border:1px solid var(--line);
+      border-radius:10px; padding:10px 14px; color:var(--fg); text-decoration:none;
     }
-    .card:hover{ border-color:#cfd5e2; text-decoration:none; background:#f1f3f9 }
-    .card .label{ font-weight:600; font-size:.85rem; color:var(--accent) }
-    .card .topic{ display:block; margin-top:2px; font-size:.95rem }
+    .row:hover{ border-color:#cfd5e2; text-decoration:none; background:#f1f3f9 }
+    .row .day{ font-weight:600; color:var(--accent); white-space:nowrap; min-width:64px }
+    .row .topic{ font-size:.97rem }
+    .row .tag{ margin-left:auto; font-size:.78rem; color:var(--muted); white-space:nowrap }
     footer{margin-top:40px; color:var(--muted); font-size:.9rem}
   </style>
 </head>
@@ -52,85 +54,17 @@
     <p class="intro">Throughout the semester you'll build your own invented language in a physical course journal, moving through five stages: Culture &rarr; Sounds &rarr; Words &amp; Sentences &rarr; Writing Systems &rarr; Final Translation &amp; Performance. See the <a href="syllabus.html">full syllabus</a> for journal checkpoint due dates and grading details.</p>
 
     <section id="classes">
-      <h2>Classes</h2>
-      <div class="grid" id="classGrid"></div>
-      <p class="muted" id="classEmpty" style="display:none;">No classes posted yet &mdash; check back soon!</p>
+      <h2>Classes &amp; Activities</h2>
+      <div class="list">
+        <a class="row" href="1.html"><span class="day">Day 1</span><span class="topic">So You've Decided to Create Your Own Language</span></a>
+        <a class="row" href="2.html"><span class="day">Day 2</span><span class="topic">Beginning World-Building</span></a>
+        <a class="row" href="3.html"><span class="day">Day 3</span><span class="topic">Devising Your Own Culture</span></a>
+      </div>
     </section>
 
     <footer>
       <a href="../../teaching.html">← Back to Teaching</a>
     </footer>
   </div>
-
-  <script>
-    // Auto-populates the Classes grid: probes 1.html, 2.html, ... for pages that
-    // actually exist on the server, and builds a card for each one it finds using
-    // that page's own <title> (or <h1>) as the topic label. No manual editing of
-    // this file is needed as new classes are posted — just add N.html and it
-    // will show up here automatically the next time the page loads.
-    //
-    // All candidate pages are probed in PARALLEL (not one-at-a-time): a sequential
-    // loop with cache-busted fetches was taking ~30s once it had to walk several
-    // 404s past the last real class to confirm there were no more. Firing every
-    // probe at once and waiting for them all cuts that down to roughly one
-    // round-trip, since the browser/GitHub Pages happily handles many concurrent
-    // requests over HTTP/2.
-    (async function buildClassGrid(){
-      const MAX_CLASSES = 60; // upper bound to probe for
-      const grid = document.getElementById('classGrid');
-      const emptyMsg = document.getElementById('classEmpty');
-      let found = 0;
-      const shown = []; // class numbers currently in the grid, kept sorted
-
-      // Each probe resolves independently and inserts its own card the moment
-      // it succeeds, rather than waiting for every probe to finish — that way
-      // Class 1 (etc.) shows up almost instantly instead of the whole grid
-      // staying blank until the slowest of the ~60 parallel requests returns.
-      // Cards are inserted in numeric order regardless of which probe happens
-      // to resolve first.
-      async function probe(i) {
-        const href = `${i}.html`;
-        let html;
-        try {
-          const res = await fetch(href, { cache: 'no-store' });
-          if (!res.ok) return;
-          html = await res.text();
-        } catch (e) {
-          return;
-        }
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        const rawTitle = (doc.querySelector('title')?.textContent
-                        || doc.querySelector('h1')?.textContent
-                        || '').trim();
-        // Strip a leading "Class N" / "LIN 200" style prefix if the page's own
-        // title already repeats it, so the card doesn't show it twice.
-        const topic = rawTitle.replace(/^LIN\s*200[\s:–—-]*/i, '').trim();
-
-        found++;
-        const a = document.createElement('a');
-        a.className = 'card';
-        a.href = href;
-        a.innerHTML = `<span class="label">Class ${i}</span>` +
-                      (topic ? `<span class="topic">${topic}</span>` : '');
-
-        let pos = shown.length;
-        for (let k = 0; k < shown.length; k++) {
-          if (shown[k] > i) { pos = k; break; }
-        }
-        if (pos < grid.children.length) {
-          grid.insertBefore(a, grid.children[pos]);
-        } else {
-          grid.appendChild(a);
-        }
-        shown.splice(pos, 0, i);
-      }
-
-      await Promise.all(
-        Array.from({ length: MAX_CLASSES }, (_, idx) => probe(idx + 1))
-      );
-
-      if (found === 0) emptyMsg.style.display = 'block';
-    })();
-  </script>
 </body>
 </html>
