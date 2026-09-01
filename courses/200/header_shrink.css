@@ -9,11 +9,19 @@
    no width/height limits, which is why images were showing up at
    native pixel size, overflowing the slide, and sitting flush left
    instead of centered. */
+
+/* NOTE: max-width/max-height above use !important because Reveal's own
+   core CSS ships `.reveal .r-stretch, .reveal .stretch { max-width: none;
+   max-height: none }`. Quarto auto-tags every bare markdown image with
+   .r-stretch, and that rule (2 classes) beats our `.reveal section img`
+   selector (1 class + 2 elements) on specificity alone, silently undoing
+   these caps and reintroducing the oversized/off-center image problem
+   this file exists to fix. !important sidesteps the specificity fight. */
 .reveal section img {
   display: block;
   margin: 0.5em auto;
-  max-width: 85%;
-  max-height: 48vh;
+  max-width: 85% !important;
+  max-height: 48vh !important;
   width: auto;
   height: auto;
   background: #fff;
@@ -25,7 +33,7 @@
 /* Slides that are just a title + a single big image (no bullet list
    underneath) can afford to let the image run larger. */
 .reveal section:not(:has(ul, ol)) img {
-  max-height: 62vh;
+  max-height: 62vh !important;
 }
 
 /* Slides that stack more than one image (Pandoc wraps each bare image
@@ -35,7 +43,7 @@
    sibling" and "a p with an image that has an earlier one".) */
 .reveal section p:has(img):has(~ p img) img,
 .reveal section p:has(img) ~ p:has(img) img {
-  max-height: 26vh;
+  max-height: 26vh !important;
   margin: 0.35em auto;
 }
 
@@ -43,5 +51,5 @@
    which case the stacked images can each run a bit bigger. */
 .reveal section:not(:has(ul, ol)) p:has(img):has(~ p img) img,
 .reveal section:not(:has(ul, ol)) p:has(img) ~ p:has(img) img {
-  max-height: 40vh;
+  max-height: 40vh !important;
 }
