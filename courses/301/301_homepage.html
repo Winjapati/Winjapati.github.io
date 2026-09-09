@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LIN 301 — Computation for Linguists — Class Index</title>
-  <meta name="description" content="Index of classes and homework for LIN 301: Computation for Linguists." />
+  <meta name="description" content="Index of classes for LIN 301: Computation for Linguists, Fall 2026." />
   <link rel="icon" href="data:," />
   <style>
     :root{ --bg:#fff; --fg:#111418; --muted:#586174; --line:#e6e9ef; --accent:#2f5cff; --card:#fafbfe; --maxw:1000px }
@@ -21,14 +21,26 @@
     .muted{color:var(--muted)}
     section{margin:26px 0}
     h2{font-size:1.2rem; margin:0 0 12px}
-    .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:12px}
-    .card{
-      display:block; background:var(--card); border:1px solid var(--line);
-      border-radius:12px; padding:12px 14px; color:var(--fg); text-decoration:none;
+    .list{display:flex; flex-direction:column; gap:8px}
+    .row{
+      display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+      background:var(--card); border:1px solid var(--line);
+      border-radius:10px; padding:10px 14px;
     }
-    .card:hover{ border-color:#cfd5e2; text-decoration:none; background:#f1f3f9 }
-    .card .label{ font-weight:600; font-size:.85rem; color:var(--accent) }
-    .card .topic{ display:block; margin-top:2px; font-size:.95rem }
+    .row.available:hover{ border-color:#cfd5e2; background:#f1f3f9 }
+    .row .day{ font-weight:600; color:var(--accent); white-space:nowrap; min-width:72px }
+    .row .topic{ font-size:.97rem }
+    .row.pending .topic{ color:var(--muted) }
+    .row .files{ margin-left:auto; display:flex; gap:6px; white-space:nowrap }
+    .row .filelink{
+      font-size:.78rem; font-weight:600; color:var(--accent);
+      border:1px solid var(--line); border-radius:6px; padding:3px 9px;
+      background:#fff;
+    }
+    .row .filelink:hover{ background:#eef1fb; text-decoration:none; border-color:#cfd5e2 }
+    .row .pending-tag{ margin-left:auto; font-size:.78rem; color:var(--muted); white-space:nowrap }
+    .row.note{ background:transparent; border-style:dashed; justify-content:center }
+    .row.note .topic{ color:var(--muted); font-style:italic }
     footer{margin-top:40px; color:var(--muted); font-size:.9rem}
   </style>
 </head>
@@ -45,68 +57,54 @@
   <div class="wrap">
     <header>
       <h1>LIN 301 — Computation for Linguists</h1>
-      <div class="muted">Class &amp; homework index</div>
+      <div class="muted">Fall 2026 · Class index — slide decks (.qmd) &amp; rendered slides, in course order</div>
     </header>
 
     <section id="classes">
       <h2>Classes</h2>
-      <div class="grid">
-        <a class="card" href="1.html"><span class="label">Class 1</span><span class="topic">Welcome to LIN 301</span></a>
-        <a class="card" href="2.html"><span class="label">Class 2</span><span class="topic">LaTeX, Day 1</span></a>
-        <a class="card" href="3.html"><span class="label">Class 3</span><span class="topic">LaTeX, Day 2</span></a>
-        <a class="card" href="4.html"><span class="label">Class 4</span><span class="topic">LaTeX, Day 3</span></a>
-        <a class="card" href="5.html"><span class="label">Class 5</span><span class="topic">LaTeX, Day 4</span></a>
-        <a class="card" href="6.html"><span class="label">Class 6</span><span class="topic">Setting up RStudio &amp; GitHub</span></a>
-        <a class="card" href="7.html"><span class="label">Class 7</span><span class="topic">HTML, Day 1</span></a>
-        <a class="card" href="8.html"><span class="label">Class 8</span><span class="topic">HTML, Day 2</span></a>
-        <a class="card" href="9.html"><span class="label">Class 9</span><span class="topic">CSS, Day 1</span></a>
-        <a class="card" href="10.html"><span class="label">Class 10</span><span class="topic">CSS, Day 2</span></a>
-        <a class="card" href="11.html"><span class="label">Class 11</span><span class="topic">Baby JS</span></a>
-        <a class="card" href="12.html"><span class="label">Class 12</span><span class="topic">Terminal, Day 1</span></a>
-        <a class="card" href="13.html"><span class="label">Class 13</span><span class="topic">Terminal, Day 2</span></a>
-        <a class="card" href="14.html"><span class="label">Class 14</span><span class="topic">Terminal, Day 3</span></a>
-        <a class="card" href="15.html"><span class="label">Class 15</span><span class="topic">Python, Day 1</span></a>
-        <a class="card" href="16.html"><span class="label">Class 16</span><span class="topic">Python, Day 2</span></a>
-        <a class="card" href="17.html"><span class="label">Class 17</span><span class="topic">Python, Day 3</span></a>
-        <a class="card" href="18.html"><span class="label">Class 18</span><span class="topic">Loops &amp; Conditionals, Day 1</span></a>
-        <a class="card" href="19.html"><span class="label">Class 19</span><span class="topic">Loops &amp; Conditionals, Day 2</span></a>
-        <a class="card" href="20.html"><span class="label">Class 20</span><span class="topic">Loops &amp; Conditionals, Day 3</span></a>
-        <a class="card" href="21.html"><span class="label">Class 21</span><span class="topic">Activity Day: Detective Gutenberg</span></a>
-        <a class="card" href="22.html"><span class="label">Class 22</span><span class="topic">Activity Day: Detective Gutenberg, Day 2</span></a>
-        <a class="card" href="23.html"><span class="label">Class 23</span><span class="topic">Pandasmonium, Day 1</span></a>
-        <a class="card" href="24.html"><span class="label">Class 24</span><span class="topic">Pandasmonium, Day 2</span></a>
-        <a class="card" href="25.html"><span class="label">Class 25</span><span class="topic">Pandasmonium, Day 3</span></a>
-        <a class="card" href="26.html"><span class="label">Class 26</span><span class="topic">Pandasmonium, Day 4</span></a>
-        <a class="card" href="27.html"><span class="label">Class 27</span><span class="topic">Dict Review &amp; Nesting</span></a>
-        <a class="card" href="28.html"><span class="label">Class 28</span><span class="topic">Nested Dicts</span></a>
-        <a class="card" href="29.html"><span class="label">Class 29</span><span class="topic">spaCy</span></a>
-        <a class="card" href="30.html"><span class="label">Class 30</span><span class="topic">spaCy &amp; Semantic Mappings</span></a>
-        <a class="card" href="31.html"><span class="label">Class 31</span><span class="topic">spaCy &amp; WordNet</span></a>
-        <a class="card" href="32.html"><span class="label">Class 32</span><span class="topic">Working with non-English data</span></a>
-        <a class="card" href="33.html"><span class="label">Class 33</span><span class="topic">Working with non-English data</span></a>
-        <a class="card" href="34.html"><span class="label">Class 34</span><span class="topic">Writing Functions</span></a>
-        <a class="card" href="35.html"><span class="label">Class 35</span><span class="topic">Other Visualizations</span></a>
-        <a class="card" href="36.html"><span class="label">Class 36</span><span class="topic">Final Day: Career Readiness, Final Project, Course Evals</span></a>
-      </div>
-    </section>
-
-    <section id="homework">
-      <h2>Homework</h2>
-      <div class="grid">
-        <a class="card" href="hw1_latex.html"><span class="label">Homework 1</span><span class="topic">LaTeX</span></a>
-        <a class="card" href="hw2_website.html"><span class="label">Homework 2</span><span class="topic">Building a Website</span></a>
-        <a class="card" href="hw3_terminal_python.html"><span class="label">Homework 3</span><span class="topic">Terminal &amp; Python</span></a>
-        <a class="card" href="hw4_loops_conditionals.html"><span class="label">Homework 4</span><span class="topic">Loops &amp; Conditionals</span></a>
-        <a class="card" href="hw5_pandas.html"><span class="label">Homework 5</span><span class="topic">Exploring PHOIBLE with pandas</span></a>
-        <a class="card" href="hw6_spacy.html"><span class="label">Homework 6</span><span class="topic">Words and Meanings with spaCy &amp; WordNet</span></a>
-        <a class="card" href="hw7_groupwork.html"><span class="label">Homework 7</span><span class="topic">Alice Across Languages</span></a>
-      </div>
-    </section>
-
-    <section id="project">
-      <h2>Project</h2>
-      <div class="grid">
-        <a class="card" href="project_component_3.html"><span class="label">Project Component 3</span><span class="topic">Preliminary Analysis</span></a>
+      <div class="list">
+        <div class="row available"><span class="day">Day 1</span><span class="topic">Overview of Course</span><span class="files"><a class="filelink" href="1_welcome_to_301.qmd">qmd</a><a class="filelink" href="1_welcome_to_301.html">slides</a></span></div>
+        <div class="row available"><span class="day">Day 2</span><span class="topic">Setting up VSCode &amp; Git</span><span class="files"><a class="filelink" href="2_vscode_git_setup.qmd">qmd</a><a class="filelink" href="2_vscode_git_setup.html">slides</a></span></div>
+        <div class="row available"><span class="day">Day 3</span><span class="topic">How File Structure Works</span><span class="files"><a class="filelink" href="3_file_folder_organization.qmd">qmd</a><a class="filelink" href="3_file_folder_organization.html">slides</a></span></div>
+        <div class="row available"><span class="day">Day 4</span><span class="topic">Learning the Command Line</span><span class="files"><a class="filelink" href="4_terminal_files_directories.qmd">qmd</a><a class="filelink" href="4_terminal_files_directories.html">slides</a></span></div>
+        <div class="row available"><span class="day">Day 5</span><span class="topic">Learning the Command Line</span><span class="files"><a class="filelink" href="5_more_bash.qmd">qmd</a><a class="filelink" href="5_more_bash.html">slides</a></span></div>
+        <div class="row available"><span class="day">Day 6</span><span class="topic">Learning the Command Line</span><span class="files"><a class="filelink" href="6_file_extensions_grep.qmd">qmd</a><a class="filelink" href="6_file_extensions_grep.html">slides</a></span></div>
+        <div class="row available"><span class="day">Day 7</span><span class="topic">Learning the Command Line</span><span class="files"><a class="filelink" href="7_regex_intro.qmd">qmd</a><a class="filelink" href="7_regex_intro.html">slides</a></span></div>
+        <div class="row pending"><span class="day">Day 8</span><span class="topic">Learning the Command Line</span></div>
+        <div class="row pending"><span class="day">Day 9</span><span class="topic">Beginning Python (Setting Up &amp; Variables)</span></div>
+        <div class="row pending"><span class="day">Day 10</span><span class="topic">Beginning Python (Value Types)</span></div>
+        <div class="row pending"><span class="day">Day 11</span><span class="topic">Beginning Python (Review Activity)</span></div>
+        <div class="row pending"><span class="day">Day 12</span><span class="topic">Beginning Python (Lists &amp; Dicts)</span></div>
+        <div class="row pending"><span class="day">Day 13</span><span class="topic">Beginning Python (Tuples &amp; Sets)</span></div>
+        <div class="row pending"><span class="day">Day 14</span><span class="topic">Beginning Python (Review Activity)</span></div>
+        <div class="row pending"><span class="day">Day 15</span><span class="topic">Conditionals; Exception Handling</span></div>
+        <div class="row pending"><span class="day">Day 16</span><span class="topic">For Loops</span></div>
+        <div class="row pending"><span class="day">Day 17</span><span class="topic">While Loops</span></div>
+        <div class="row pending"><span class="day">Day 18</span><span class="topic">Detective Gutenberg</span></div>
+        <div class="row pending"><span class="day">Day 19</span><span class="topic">Detective Gutenberg</span></div>
+        <div class="row pending"><span class="day">Day 20</span><span class="topic">Visualizations</span></div>
+        <div class="row pending"><span class="day">Day 21</span><span class="topic">Nested Dictionaries</span></div>
+        <div class="row pending"><span class="day">Day 22</span><span class="topic">Nested Dictionaries</span></div>
+        <div class="row pending"><span class="day">Day 23</span><span class="topic">Pandas-monium</span></div>
+        <div class="row pending"><span class="day">Day 24</span><span class="topic">Pandas-monium</span></div>
+        <div class="row pending"><span class="day">Day 25</span><span class="topic">Pandas-monium</span></div>
+        <div class="row pending"><span class="day">Day 26</span><span class="topic">Pandas-monium</span></div>
+        <div class="row pending"><span class="day">Day 27</span><span class="topic">Functions</span></div>
+        <div class="row pending"><span class="day">Day 28</span><span class="topic">Functions</span></div>
+        <div class="row pending"><span class="day">Day 29</span><span class="topic">Functions</span></div>
+        <div class="row pending"><span class="day">Day 30</span><span class="topic">spaCy</span></div>
+        <div class="row pending"><span class="day">Day 31</span><span class="topic">spaCy</span></div>
+        <div class="row pending"><span class="day">Day 32</span><span class="topic">Wordnet</span></div>
+        <div class="row pending"><span class="day">Day 33</span><span class="topic">Working with non-English Data</span></div>
+        <div class="row pending"><span class="day">Day 34</span><span class="topic">Working with non-English Data</span></div>
+        <div class="row pending"><span class="day">Day 35</span><span class="topic">LaTeX (tentative)</span></div>
+        <div class="row pending"><span class="day">Day 36</span><span class="topic">LaTeX (tentative)</span></div>
+        <div class="row pending"><span class="day">Day 37</span><span class="topic">LaTeX (tentative)</span></div>
+        <div class="row pending"><span class="day">Day 38</span><span class="topic">Building a Website</span></div>
+        <div class="row pending"><span class="day">Day 39</span><span class="topic">Building a Website</span></div>
+        <div class="row pending"><span class="day">Day 40</span><span class="topic">Building a Website</span></div>
+        <div class="row pending"><span class="day">Day 41</span><span class="topic">Final Project</span></div>
+        <div class="row pending"><span class="day">Day 42</span><span class="topic">Final Project</span></div>
       </div>
     </section>
 

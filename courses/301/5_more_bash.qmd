@@ -1,0 +1,148 @@
+---
+title: "Computation for Linguists"
+subtitle: "Learning the Command Line: More Bash Commands"
+date: "September 2, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: visual
+---
+
+# Schedule Modified
+
+## Command Prompt, Homework
+
+-   Let's look at Canvas
+
+# Review
+
+-   What did we learn last time about the Terminal?
+
+## Review of Terminal Commands
+
+-   `pwd`
+-   `ls`
+-   `mkdir`
+-   `rmdir`
+-   `touch`
+-   `curl -o file.txt`
+-   `cd`
+
+## Review Activity
+
+Analyze the following block of code, and describe what happens in each line.
+
+``` bash
+$ pwd
+~/LIN_301/classwork/day_4
+$ ls
+$ touch test.txt
+$ mkdir folder_1
+$ mv test.txt folder_1
+$ cd folder_1
+$ ls
+$ cd ..
+$ rm -r folder_1
+```
+
+## Setting Up for Today
+
+-   Using `bash` commands. VSCode's integrated terminal opens in your `computation_4_linguists` folder, so `cd` into `LIN_301` first:
+
+    ``` bash
+    cd LIN_301
+    mkdir -p classwork/day_5
+    cp ../301_2026/slides/2_command_prompt/5_more_bash.qmd classwork/day_5/
+    cd classwork/day_5
+    ```
+
+-   Open the `.qmd` file in VSCode
+
+## Activity
+
+-   Within your `LIN_301/classwork/day_5` folder:
+    -   Create a file called `activity.txt`
+    -   Create the following nested folders: `folder_1` \> `folder_2` \> `folder_3`
+    -   Move `activity.txt` into `folder_3`
+-   You can *only* use the integrated Terminal in VSCode!
+    -   Use `pwd` and `ls` as your guide
+
+# A Couple More Tricks
+
+## `rm -r`
+
+-   Let's learn one more bash command
+
+``` bash
+rm -r folder_1
+```
+
+-   What happens?
+
+## You bastard!
+
+-   Don't worry! Type the following code:
+
+``` bash
+touch script.sh 
+```
+
+## Bringing it Back
+
+-   Copy and paste this **whole block** (using right click) into the Terminal — it already ends with `EOF`, so one paste does the whole thing:
+
+``` bash
+cat > script.sh <<'EOF'      # write everything below into script.sh, until a line that's just EOF
+#!/bin/bash                 # tells the system to run this file with bash
+echo "This is my first script."                     # print a message
+curl -o term_comm.txt https://winjapati.github.io/courses/301/term_comm.txt  # download the file
+mkdir folder_1                                      # make a new folder
+echo term_comm.txt                                  # print the filename
+mv term_comm.txt folder_1                           # move it into folder_1
+EOF
+```
+
+-   Open your folder in VSCode and look inside `script.sh`, what did you do?
+
+## OMG
+
+-   Type:
+
+``` bash
+source script.sh
+```
+
+## `cat`
+
+-   You've now got `script.sh`, and (thanks to the script) `folder_1/term_comm.txt` — let's actually look inside them
+-   `cat` prints a file's entire contents to the screen at once — best for short files
+
+``` bash
+cat script.sh
+```
+
+## `less`
+
+-   For longer files, dumping everything with `cat` gets hard to read — `less` opens it as a scrollable page instead
+
+``` bash
+less folder_1/term_comm.txt
+```
+
+-   Use the up/down arrows to scroll, spacebar to jump down a page, and `q` to quit back to the prompt
+
+## On Your Own
+
+-   Using only the commands you know — `ls`, `mkdir`, `rmdir`, `touch`, `mv`, `curl`, `rm -r`, and writing/sourcing a `.sh` script
+-   Within your `LIN_301/classwork/day_5` folder:
+    1.  Create a new folder called `day5_files`
+    2.  Move today's slides inside `day5_files`
+    3.  Move `folder_1` inside `day5_files`
+    4.  Write and run a script called `check.sh` that lists everything inside `day5_files` when you `source` it

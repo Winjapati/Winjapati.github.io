@@ -1,0 +1,336 @@
+---
+title: "Computation for Linguists"
+subtitle: "Learning the Command Line: File Extensions & Grep"
+date: "September 4, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: visual
+---
+
+# Review
+
+-   What did you learn last time?
+
+## Review of Terminal Commands
+
+-   `pwd`
+-   `ls`
+-   `mkdir`
+-   `rmdir`
+-   `touch`
+-   `curl -o file.txt url`
+
+## Review of Terminal Commands
+
+-   `cd`
+-   `mv`
+-   `cat`, `less`
+-   `source`
+-   `echo`
+
+## Setting Up
+
+-   Using Terminal. VSCode's integrated terminal opens in your `computation_4_linguists` folder, so `cd` into `LIN_301` first:
+
+    ``` bash
+    cd LIN_301
+    mkdir -p classwork/day_6
+    cp ../301_2026/slides/2_command_prompt/6_file_extensions_grep.qmd classwork/day_6/
+    ```
+
+# Finishing Up Wednesday
+
+## Before We Move On
+
+-   We ran out of time Wednesday before checking everyone's answers to the "On Your Own" activity
+-   Let's finish it now — a few more reps with files/folders and scripting before we start something new
+-   `cd` into `day_5` and load up your `check.sh` script -- run it in Terminal to see if it works!
+
+## On Your Own (Continued from Wednesday)
+
+-   Using only the commands you know — `ls`, `mkdir`, `rmdir`, `touch`, `mv`, `curl`, `rm -r`, and writing/sourcing a `.sh` script
+-   Within your `LIN_301/classwork/day_5` folder:
+    1.  Create a new folder called `day5_files`
+    2.  Move today's slides inside `day5_files`
+    3.  Move `folder_1` inside `day5_files`
+    4.  Write and run a script called `check.sh` that lists everything inside `day5_files` when you `source` it
+
+## Modifying `script.sh` into `check.sh`
+
+-   We wrote it like this — everything between `<<'EOF'` and `EOF` gets saved into the file, line by line:
+
+``` bash
+cat > script.sh <<'EOF'      # write everything below into script.sh, until a line that's just EOF
+#!/bin/bash                 # tells the system to run this file with bash
+echo "This is my first script."                     # print a message
+curl -o term_comm.txt https://winjapati.github.io/courses/301/term_comm.txt  # download the file
+mkdir folder_1                                      # make a new folder
+echo term_comm.txt                                  # print the filename
+mv term_comm.txt folder_1                           # move it into folder_1
+EOF
+```
+
+-   Then we ran it with:
+
+``` bash
+source script.sh
+```
+
+## Reminder: `script.sh` (from Wednesday)
+
+-   Notice the shape of it: each line inside the block is just an ordinary Terminal command, one per line
+-   `check.sh` works exactly the same way — you're not learning any new syntax, just deciding which commands belong inside it
+-   Hint: which command have we used all along to see what's inside a folder?
+
+## How to structure `check.sh`
+
+``` bash
+cd day_5/day5_files
+cat > check.sh <<'EOF'      # write everything below into check.sh, until a line that's just EOF
+#!/bin/bash                 # tells the system to run this file with bash
+ls
+EOF
+```
+
+-   And then:
+
+``` bash
+source check.sh
+cd ../../day_6
+```
+
+# File Extensions
+
+## File Extensions
+
+When programming, there are lots of different file types:
+
+1)  files to store data in:
+
+-   `txt` - a (raw) text file
+-   `html` - an html file, to be viewed in a web browser
+-   `xml` - an Extensible Markup Language file; used to store structured data
+-   `md` - a Markdown file (can be converted into `html`); simple way to format text, similar to html
+
+## File Extensions
+
+2)  files you run/execute:
+
+-   `tex` - a LaTeX file; compiled into `pdf`
+-   `py` - a Python script; run by a Python interpreter
+-   `r` - an R script; run by an R interpreter
+
+## Installing `pandoc`
+
+-   `pandoc` is a free, open-source tool that converts between document formats — plain text, Markdown, HTML, Word, and more
+
+## Installing `pandoc`
+
+-   To install it:
+    -   **Windows**: download the installer from <https://pandoc.org/installing.html>, run it, then close and reopen VSCode
+    -   **Mac**: open Terminal and run `brew install pandoc` (requires [Homebrew](https://brew.sh)), or download the installer from the same page
+
+## Installing `pandoc`
+
+-   Confirm it worked:
+
+``` bash
+pandoc --version
+```
+
+-   Don't want to install it right now? No problem — you can just follow along as we go
+
+## Converting Files
+
+All of these can be easily converted, as they're all just text!
+
+``` bash
+# start with a md file
+echo "# Hello World" > test.md
+echo "This is *italic* and **bold**." >> test.md
+
+# convert markdown → html
+pandoc test.md -o test.html
+
+# convert html → plain text
+pandoc test.html -t plain -o test.txt
+```
+
+## Converting to `docx` and `odt`
+
+-   Let's create a `.sh` file called `convert.sh`
+-   We'll paste in this code:
+
+``` bash
+# 1) Make a tiny Markdown source
+echo "# Hello!" > demo.md
+echo "This is a *line* and **text**." >> demo.md
+
+# 2) Convert MD → HTML
+pandoc demo.md -o demo.html
+
+# 3) Convert MD → DOCX and → ODT
+pandoc demo.md -o demo.docx
+pandoc demo.md -o demo.odt
+```
+
+-   Run the code:
+
+``` bash
+source convert.sh
+```
+
+## Identifying What's Inside: `file`
+
+-   Let's see what the Terminal thinks is inside these files:
+
+``` bash
+file demo.html demo.docx demo.odt
+```
+
+## What are these things?
+
+-   Let's use a command `head`, to print out what's inside the file itself.
+
+``` bash
+head -n 20 demo.md
+head -n 20 demo.html
+head -n 20 demo.odt
+head -n 20 demo.docx
+```
+
+## What are these things?
+
+-   Word & Google Docs aren't text formats at all, they're zip files!
+
+``` bash
+unzip -l demo.docx | head
+unzip -l demo.odt  | head
+```
+
+-   Contrast that with:
+
+``` bash
+unzip -l demo.md | head
+unzip -l demo.html | head
+```
+
+## Flattening Files
+
+-   We can use Pandoc to flatten all three to plain text:
+
+``` bash
+pandoc demo.html -t plain -o from_html.txt
+pandoc demo.docx -t plain -o from_docx.txt
+pandoc demo.odt  -t plain -o from_odt.txt
+```
+
+## File Extensions
+
+-   How much data does each file type take up?
+
+``` bash
+ls -lh demo.* from_*.txt
+```
+
+## The Takeaway?
+
+-   The flattened `.txt` files are tiny compared to `demo.docx`/`demo.odt` — why?
+-   Plain-text formats store only the characters; `.docx`/`.odt` are zipped bundles carrying formatting, styles, and metadata too
+
+# `wc`, `grep`, and piping
+
+## Activity: Downloading Pride & Prejudice
+
+-   Navigate to your `LIN_301/data/` folder
+-   In Terminal:
+    -   create a folder called `gutenberg` and `cd` into it
+    -   download *Pride and Prejudice* from the following address: <https://gutenberg.org/files/1342/1342-0.txt>
+    -   call this file `p_and_p.txt`
+    -   confirm that it downloaded successfully with `ls`
+    -   check the first few lines of the file with `head -n 10 p_and_p.txt`
+
+## Let's Analyze this Thing
+
+In Terminal, type in the following code:
+
+``` bash
+wc p_and_p.txt
+```
+
+-   What is this?
+    -   Lines, Words, Characters
+    -   How many of each?
+
+## `wc` Flags
+
+-   Lines only:
+
+``` bash
+wc -l p_and_p.txt
+```
+
+-   Words only:
+
+``` bash
+wc -w p_and_p.txt
+```
+
+-   How about characters only?
+
+## `grep`
+
+-   Super useful & common command used to search within documents
+-   Here's how it works:
+
+``` bash
+grep "search_string" file_name.txt
+```
+
+-   This code gives all of the lines where "search_string" is found in "file_name.txt"
+
+## `grep`
+
+-   Using this syntax, search for all instances of "yes" in *Pride and Prejudice*
+
+``` bash
+grep "yes" p_and_p.txt
+```
+
+-   Look at the output in the Terminal -- do you notice anything funny?
+
+## Piping Commands together
+
+-   So far we can:
+    -   count how many lines, words, and characters there are in a file
+    -   see which lines have instances of a specific **string** there are in a file
+-   But what if we wanted to count how many lines have that specific string?
+    -   We use the **pipe** `|` (just above the enter key)
+
+## Piping Commands together
+
+-   Type in this code:
+
+``` bash
+grep "yes" p_and_p.txt | wc
+```
+
+-   This tells us the number of words, lines, and characters are *within* lines that contain "yes"
+-   How could we narrow this to just tell us how many lines contain "yes"?
+
+# Activity: *Frankenstein*
+
+Using the Terminal:
+
+-   Navigate back to your `data/gutenberg` folder
+-   Download *Frankenstein* from https://www.gutenberg.org/cache/epub/84/pg84.txt
+-   Name the file `frank.txt`
+-   Using `grep`, `wc`, and \|, count how many lines have the word `monster` in them

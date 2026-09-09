@@ -1,0 +1,265 @@
+---
+title: "Computation for Linguists"
+subtitle: "Getting Set Up: VSCode + Git"
+author: "Dr. Andrew M. Byrd"
+date: "August 26, 2026"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: visual
+---
+
+<!-- NOTE TO SELF: students installed VSCode + Git at home, and were sent full instructions for the Git side (git config name/email, SSH key creation + GitHub connection test). Today's class assumes all of that is done and focuses on: confirming it worked, the actual workflow (edit -> commit -> push), and cloning the shared course repo. -->
+
+# Review
+
+What did we do last time?
+
+## Overview of Tech Today
+
+-   **VSCode** = our IDE for the course
+-   **Git** = version control — tracks changes to your files over time
+-   **GitHub** = where our repositories live online
+    -   backs up your files
+    -   how you'll access course materials
+    -   how you'll publish your final website (much later!)
+-   What does my setup look like?
+
+# Before Today
+
+## Reminder: You Should Have Already...
+
+-   Downloaded **VSCode**
+-   Downloaded **Git**
+-   Followed the at-home instructions to set your Git name & email
+-   Created an SSH key and connected it to GitHub
+
+If you haven't done this, raise your hand now — let's get you sorted before we move on.
+
+## Quick Troubleshooting Check
+
+-   Open VSCode
+-   Open the integrated terminal: **View → Terminal** (or `` Ctrl+` `` / `` Cmd+` ``)
+-   Type:
+
+``` bash
+git --version
+```
+
+-   You should see a version number. If not, raise your hand.
+
+# Setting Up VSCode
+
+## Install the Quarto Extension
+
+-   Click the Extensions icon (four squares, left sidebar) — or `Ctrl+Shift+X` / `Cmd+Shift+X`
+-   Search for **"Quarto"**
+-   Click **Install**
+
+## Install the Python Extension
+
+-   Same Extensions view
+-   Search for **"Python"** (the one published by Microsoft)
+-   Click **Install**
+
+## The VSCode Layout
+
+-   **Explorer** (left): your files and folders
+-   **Editor** (center): where you write/edit
+-   **Terminal** (bottom): where you'll run commands — same commands you'd use in Terminal (Mac) or Git Bash (Windows)
+-   **Source Control** (left sidebar, branch-looking icon): where Git lives
+
+# Double-Checking Git
+
+## Step 1: Open the Integrated Terminal
+
+-   In VSCode: **View → Terminal**
+-   From now on, this is where all our `git` and command-line work happens — no need for a separate app
+
+## Step 2: Confirm Your Name & Email
+
+``` bash
+git config user.name
+git config user.email
+```
+
+-   You should see something like:
+
+``` bash
+Jane Doe
+janedoe@email.com
+```
+
+-   If it's blank, set it now:
+
+``` bash
+git config --global user.name "Your Name"
+git config --global user.email "your_email@example.com"
+```
+
+## Step 3: Confirm Your SSH Connection
+
+-   You should have already created an SSH key and added it to GitHub at home. Let's confirm it actually works:
+
+``` bash
+ssh -T git@github.com
+```
+
+-   First time: type `yes` to trust GitHub
+-   Success looks like: "Hi *your-username*! You've successfully authenticated..."
+-   If that worked, you're done here — skip ahead to "Accessing the Course Repo"
+
+## If That Didn't Work
+
+-   Check for a key:
+
+``` bash
+ls ~/.ssh
+```
+
+-   Look for `id_ed25519` and `id_ed25519.pub`. If you see them, skip to "Add the Key to GitHub" below — the problem is on GitHub's end, not yours.
+-   If they're missing, generate one:
+
+``` bash
+ssh-keygen -t ed25519 -C "your_github_email@example.com"
+```
+
+-   Press **Enter** through the prompts (accept the default location, no passphrase is fine)
+
+``` bash
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+```
+
+## Copy Your Public Key
+
+-   Mac:
+
+``` bash
+pbcopy < ~/.ssh/id_ed25519.pub
+```
+
+-   Windows:
+
+``` bash
+clip < ~/.ssh/id_ed25519.pub
+```
+
+-   This might not work, if so:
+
+``` bash
+cat \~/.ssh/id_ed25519.pub \| clip
+```
+
+## Add the Key to GitHub
+
+-   Go to **github.com → Settings → SSH and GPG keys → New SSH key**
+-   Title: "My Laptop" (or something you'll recognize)
+-   Key type: Authentication
+-   Paste the key, click **Save**
+
+## Test the Connection Again
+
+``` bash
+ssh -T git@github.com
+```
+
+-   Success looks like: "Hi *your-username*! You've successfully authenticated..."
+-   If you get an error, raise your hand — we'll fix it together.
+
+# Accessing the Course Repo
+
+## Where Course Files Live
+
+-   All of our slides, data, and activities live in a shared **course repository** on GitHub
+-   You'll **clone** it (make a local copy) so you always have the current files
+
+## Before You Clone: Make a Home for Your Class Files
+
+-   Somewhere sensible on your computer (e.g. inside Documents), create one new folder called `computation_4_linguists`
+-   This will hold **both** the course repo and your own repo, side by side — not buried in Downloads or scattered across your Desktop
+-   Everything below goes *inside* this folder
+
+## Cloning the Course Repo
+
+-   In VSCode: open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
+-   Type **"Git: Clone"**, press Enter
+-   Paste the repo URL:
+
+```         
+https://github.com/Winjapati/301_2026
+```
+
+-   When prompted for a location, choose your `computation_4_linguists` folder — VSCode will create a `301_2026` folder inside it, then click **Open** when prompted
+
+## Alternative: Do It in the Terminal
+
+``` bash
+cd computation_4_linguists
+git clone https://github.com/Winjapati/301_2026
+```
+
+## Opening and Rendering a `.qmd` File
+
+-   In VSCode: **File → Open Folder**, choose your `computation_4_linguists` folder
+-   In the Explorer (left sidebar), open `301_2026/` and click any `.qmd` file to open it
+-   Click **Preview** at the top of the editor to preview it as a webpage/slideshow
+-   If you see the file render, your clone worked! (You'll see your own repo show up next to `301_2026/` here shortly.)
+
+## Getting Updates Throughout the Semester
+
+-   I'll be adding new files as we go
+-   To get them: open the **Source Control** panel → click **"..."** → **Pull**
+-   Or in the terminal:
+
+``` bash
+git pull
+```
+
+-   We'll do this at the start of most classes
+
+# Setting Up Your Own Repo
+
+## Create a Repository on GitHub
+
+-   Go to [github.com](https://github.com/) → **New repository**
+-   Name it `LIN_301` (or something similar)
+-   Choose **Public**
+-   Check the box to add a `README.md` file
+
+## Clone It Into VSCode
+
+-   Command Palette → **"Git: Clone"** → paste *your* repo's URL
+-   When prompted for a location, choose the **same `computation_4_linguists` folder** you cloned the course repo into — not a new/different one
+-   Open it when prompted
+
+# Next Time
+
+## Picking Up From Here
+
+-   Put both repos side by side in one `computation_4_linguists` folder
+-   Test the full edit → commit → push pipeline on your own repo
+-   Practice a merge conflict on purpose — safely, before it happens by accident
+
+# Troubleshooting
+
+## If VSCode Asks for a Username/Password
+
+``` bash
+git remote -v   # you'll likely see https://github.com/... git remote set-url origin git@github.com:<YourUser>/<YourRepo>.git git remote -v   # now it should show git@github.com:...
+```
+
+-   Try pushing again
+
+## In Case of Emergency: Personal Access Token (PAT)
+
+-   **GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)**
+-   **Generate new token** → name it `laptop-vscode` → check the **repo** scope → **Generate**
+-   Copy it immediately — you won't see it again
+-   Use it as your password the next time VSCode prompts you

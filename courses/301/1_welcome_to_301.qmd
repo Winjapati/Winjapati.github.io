@@ -1,0 +1,363 @@
+---
+title: "Computation for Linguists"
+subtitle: "Welcome to 301!"
+date: "August 24, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: visual
+---
+
+# Pretest: e-mail to andrewbyrd\@uky.edu
+
+-   What is your background in computing?
+
+-   What would you like to get out of the course?
+
+-   While this isn't anonymous, please answer truthfully!
+
+-   This will help me better understand how to structure the class.
+
+# In this class, I'm assuming that you ...
+
+-   Know how to use a computer and can access the internet;
+
+-   Know what generative AI is and have used it before.
+
+-   Aren't terribly familiar with the command prompt, and perhaps don't even know what it is;
+
+-   Have never programmed before;
+
+## My Background: I am ...
+
+-   A formally trained historical linguist (Ph.D. 2010, UCLA, Indo-European Studies)
+
+-   Specialist in:
+
+    -   Proto-Indo-European & Ancient IE Languages
+
+    -   Historical Phonology
+
+    -   Constructed Languages
+
+## My Background: I am NOT ...
+
+-   A formally trained computer scientist
+
+-   A formally trained programmer
+
+-   A formally trained computational linguist
+
+## Wait, then why is [*this guy*]{.underline} teaching me Computation for Linguists?
+
+-   Despite my lack of formal training in programming
+
+    -   Taught self Python, using online courses & resources
+
+    -   Have studied with specialists (like Dr. Fruehwald!) to learn how computational tools can be used in linguistic work
+
+    -   Have managed multiple groups of programmers on a variety of projects
+
+## Major Computational Project: DERBi PIE
+
+![](DERBiPIE.png){fig-align="center" width="100%"}
+
+-   Received funding from the NEH in January 2025 (first try, which is wild, given the 6% acceptance rate!)
+
+    -   Funding pulled with the DOGE-pocalypse in April 2025
+
+    -   What to do? Build the damn thing myself (with a little help)!
+
+## What does that mean for y'all?
+
+-   With me as your teacher:
+
+    -   Given that I recently learned how to program, this means that I perhaps better understand the issues that a beginner might have;
+
+    -   There may be questions you have that I cannot initially answer, but I will find you those answers.
+
+## What does that mean for y'all?
+
+-   For you as my student:
+
+    -   You will gain a solid foundation is the fundamentals of programmings and computational tools used by linguists
+
+    -   It's unlikely that you'll be able to code at a high level; but... you should be able to code at a higher level with the help of Gen AI.
+
+    -   Broadly speaking, you should be able to *understand* the advanced code that you use, though not necessarily have come up with it yourself.
+
+## Does this mean you *have* to use AI?
+
+-   No. You can do all of the assignments and coursework without AI.
+-   The class and assignments are just structured assuming that some of you will.
+
+## A Sneak Peek: Real Research, Real AI Help
+
+-   Imagine you're doing a research project and you ask an AI assistant:
+
+::: callout-note
+"I'm doing my final project on causative constructions ('make him leave,' 'have her call,' 'let them go') in child-directed vs. adult-directed speech. I have two folders of transcribed English text files — one CDS, one ADS. Can you help me figure out how to compare how often causatives show up in each?"
+:::
+
+## A Sneak Peek: Real Research, Real AI Help
+
+-   A good AI assistant doesn't just hand you code — it asks questions and explains tradeoffs first:
+
+::: callout-note
+Are you counting only syntactic causatives (make/have/let/get + infinitive), or lexical ones too (like *kill*, *drop*)? Are your corpora balanced in size, or will you need to normalize?
+
+I'd tokenize with spaCy, tag POS, define a trigger-verb list, and check for a base-form verb nearby. Then normalize counts per 1,000 words and compare with a bar chart.
+
+One real limitation: this heuristic will misfire sometimes — pull a sample of matches and hand-check them before you trust the numbers.
+:::
+
+## A Sneak Peek: The Mystery Script
+
+-   Here's the script it might hand back:
+
+``` python
+import os, glob
+import spacy
+import pandas as pd
+import matplotlib.pyplot as plt
+
+nlp = spacy.load("en_core_web_sm")
+CAUSATIVE_VERBS = {"make", "have", "let", "get"}
+
+def find_causatives(doc, window=4):
+    """Flags a causative trigger verb if a base-form verb ('VB')
+    shows up within `window` tokens afterward."""
+    matches = []
+    for i, token in enumerate(doc):
+        if token.lemma_.lower() in CAUSATIVE_VERBS and token.pos_ == "VERB":
+            for wt in doc[i+1 : i+1+window]:
+                if wt.tag_ == "VB":
+                    matches.append({"trigger": token.lemma_.lower(), "complement": wt.text})
+                    break
+    return matches
+
+def analyze_corpus(folder_path):
+    counts = {v: 0 for v in CAUSATIVE_VERBS}
+    total_words = 0
+    for filepath in glob.glob(os.path.join(folder_path, "*.txt")):
+        with open(filepath, "r", encoding="utf-8") as f:
+            doc = nlp(f.read())
+        total_words += sum(1 for t in doc if t.is_alpha)
+        for match in find_causatives(doc):
+            counts[match["trigger"]] += 1
+    return counts, total_words
+
+def normalized_freq(counts, total_words, per=1000):
+    return {v: (c / total_words) * per if total_words else 0 for v, c in counts.items()}
+
+cds_counts, cds_total = analyze_corpus("child_directed_speech")
+ads_counts, ads_total = analyze_corpus("adult_directed_speech")
+
+df = pd.DataFrame({
+    "CDS (per 1k words)": normalized_freq(cds_counts, cds_total),
+    "ADS (per 1k words)": normalized_freq(ads_counts, ads_total),
+})
+df.plot(kind="bar", title="Causative Verb Frequency: CDS vs. ADS")
+plt.tight_layout()
+plt.show()
+```
+
+## A Sneak Peek: The Mystery Script
+
+-   Right now, this probably looks like magic — or gibberish!
+-   But... by the end of the semester, you'll be able to read every line of this yourself — functions, `spaCy`, `pandas`, visualization — and just as importantly, judge whether the *logic* is actually sound.
+-   We'll revisit this code towards the end of the course.
+
+## Why do you need this course?
+
+1.  In Linguistics (academia and the private sector, like Google), working with large amounts of data is standard
+
+    -   Programming provides us with tools to process that data!
+
+## Why do you need this course?
+
+2.  There are quite a few annoying parts of Linguistics that require special tools, think:
+
+    -   IPA symbols
+    -   Syntax Trees
+    -   Leipzig Glossing Rules
+
+## Why do you need this course?
+
+3.  Understanding how to use Gen AI as a tool, not as a crutch
+
+## What will you learn in this class?
+
+-   **Programmatic thinking** — Python, and how linguists use code for research
+-   **Reproducible writing** — LaTeX and Quarto instead of Word/Google Docs
+-   **The web** — enough HTML/CSS/JS to build and host your final project
+
+## Computational skills you'll build
+
+-   **Git & GitHub** — version control, submitting homework, publishing your site
+-   **Python** — programming basics, text/language data, `pandas`, NLP tools
+-   **Quarto** — code, prose, and output in one reproducible document
+-   **LaTeX** — typesetting linguistic content, compiled in Overleaf
+
+## **GIT & GITHUB**
+
+-   Local repo → connected to GitHub
+-   Core commands: `clone`, `add`, `commit`, `push`, `pull`
+-   Pull class files before each session
+-   Submit homework and publish your final project site via GitHub Pages
+
+## **PYTHON**
+
+-   Programming basics: scripts, variables, loops, functions, libraries
+-   Text & language data: string manipulation, tokenizing, regex, word counts
+-   Data handling with **pandas**: filtering, grouping, merging, descriptive stats
+-   Computational linguistics: NLTK/spaCy, lemmatization, POS tagging, WordNet
+-   Automation: batch-processing multiple files with reusable functions
+
+## **QUARTO & LATEX**
+
+-   Quarto: write code and prose together, generate HTML/PDF reports and slides
+-   LaTeX: IPA symbols, syntax trees, interlinear glosses, citations
+-   Compiled in Overleaf
+
+## What you'll need for this course
+
+-   A laptop (PC, Mac, or Linux) with internet access
+-   [**VSCode**](https://code.visualstudio.com/download) — our IDE all semester
+-   [**Overleaf**](https://www.overleaf.com/) — LaTeX, no local install needed
+-   [**GitHub**](https://github.com/) — for version control and your project site
+
+# Grades
+
+**Classwork (based on attendance):** 25%
+
+**Homework:** 45% (9 total - 5% each)
+
+<ol style="font-size: 0.6em; line-height: 1.2;">
+
+<li>HW 1 – The Command Prompt</li>
+
+<li>HW 2 – Beginning Python</li>
+
+<li>HW 3 – Loops & Conditionals</li>
+
+<li>HW 4 – LaTeX</li>
+
+<li>HW 5 – Pandas-monium</li>
+
+<li>HW 6 – Functions</li>
+
+<li>HW 7 – Semantic Analysis</li>
+
+<li>HW 8 – LaTeX</li>
+
+<li>HW 9 – Building Your Website</li>
+
+</ol>
+
+## Grades
+
+**Final Project:** 30% (5 Components)
+
+<ol style="font-size: 0.6em; line-height: 1.2;">
+
+<li>Choose Dataset & Type of Analysis – 5%</li>
+
+<li>Cleaning & Processing of Data – 5%</li>
+
+<li>Preliminary Analysis – 5%</li>
+
+<li>Peer Feedback – 5%</li>
+
+<li>Final Presentation & Report – 10%</li>
+
+</ol>
+
+# Course Policies
+
+-   **Attendance:** tracked via the Canvas Attendance tool — you get **3 free absences**, no questions asked. Beyond that, additional absences may affect your Classwork grade unless excused.
+
+-   **Late work:** homework & project components lose **2% per day late** (capped at 20% off); still accepted for 80% credit after 10 days late.
+
+## Course Policies
+
+-   **AI Policy (the actual rules):** permitted for debugging error messages, explaining a concept, and assisting with your Final Project (Components 1–5) — **not** permitted for generating Homework 1–9 solutions from scratch. Any AI use must be cited (a quick note on where/how you used it).
+
+-   **Accommodations:** need support for a diagnosed disability or mental health condition? Reach out to the Disability Resource Center (DRC) any time.
+
+# Questions?
+
+# Activity: Learning How to Think Like a Computer
+
+## Learning How to Think Like a Computer
+
+-   Consider the meaning of the following sentences:
+
+1.  *It's noisy in here.*
+
+2.  *I'm starving.*
+
+3.  *I have a car.*
+
+## Learning How to Think Like a Computer
+
+-   Now, with your neighbors, consider how meaning of these sentences changes in different contexts:
+
+1.  *It's noisy in here.* (Statement directed towards friend when going inside a crowded room.)
+
+2.  *I'm starving.* (Statement directed towards friend at 2 pm.)
+
+3.  *I have a car.* (Statement directed towards friend in response to "How are you getting to the party?")
+
+## Learning How to Think Like a Computer
+
+-   How would a computer interpret these sentences?
+
+1.  It's noisy in here. (Statement directed towards friend when going inside a crowded room.)
+
+2.  I'm starving. (Statement directed towards friend at 2 pm.)
+
+3.  I have a car. (Statement directed towards friend in response to "How are you getting to the party?")
+
+## Activity: Make Me a Sandwich!
+
+**Goal:** Write instructions that a computer could follow *without guessing* or filling in missing steps.
+
+1.  Form groups of three.
+2.  Your task: write step-by-step instructions for making a peanut butter & jelly sandwich for Dr. Byrd.
+3.  Be **explicit** — if a step isn't written, it doesn't happen.
+4.  Remember: A computer will follow your instructions **literally**.
+
+## Activity: Make Me a Sandwich!
+
+**Example of "not explicit enough":**
+
+> *"Put peanut butter on the bread."*
+
+A computer might set the unopened jar on top of the unopened bread bag — that step is technically done. What's missing: open the jar, pick up a knife, scoop *how much*, spread it *where*, on *which* slice.
+
+## Activity: Make Me a Sandwich!
+
+**Challenge:**
+
+-   The group with the fewest steps *that still results in a correct sandwich* wins.
+-   If your instructions are too short and leave gaps, the "computer" (i.e., Dr. Byrd) will execute them in unexpected ways!
+
+# Before Next Time
+
+## Check Canvas Tonight
+
+-   I'm sending you a Canvas message with install instructions for **VSCode** and **Git**
+
+-   Follow it the same way we just talked about — explicitly, step by step, don't assume something happened if you didn't do it
+
+-   Should take about 20-25 minutes
+
+-   Stuck? Don't fight it for an hour — note where you got stuck and email me. We'll fix it together on Wednesday, which is a workshop day for exactly this.

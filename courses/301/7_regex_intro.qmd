@@ -1,0 +1,182 @@
+---
+title: "Computation for Linguists"
+subtitle: "Learning the Command Line: Regular Expressions"
+date: "September 9, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: visual
+---
+
+# Review
+
+-   What did you learn last time?
+
+## Setting Up
+
+-   Copy `7_regex_intro.qmd` from `301_2026/slides/3_command_prompt_2` into the folder `classwork/day_7`
+-   You may also want to download `7_regex_intro.html`
+
+## Google & Microsoft Docs
+
+How are Google docs and Microsoft Word docs fundamentally different from `.txt`, `.html`, and `.tex` files?
+
+## Last Time: Frankenstein Activity
+
+Using the Terminal:
+
+-   Navigate back to your `data/gutenberg` folder
+-   Download *Frankenstein* from https://www.gutenberg.org/cache/epub/84/pg84.txt
+-   Name the file `frank.txt`
+-   Using `grep`, `wc`, and \|, count how many lines have the word `monster` in them
+
+## Activity: Alice
+
+-   Navigate to `LIN_301/data/gutenberg`
+-   Download *Alice's Adventures in Wonderland*
+    -   <https://www.gutenberg.org/cache/epub/11/pg11.txt>
+    -   name it `alice.txt`
+-   Search for "Alice"
+-   How many instances of "Alice" are there in the story? (Or more specifically, how many lines occur in the book that contain at least one "Alice"?)
+    -   What happens if you search for "alice"?
+
+# Regex
+
+## What Are Regular Expressions?
+
+-   A **language for patterns**
+    -   Pronounced \[ˈɹɛ.gɛks\]
+-   Lets us search for:
+    -   Word forms
+    -   Phonological environments
+    -   Structured data
+
+## Regular Expressions look WEIRD (but are powerful!)
+
+-   Today we'll learn how basic `regex` commands can be used in the Terminal
+
+-   While we're currently working in the Terminal, we will return to all of this later in the semester once we have some Python under our belts
+
+## Our First Regex
+
+-   Type in the following code:
+
+``` bash
+grep -E "c.t" alice.txt
+```
+
+-   Note the `-E`
+    -   This prompts `grep` to use **Extended Regular Expressions**
+-   What does `.` do?
+
+## Our First Regex
+
+-   `.` → any single character
+
+## Other Useful Flags
+
+-   `-o` → print only matches
+-   `-c` → count matching lines
+
+``` bash
+grep -Eo "c.t" alice.txt
+grep -Ec "c.t" alice.txt
+```
+
+## Narrowing Down our Search
+
+-   So far we're able to identify *any* sequence of the shape "c_t"
+
+``` bash
+grep -Ec "c.t" alice.txt
+```
+
+## Narrowing Down our Search
+
+-   Perhaps we would want to specify certain vowel letters:
+
+``` bash
+grep -Ec "c[aou]t" alice.txt
+```
+
+## Narrowing Down our Search
+
+-   Perhaps we would want to exclude certain vowel letters:
+
+``` bash
+grep -Ec "c[^ao]t" alice.txt
+```
+
+## Narrowing Down our Search
+
+-   Perhaps we would want to identify a range of certain letters:
+
+``` bash
+grep -Ec "[a-q]at" alice.txt
+```
+
+-   (Also works for digits: e.g., \[0-9\])
+
+# Activity 1: Practice
+
+## Activity 1: Practice
+
+-   Using `alice.txt` and `grep -E` (add `-o` or `-c` as needed):
+    1.  How many lines contain a word matching `r.t` (`.` = any single character)? What word(s) is `grep` actually finding?
+    2.  Print (`-o`) every match of `Qu[eE]en` — does capitalizing the letter inside the class change anything?
+    3.  Use a range to count lines matching `[K-Q]ing` — what word(s) show up?
+    4.  Use `[^aeiou]` to count lines matching `c[^aeiou]t` — what shows up that you didn't expect?
+
+# Narrowing Down Our Search
+
+## Narrowing Down Our Search
+
+-   What if we want to say "begins with `cat`"?
+
+``` bash
+grep -Ec "\<cat" alice.txt
+```
+
+## Narrowing Down our Search
+
+``` bash
+grep -E "\<cat" alice.txt
+```
+
+-   How would we say "ends with `cat`"?
+
+## Narrowing Down our Search
+
+-   How would we say "either `cat` or `cats`"?
+
+``` bash
+grep -E "\<cats?" alice.txt
+```
+
+## Anchors
+
+-   \^ → beginning of line
+-   \$ → end of line
+
+``` bash
+grep -E "^c.t" alice.txt   # lines starting with "c.t"
+grep -E "c.t$" alice.txt    # lines ending with "c.t"
+```
+
+# Activity 2: Regex
+
+## Activity 2: Practice
+
+-   Using `alice.txt` and `grep -E`:
+    1.  Compare `grep -Ec "Rabbit"` to `grep -Ec "\<Rabbit"` — do the counts differ? Why or why not?
+    2.  Write one pattern using `?` that matches both `Cat` and `Cats`, then run it with `-o` to see every match
+    3.  Use `^` to count how many lines *begin* with the word `Alice`
+    4.  Use `$` to count how many lines *end* with the word `so`
+    5.  Put it together: how many lines both *begin* and *end* with a straight quotation mark `"`?
