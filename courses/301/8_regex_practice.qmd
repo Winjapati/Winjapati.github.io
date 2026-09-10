@@ -1,0 +1,251 @@
+---
+title: "Computation for Linguists"
+subtitle: "Learning the Command Line: Regex Practice"
+date: "September 11, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: visual
+---
+
+# Setting Up for Today
+
+-   Create: `classwork/day_8`
+-   For `.qmd` & `.html` files, visit: <https://winjapati.github.io/courses/301/301_homepage.html> 
+
+# Review
+
+-   What did you learn last time?
+
+## Last Time: Regex
+
+-   We covered:
+    -   the omnivalent `.`
+    -   character classes (`[aou]`, `[^ao]`, `[a-q]`), `\<`, `?`
+    -   anchors (`^`, `$`)
+
+## Last Time: Activity 2
+
+-   Using `alice.txt` and `grep -E`:
+    1.  Compare `grep -Ec "Rabbit"` to `grep -Ec "\<Rabbit"` — do the counts differ? Why or why not?
+    2.  Write one pattern using `?` that matches both `Cat` and `Cats`, then run it with `-o` to see every match
+    3.  Use `^` to count how many lines *begin* with the word `Alice`
+    4.  Use `$` to count how many lines *end* with the word `so`
+    5.  Put it together: how many lines both *begin* and *end* with a straight quotation mark `"`?
+
+# A Few More Regex
+
+## Narrowing Down our Search
+
+-   "(Alice\|Rabbit)" → "Alice" or "Rabbit" <!-- -   (ab)+ → one or more “ab” sequences -->
+
+``` bash
+grep -E "(Alice|Rabbit)" alice.txt
+```
+
+## One or More: `+`
+
+-   `+` → the preceding character occurs *one or more* times
+
+``` bash
+grep -Eo "a+" alice.txt
+```
+
+-   Compare this to just matching `a` on its own — what changes?
+
+## Zero or More: `*`
+
+-   `*` → the preceding character occurs *zero or more* times
+
+``` bash
+grep -Eo "Rabbits*" alice.txt
+```
+
+## `?` vs. `*`
+
+-   How is that different from using `?` instead of `*`?
+    -   `grep -Eo "Rabbits?" alice.txt` → matches `Rabbit` and `Rabbits`
+    -   `grep -Eo "Rabbits*" alice.txt` → matches `Rabbit`, `Rabbits`, `Rabbitss`, etc.
+
+## Exact Counts: `{n,m}`
+
+-   `{n}` → exactly `n` repetitions
+-   `{n,m}` → between `n` and `m` repetitions
+
+``` bash
+grep -Eo "\<[A-Za-z]{2}\>" alice.txt
+```
+
+## For a Handy List of Regex
+
+``` bash
+curl -o regex.txt https://winjapati.github.io/courses/301/regex.txt
+```
+
+## Recap: Regex So Far
+
+-   `-E` → use Extended Regular Expressions with `grep`
+-   `-Eo` → print only the matching text
+-   `-Ec` → print a count of matching lines
+-   `.` → any single character
+-   `[aou]` → any one of the listed characters
+-   `[^ao]` → any character *except* the listed ones
+
+## Recap: Regex So Far
+
+-   `[a-q]` → a range of characters (also works for digits, e.g. `[0-9]`)
+-   `\<` → start of a word
+-   `\>` → end of a word
+-   `?` → the preceding character is optional (0 or 1)
+-   `^` → beginning of a line
+-   `$` → end of a line
+
+## Recap: Regex So Far
+
+-   `(Alice|Rabbit)` → this OR that
+-   `+` → the preceding character occurs one or more times
+-   `*` → the preceding character occurs zero or more times
+-   `{n}` → exactly `n` repetitions; `{n,m}` → between `n` and `m` repetitions
+
+# Activity: Putting `regex` to work
+
+## Group Activity
+
+-   Within `alice.txt`, using `grep -E`, `grep -Eo`, and `grep -Ec`:
+    1.  All words beginning with "a"/ "A" or "z" / "Z";
+    2.  All four-letter words;
+    3.  Lines ending with a question mark (use `\?`);
+    4.  The total number of words with repeated vowels ("food", "see"; for this use `\1` to capture the exact same text as the previous group; thus (\[tp\])\\1 = "tt", "pp");
+    5.  The total number of articles ("the, The, a, A, an, An") in the story.
+
+# From Grep to Python
+
+## Regex Isn't Just for the Terminal
+
+-   Everything we just did with `grep` — searching, counting, capturing patterns — Python can do too, with its built-in `re` module
+-   Let's try it, using the same `alice.txt` file
+
+## Running Python in VSCode
+
+-   In `classwork/day_8`, create a new file named `regex_practice.py`
+-   To execute the file, click the ▷ (Run) button in the top-right corner 
+
+## First, Say Hello
+
+-   Before writing any regex, let's confirm everything's working. Type this into `regex_practice.py`:
+
+``` python
+print('hello world')   # displays text on the screen
+```
+
+-   Click ▷ — you should see `hello world` show up in the terminal below
+-   Tradition demands that the first line of code in any new language says hello to the world
+
+## Setting Up
+
+-   Delete the `print('hello world')` line, and replace it with:
+
+``` python
+import re                                                     # loads Python's regex toolkit
+
+with open("../../data/gutenberg/alice.txt", encoding="utf-8") as f:  # opens alice.txt for reading
+    text = f.read()                                           # reads the whole file into one string, called `text`
+```
+
+## What is All of This?
+
+-   `import re` loads Python's regex toolkit — the equivalent of `-E` being built into `grep`
+-   `open(...)` and `.read()` load the file into the *variable* `text`, the same way `alice.txt` was just sitting there for `grep` to search
+    - What's a variable, exactly?  We'll get to that next week!
+
+``` python
+import re                                                     # loads Python's regex toolkit
+
+with open("../../data/gutenberg/alice.txt", encoding="utf-8") as f:  # opens alice.txt for reading
+    text = f.read()                                           # reads the whole file into one string, called `text`
+```
+
+## What is All of This?
+
+-   `regex_practice.py` lives in `classwork/day_8`, but `alice.txt` lives in `data/gutenberg` — so the path has to go up two folders (`../..`) before heading back down into `data/gutenberg`
+-   `#` starts a comment — Python ignores everything after it on that line. Comments like these are just notes for humans reading the code
+
+``` python
+import re                                                     # loads Python's regex toolkit
+
+with open("../../data/gutenberg/alice.txt", encoding="utf-8") as f:  # opens alice.txt for reading
+    text = f.read()                                           # reads the whole file into one string, called `text`
+```
+
+## Remember Our First Regex?
+
+-   Back on Day 7, one of our first patterns was:
+
+``` bash
+grep -Ec "c.t" alice.txt
+```
+
+## Matching `.` in Python
+
+-   Let's find the same matches in Python:
+
+``` python
+matches = re.findall(r"c.t", text)   # finds every match of "c_t"
+print(matches)                       # take a look at what it found
+```
+
+-   Look closely at the pattern: `"c.t"` — it's *exactly* the same string in both.
+
+## What about `-Eo`?
+
+-   We could also use `-Eo` to see every match, not just the count:
+
+``` bash
+grep -Eo "c.t" alice.txt
+```
+
+## Using `print()` for `-Eo`
+
+``` python
+matches = re.findall(r"c.t", text)   # finds every match of "c_t"
+print(len(matches))                  # counts how many were found -- this matches grep -Eo's count
+print(*matches, sep="\n")            # prints each match on a separate line
+```
+
+## Same Goes for Character Classes
+
+-   Terminal: `grep -Eo "c[aou]t" alice.txt`
+-   Python:
+
+``` python
+matches_aou = re.findall(r"c[aou]t", text)   # finds "cat", "cot", or "cut"
+print(len(matches_aou))                      # counts how many were found
+print(*matches_aou, sep="\n")                # prints each match on a separate line
+```
+
+## Activity: From `grep` to Python
+
+-   In `regex_practice.py`, adapt the code above to answer one of these (pick one):
+    -   `grep -Eo "c[^ao]t" alice.txt`
+    -   `grep -Eo "[a-q]at" alice.txt`
+
+-   Write each as a `re.findall()` call, using the following names:
+    -   `matches_not_ao` for the first
+    -   `matches_a_q` for the second
+
+## Activity: From `grep` to Python
+
+-   Print the count and the matches, the same way we just did (remember: a bare variable name on its own line won't show anything — you have to `print()` it)
+-   Add a comment above each line explaining what it does
+
+## Coming Up
+
+-   We'll properly learn Python file-handling, `import`, and the `re` module over the next few weeks
+-   For now: all of this work you did with `grep` and regex is directly transferable to Python — the syntax is almost identical, and the logic is the same
