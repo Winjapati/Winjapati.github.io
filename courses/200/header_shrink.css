@@ -3,6 +3,36 @@
 .reveal h2 { font-size: 1.6em; } /* default ~2.11em */
 .reveal h3 { font-size: 1.3em; } /* default ~1.55em */
 
+/* Tables (especially wide place-of-articulation / consonant charts
+   with 8-12 columns) render at the full body font-size by default and
+   overflow the slide width. Shrink the text and tighten cell padding
+   so multi-column IPA charts fit within a single slide. */
+.reveal table {
+  font-size: 0.42em;
+  margin: 0.5em auto;
+  border-collapse: collapse;
+  /* Without a fixed layout, the browser sizes each column to fit its
+     content and lets the table grow past 100% width whenever any cell's
+     content can't shrink further -- which is exactly what was pushing
+     the rightmost columns (Pharyngeal, Glottal) off the edge of the
+     slide. table-layout: fixed makes the table honor width: 100% no
+     matter what, wrapping cell content instead of overflowing. */
+  table-layout: fixed;
+  width: 100%;
+}
+.reveal table th,
+.reveal table td {
+  padding: 0.15em 0.2em;
+  text-align: center;
+  border-left: 1px solid currentColor;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+.reveal table th:first-child,
+.reveal table td:first-child {
+  border-left: none;
+}
+
 /* Images: scale to fit the slide, center them, and give them a
    softer, more polished frame than Reveal's default hard border.
    Reveal's base CSS (.reveal section img) sets margin: 15px 0 with
