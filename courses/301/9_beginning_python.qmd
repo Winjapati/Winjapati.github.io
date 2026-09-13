@@ -1,0 +1,350 @@
+---
+title: "Computation for Linguists"
+subtitle: "Beginning Python: Setting up Python & Variables"
+date: "September 14, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: visual
+---
+
+# Setting Up for Today
+
+-   Create: `classwork/day_9`
+-   For `.qmd` & `.html` files, visit: <https://winjapati.github.io/courses/301/301_homepage.html>
+
+# Review
+
+-   What did you learn last time?
+
+## Review: `grep` and `regex`
+
+-   `wc file.txt` → identify number of lines, words, and characters in `file.txt`
+    -   `-l`, `-w`, `-c`
+-   `grep "word" file.txt` → search for a string in a file
+-   Combine with pipes:
+    -   `grep "word" file.txt | wc -l`
+-   `regex`:
+    -   `.`, `[aou]`, `[^ao]`, `[a-z]`, `a+`, `a*`, `a?`, etc.
+
+# Moving on to Python
+
+## Python
+
+-   Python is a programming language, commonly used by linguists & programmers in general.
+-   With it, we will write plain text documents that *do* things.
+
+## Programming at the Terminal
+
+-   So far, we have programmed a little bit at the Terminal, using `RegEx`
+-   These simple expressions allow us to conduct powerful and sweeping searches
+
+## How Does Python Work?
+
+When we write a Python program, we will:
+
+1.  Import additional code (aka **packages**), using `import`
+2.  Write out instructions for what the document is supposed to do with code.
+3.  Then use the Python interpreter to interpret our code (by running it with `python3` or `py` or by pressing the run button).
+
+## Setting Up Python
+
+-   Make sure that Python 3 is installed on your computer.
+
+    -   Visit: https://www.python.org/downloads/
+
+    -   Download the latest version for your OS
+
+## Setting Up Python
+
+    -   Once it's installed, verify that it works in your VSCode Terminal:
+
+        -   PC:
+
+        ``` bash
+        python --version      ## py --version also works
+        pip --version
+        ```
+
+        -   Mac:
+
+        ``` bash
+        python3 --version
+        pip --version
+        ```
+
+## Installing Packages with `pip`
+
+-   The command is always the same shape:
+
+``` bash
+pip install package_name
+```
+
+-   Try installing a small, harmless package now, just to see it work:
+
+``` bash
+pip install requests
+```
+
+## Installing Packages with `pip`
+
+-   If `pip install` ever fails, the error message usually tells you *why* (wrong name, no internet connection, permissions issue) — read it before panicking.
+-   Once installed, a package works like this:
+
+``` python
+import requests
+```
+
+-   `import` loads a package's code into *this* Python session so you can use it.
+
+## Running Your First Line of Code
+
+-   Now that you have verified that Python works in VSCode, return to the terminal
+-   Type `py` (PC) or `python3` (Mac)
+-   Then:
+
+``` python
+print("Hello world!")
+quit()
+```
+
+## The function `print`:
+
+-   Must be lower case.
+-   You cannot leave out `"` within the print function
+    -   That said, you can use `'` instead!
+    -   Try `print(Hello world!)`. What happens?
+
+## Creating Your First Python Script
+
+-   We won't be working in the Terminal for much longer.
+-   Let's create a new `.py` file, called `first_script.py`
+-   Within the new script, paste:
+
+``` python
+print("Hello world!")
+```
+
+-   Click `Run` in the document to run the code.
+
+# Learning about Variables
+
+## Printing Hello world!
+
+-   Remember earlier how this gave us an error?
+
+``` python
+print(Hello world!)
+```
+
+-   Create a code block in your `qmd` file, and try this instead:
+
+``` python
+hello_world = "Hello world!"
+print(hello_world)
+```
+
+## What just happened?
+
+-   Why did `print(hello_world)` work, but `print(Hello world!)` didn't?
+
+## Variables
+
+-   `hello_world` is a variable that we defined as having the value `"Hello world!"`
+-   We can define it whatever we want:
+
+``` python
+hello_world = "Zabzab boo bah!"
+print(hello_world)
+```
+
+## Naming Variables
+
+-   Case sensitive (`hello_world` ≠ `Hello_world`)
+-   Must start with a letter or `_`
+    -   Cannot start with a number
+-   Can only contain letters, numbers, underscores
+    -   So avoid `&`, `*`, `.`, `?`
+    -   And of course, avoid spaces!
+
+## Variables
+
+-   Let's look at another example.
+-   Python doesn’t know your age unless you tell it.
+
+``` python
+my_age
+# NameError: name 'my_age' is not defined
+```
+
+-   We can assign a value to `my_age` using `=`:
+
+``` python
+my_age = 47
+my_age
+# 47
+```
+
+## Using Variables
+
+-   We can use variables just like numbers:
+
+``` python
+2026 - my_age
+```
+
+## Using Variables
+
+-   Let's assign the current year to another variable:
+
+``` python
+current_year = 2026
+current_year - my_age
+```
+
+## Using Variables
+
+-   Let's store the result in a new variable:
+
+``` python
+year_of_birth = current_year - my_age
+year_of_birth
+```
+
+## Your Age in 2040
+
+``` python
+2040 - year_of_birth
+```
+
+## Overwriting Variables
+
+-   You can always reassign (i.e., change the value of) a variable:
+
+``` python
+my_age = 50
+my_age
+# 50
+```
+
+-   Note: other variables don’t automatically update: `year_of_birth` still has the old value.
+
+# From Grep to Python
+
+## Regex Isn't Just for the Terminal
+
+-   Everything we've done with `grep` — searching, counting, capturing patterns — Python can do too, with a built-in `re` module
+-   Let's try it, using the same `alice.txt` file
+
+## Running Python in VSCode
+
+-   In `classwork/day_9`, create a new file named `regex_practice.py`
+-   To execute the file, click the ▷ (Run) button in the top-right corner
+
+## Setting Up
+
+-   Add the following code to your `py` script:
+
+``` python
+import re                                             # loads Python's regex toolkit
+
+with open("../../data/gutenberg/alice.txt", encoding="utf-8") as f:  # opens alice.txt for reading
+    text = f.read()                                   # reads the whole file into one string, called `text`
+```
+
+## What is All of This?
+
+-   `import re` loads Python's regex toolkit — the equivalent of `-E` being built into `grep`
+-   `open(...)` and `.read()` load the file into the *variable* `text`, the same way `alice.txt` was just sitting there for `grep` to search
+
+``` python
+import re                                                     # loads Python's regex toolkit
+
+with open("../../data/gutenberg/alice.txt", encoding="utf-8") as f:  # opens alice.txt for reading
+    text = f.read()                                           # reads the whole file into one string, called `text`
+```
+
+## What is All of This?
+
+-   `regex_practice.py` lives in `classwork/day_9`, but `alice.txt` lives in `data/gutenberg` — so the path has to go up two folders (`../..`) before heading back down into `data/gutenberg`
+-   `#` starts a comment — Python ignores everything after it on that line. Comments like these are just notes for humans reading the code
+
+``` python
+import re                                                     # loads Python's regex toolkit
+
+with open("../../data/gutenberg/alice.txt", encoding="utf-8") as f:  # opens alice.txt for reading
+    text = f.read()                                           # reads the whole file into one string, called `text`
+```
+
+## Remember Our First Regex?
+
+-   Back on Day 7, one of our first patterns was:
+
+``` bash
+grep -Ec "c.t" alice.txt
+```
+
+## Matching `.` in Python
+
+-   Let's find the same matches in Python:
+
+``` python
+matches = re.findall(r"c.t", text)   # finds every match of "c_t"
+print(matches)                       # take a look at what it found
+```
+
+-   Look closely at the pattern: `"c.t"` — it's *exactly* the same string in both.
+
+## What about `-Eo`?
+
+-   We could also use `-Eo` to see every match, not just the count:
+
+``` bash
+grep -Eo "c.t" alice.txt
+```
+
+## Using `print()` for `-Eo`
+
+``` python
+matches = re.findall(r"c.t", text)   # finds every match of "c_t"
+print(len(matches))                  # counts how many were found -- this matches grep -Eo's count
+print(*matches, sep="\n")            # prints each match on a separate line
+```
+
+## Same Goes for Character Classes
+
+-   Terminal: `grep -Eo "c[aou]t" alice.txt`
+-   Python:
+
+``` python
+matches_aou = re.findall(r"c[aou]t", text)   # finds "cat", "cot", or "cut"
+print(len(matches_aou))                      # counts how many were found
+print(*matches_aou, sep="\n")                # prints each match on a separate line
+```
+
+## Activity: From `grep` to Python
+
+-   In `regex_practice.py`, adapt the code above to answer one of these (pick one):
+    -   `grep -Eo "c[^ao]t" alice.txt`
+    -   `grep -Eo "[a-q]at" alice.txt`
+-   Write each as a `re.findall()` call, using the following names:
+    -   `matches_not_ao` for the first
+    -   `matches_a_q` for the second
+
+## Activity: From `grep` to Python
+
+-   Print the count and the matches, the same way we just did (remember: a bare variable name on its own line won't show anything — you have to `print()` it)
+-   Add a comment above each line explaining what it does
+
+## Coming Up
+
+-   We'll properly learn Python file-handling, `import`, and the `re` module over the next few weeks
+-   For now: all of this work you did with `grep` and regex is directly transferable to Python — the syntax is almost identical, and the logic is the same
