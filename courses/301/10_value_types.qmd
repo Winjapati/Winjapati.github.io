@@ -1,0 +1,356 @@
+---
+title: "Computation for Linguists"
+subtitle: "Beginning Python: Value Types"
+date: "September 16, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: visual
+---
+
+# Setting Up for Today
+
+-   Create: `classwork/day_10`
+-   For `.qmd` & `.html` files, visit: <https://winjapati.github.io/courses/301/301_homepage.html>
+
+# Review
+
+-   What did you learn last time?
+
+## Review
+
+-   Running `python`:
+    -   Terminal
+    -   Stand-alone `.py` file
+-   Starter `python` skills:
+    -   `print()`
+    -   basic math (`+`, `-`)
+    -   assigning variables with `=`
+
+## Translating `grep` into `python`
+
+``` python
+import re                                                     
+
+with open("../../data/gutenberg/alice.txt", encoding="utf-8") as f:  
+    text = f.read()                                      
+```
+
+## `grep -Eo "c.t" alice.txt`
+
+``` python
+matches = re.findall(r"c.t", text)   
+print(len(matches))                  
+print(*matches, sep="\n")            
+```
+
+## `grep -Eo "c[aou]t" alice.txt`
+
+``` python
+matches_aou = re.findall(r"c[aou]t", text)   # finds "cat", "cot", or "cut"
+print(len(matches_aou))                      # counts how many were found
+print(*matches_aou, sep="\n")                # prints each match on a separate line
+```
+
+## Activity: From `grep` to Python
+
+-   In `classwork/day_9/regex_practice.py`, adapt the code above to answer one of these (pick one):
+    -   `grep -Eo "c[^ao]t" alice.txt`
+    -   `grep -Eo "[a-q]at" alice.txt`
+-   Write each as a `re.findall()` call, using the following names:
+    -   `matches_not_ao` for the first
+    -   `matches_a_q` for the second
+
+# More on Variables
+
+## True Variables vs. Constants
+
+-   Most of what we call "variables" are **true variables**: values we expect to change or be reassigned (like `my_age`, `current_year`, `child_18_year`)
+    -   Written in lowercase `snake_case`
+
+## True Variables vs. Constants
+
+-   A **constant** is a value meant to stay fixed for the whole program (like `MAX_AGE = 100`)
+    -   Python doesn't actually enforce this — nothing stops you from reassigning it
+    -   Writing it in `ALL_CAPS` is a convention that signals to anyone reading the code: "don't reassign me"
+
+## Activity: Movie Night Budget
+
+-   In `classwork/day_10`, create a `.py` file called `snacks.py`
+-   You have `$20` for snacks at the movies: `SNACK_BUDGET = 20`.
+-   Store your popcorn spending in `popcorn_budget`.
+-   Store your candy spending in `candy_budget`.
+-   Store what's left in `money_left`.
+-   Print `money_left`.
+
+# Value Types
+
+## Three basic value types
+
+1.  **Numbers**
+2.  **Strings**
+3.  **Booleans (logical values)**
+
+-   You can check something's type using the `type()` function
+
+# Numbers
+
+1.  **Numbers**
+2.  Strings
+3.  Booleans (logical values)
+
+## Two Types of Numbers
+
+-   **int**: integers (no decimals)
+
+``` python
+num_1 = 1
+type(num_1)
+```
+
+-   **float**: floating point numbers (decimals)
+
+``` python
+num_2 = 1.5
+type(num_2)
+```
+
+## Number Operators
+
+We've seen two operators already:
+
+-   `x + y` (add)\
+-   `x - y` (subtract)\
+
+## Number Operators
+
+Here are two more:
+
+-   `x * y` (multiply)\
+-   `x / y` (divide)\
+
+## Operator Activity:
+
+-   Using `python`, compute the following equations:
+
+1.  100 - 37
+2.  4 x 80
+3.  100 ÷ 25
+
+## Number Operators: Exponent
+
+Operators:
+
+-   `x ** y` (exponent)\
+
+``` python
+2 ** 2 == 2 * 2
+```
+
+## Number Operators: Modulus
+
+-   `x % y` (**modulus**: remainder)\
+
+``` python
+10 % 3 == 1   # 3 goes into 10 three times, remainder 1
+14 % 5 == 4   # 5 goes into 14 twice, remainder 4
+```
+
+## Number Operators: Modulus
+
+-   The `modulus` command is actually quite useful, as it shows us when one number is not evenly divisible by another.
+
+``` python
+n = 17
+if n % 2 == 0:
+    print("even")
+else:
+    print("odd")
+```
+
+## Number Operators: Floor Division
+
+-   `x // y` (floor division)
+
+``` python
+10 // 3   # 3  (3 goes into 10 three times, remainder dropped)
+14 // 5   # 2  (5 goes into 14 two times, remainder dropped)
+```
+
+-   This is a way of *rounding down*, resulting in an integer
+-   Note: there's no built-in way to *round up* -- you'll have to do that in other ways
+
+## Summing up "Divisive" Operators:
+
+``` python
+14 / 5      # 2.8 (normal division)
+14 % 5      # 4   (modulus)
+14 // 5     # 2   (floor division)
+```
+
+## Operator Activity
+
+1.  Divide 100 by 9 three different ways:
+
+    -   Normal division `/`
+    -   Floor division (rounding down) `//`
+    -   Modulus `%`
+
+2.  How many full weeks and leftover days are in a full year?
+
+# Strings
+
+1.  Numbers
+2.  **Strings**
+3.  Booleans (logical values)
+
+## Strings
+
+If you type text without quotes, you get a `NameError`:
+
+``` python
+Andrew
+# NameError
+```
+
+## Strings
+
+-   If we assign Andrew as having the value "Andrew"...
+
+``` python
+>>> Andrew = "Andrew"
+>>> Andrew
+'Andrew'
+```
+
+## Strings
+
+With quotes:
+
+``` python
+>>> "Andrew"
+'Andrew'
+>>> 'Andrew'
+'Andrew'
+```
+
+## Strings
+
+Assigning strings:
+
+``` python
+title = "Dr."
+first_name = "Andrew"
+last_name = "Byrd"
+```
+
+## Strings
+
+Concatenate with `+`:
+
+``` python
+title + first_name + last_name
+```
+
+-   What happens when we print the three?
+-   How might we improve the output?
+
+## Strings
+
+We could also print it this way:
+
+``` python
+print(title, first_name, last_name)
+```
+
+## Strings
+
+What happens when we run this code?
+
+``` python
+print("I said, "Hello!"")
+```
+
+## Strings
+
+-   For this, we'll need to have a character `\"`.
+    -   Cf. bash `\?`
+
+``` python
+"I said, \"Hello!\""
+```
+
+-   Besides `"` (and `'`), almost any character can be within a string.
+
+# Boolean (Logical) Values
+
+1.  Numbers
+2.  Strings
+3.  **Booleans (logical values)**
+
+## Boolean (Logical) Values
+
+Only two: `True`, `False`.
+
+Usually created by comparisons:
+
+``` python
+first_name == "Bob"
+# False
+```
+
+## `=` vs. `==`
+
+::: callout-important
+## Important!
+
+-   `=` means **variable assignment**\
+-   `==` means **equals** or **testing if two things are equal**
+:::
+
+## Comparison Operators
+
+-   `==` is exactly equal to\
+-   `!=` is not equal to\
+-   `>` greater than\
+-   `>=` greater than or equal to\
+-   `<` less than\
+-   `<=` less than or equal to
+
+## Logical Operators
+
+-   `not` flips a boolean\
+-   `and` is true if **both** are true\
+-   `or` is true if **at least one** is true
+
+## Examples
+
+Check for Andrew with “w” or without:
+
+``` python
+(first_name == "Andrew") or (first_name == "Andre")
+```
+
+## Examples
+
+Check for Andrew, who is 47:
+
+``` python
+my_age = 47
+(first_name == "Andrew") and (my_age == 47)
+```
+
+## Examples
+
+Check for Andrew, who is not 46:
+
+``` python
+(first_name == "Andrew") and not (my_age == 46)
+```
