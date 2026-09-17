@@ -113,8 +113,10 @@ words = text.split()
 
 ### Dictionaries
 
+**New trick:** `.find()` works like the list `.index()` you already know from Day 12, but on a string — it returns the position where a match starts, or `-1` if there isn't one.
+
 20. Try `text.count("Odysseus")`. What do you get?
-21. This 1900 translation doesn't actually use the Greek name "Odysseus" — translators of that era often preferred the Latin/Roman form instead. Use `"Ulysses" in text` to check your hunch, then find the count that actually works.
+21. Whatever number you got, don't assume it means "Odysseus" is scattered evenly through the poem. Use `position = text.find("Odysseus")` to find where one match starts, then slice out `text[position - 150 : position + 150]` to read the sentence around it. Where does it actually turn up — in the middle of a book, or somewhere more limited, like the front matter? Once you've looked, use `"Ulysses" in text` to check which name Butler's own narrative actually relies on, then find the count that works.
 22. Build a dictionary called `character_counts` that maps each of these names to how many times it appears in `text`, using the string method `.count()`: `"Ulysses"`, `"Penelope"` (his wife), `"Telemachus"` (his son), and `"Minerva"` (the goddess who helps him — also a Roman name, standing in for the Greek Athena).
 23. Print `character_counts`.
 24. Using dictionary indexing (not just eyeballing the printed output), confirm which of the four names appears most often.
