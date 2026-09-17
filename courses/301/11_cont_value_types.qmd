@@ -1,0 +1,277 @@
+---
+title: "Computation for Linguists"
+subtitle: "Beginning Python: Continuing Value Types"
+date: "September 18, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: visual
+---
+
+# Setting Up for Today
+
+-   Create: `classwork/day_11`
+-   For `.qmd` & `.html` files, visit: <https://winjapati.github.io/courses/301/301_homepage.html>
+
+# Review
+
+-   What did you learn last time?
+
+## Review
+
+-   variables vs. CONSTANTS
+-   Value Types: numbers
+    -   integers vs. floats
+    -   operators: `+`, `-`, `*`, `/`, `**`, `//`, `%`
+
+## Review Activity
+
+**Study Snack Run**
+
+You are given three variables:
+
+1.  `SNACK_BUDGET = 15`, what your budget allowed
+
+2.  `price = 2.50`, cost of one snack
+
+3.  `quantity = 4`, how many snacks you're buying
+
+**For this activity:**
+
+1.  Create a variable `total_spent`, using `price` and `quantity`
+
+2.  Create a variable `money_left`, using `SNACK_BUDGET` and `total_spent`
+
+3.  Print `total_spent` and `money_left`
+
+# Strings
+
+1.  Numbers
+2.  **Strings**
+3.  Booleans (logical values)
+
+## Strings
+
+If you type text without quotes, you get a `NameError`:
+
+``` python
+Andrew
+# NameError
+```
+
+## Strings
+
+-   If we assign Andrew as having the value "Andrew"...
+
+``` python
+>>> Andrew = "Andrew"
+>>> Andrew
+'Andrew'
+```
+
+## Strings
+
+With quotes:
+
+``` python
+>>> "Andrew"
+'Andrew'
+>>> 'Andrew'
+'Andrew'
+```
+
+## Strings
+
+Assigning strings:
+
+``` python
+title = "Dr."
+first_name = "Andrew"
+last_name = "Byrd"
+```
+
+## Strings
+
+Concatenate with `+`:
+
+``` python
+title + first_name + last_name
+```
+
+-   What happens when we print the three?
+-   How might we improve the output?
+
+## Strings
+
+We could also print it this way:
+
+``` python
+print(title, first_name, last_name)
+```
+
+## Strings
+
+What happens when we run this code?
+
+``` python
+print("I said, "Hello!"")
+```
+
+## Strings
+
+-   For this, we'll need to have a character `\"`.
+    -   Cf. bash `\?`
+
+``` python
+"I said, \"Hello!\""
+```
+
+-   Besides `"` (and `'`), almost any character can be within a string.
+
+# Boolean (Logical) Values
+
+1.  Numbers
+2.  Strings
+3.  **Booleans (logical values)**
+
+## Boolean (Logical) Values
+
+Only two: `True`, `False`.
+
+Usually created by comparisons:
+
+``` python
+first_name == "Bob"
+# False
+```
+
+## `=` vs. `==`
+
+::: callout-important
+## Important!
+
+-   `=` means **variable assignment**\
+-   `==` means **equals** or **testing if two things are equal**
+:::
+
+## Comparison Operators
+
+-   `==` is exactly equal to\
+-   `!=` is not equal to\
+-   `>` greater than\
+-   `>=` greater than or equal to\
+-   `<` less than\
+-   `<=` less than or equal to
+
+## Logical Operators
+
+-   `not` flips a boolean\
+-   `and` is true if **both** are true\
+-   `or` is true if **at least one** is true
+
+## Examples
+
+Check for Andrew with “w” or without:
+
+``` python
+(first_name == "Andrew") or (first_name == "Andre")
+```
+
+## Examples
+
+Check for Andrew, who is 47:
+
+``` python
+my_age = 47
+(first_name == "Andrew") and (my_age == 47)
+```
+
+## Examples
+
+Check for Andrew, who is not 46:
+
+``` python
+(first_name == "Andrew") and not (my_age == 46)
+```
+
+# Overview of Value Types
+
+1.  Numbers: `int`, `float`, `+`, `-`, `*`, `/`, `**`, `//`, `%`
+2.  Strings: `print(x, y, z)`, concatenation (`+`)
+3.  Booleans (logical values): `True`, `False`, `==`, `!=`, `>`, `>=`, `<`, `<=`, `not`, `and`, `or`
+
+## Activity: Mini Profile
+
+Let’s practice all three value types together, before the next activity:
+
+-   Create a variable `name` with your name.
+-   Create a variable `age` with your age.
+-   Create a variable `is_adult` that checks whether `age` is at least `18`.
+-   Print `name`, `age`, and `is_adult`.
+-   Then print the `type()` of each one.
+
+## Answers
+
+``` python
+name = "Andrew"
+age = 47
+
+is_adult = age >= 18
+
+print(name, age, is_adult)
+print(type(name), type(age), type(is_adult))
+```
+
+# Activity
+
+## Activity: Predicting Aspiration
+
+-   In English, voiceless stops (p, t, k) are usually aspirated when they occur at the beginning of a word.
+-   Your task: write a small Python script that states whether the first sound in a word will be aspirated.
+-   In `classwork/day_11`, create a script called `aspirate.py`.
+
+## Activity: Predicting Aspiration
+
+1.  Assign a word like "pin", "spin" to a variable called `word`.
+    -   To identify the first character, use `word[0]`.
+2.  Create three variables: `starts_p`, `starts_t`, `starts_k`
+    -   `starts_p = word[0] == "p"`, etc.
+3.  Create another variable `aspirated`, whose value is `True` if any of the above is `True`.
+    -   **Hint**: combine them with `or`
+4.  Print out the word and whether it is aspirated.
+
+# Activity Answers
+
+## Answers
+
+``` python
+word = "pin"   # try: "spin", "top", "stop", "cat", "skat"
+
+# Step 1: check if word starts with a voiceless stop
+starts_p = word[0] == "p"
+starts_t = word[0] == "t"
+starts_k = word[0] == "k"
+
+# Step 2: decide aspiration (simplified: only if it’s the first sound)
+aspirated = starts_p or starts_t or starts_k
+
+print("Word:", word)
+print("Aspirated?", aspirated)
+```
+
+## But what if we want to test any word?
+
+-   Input this at the top of your script:
+
+``` python
+word = input("Enter a word, any word: ")
+```
+
+-   Then run it! The terminal should prompt you for an answer.
