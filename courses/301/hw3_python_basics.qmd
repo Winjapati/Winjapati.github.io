@@ -23,13 +23,25 @@ By the end, you should be able to:
 -   Turn a list into a set to answer "how many *different* things are here?", and explain why that's a different question from "how many things are here?"
 -   Apply all of the above to a real downloaded text, not just a short hand-typed example.
 
-You will create **one** Quarto document named `hw3_python_basics_lastname_firstname.qmd`, living inside a folder called `hw3` in your `homework/` folder. `cd` into your `LIN_301/homework` folder, create `hw3`, and `cd` into it — this is where everything for this assignment lives. Download the assignment file straight from the course website, renaming it as you go:
+You will create **one** Quarto document named `hw3_python_basics_lastname_firstname.qmd`, living inside a folder called `hw3` in your `homework/` folder. Grab the assignment file from the link on the Canvas assignment page, save it into that new `hw3` folder, and rename it as you go.
 
-``` bash
-curl -o hw3_python_basics_lastname_firstname.qmd https://winjapati.github.io/courses/301/hw3_python_basics.qmd
+Unlike HW1 and HW2, this homework's code is meant to actually **run** — write and run real code chunks in your `.qmd`, and make sure your document renders cleanly to HTML before you submit.
+
+### A New Trick: Running Code in a `.qmd`
+
+Every code block we've read together in class, and everything you wrote for HW1 and HW2, was just *documentation* — Quarto never actually executed it. This assignment is different: your code needs to actually run and produce real output.
+
+To make a code chunk **executable**, fence it with `{python}` instead of plain `python`:
+
+````` markdown
+```{python}
+print("this runs")
 ```
+`````
 
-Unlike HW1 and HW2, this homework's code is meant to actually **run** — write and run real code chunks in your `.qmd`, the same way we do in class, and make sure your document renders cleanly to HTML before you submit.
+A chunk written as ```` ```python ```` (no curly braces) is still just syntax-highlighted text — Quarto skips right over it without running it. Every code chunk you write for this assignment needs the curly-brace version.
+
+To actually run your document, use **Render** — the Render button at the top of the editor, or `Ctrl+Shift+K` (`Cmd+Shift+K` on a Mac). This runs every `{python}` chunk top to bottom and rebuilds the `.html` file, showing each chunk's real output alongside your code. Render often as you go, not just once at the end — it's the fastest way to catch a typo before it piles up. If your editor shows a small ▷ **Run Cell** link above an individual chunk, that's a quicker way to test one chunk at a time without re-rendering the whole document.
 
 ------------------------------------------------------------------------
 
@@ -76,14 +88,14 @@ curl -o odyssey.txt https://www.gutenberg.org/cache/epub/1727/pg1727.txt
 
 Then, in a Python code chunk in your `.qmd`, load it into a string:
 
-``` python
+```{python}
 with open("odyssey.txt", encoding="utf-8") as f:
     text = f.read()
 ```
 
 **New trick:** `.split()`, called on a string with no arguments, breaks it into a list of words, splitting wherever there's whitespace (spaces, tabs, line breaks):
 
-``` python
+```{python}
 words = text.split()
 ```
 
