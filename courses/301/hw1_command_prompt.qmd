@@ -1,0 +1,145 @@
+---
+title: "HW 1 — The Command Prompt"
+subtitle: "LIN 301: Computation for Linguists"
+author: "Dr. Andrew M. Byrd"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-tools: true
+fontsize: 12pt
+---
+
+## Overview
+
+During class in week 2 you learned how to navigate, create, move, and search files entirely from the Terminal — no mouse required. This assignment asks you to do the same set of tasks on a **new text** (not one we used in class), so you're practicing the skills rather than replaying what you already typed.
+
+By the end, you should be able to:
+
+-   Navigate a file system and create/rename/remove files and folders from the command line.
+-   Write and run a short shell script that automates a repeatable setup task.
+-   Use `wc`, `grep`, and piping (`|`) to count and search inside a text file.
+-   Write basic regular expressions (`grep -E`) to find patterns in text.
+
+You will create **one** Quarto document named `hw1_command_prompt_lastname_firstname.qmd`, living inside a folder called `hw1` in your `homework/` folder — you won't submit this file itself, just a URL pointing to it (see **Submission** below for exactly how that works). For every numbered task below, record in your document: (a) the exact command(s) you typed, in a fenced `bash` code block; (b) whenever a task says "record," "confirm," or otherwise asks you to report a result, the actual terminal output, pasted as a second code block right below the command that produced it; and (c) the answer to any question that's asked. You're documenting what you did in the Terminal — none of these code blocks need to be "run" by Quarto itself.
+
+------------------------------------------------------------------------
+
+## Part 1 — Navigating & Managing Files
+
+Do all of the following inside the integrated Terminal in VSCode. `cd` into your `LIN_301/homework` folder, then create a new folder called `hw1` and `cd` into it — this is where everything for this assignment lives, both your working files and your `.qmd` write-up. Download the assignment file straight from the course website, using `curl` the same way you're about to use it on `holmes.txt` below — this becomes the document you'll actually work in:
+
+``` bash
+curl -o hw1_command_prompt_lastname_firstname.qmd https://winjapati.github.io/courses/301/hw1_command_prompt.qmd
+```
+
+1.  Download *The Adventures of Sherlock Holmes* from Project Gutenberg using `curl`, naming the file `holmes.txt`: `https://www.gutenberg.org/cache/epub/1661/pg1661.txt`
+
+2.  Confirm the file downloaded and check its size using `ls -l`.
+
+3.  Create three nested folders: `drafts` \> `working` \> `final` (i.e., `working` sits inside `drafts`, and `final` sits inside `working`).
+
+4.  Use `touch` to create an empty file called `log.txt`.
+
+5.  Move `log.txt` into the `final` folder.
+
+6.  You've decided `drafts` is a bad name for the top folder — rename it to `notes` (remember: `mv` is also how you rename in bash).
+
+7.  Create one more throwaway folder called `scratch`, then remove it using `rm -r`.
+
+8.  **Write a script.** Create a file called `setup.sh` that, when run, does the following in one shot:
+
+    -   creates a new folder called `backup_check`
+    -   downloads `holmes.txt` again into that folder (same `curl` command as step 1, adjusted for the new destination)
+    -   prints a message to the screen confirming the download (`echo`)
+
+    Run your script with `source setup.sh` and confirm it worked with `ls`.
+
+**Question:** What's the difference between `rmdir` and `rm -r`? Why did you need `rm -r` in step 7 and not `rmdir`?
+
+------------------------------------------------------------------------
+
+## Part 2 — Counting & Searching
+
+9.  Run `wc`, `wc -l`, and `wc -w` on `holmes.txt`. Record all three outputs.
+10. Use `grep` to find every line containing the name **"Watson"**. Then pipe that into `wc -l` to get a single count of how many lines mention him.
+11. Do the same for **"Holmes"**. Which name appears on more lines?
+
+------------------------------------------------------------------------
+
+## Part 3 — Regex Challenges
+
+Using `grep -E` on `holmes.txt`, find each of the following. For each one, write the command you used *and* the answer/result.
+
+1.  Every instance where a word begins with "Holmes" or "Watson."
+2.  All five-letter words in the file.
+3.  All lines that end in a question mark (remember `?` is a special character in regex — you'll need to escape it with `\`).
+4.  All instances of a letter repeated twice in a row (like "ee" in "sleep" or "ss" in "glass"), using a backreference.
+5.  The total number of times "he" or "He" or "she" or "She" appears as its own word (not buried inside a longer word like "the" or "shelf").
+
+------------------------------------------------------------------------
+
+## Part 4 — Reflection
+
+At the bottom of your document, write a short (3–5 sentence) reflection:
+
+-   What was the easiest part of this assignment? What was the hardest?
+-   Now that you've used `grep` and regex on an English text, can you think of a linguistic question (phonological, morphological, syntactic) you could investigate this way on a text or corpus?
+
+------------------------------------------------------------------------
+
+## Submission
+
+Your `LIN_301` repo is public, so instead of uploading a file to Canvas, you'll submit a **link** straight to your `homework/hw1` folder on GitHub — that one folder holds everything (your `.qmd` write-up and all your working files), so a single link is all a grader needs. No rendering required, since this homework is just documented commands and written answers (nothing gets computed, so there's no output a render would add).
+
+1.  **Push everything.** Stage, commit, and push your entire `homework/hw1` folder — your `.qmd` file, `holmes.txt`, `setup.sh`, and the `notes` folder structure — to your `LIN_301` GitHub repo — same stage → commit → push you've been doing all along.
+
+2.  **Get the folder's GitHub address.** On github.com, navigate into your repo to `homework/hw1`, and copy the URL from your browser's address bar. It'll look like:
+
+    ```         
+    https://github.com/your-username/LIN_301/tree/main/homework/hw1
+    ```
+
+3.  **Submit that link on Canvas** — no file upload needed.
+
+4.  Be sure to replace "lastname_firstname" with your actual last name and first name in your `.qmd` filename.
+
+------------------------------------------------------------------------
+
+## Grading Rubric (100 pts total)
+
+### Part 1 — Navigating & Managing Files (40 pts)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| `hw1` folder created; `holmes.txt` downloaded correctly via `curl` | 7 |
+| Nested folder structure (`notes` \> `working` \> `final`) created correctly | 7 |
+| `log.txt` created with `touch` and moved into `final` | 6 |
+| `drafts` successfully renamed to `notes` using `mv` | 4 |
+| `scratch` folder created and removed with `rm -r` | 4 |
+| `setup.sh` script written correctly and runs successfully with `source` | 10 |
+| Answer to `rmdir` vs. `rm -r` question is accurate | 2 |
+
+### Part 2 — Counting & Searching (20 pts)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| `wc` / `wc -l` / `wc -w` results recorded correctly | 8 |
+| Correct use of `grep` + pipe to `wc -l` for both "Watson" and "Holmes" | 9 |
+| Correct identification of which name appears on more lines | 3 |
+
+### Part 3 — Regex Challenges (35 pts)
+
+| Criteria                                           | Points |
+|----------------------------------------------------|:------:|
+| Task 1 (Holmes/Watson, word-initial + alternation) |   7    |
+| Task 2 (five-letter words)                         |   7    |
+| Task 3 (lines ending in `?`, correctly escaped)    |   7    |
+| Task 4 (repeated-letter backreference)             |   7    |
+| Task 5 (whole-word "he"/"she" count)               |   7    |
+
+### Presentation & Reproducibility (5 pts)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| File named correctly; commands and answers clearly organized by part; reflection included; GitHub link points to the `hw1` folder | 5 |

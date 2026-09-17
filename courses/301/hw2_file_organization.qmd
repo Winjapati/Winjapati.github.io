@@ -1,0 +1,86 @@
+---
+title: "HW 2 — Organizing a Messy Project"
+subtitle: "LIN 301: Computation for Linguists"
+author: "Dr. Andrew M. Byrd"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-tools: true
+fontsize: 12pt
+---
+
+## Overview
+
+This assignment has one deliverable: your reorganized project, pushed to your repo. There's no write-up to submit — the reorganized folder itself is the evidence that you can look at a genuinely messy set of files and make good, defensible decisions about names and structure. You can do the reorganizing entirely in the Terminal, entirely in your OS's Finder/Explorer, or some mix of both — whichever you prefer. The tool isn't the point; the result is.
+
+By the end, you should be able to:
+
+-   Apply the naming and hierarchy conventions from Day 3 to an unfamiliar, messy set of files.
+-   Recognize redundant/duplicate files (old "versions" that Git or a sane naming scheme would make unnecessary) and make a defensible call about what to keep.
+
+------------------------------------------------------------------------
+
+## Part 1 — Get the Files
+
+In your `LIN_301` repo, create a new folder called `hw2` inside `homework/`, and `cd` into it. Download the starter files straight from the course website:
+
+``` bash
+curl -o messy_downloads_dump.zip https://winjapati.github.io/courses/301/messy_downloads_dump.zip
+```
+
+**New trick:** `unzip` extracts a compressed `.zip` archive into the current folder — the same idea as `cp -r`, just unpacking something bundled up first:
+
+``` bash
+unzip messy_downloads_dump.zip
+```
+
+You'll do all your reorganizing right there in place.
+
+------------------------------------------------------------------------
+
+## Part 2 — Rename & Reorganize
+
+Reorganize `messy_downloads_dump` so that:
+
+-   Every filename is lowercase, has no spaces, and actually describes its content (review Day 3's slides on naming conventions if you need a refresher).
+-   Files are sorted into folders that make sense for what's actually in this dump (there's more than one reasonable way to do this).
+-   Nothing is left with a name like `v2`, `FINAL`, `copy`, or `(1)` — see Part 3 for what to do with those instead.
+-   Don't forget what's inside `New folder/` — it needs a real name too, and its contents need a real home.
+-   Rename the top-level folder itself — `messy_downloads_dump` isn't a messy dump anymore.
+
+------------------------------------------------------------------------
+
+## Part 3 — Handle Duplicates & "Versions"
+
+Several files in the dump are old drafts of the same document, kept around the old-fashioned way (`_v1`, `_v2`, `_FINAL`, `_FINAL_v2`, `Copy of Copy of...`) instead of being tracked by Git. For each set of duplicates: pick **one** to keep as the live copy, give it a proper descriptive name, and place it in an appropriate folder. Delete the rest — or, if you'd rather keep them for reference, move them into an `archive/` folder instead.
+
+------------------------------------------------------------------------
+
+## Submission
+
+Your `LIN_301` repo is public, so instead of uploading a file to Canvas, you'll submit a **link** straight to your `homework/hw2` folder on GitHub.
+
+1.  **Push it.** Stage, commit, and push your `homework/hw2` folder to your `LIN_301` GitHub repo.
+
+2.  **Get the folder's GitHub address.** On github.com, navigate into your repo to `homework/hw2`, and copy the URL from your browser's address bar. It'll look something like:
+
+    ```         
+    https://github.com/your-username/LIN_301/tree/main/homework/hw2
+    ```
+
+3.  **Submit that link on Canvas** — no file upload needed.
+
+------------------------------------------------------------------------
+
+## Grading Rubric (100 pts total)
+
+Graded entirely by browsing the pushed folder:
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| Naming: every file lowercase, no spaces, descriptive of actual content | 25 |
+| Structure: folders are sensible and consistently applied (not too flat, not too deep) | 25 |
+| Duplicates/versions: correctly identified, one sensible copy kept per document, rest deleted or archived | 25 |
+| Completeness: every original file accounted for, including `New folder/`'s contents — nothing lost | 15 |
+| Top-level folder renamed; link points directly to `homework/hw2` | 10 |

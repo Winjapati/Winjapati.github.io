@@ -1,0 +1,170 @@
+---
+title: "HW 3 — From Variables to Sets"
+subtitle: "LIN 301: Computation for Linguists"
+author: "Dr. Andrew M. Byrd"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-tools: true
+jupyter: python3
+fontsize: 12pt
+---
+
+## Overview
+
+This assignment covers everything from the last two weeks: variables and value types (numbers, strings, booleans), and the first two data structures we use constantly in this course, lists and dictionaries, plus the newest one, sets. Part 1 works with small, hand-built examples, the same way we did in class. Part 2 turns you loose on a full novel-length text you download yourself — a different text than anything we used in class, so you're practicing the skills rather than replaying what you already typed.
+
+By the end, you should be able to:
+
+-   Create and use variables holding numbers, strings, and booleans, and predict what `type()` will report for each.
+-   Build, index, slice, and search a list.
+-   Build, look up, add to, and search a dictionary.
+-   Turn a list into a set to answer "how many *different* things are here?", and explain why that's a different question from "how many things are here?"
+-   Apply all of the above to a real downloaded text, not just a short hand-typed example.
+
+You will create **one** Quarto document named `hw3_python_basics_lastname_firstname.qmd`, living inside a folder called `hw3` in your `homework/` folder. `cd` into your `LIN_301/homework` folder, create `hw3`, and `cd` into it — this is where everything for this assignment lives. Download the assignment file straight from the course website, renaming it as you go:
+
+``` bash
+curl -o hw3_python_basics_lastname_firstname.qmd https://winjapati.github.io/courses/301/hw3_python_basics.qmd
+```
+
+Unlike HW1 and HW2, this homework's code is meant to actually **run** — write and run real code chunks in your `.qmd`, the same way we do in class, and make sure your document renders cleanly to HTML before you submit.
+
+------------------------------------------------------------------------
+
+## Part 1 — Numbers, Strings, and Booleans
+
+A few facts to work with: Homer's *Odyssey* is 24 books long. The Trojan War lasted 10 years, and it took Odysseus another 10 years after that to make it home to Ithaca.
+
+### Numbers
+
+1.  Create three variables: `books = 24`, `war_years = 10`, and `journey_years = 10`.
+2.  Create a variable `total_years_away` using `war_years` and `journey_years`, and print it.
+3.  Suppose you wanted to read all 24 books at a steady pace over 7 weeks. Create `books_per_week` using floor division (`//`), and `leftover_books` using modulus (`%`). Print both — what do they tell you about your reading plan?
+4.  Print the `type()` of `books`, `total_years_away`, and `books_per_week`. Are any of them different from what you expected?
+
+### Strings
+
+5.  Create two variables: `hero = "Odysseus"` and `epithet` set to a short phrase describing him (your own words are fine — e.g. "man of many wiles").
+6.  Concatenate `hero` and `epithet` with `+` (remember the space won't appear on its own). Then print `hero` and `epithet` the other way, with `print(hero, epithet)`. What's different about the two outputs?
+7.  Homer is sometimes translated as calling him "the man of twists and turns." Assign that **exact sentence, including the quotation marks,** to a variable called `homer_quote`. You'll need to either escape the internal quotes with `\"` or use a different quote character to wrap the string — your call, just make it run without a `SyntaxError`.
+
+### Booleans
+
+8.  Check whether `war_years` and `journey_years` are equal, using `==`. Store the result in a variable called `years_match` and print it.
+9.  Create a variable `book_number` and assign it any integer from 1 to 24.
+10. Create two more variables: `is_first_book` (`True` if `book_number` is 1) and `is_last_book` (`True` if `book_number` is 24).
+11. Create `is_bookend`, combining the two above with `or` — `True` if your chosen book is either the first or the last. Print `book_number` and `is_bookend` together in one `print()` call.
+
+### Book Profile
+
+12. Pick a book number from 1–24. Create three variables: `book_number` (an int), `my_guess` (a string — your own one-sentence guess about what might happen in that book; it doesn't need to be accurate), and `is_double_digit` (a boolean — whether `book_number` is 10 or greater).
+13. Print all three variables, then print the `type()` of each one.
+
+------------------------------------------------------------------------
+
+## Part 2 — Lists, Dictionaries, and Sets: Cataloguing the *Odyssey*
+
+### Setup
+
+In the Terminal, download Samuel Butler's 1900 prose translation of the *Odyssey* from Project Gutenberg, saving it as `odyssey.txt`:
+
+``` bash
+curl -o odyssey.txt https://www.gutenberg.org/cache/epub/1727/pg1727.txt
+```
+
+Then, in a Python code chunk in your `.qmd`, load it into a string:
+
+``` python
+with open("odyssey.txt", encoding="utf-8") as f:
+    text = f.read()
+```
+
+**New trick:** `.split()`, called on a string with no arguments, breaks it into a list of words, splitting wherever there's whitespace (spaces, tabs, line breaks):
+
+``` python
+words = text.split()
+```
+
+### Lists
+
+14. Print `len(words)` — how many tokens are in the whole downloaded file?
+15. Use slicing to print the first 20 words: `words[0:20]`. Does this look like the actual poem, or something else?
+16. Try a few different slices, further into the list, until you find one that clearly looks like real Homer rather than Project Gutenberg's own text. Record the slice (the indices) you used, and what it printed.
+
+### Sets
+
+17. Build `unique_words = set(words)`. Print `len(unique_words)`.
+18. Compute the type-token ratio for the whole file: `len(unique_words) / len(words)`.
+19. On Day 14 in class, the two 23-word opening lines we analyzed had type-token ratios around 0.78 and 0.91. Compare those to the ratio you just got for the whole *Odyssey*. Is it higher or lower — and in 2–3 sentences, explain *why* you think that happens as a text gets longer.
+
+### Dictionaries
+
+20. Try `text.count("Odysseus")`. What do you get?
+21. This 1900 translation doesn't actually use the Greek name "Odysseus" — translators of that era often preferred the Latin/Roman form instead. Use `"Ulysses" in text` to check your hunch, then find the count that actually works.
+22. Build a dictionary called `character_counts` that maps each of these names to how many times it appears in `text`, using the string method `.count()`: `"Ulysses"`, `"Penelope"` (his wife), `"Telemachus"` (his son), and `"Minerva"` (the goddess who helps him — also a Roman name, standing in for the Greek Athena).
+23. Print `character_counts`.
+24. Using dictionary indexing (not just eyeballing the printed output), confirm which of the four names appears most often.
+25. Add one more key of your choice to `character_counts` — any word, name, or place you're curious about — using its `.count()` in `text`.
+
+------------------------------------------------------------------------
+
+## Part 3 — Reflection
+
+At the bottom of your document, write a short (4–6 sentence) reflection:
+
+-   What surprised you about working with a full downloaded text, compared to the short hand-typed lists we used in class?
+-   The file you downloaded still has Project Gutenberg's own license text mixed into the start and end, which you never removed. Given the poem itself is well over 100,000 words, do you think that leftover boilerplate meaningfully changed your token/type counts? Why or why not?
+-   Of the three structures — list, dict, set — which felt most natural for the character-counting task, and why?
+
+------------------------------------------------------------------------
+
+## Submission
+
+Your `LIN_301` repo is public, so instead of uploading a file to Canvas, you'll submit a **link** straight to your `homework/hw3` folder on GitHub.
+
+1.  **Render your document.** Make sure your `.qmd` renders cleanly to HTML — this homework's code actually runs, unlike HW1 and HW2.
+2.  **Push everything.** Stage, commit, and push your entire `homework/hw3` folder — your `.qmd`, the rendered `.html`, and `odyssey.txt` — to your `LIN_301` GitHub repo.
+3.  **Get the folder's GitHub address.** On github.com, navigate into your repo to `homework/hw3`, and copy the URL from your browser's address bar. It'll look like:
+
+    ```         
+    https://github.com/your-username/LIN_301/tree/main/homework/hw3
+    ```
+
+4.  **Submit that link on Canvas** — no file upload needed.
+5.  Be sure to replace "lastname_firstname" with your actual last name and first name in your `.qmd` filename.
+
+------------------------------------------------------------------------
+
+## Grading Rubric (100 pts total)
+
+### Part 1 — Numbers, Strings, Booleans (35 pts)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| Numbers: variables, `total_years_away`, floor division/modulus, `type()` checks | 10 |
+| Strings: concatenation, `print()` with multiple arguments, escaped-quote string | 10 |
+| Booleans: equality check, `and`/`or` logic, combined print statement | 10 |
+| Book Profile activity: three variables of the correct types, printed with their `type()` | 5 |
+
+### Part 2 — Lists, Dicts, Sets (50 pts)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| File downloaded and loaded correctly; `.split()` used to build `words` | 5 |
+| List: token count, slicing used to inspect and locate real text | 10 |
+| Set: unique word count, type-token ratio computed and compared to class examples | 15 |
+| Dict: `character_counts` built correctly with `.count()`; most-frequent name correctly identified via indexing; new key added | 20 |
+
+### Part 3 — Reflection (10 pts)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| Thoughtful, specific answers to all three reflection prompts | 10 |
+
+### Presentation & Reproducibility (5 pts)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| File named correctly; document renders without errors; code and answers clearly organized by part; GitHub link points to the `hw3` folder | 5 |
