@@ -1,0 +1,339 @@
+---
+title: "Computation for Linguists"
+subtitle: "Beginning Python: Lists"
+date: "September 21, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: visual
+---
+
+# Setting Up for Today
+
+-   Create: `classwork/day_12`
+-   For `.qmd` & `.html` files, visit: <https://winjapati.github.io/courses/301/301_homepage.html>
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Time
+
+Recap from last module:
+
+-   Assign a value to a variable with `=`
+-   **Numbers**: `integer` and `float`
+-   **Strings**: text inside quotes `"..."` or `'...'`
+-   **Booleans**: `True` and `False`, used for logical comparisons
+
+Example:
+
+``` python
+this_class = "LIN_301"
+this_class == "LIN_305"
+# False
+```
+
+## Recap from Last Time
+
+We also learned some useful tricks in our aspiration activity:
+
+``` python
+word = input("Enter a word, any word: ")
+
+# Step 1: check if word starts with a voiceless stop
+starts_p = word[0] == "p"
+starts_t = word[0] == "t"
+starts_k = word[0] == "k"
+
+# Step 2: decide aspiration (simplified: only if it’s the first sound)
+aspirated = starts_p or starts_t or starts_k  ## one True is all you need for True
+
+print("Word:", word)
+print("Aspirated?", aspirated)
+```
+
+## Logical Operators
+
+-   `not` flips a boolean\
+-   `and` is true if **both** are true\
+-   `or` is true if **at least one** is true
+
+## Examples
+
+Check for Andrew with “w” or without:
+
+``` python
+(first_name == "Andrew") or (first_name == "Andre")
+```
+
+## Examples
+
+Check for Andrew, who is 47:
+
+``` python
+my_age = 47
+(first_name == "Andrew") and (my_age == 47)
+```
+
+## Examples
+
+Check for Andrew, who is not 46:
+
+``` python
+(first_name == "Andrew") and not (my_age == 46)
+```
+
+## Review Activity
+
+**Word Detective**
+
+Let's put last time's tricks to work together, before we move on to something new. Create it in the script `word_detective.py`.
+
+1.  Use `input()` to ask the user to type any word, and store it in a variable called `word`.
+2.  Use `word[0]` to grab its first letter, and store it in `first_letter`.
+3.  Create a variable `is_vowel` that checks whether `first_letter` equals `"a"`, `"e"`, `"i"`, `"o"`, or `"u"` — combine the comparisons with `or`.
+4.  Print `first_letter` and `is_vowel` together, in one `print()` call.
+
+# Lists
+
+## A New Data Structure
+
+Today we're examining the first of two very important data structures in Python: the **list** (**dictionaries** are next time).
+
+## Moving from Variables to Lists
+
+-   We can assign a single value to a variable:
+
+``` python
+first_novel = "Sense and Sensibility"
+```
+
+-   But what if we wanted to create a variable called `novels` with multiple values?
+    -   For this we can create a **list**
+-   Lists:
+    -   Are marked in Python in brackets `[...]`
+    -   Are **ordered** (such that the order of items is preserved)
+    -   Contain values that can be deleted and new ones can be added
+
+## Creating a List
+
+-   Jane Austen published **seven novels**, which we can put into a **list**:
+
+``` python
+novels = ["Sense and Sensibility", "Pride and Prejudice", "Mansfield Park", "Emma", "Northanger Abbey", "Persuasion", "Lady Susan"]
+print(novels)
+```
+
+## The `+` Operator
+
+``` python
+1 + 1
+"Dr." + " " + "Andrew" + " " + "Byrd"
+```
+
+## Adding Two Lists Together
+
+We can also use `+` to **concatenate** lists:
+
+``` python
+unfinished = ["The Watsons", "Sanditon"]
+novels + unfinished
+```
+
+## Recall the Activity from Earlier:
+
+``` python
+word = "pin"
+print(word[0])
+```
+
+-   What is printed?
+-   The number within the brackets `[ ... ]` is called the **index**
+
+## Indexing a List
+
+-   Just like `word[0]`, we access the first element of a list with the index `[0]`.
+
+``` python
+novels[0]  # first item
+novels[1]  # second item
+```
+
+-   Try:
+
+``` python
+novels[6]
+```
+
+## How about the reverse?
+
+-   Before we wanted to find out what the **7th** novel was by using novels\[6\].
+-   But what if we wanted to find out the index of a particular novel? (Such as *Lady Susan*)
+
+## Getting the Index of a Value
+
+-   We can use the **method** of a value.
+    -   Methods are indicated with `.method`
+    -   `value.method`
+-   Let's use the `list.index()` method to identify the index
+
+``` python
+novels.index("Lady Susan")
+# 6
+```
+
+## Getting the Index of a Value: Practice
+
+-   Let's use the `list.index()` method to identify the index
+    -   Using this method, identify the index of "Pride and Prejudice".
+
+## Aligning lists using indices
+
+-   We can use the index of one list to align with another list
+
+``` python
+pub_year = [1811, 1813, 1814, 1815, 1818, 1818, 1871]
+susan_index = novels.index("Lady Susan")
+pub_year[susan_index]  # 1871
+```
+
+-   What is this code really doing?
+
+## Reverse Lookup
+
+-   We could do the reverse, and find a specific book by year:
+
+``` python
+year_index = pub_year.index(1814)
+novels[year_index]
+# 'Mansfield Park'
+```
+
+-   What happens if we use `1818` as the index?
+
+## Negative Indexing
+
+We can also count from the end:
+
+``` python
+novels[-1]
+# 'Lady Susan'
+```
+
+## Activity
+
+-   Below is a list of novels written by George Orwell. Copy and paste this code to create both lists in your code.
+
+``` python
+orwell_novels = ["Animal Farm", "Nineteen Eighty-Four", "Burmese Days", "Keep the Aspidistra Flying", "Coming Up for Air"]
+pub_year = [1945, 1949, 1934, 1936, 1939]
+```
+
+-   Next, do the following:
+
+1.  Print the names of the first and last novel.
+2.  Use `.index()` to find the position of *Burmese Days*. Use that index to print the corresponding publication year from `pub_year`.
+3.  Find which novel was published in `1936`.
+
+# Other Useful List Operations
+
+## Slicing
+
+-   Let's return to Austen's `novels`
+-   We can use a **range** of values in lists, using the `:` symbol:
+
+``` python
+novels[0:3]
+# ['Sense and Sensibility', 'Pride and Prejudice', 'Mansfield Park']
+```
+
+-   Note: the stop index is not included! (It's not 0-3, it's 0-2)
+
+## Membership Test
+
+-   We can also check to see if a value is in a list using the operator `in`
+
+``` python
+"Emma" in novels          # True
+"Frankenstein" in novels  # False
+```
+
+-   Or with a variable:
+
+``` python
+novel_to_check = "Lady Susan"
+novel_to_check in novels
+```
+
+## Complex Lists
+
+-   Lists can contain pretty much anything — even other lists:
+
+``` python
+complex_list = [["Sense and Sensibility", 1811],
+                ["Pride and Prejudice", 1813],
+                ["Mansfield Park", 1814],
+                ["Emma", 1815]]
+```
+
+## Indexing in Complex Lists
+
+``` python
+complex_list[0]      # ["Sense and Sensibility", 1811]
+complex_list[2][1]   # 1814
+```
+
+-   Having a way to have two members within a list would be super useful for linguists
+-   Languages do have lexicons after all!
+    -   form : meaning
+-   Next time, we'll meet a data structure built exactly for that: the **dictionary**
+
+# Activity Answers
+
+## Activity 1
+
+``` python
+# 1. First and last novel
+print(orwell_novels[0])    # Animal Farm
+print(orwell_novels[-1])   # Coming Up for Air
+
+# 2. Publication year of Burmese Days
+burm_index = orwell_novels.index("Burmese Days")
+print(pub_year[burm_index])   # 1934
+
+# 3. Which novel was published in 1936?
+index_1936 = pub_year.index(1936)
+print(orwell_novels[index_1936])   # Keep the Aspidistra Flying
+```
+
+## Word Detective
+
+``` python
+word = input("Enter a word, any word: ")
+first_letter = word[0]
+
+is_vowel = (
+    first_letter == "a"
+    or first_letter == "e"
+    or first_letter == "i"
+    or first_letter == "o"
+    or first_letter == "u"
+)
+
+print(first_letter, is_vowel)
+```
+
+## Getting the Index of a Value: Answer
+
+``` python
+novels.index("Pride and Prejudice")
+# 1
+```
