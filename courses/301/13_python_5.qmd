@@ -1,0 +1,274 @@
+---
+title: "Computation for Linguists"
+subtitle: "Beginning Python: Dictionaries"
+date: "September 23, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: visual
+---
+
+# Setting Up for Today
+
+-   Create: `classwork/day_13`
+-   For `.qmd` & `.html` files, visit: <https://winjapati.github.io/courses/301/301_homepage.html>
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Time: Lists
+
+-   Lists are **ordered**, marked with `[...]`, and allow duplicates
+-   Indexing: `list[0]` (first item), `list[-1]` (last item)
+-   Slicing: `list[0:3]`
+-   Membership: `"Emma" in novels`
+-   Finding a position: `list.index("value")`
+
+## Quick Refresher
+
+``` python
+orwell_novels = ["Animal Farm", "Nineteen Eighty-Four", "Burmese Days"]
+
+orwell_novels[0]           # first item
+orwell_novels[-1]          # last item
+orwell_novels[0:2]         # slice
+"Animal Farm" in orwell_novels
+```
+
+## Where We Left Off
+
+-   Recall: a **complex list** let us pair two things together, like `["Sense and Sensibility", 1811]`
+-   Having a way to relate two pieces of information would be super useful for linguists — languages do have lexicons after all!
+    -   form : meaning
+
+# Dictionaries
+
+-   There's a more straightforward way to do this in Python
+-   We can use `dict` (**dictionaries**)
+-   Python's `dict` is marked not with `[...]`, but with curly braces `{...}`
+-   Note: entries are **unordered**.
+
+## Dictionaries
+
+-   We can relate **keys** (the first member) to **values** (the second) using `{}`:
+
+``` python
+novel_dict = {"Sense and Sensibility": 1811,
+              "Pride and Prejudice": 1813,
+              "Mansfield Park": 1814}
+```
+
+-   Note the structure { key_0 : value_0, key_1 : value_1, etc.}
+
+## Keys & Values
+
+-   Keys must be unique, but values can repeat.
+
+``` python
+austen_dict = {
+    "Sense and Sensibility": 1811,
+    "Pride and Prejudice": 1813,
+    "Mansfield Park": 1814,
+    "Emma": 1815,
+    "Northanger Abbey": 1818,   # duplicate value
+    "Persuasion": 1818,         # duplicate value
+    "Lady Susan": 1871
+}
+```
+
+## Indexing a Dictionary
+
+-   Get values by key:
+
+``` python
+austen_dict["Pride and Prejudice"]
+# 1813
+```
+
+-   What happens if you run `austen_dict[0]`?
+-   Note: it's easy to find the value of a key, but the opposite is much trickier.
+    -   Why might that be so?
+
+## Adding to a Dictionary
+
+-   To add a new key–value pair, use the following dict\["new_key"\] = new_value
+
+``` python
+austen_dict["The Rise of Han Solo"] = 2026
+```
+
+## Overwriting a key's value
+
+-   To change the value of a key, you simply restate it:
+
+    -   `dict["key"] = changed_value`
+
+``` python
+austen_dict["The Rise of Han Solo"] = 1872
+```
+
+## Deleting a `key`-`value` Pair from the Dictionary
+
+-   To delete a `key`-`value` pair:
+    -   `del dict["key"]`
+
+``` python
+del austen_dict["The Rise of Han Solo"]
+```
+
+## Checking Keys
+
+-   We can use `in` checks to check `keys` (but not `values`)!
+
+``` python
+"Pride and Prejudice" in austen_dict  # True
+1811 in austen_dict                   # False
+```
+
+## Dictionary Activity
+
+-   Below is a dictionary pairing George Orwell's novels with their publication years.
+
+``` python
+orwell_dict = {
+    "Animal Farm": 1945,
+    "Nineteen Eighty-Four": 1949,
+    "Burmese Days": 1934,
+    "Keep the Aspidistra Flying": 1936,
+    "Coming Up for Air": 1939
+}
+```
+
+## Dictionary Activity
+
+-   Print the year that *Animal Farm* was published using its key.
+-   Check if *Homage to Catalonia* is in the dictionary.
+-   Add Orwell's *Homage to Catalonia* (1937) to the dictionary. Print the dictionary again to confirm.
+-   Whoops, made a mistake! *Homage to Catalonia* was actually published in 1938. Fix that mistake.
+-   Remove *Coming Up for Air* from the dictionary.
+
+# Lists vs. Dictionaries
+
+When should you use lists? Dictionaries?
+
+## When to Use Lists
+
+-   You care about order (wordlists, texts, morpheme sequences).
+-   You want to access items by position (index):
+    -   e.g., `ipa_segments[0]` → first sound in a word.
+-   If you don't care about duplicates, *or* if you would like to allow them:
+    -   e.g., a corpus may have the same word many times
+
+Examples:
+
+``` python
+words = ["dog", "dog", "cat", "horse"]
+morphemes = ["un", "believe", "able"]
+```
+
+## When to Use Dictionaries
+
+-   You want to map one kind of information to another (`key` : `value`).
+-   Order is not important, but fast lookup is.
+-   Your entries (`keys`) are unique, though values can repeat.
+
+Examples:
+
+``` python
+#Mapping languages to families:
+lang_family = {"Latin": "Indo-European", "Finnish": "Uralic"}
+
+#Mapping words to glosses:
+lexicon = {"amo": "I love", "amas": "you love", "amat": "(s)he loves"}
+```
+
+## To Sum Up
+
+-   List = a sequence you want to keep in order (words, morphemes, phonemes).
+-   Dict = a mapping between two things (form → gloss, language → family, word → year).
+-   Next time: a third structure, built for a different job entirely — one that only keeps the *unique* items you give it.
+
+# Activity
+
+## Setup
+
+-   Below are two parallel lists, the same way we tracked Austen's novels and their years last time.
+
+``` python
+languages = ["Hittite", "Sanskrit", "Latin", "Gothic", "Tocharian"]
+dates = [-1650, -1200, -700, 350, 600]
+```
+
+-   (Negative numbers here mean BCE; positive numbers mean CE.)
+
+## Part 1: The List Way
+
+-   Use `.index()` to find the position of `"Latin"` in `languages`, then use that index to look up its date in `dates`.
+-   Now do the same for `"Gothic"`.
+-   This works, but it takes two steps and two lists every time you want one piece of information.
+
+## Part 2: Building a Dictionary
+
+-   Using `languages` and `dates`, build a dictionary called `attested` that pairs each language directly with its date. (Just type it out — one `key : value` pair per language, in order.)
+
+## Part 3: The Dictionary Way
+
+-   Look up the date for `"Latin"` in `attested` — directly, by key.
+-   Check whether `"Old Irish"` is a key in `attested`.
+-   Add `"Old Irish"` to `attested`, with a date of `700`.
+-   Remove `"Tocharian"` from `attested`.
+
+## Easier way: `list` to `dict`
+
+``` python
+for i in range(len(languages)):
+    attested[languages[i]] = dates[i]
+```
+
+# Activity Answers
+
+## Part 1: The List Way
+
+``` python
+# Latin
+latin_index = languages.index("Latin")
+print(dates[latin_index])   # -700
+
+# Gothic
+gothic_index = languages.index("Gothic")
+print(dates[gothic_index])  # 350
+```
+
+## Part 2 & 3: The Dictionary Way
+
+``` python
+attested = {
+    "Hittite": -1650,
+    "Sanskrit": -1200,
+    "Latin": -700,
+    "Gothic": 350,
+    "Tocharian": 600
+}
+
+# Direct lookup -- no index needed!
+print(attested["Latin"])   # -700
+
+# Membership check
+print("Old Irish" in attested)   # False
+
+# Adding a new key–value pair
+attested["Old Irish"] = 700
+print(attested)
+
+# Delete a key–value pair
+del attested["Tocharian"]
+print(attested)
+```
