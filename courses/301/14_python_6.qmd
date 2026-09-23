@@ -1,0 +1,223 @@
+---
+title: "Computation for Linguists"
+subtitle: "Beginning Python: Sets"
+date: "September 25, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: visual
+---
+
+# Setting Up for Today
+
+-   Create: `classwork/day_14`
+-   For `.qmd` & `.html` files, visit: <https://winjapati.github.io/courses/301/301_homepage.html>
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Time: Dictionaries
+
+-   Dicts: unordered `key : value` pairs, marked with `{...}`
+-   Lookup: `dict["key"]`
+-   Add or overwrite: `dict["key"] = value`
+-   Delete: `del dict["key"]`
+-   Checking: `"key" in dict` — checks **keys**, not values
+
+## Quick Refresher
+
+``` python
+orwell_dict = {"Animal Farm": 1945, "Burmese Days": 1934}
+
+orwell_dict["Animal Farm"]                  # 1945
+orwell_dict["Homage to Catalonia"] = 1938   # add a new pair
+"Animal Farm" in orwell_dict                # True
+```
+
+# Sets
+
+## A Problem
+
+-   Let's revisit the Brontë sisters:
+
+``` python
+sisters = ["Charlotte", "Emily", "Anne", "Charlotte", "Emily", "Charlotte"]
+```
+
+-   How many sisters are named here? How many *unique* names? Lists don't have a built-in way to answer the second question.
+
+## Introducing Sets
+
+-   A **set** is built exactly for "what are the *unique* items here?"
+-   Marked with curly braces `{...}` (like a dict), but holds single values (like a list). No duplicates, no order.
+
+``` python
+unique_sisters = set(sisters)
+print(unique_sisters)
+# {'Charlotte', 'Emily', 'Anne'}  -- order not guaranteed!
+```
+
+-   Try `unique_sisters[0]` — what happens? Why?
+
+## Sets in Action
+
+``` python
+unique_sisters.add("Branwell")
+"Emily" in unique_sisters       # fast membership check
+```
+
+-   Set math, using two novels' vocabularies:
+
+``` python
+jane_eyre_vocab = {"orphan", "governess", "moor", "fire", "love"}
+wuthering_heights_vocab = {"moor", "ghost", "revenge", "love", "storm"}
+
+jane_eyre_vocab | wuthering_heights_vocab   # union: either novel
+jane_eyre_vocab & wuthering_heights_vocab   # intersection: both novels
+jane_eyre_vocab - wuthering_heights_vocab   # difference: only Jane Eyre
+```
+
+# Types vs. Tokens
+
+## Types vs. Tokens
+
+-   A key linguistic distinction: how many words *total* (**tokens**) vs. how many *different* words (**types**)?
+
+``` python
+words = ["the", "cat", "sat", "on", "the", "mat", "the", "cat"]
+tokens = len(words)          # 8
+types = len(set(words))      # 5
+```
+
+-   This is one of the most common ways we'll use sets in this course: turning a list into a set just to count how many *different* things are in it.
+
+## Type-Token Ratio
+
+-   **Type-token ratio** (TTR) = types ÷ tokens — a real measure linguists use to describe how varied a text's vocabulary is.
+-   A text that repeats the same words a lot (casual speech, a child's early writing) has a **low** TTR.
+-   A text with rich, varied vocabulary has a **higher** TTR.
+-   A set is what makes this measurement possible in a single line of code.
+
+## Type-Token Ratio
+
+-   Earlier:
+
+``` python
+words = ["the", "cat", "sat", "on", "the", "mat", "the", "cat"]
+tokens = len(words)          # 8
+types = len(set(words))      # 5
+```
+
+-   What is the TTR of `words`?
+
+## How do you create lists of words from a single text?
+
+-   Let's revisit `alice.txt` and create a new file called: `alice_words.py`
+
+``` python
+with open("../../data/gutenberg/alice.txt", encoding="utf-8") as f:  # opens alice.txt for reading
+    text = f.read()                                           # reads the whole file into one string, called `text`
+
+text_split = text.split()
+```
+
+## TTR in `alice.txt`
+
+``` python
+with open("../../data/gutenberg/alice.txt", encoding="utf-8") as f:  # opens alice.txt for reading
+    text = f.read()                                           # reads the whole file into one string, called `text`
+
+text_split = text.split()[:1000] # Splits the text into words; only takes the first 1000
+
+tokens = len(text_split)
+types = len(set(text_split))
+
+ttr = types/tokens
+print(ttr)
+```
+
+## Why Sets Are Useful for Us
+
+-   Deduplicating: unique vocabulary, unique phonemes, unique speakers in a dataset.
+-   Comparing two texts or language varieties: shared vs. unique vocabulary, using `|`, `&`, `-`.
+-   Later this semester (WordNet), sets are what keep you from revisiting the same word meaning twice while exploring a network of related words.
+
+# Activity: Comparing Two Passages
+
+## Setup
+
+-   Below are the opening lines of two novels, already broken into word lists for you (no `.split()` necessary!) Copy both into your `qmd` or `py` file:
+
+``` python
+austen_opening = ["it", "is", "a", "truth", "universally", "acknowledged", "that", "a",
+                   "single", "man", "in", "possession", "of", "a", "good", "fortune",
+                   "must", "be", "in", "want", "of", "a", "wife"]
+
+bronte_opening = ["there", "was", "no", "possibility", "of", "taking", "a", "walk",
+                   "that", "day", "we", "had", "been", "wandering", "in", "the",
+                   "leafless", "shrubbery", "an", "hour", "in", "the", "morning"]
+```
+
+## Part 1: Tokens and Types
+
+1.  How many tokens (total words) are in each passage?
+2.  How many types (unique words) are in each passage?
+3.  Calculate the type-token ratio for each (types ÷ tokens). Which passage has the richer vocabulary by this measure?
+
+## Part 2: Comparing the Passages
+
+4.  Turn both lists into sets: `austen_words = set(austen_opening)`, and the same for Brontë.
+5.  Using a set operation, find which words appear in **both** openings.
+6.  Using a set operation, find which words are **unique to** the Austen passage.
+7.  Look at the words in that overlap. What kind of words tend to show up in both, rather than being distinctive to one author?
+
+## Part 3: Back to Lists
+
+8.  In the **original list** (not the set), how many times does the word `"a"` appear in the Austen passage? Try the list method `.count()`: `austen_opening.count("a")`.
+9.  Compare that to what the set told you about `"a"`. What did turning the list into a set hide from you — and why might that matter for a linguist?
+
+# Activity Answers
+
+## Part 1: Tokens and Types
+
+``` python
+# Austen
+print(len(austen_opening))            # 23 tokens
+print(len(set(austen_opening)))       # 18 types
+print(len(set(austen_opening)) / len(austen_opening))   # TTR ~ 0.78
+
+# Bronte
+print(len(bronte_opening))            # 23 tokens
+print(len(set(bronte_opening)))       # 21 types
+print(len(set(bronte_opening)) / len(bronte_opening))   # TTR ~ 0.91
+```
+
+-   Same number of tokens, but the Brontë passage has a higher type-token ratio — Austen's famous opening line leans on repetition (`"a"` four times) in a way this stretch of Brontë doesn't.
+
+## Part 2: Comparing the Passages
+
+``` python
+austen_words = set(austen_opening)
+bronte_words = set(bronte_opening)
+
+print(austen_words & bronte_words)
+# {'a', 'in', 'of', 'that'}   -- small function words, not content words
+
+print(austen_words - bronte_words)
+# the 14 words unique to the Austen passage
+```
+
+## Part 3: Back to Lists
+
+``` python
+print(austen_opening.count("a"))   # 4
+print("a" in austen_words)         # True -- but that's all a set can tell you
+```
