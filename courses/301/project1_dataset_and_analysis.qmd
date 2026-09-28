@@ -1,0 +1,157 @@
+---
+title: "Project Component 1 — Dataset & Type of Analysis"
+subtitle: "LIN 301: Computation for Linguists"
+author: "Dr. Andrew M. Byrd"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+fontsize: 12pt
+---
+
+## Overview
+
+**Due:** Monday, October 5, 2026\
+**Weight:** 5% of your final grade
+
+Your final project is a small piece of real linguistic research: you pick a dataset, clean it, analyze it with the tools we build in class, and present what you found on your own website and in a 5-minute video. It's built in five components across the semester, and this is the first one.
+
+At this stage you **don't** need to write any code, or clean or process anything. Your job is to:
+
+1.  Identify a dataset (or set of texts) you want to analyze.
+2.  Justify why it's interesting or relevant for linguistic analysis.
+3.  Name the **type of linguistic analysis** you plan to perform, and describe what kinds of patterns you might look for later in the semester.
+
+Pick something you're genuinely curious about: you'll be living with this dataset until December.
+
+::: callout-tip
+## See a model
+
+I'm doing the project alongside you. My own Component 1 is posted on the course website next to these instructions: [Example: Dr. Byrd's Component 1](project1_example_byrd.html). Use it to see what a finished write-up looks like, but your own write-up can be shorter. Mine is on the long side because it also has to work as a model.
+:::
+
+------------------------------------------------------------------------
+
+## What Counts as a Dataset?
+
+You may choose one of the following (or propose another with my approval):
+
+-   A short text or small collection of texts (literary works, news, speeches, transcripts, recipes, social media, etc.).
+-   A word list (e.g., a Swadesh list, vocabulary from a textbook, your own collection).
+-   A small corpus (or an excerpt of a larger corpus).
+-   Data from an online resource (e.g., Concepticon, a dictionary, an archive).
+
+The data can be in any language, or in more than one language. The one hard requirement is that it has to be available as **plain text, or something easily convertible to plain text** (a `.txt`, a `.csv`, a web page you can copy or download). A scanned PDF or a set of images is *not* easily convertible, so avoid it.
+
+**Keep it small and manageable:** roughly **100–1,000 words** is a good target. You can use a bigger set if your question needs one, but you can always scale up later, and scaling down in November is much harder.
+
+::: callout-warning
+## A note on copyright
+
+Your `LIN_301` repo is public. Public-domain texts (anything on Project Gutenberg, for instance) and openly licensed data are fine to upload. Copyrighted material, such as current song lyrics, recent novels, or paywalled news, can still be *analyzed*, but you shouldn't post the full text in a public repo. If that's your plan, mention it in your write-up and we'll work out how to handle it.
+:::
+
+------------------------------------------------------------------------
+
+## Types of Analysis
+
+You haven't learned all of these tools yet, and that's fine. Pick the direction(s) that fit your question, and we'll fill in the *how* as the semester goes on.
+
+| Type of analysis | What it asks | Tools (where we learn them) |
+|--------------------------|---------------------------|--------------------|
+| **Frequency & vocabulary** | Which words are most common? How rich is the vocabulary (type-token ratio)? | lists, sets, dictionaries (Python unit) |
+| **Pattern matching** | How often do certain spellings, sounds, affixes, or word shapes occur? | regular expressions (command line unit), `re` in Python |
+| **Comparison** | How do two authors, texts, time periods, or languages differ? | pandas; visualizations |
+| **Grammatical analysis** | What parts of speech, lemmas, or sentence structures show up? | spaCy |
+| **Semantic analysis** | Which meanings or semantic fields are represented, and how are they related? | WordNet |
+| **Cross-linguistic / non-English** | How do the patterns look in another language, or across translations? | spaCy & WordNet for other languages |
+
+Most good projects combine two of these, for example frequency plus comparison, or pattern matching plus semantic analysis.
+
+------------------------------------------------------------------------
+
+## Deliverables
+
+Create **one** Quarto document named `project1_lastname_firstname.qmd` in a folder called `course_project` in your `LIN_301` repo. You'll keep working in this same folder for every project component.
+
+Your write-up should be about **300–500 words** (roughly 1–2 pages) and have these five sections, using these headings:
+
+### 1. Dataset Description
+
+-   What is it? Give its source, size (approximately), and language(s).
+-   How did you find it? Include a **link** or citation.
+-   What format is it in, and how will you get it into plain text?
+
+### 2. Rationale
+
+-   Why did you choose this dataset?
+-   What do you find linguistically interesting about it?
+
+### 3. Type of Analysis
+
+-   Which type(s) of analysis from the table above do you plan to use?
+-   What is the *unit* you'll be counting or comparing (words, sentences, sounds, entries, texts, languages...)?
+
+### 4. Preliminary Questions
+
+-   List **2–4 questions** you think your data could answer. Be as specific as you can.
+    -   Weaker: "I'll look at word frequencies."
+    -   Stronger: "Are the most frequent content words in Lincoln's speeches different before and after 1863?"
+-   For at least one question, say what you *expect* to find, and why.
+
+### 5. A Look at the Data
+
+Paste a short excerpt of your raw data (5–10 lines) into a plain code block, exactly as it appears in the source, so I can see what you'll be working with:
+
+```` markdown
+```
+paste your excerpt here
+```
+````
+
+::: callout-note
+## Using AI
+
+Per the syllabus, you're allowed to use GenAI on the final project, including for brainstorming datasets or questions. If you do, add a short note at the end of your write-up saying what you used and how (e.g., "Used ChatGPT to brainstorm sources for Irish-language tweets").
+:::
+
+------------------------------------------------------------------------
+
+## Example Topics
+
+-   A set of tweets in Spanish (looking at slang or code-switching).
+-   A Swadesh word list for Quechua (analyzing sound correspondences).
+-   A short story in English (examining word frequency, sentence length, etc.).
+-   A glossary from an online dictionary (tracking semantic fields).
+-   Two translations of the same text (comparing vocabulary and word choice across translators).
+-   A set of recipes (what verbs of cooking are used, and how often?).
+
+------------------------------------------------------------------------
+
+## Submission
+
+As with the homework, you'll submit a **link** to your folder on GitHub instead of uploading a file.
+
+1.  **Render your document** to HTML and make sure it looks right.
+2.  **Push everything.** Stage, commit, and push your `course_project` folder (your `.qmd` and the rendered `.html`) to your `LIN_301` GitHub repo.
+3.  **Get the folder's GitHub address.** On github.com, navigate into your repo to `course_project` and copy the URL from the address bar. It'll look like:
+
+    ```
+    https://github.com/your-username/LIN_301/tree/main/course_project
+    ```
+
+4.  **Submit that link on Canvas.**
+5.  Be sure to replace "lastname_firstname" with your actual last and first name in your `.qmd` filename.
+
+------------------------------------------------------------------------
+
+## Grading Rubric (100 pts total)
+
+| Criteria | Points |
+|---------------------------------------------------|:-----------------:|
+| **Dataset Description:** source, approximate size, language(s), and format given; working link or citation | 20 |
+| **Rationale:** a clear, specific reason the data is linguistically interesting (not just "I like this book") | 20 |
+| **Type of Analysis:** at least one analysis type named and connected to the data; unit of analysis identified | 20 |
+| **Preliminary Questions:** 2–4 specific, answerable questions; at least one expectation explained | 25 |
+| **A Look at the Data:** raw excerpt included; data is plain text or easily convertible | 10 |
+| **Presentation:** file named correctly, renders without errors, headings used, GitHub link points to `course_project` | 5 |
