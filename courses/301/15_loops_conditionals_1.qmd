@@ -1,0 +1,488 @@
+---
+title: "Computation for Linguists"
+subtitle: "Beginning Python: Conditionals"
+date: "September 28, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: visual
+---
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Beginning Python
+
+-   Variables
+-   Three Value Types:
+    -   **Numbers**
+    -   **Strings**
+    -   **Boolean**
+
+## Recap from Beginning Python
+
+-   Lists:
+    -   Ordered, can add & delete
+    -   Within `[` ... `]`
+    -   `list.index()`
+    -   **Slicing**: `[X:Y]`
+        -   if you want to target margins, use blank: `[:2]`, `[-2:]`
+
+## Recap from Last Week
+
+-   Dictionaries:
+    -   `"key": value`
+    -   getting `value`: `dict["key"]`
+    -   adding/reassigning: `dict["key"] = value`
+    -   Checking `dict`: `"key" in dict`
+    -   Removing `key: value` pair -- `del dict["key"]`
+
+## Recap from Last Week
+
+-   Sets:
+    -   marked with `{ }`
+    -   items must be unique
+    -   unordered
+    -   add using method `.add()`
+    -   can convert lists using `set()`
+-   Type-Token Ratio (TTR)
+
+# Control Structures
+
+## Loops & Conditionals = Control Structures
+
+-   This is where programming languages truly become powerful
+-   Control structures:
+    -   control the flow of a program
+    -   tell the program what to do next, and in what order
+
+## Loops & Conditionals = Control Structures
+
+-   Loops:
+    -   `for` loops: do this task for a set number of times or for each item in a sequence
+    -   `while` loops: do this task as long as a condition is true
+-   Conditionals: check whether a condition is true; if so, execute the corresponding block of code
+    -   `if`, `elif`, `else`
+
+# Conditionals
+
+## Conditional Example: Odd or Even?
+
+-   Here are the operators we know:
+    -   `+` : plus
+    -   `-` : minus
+    -   `*` : times
+    -   `/` : divided by
+    -   `**` : to the power of
+    -   `//` : floor division
+    -   `%` : modulus
+
+## Conditional Example: Odd or Even?
+
+-   Using `% 2`
+
+``` python
+100 % 2  # 0
+117 % 2  # 1
+```
+
+## Conditional Example: Odd or Even?
+
+-   Let's write a short block of code that will print `x` is even if `True`.
+-   We'll assign `x = 50` on its own line, then the `if` statement.
+
+``` python
+x = 50
+if x % 2 == 0: print(x, "is even")      # 50 is even
+```
+
+-   Redefine `x = 51`.
+    -   What happens when you rerun the `if` statement?
+
+## Conditional Example: So What's Going On Here?
+
+``` python
+x = 50
+if x % 2 == 0: print(x, "is even")      # 50 is even
+```
+
+-   We're making the logical statement `x % 2 == 0`.
+    -   This statement is checking to see if the outcome of `x % 2` is exactly equal to `0`.
+    -   If we run it as its own line of code, we'll get True.
+
+``` python
+x % 2       # 0
+x % 2 == 0  # True 
+```
+
+## Conditionals: Proper Syntax
+
+-   To generalize the syntax of an `if` statement:
+
+``` python
+if condition: command()     # if x is true, do y
+```
+
+-   We could also do:
+
+``` python
+if condition: 
+    command()     # if x is true, do y
+```
+
+-   Note: the indent is **required**!
+-   Indented `if` statements are more common, as they frequently involve multiple lines of code.
+
+## Conditionals: Proper Syntax
+
+-   Knowing when and when not to indent is important.
+-   Take the following code block:
+
+``` python
+if x % 2 == 0: 
+    print(x, "is even.") 
+    print("This line only prints if it's even too.") 
+print("This line prints no matter what.") 
+```
+
+-   Run this code where `x = 50`
+
+## Conditionals: Proper Syntax
+
+-   Now run this code where `x = 51`
+
+``` python
+if x % 2 == 0: 
+    print(x, "is even.") 
+    print("This line only prints if it's even too.") 
+print("This line prints no matter what.") 
+```
+
+-   Why is `print("This line prints no matter what.")` not indented?
+    -   What would happen if we did indent it?
+
+## Python & Indentation
+
+-   Through indentations, Python will define the scope of a control statement.
+-   Lines of code with the same degree of indentation are controlled by the same control structures.
+-   The greater the indentation, the narrower the scope of the code.
+
+# `else` and `elif` Statements
+
+## `else` Statements
+
+-   Let's return to our original `if` statement.
+
+``` python
+if x % 2 == 0: 
+    print(x, "is even.") 
+    print("This line only prints if it's even too.") 
+print("This line prints no matter what.") 
+```
+
+-   Right now, this code only prompts a command if a number is even.
+    -   But what if we'd like it to also print a statement if the number were odd?
+
+## `else` Statements
+
+-   The `else` command:
+
+``` python
+if x % 2 == 0: 
+    print(x, "is even") 
+else: 
+    print(x, "is odd") 
+```
+
+-   Run this code block, redefining the value of x.
+
+## `elif` Statements
+
+-   There's one more **keyword** that we need to learn for our `if` statements.
+-   Currently our code identifies numbers as even or odd:
+
+``` python
+if x % 2 == 0: 
+    print(x, "is even") 
+else: 
+    print(x, "is odd") 
+```
+
+-   But what if the number is neither?
+    -   What if the number is `50.1`?
+
+## `elif` Statements
+
+-   Run the following code:
+
+``` python
+x = 50.1
+x % 2
+```
+
+## `elif` Statements
+
+-   You'll note that when using the modulus operator with decimals, the output will itself be a decimal
+-   For even numbers, you get between 0-1; for odd between 1-2
+-   So:
+    -   `Even % 2 == 0`
+    -   `Odd % 2 == 1`
+    -   `Decimal % 2 == 0.01 - 1.99`
+
+## `elif` Statements
+
+-   Let's translate this to code:
+
+``` python
+x = 50
+if x % 2 == 0:
+    print(x, "is even.")
+elif x % 2 == 1:
+    print(x, "is odd.")
+else:
+    print(x, "is a decimal.")
+```
+
+# Another Example: The Full Brontë
+
+## The Full Brontë
+
+-   Let's combine our knowledge of conditionals with lists.
+-   Let's say we wanted to identify which of the Brontë sisters wrote a particular novel.
+-   We'd first need to create a list of novels for each sister.
+
+``` python
+charlotte = ["The Professor", "Jane Eyre", "Shirley", "Villette"] 
+emily = ["Wuthering Heights"] 
+anne = ["Agnes Grey", "The Tenant of Wildfell Hall"] 
+```
+
+## Testing Novel Titles
+
+``` python
+novel = "Jane Eyre"     # we identify the novel we're looking at
+if novel in charlotte: 
+    print("Charlotte Brontë wrote", novel)  #we first check to see that our variable is in charlotte
+elif novel in emily: 
+    print("Emily Brontë wrote", novel) #then emily
+elif novel in anne: 
+    print("Anne Brontë wrote", novel) #then anne
+else: 
+    print(novel, "was not written by one of the Brontë sisters") #if the novel is in none of these, we get our else statement
+```
+
+-   Note that you can have multiple `elif` keywords in your conditional block!
+
+## Complexifying the Code
+
+-   Let's make our Brontë checking code a bit more complex
+    -   We can also keep track of how many times we've checked whether a particular sister wrote a book.
+    -   First, we need to initialize a dictionary that will keep track.
+
+``` python
+bronte_checks = {"charlotte": 0, "emily": 0, "anne" : 0}  #a starter dict, where the values of each bronte book is at 0
+```
+
+## Complexifying the Code
+
+-   Let's include a line of code in each part of the if block to increase the value in the dictionary by 1.
+
+``` python
+if novel in charlotte: 
+    bronte_checks["charlotte"] += 1
+    print("Charlotte Brontë wrote", novel) 
+elif novel in emily: 
+    bronte_checks["emily"] += 1
+    print("Emily Brontë wrote", novel) 
+elif novel in anne: 
+    bronte_checks["anne"] += 1
+    print("Anne Brontë wrote", novel) 
+else: print(novel, "was not written by one of the Brontë sisters")
+```
+
+## The Full Brontë
+
+``` python
+novel = "Wuthering Heights" 
+
+charlotte = ["The Professor", "Jane Eyre", "Shirley", "Villette"] 
+emily = ["Wuthering Heights"] 
+anne = ["Agnes Grey", "The Tenant of Wildfell Hall"] 
+
+bronte_checks = {"charlotte": 0, "emily": 0, "anne" : 0} 
+
+if novel in charlotte: 
+    bronte_checks["charlotte"] += 1
+    print("Charlotte Brontë wrote", novel) 
+elif novel in emily: 
+    bronte_checks["emily"] += 1
+    print("Emily Brontë wrote", novel)
+elif novel in anne: 
+    bronte_checks["anne"] += 1
+    print("Anne Brontë wrote", novel) 
+else: print(novel, "was not written by one of the Brontë sisters")
+
+print(bronte_checks)
+```
+
+# Activity: Phoneme Classifier
+
+## Activity: Phoneme Classifier
+
+-   Create a variable for a single sound, called `sound`.
+
+-   Next, define lists of vowels and consonants (use these or make your own):
+
+``` python
+vowels = ["a", "e", "i", "o", "u"]
+consonants = ["p", "t", "k", "m", "n", "s", "r", "l"]
+```
+
+-   Finally, write a conditional that classifies the `sound` and prints the result.
+    -   Hint: `print(sound, "is a vowel.")`
+
+## Activity, Part 2: Counting Sounds
+
+-   Now let's keep track of how many of each we've classified, like we did with the Brontës.
+-   Before your conditional, create a counter:
+
+``` python
+sound_checks = {"consonant": 0, "vowel": 0}
+```
+
+-   Add a line to each branch of your conditional that increases the right count by 1.
+-   Run it for a few different sounds, then `print(sound_checks)`.
+
+## Where Does the Counter Go?
+
+-   Split your code into **two** Python blocks within a qmd file in VS Code:
+    -   **Block 1 (setup):** your `vowels` and `consonants` lists, plus `sound_checks`. Run it **once**.
+    -   **Block 2 (classifier):** `sound = ...` and your conditional. Change `sound` and rerun this block as many times as you like.
+-   What happens if you move `sound_checks = {...}` into Block 2 and rerun it a few times? Why?
+
+## If you can't run a `.qmd`, how do we do this?
+
+-   A running script forgets everything when it ends, so the counter resets every time.
+-   Instead, we can keep the script running with a `while` loop:
+
+``` python
+while True:
+    sound = input("Enter a sound (or q to quit): ")
+    if sound == "quit":
+        break
+    print("You typed", sound)
+```
+
+-   `while True:` repeats the indented code over and over.
+-   `break` stops the loop, here when you type `q`.
+
+## The Classifier in a `while` Loop {.smaller}
+
+-   After defining `vowels`, `consonants`, and `sound_checks`, put your classifier inside the loop:
+
+``` python
+while True:
+    sound = input("Enter a sound (or quit to quit): ")
+    if sound == "quit":
+        break
+    if sound in vowels:
+        sound_checks["vowel"] += 1
+        print(sound, "is a vowel.")
+    elif sound in consonants:
+        sound_checks["consonant"] += 1
+        print(sound, "is a consonant.")
+    else:
+        print(sound, "is something else!")
+    print(sound_checks)
+```
+
+# If there's time: Handling Errors: `try` / `except`
+
+## A Different Kind of Branching
+
+-   Back in week 3, running `print(my_age)` before defining `my_age` gave us a `NameError`. Python **crashed** the whole program at that line.
+-   `if` / `elif` / `else` branch on whether something is *true*.
+-   `try` / `except` branch on whether something *causes an error* — and let your program keep running instead of crashing.
+
+## `try` / `except`
+
+``` python
+try:
+    print(my_age)
+except NameError:
+    print("That variable doesn't exist yet!")
+```
+
+-   Python attempts everything inside `try:`.
+-   If it hits an error, it jumps to `except:` instead of crashing — and the rest of your program keeps going.
+
+## Why Do Linguists Need This?
+
+-   You'll hit this constantly once you start reading real files (like next week's Detective Gutenberg activity): wrong filenames, weird encodings, missing data.
+-   Instead of your whole script dying on file 47 of 50, `try`/`except` lets you catch the problem, note it, and move on.
+
+``` python
+try:
+    with open("mystery_novel.txt", encoding="utf-8") as f:
+        text = f.read()
+except FileNotFoundError:
+    print("Couldn't find that file — check the filename and location.")
+```
+
+## Reading an Error Message
+
+-   Before you reach for `try`/`except`, get comfortable reading the error itself — Python usually tells you exactly what went wrong, on the last line:
+    -   `NameError` → you used a variable that doesn't exist yet.
+    -   `FileNotFoundError` → the file path is wrong.
+    -   `TypeError` → you mixed incompatible types (like `"5" + 5`).
+-   Read bottom to top. The last line is the actual error; everything above it is just *how you got there*.
+
+# Activity Solutions
+
+## Phoneme Classifier:
+
+``` python
+sound = "p"
+vowels = ["a", "e", "i", "o", "u"]
+consonants = ["p", "t", "k", "m", "n", "s", "r", "l"]
+
+if sound in vowels:
+    print(sound, "is a vowel.")
+elif sound in consonants:
+    print(sound, "is a consonant.")
+else:
+    print(sound, "is something else!")
+```
+
+## Phoneme Classifier, Part 2: Counter
+
+``` python
+# Block 1: setup (run once)
+vowels = ["a", "e", "i", "o", "u"]
+consonants = ["p", "t", "k", "m", "n", "s", "r", "l"]
+sound_checks = {"consonant": 0, "vowel": 0}
+```
+
+``` python
+# Block 2: classifier (rerun as often as you like)
+sound = "p"     # or: sound = input("Enter a sound: ")
+
+if sound in vowels:
+    sound_checks["vowel"] += 1
+    print(sound, "is a vowel.")
+elif sound in consonants:
+    sound_checks["consonant"] += 1
+    print(sound, "is a consonant.")
+else:
+    print(sound, "is something else!")
+
+print(sound_checks)
+```
