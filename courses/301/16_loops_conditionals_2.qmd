@@ -1,0 +1,477 @@
+---
+title: "Computation for Linguists"
+subtitle: "Beginning Python: For Loops"
+date: "September 30, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: visual
+---
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Time
+
+-   `if`
+-   `elif`
+-   `else`
+
+## Review: Indexing
+
+-   How do you identify the first character of a string?
+-   How about the last?
+
+## Review Activity: Plural Generator
+
+-   Create a new `.qmd` or `.py` file
+-   Copy and paste the following code:
+
+``` python
+word = input("Give me an English noun, in the singular: ")
+
+sibilants = ["s", "z", "ʃ", "ʒ", "tʃ", "dʒ"] 
+voiceless = ["p", "t", "k", "f", "θ"]
+```
+
+## Review Activity: Plural Generator
+
+-   Write a conditional (`if`, `elif`, `else`) that:
+    -   Checks whether the last character of `word` is in the list of `sibilants`
+    -   If yes, create a new variable `plural` by adding "ɪz" to the word
+    -   If no, check whether it's in the list of `voiceless`.
+        -   If yes, set `plural` to the word + "s"
+    -   Otherwise, set `plural` to the word + "z"
+-   Print the plural form.
+
+# Handling Errors: `try` / `except`
+
+## A Different Kind of Branching
+
+-   Back in week 3, running `print(my_age)` before defining `my_age` gave us a `NameError`. Python **crashed** the whole program at that line.
+-   `if` / `elif` / `else` branch on whether something is *true*.
+-   `try` / `except` branch on whether something *causes an error* — and let your program keep running instead of crashing.
+
+## `try` / `except`
+
+``` python
+try:
+    print(my_age)
+except NameError:
+    print("That variable doesn't exist yet!")
+```
+
+-   Python attempts everything inside `try:`.
+-   If it hits an error, it jumps to `except:` instead of crashing — and the rest of your program keeps going.
+
+## Why Do Linguists Need This?
+
+-   You'll hit this constantly once you start reading real files (like next week's Detective Gutenberg activity): wrong filenames, weird encodings, missing data.
+-   Instead of your whole script dying on file 47 of 50, `try`/`except` lets you catch the problem, note it, and move on.
+
+``` python
+try:
+    with open("mystery_novel.txt", encoding="utf-8") as f:
+        text = f.read()
+except FileNotFoundError:
+    print("Couldn't find that file — check the filename and location.")
+```
+
+## Reading an Error Message
+
+-   Before you reach for `try`/`except`, get comfortable reading the error itself — Python usually tells you exactly what went wrong, on the last line:
+    -   `NameError` → you used a variable that doesn't exist yet.
+    -   `FileNotFoundError` → the file path is wrong.
+    -   `TypeError` → you mixed incompatible types (like `"5" + 5`).
+-   Read bottom to top. The last line is the actual error; everything above it is just *how you got there*.
+
+# For Loops
+
+## Back to Brontë
+
+``` python
+charlotte = ['The Professor', 'Jane Eyre', 'Shirley', 'Villette']
+```
+
+-   How would we print up each member of this list? We could:
+
+``` python
+print(charlotte[0])
+print(charlotte[1])
+print(charlotte[2])
+print(charlotte[3])
+```
+
+## Back to Brontë
+
+-   But what if we don't know how many novels there are?
+-   We could use `len()`, which tells us the length of a string, list, etc.
+
+``` python
+print(len(charlotte))
+```
+
+## Back to Brontë
+
+-   You might think that by knowing the `len()` of a list, and by creating a **counter**, we could get our script to print each book one by one...
+
+``` python
+char_index = 0
+if char_index < len(charlotte):
+    print(charlotte[char_index])
+    char_index += 1
+else:
+    ????
+```
+
+-   This won't work because `if` only runs once -- we have no way to **iterate** (to repeat the action over and over again)
+    -   We need another way to go about this.
+
+## `if` Statements vs. `for` Loops
+
+-   `if` statements are used to control which pieces of code are run, depending on certain conditions
+-   `for` loops are used to run the same block of code over and over again on items in an iterable.
+
+## Back to Brontë
+
+``` python
+for title in charlotte: 
+    print(title)
+```
+
+-   What is this code saying?
+
+## Back to Brontë
+
+``` python
+for book in charlotte: 
+    print(book)
+```
+
+-   `title`, `book` are temporary (loop) variables
+
+## Temporary Variables
+
+-   The very last value of the loop variable (`book`, `title`, etc.) persists after the loop is finished:
+
+``` python
+charlotte = ['The Professor', 'Jane Eyre', 'Shirley', 'Villette']
+for title in charlotte: 
+    print(title)
+print(title)
+```
+
+## `for` Loops
+
+![By Dr. Josef Fruehwald](for_loop.gif){fig-alt="Dr. Fruehwald's awesome gif about `for` loops" fig-align="center"}
+
+## Activity: `for` loops
+
+Below is a list of five important terms in Linguistics:
+
+``` python
+words = ["phoneme", "phrase", "morpheme", "reconstruction", "index"]
+```
+
+**Your task**: Write a `for` loop that prints out:
+
+1.  the word
+2.  the length (`len()`) of each word in the list
+
+Each printed statement should look like: "The word python has 6 letters."
+
+# Cleaning Text
+
+## Cleaning Text
+
+-   Let's now put our knowledge of conditionals and loops to work.
+-   This will help you as you work towards your final projects.
+-   We'll need to learn how to "clean" the data.
+
+## Verifying your Directory
+
+-   First, make sure that you're in the `day_16` folder.
+
+## Downloading Using Python
+
+-   Next, we're going to download a new book from Project Gutenberg.
+-   To do so, run the following code:
+
+``` python
+import urllib.request
+
+url = "https://www.gutenberg.org/files/141/141-0.txt"  # Mansfield Park
+filename = "../../data/gutenberg/mansfield_park.txt"
+
+try:
+    urllib.request.urlretrieve(url, filename)
+    print("Downloaded:", filename)
+except FileNotFoundError:
+    print("Couldn't save the file — does the ../../data/gutenberg/ folder exist?")
+```
+
+## Opening up Files in Python
+
+-   Let's now open up our file using our `with open(...)` block
+
+``` python
+with open("../../data/gutenberg/mansfield_park.txt", "r", encoding="utf-8") as f:
+    book_text = f.read()
+```
+
+-   What happens if you slice the variable, running `print(book_text[:200])`?
+
+## Opening up Files in Python
+
+-   If we instead want to grab all of the lines separately, we can run:
+
+``` python
+with open("../../data/gutenberg/mansfield_park.txt", "r", encoding="utf-8") as f:
+    book_lines = f.readlines()
+
+print(len(book_lines))
+```
+
+-   Now we can grab individual lines from the book:
+
+``` python
+book_lines[139]
+```
+
+## Cleaning Up the Book
+
+-   Do you see how each line ends in `\n`? That's indicating a line break.
+
+``` bash
+'Such were its immediate effects, and within a twelvemonth a more\n'
+```
+
+-   Let's get rid of that character using the `.rstrip()` method.
+
+``` python
+one_line = book_lines[139]
+one_line.rstrip()
+```
+
+## Cleaning Up the Book
+
+-   Some lines also start with unnecessary white space.
+
+``` python
+two_line = book_lines[140]
+two_line
+```
+
+-   Let's get rid of that stuff, too, by tacking on the `.lstrip()` method.
+
+``` python
+two_line.rstrip().lstrip()
+```
+
+-   Or we can just use `.strip()`, which will handle both sides at once:
+
+``` python
+two_line.strip()
+```
+
+## Cleaning Up the Book
+
+-   Sometimes, too, we want to convert everything to either uppercase or lowercase, so strings like `"The"` and `"the"` will count as the same word.
+-   Methods:
+    -   `.lower()`
+    -   `.upper()`
+
+``` python
+one_line.strip().lower()
+```
+
+# Building New Lists
+
+## Cleaning Every Line?
+
+-   We now know how to clean *one* line.
+-   A `for` loop lets us clean *every* line:
+
+``` python
+for line in book_lines[100:105]:
+    print(line.strip().lower())
+```
+
+-   But `print()` just displays the result -- it doesn't **save** it anywhere.
+-   How do we end up with a new *list* of cleaned lines?
+
+## `.append()`
+
+-   `.append()` adds an item to the end of a list:
+
+``` python
+terms = ["phoneme", "morpheme"]
+terms.append("lexeme")
+print(terms)
+```
+
+-   So we can start with an **empty list** and fill it up inside a loop.
+
+## Building a List with a Loop
+
+``` python
+messy = [" Phoneme\n", "MORPHEME ", "  syntax", "Semantics\n"]
+
+clean = []                            # 1. start with an empty list
+for term in messy:                    # 2. go through each item
+    clean.append(term.strip().lower())   # 3. add the cleaned version
+
+print(clean)
+```
+
+-   What does `clean` look like? How about `messy`?
+
+## List Comprehensions
+
+-   This pattern (empty list → loop → append) is so common that Python has a shortcut: the **list comprehension**
+
+``` python
+clean = [term.strip().lower() for term in messy]
+```
+
+-   Same result, one line, no `.append()`.
+
+## Reading a List Comprehension
+
+``` python
+clean = [term.strip().lower() for term in messy]
+```
+
+-   Read it from the middle out:
+    -   `for term in messy` → go through each item in `messy`, calling it `term`
+    -   `term.strip().lower()` → what to do to each `term`
+    -   `[ ... ]` → collect all the results into a new list
+-   General template: `[` *do something to* `item` `for item in some_list]`
+
+## Loop vs. Comprehension
+
+:::: {.columns}
+::: {.column width="50%"}
+``` python
+clean = []
+for term in messy:
+    clean.append(term.strip().lower())
+```
+:::
+::: {.column width="50%"}
+``` python
+clean = [term.strip().lower() for term in messy]
+```
+:::
+::::
+
+-   Same three parts: the source list, the loop variable, and what to do to each item.
+
+## Quick Practice
+
+``` python
+words = ["phoneme", "phrase", "morpheme", "reconstruction", "index"]
+```
+
+-   Write a list comprehension that creates:
+    1.  `shouting`: every word in upper case
+    2.  `lengths`: the length of every word
+    3.  `firsts`: the first letter of every word
+
+# Activity
+
+## Activity: Cleaning *Mansfield Park*
+
+1.  Open "mansfield_park.txt" and read it in **line by line**, saving it as `book_lines`
+2.  Write a **list comprehension** that strips the whitespace from both sides of each line *and* makes it lower case. Save the result as `mansfield_cleaned`.
+3.  Check that it worked by comparing the same stretch of both lists:
+
+``` python
+print(book_lines[100:105])
+print(mansfield_cleaned[100:105])
+```
+
+-   Do the two lists have the same `len()`? Why?
+
+## Activity: Challenge
+
+-   Many of the lines in `mansfield_cleaned` are now empty strings (`''`). Let's get rid of them.
+-   A list comprehension can take an `if` at the end, keeping only the items that pass the test:
+
+``` python
+[item for item in some_list if CONDITION]
+```
+
+-   Create `mansfield_nonempty`, which contains only the lines of `mansfield_cleaned` that are not `''`.
+-   How many lines did you remove?
+
+# Activity Answers
+
+## Plural Generator
+
+``` python
+word = "bʌs"
+
+sibilants = ["s", "z", "ʃ", "ʒ", "tʃ", "dʒ"] 
+voiceless = ["p", "t", "k", "f", "θ"]
+
+if word[-1] in sibilants:
+    plural = word + "ɪz" 
+elif word[-1] in voiceless:
+    plural = word + "s" 
+else: 
+    plural = word + "z"
+
+print("Plural: ", plural)
+```
+
+## `for` loop Activity
+
+``` python
+words = ["phoneme", "phrase", "morpheme", "reconstruction", "index"]
+for wd in words:
+    print("The word", wd, "has", len(wd), "letters.")
+```
+
+## List Comprehension Practice
+
+``` python
+words = ["phoneme", "phrase", "morpheme", "reconstruction", "index"]
+
+shouting = [wd.upper() for wd in words]
+lengths = [len(wd) for wd in words]
+firsts = [wd[0] for wd in words]
+```
+
+## Cleaning Mansfield
+
+``` python
+with open("../../data/gutenberg/mansfield_park.txt", "r", encoding="utf-8") as f:
+    book_lines = f.readlines()
+
+# Clean it: strip whitespace + lowercase
+mansfield_cleaned = [line.strip().lower() for line in book_lines]
+
+# Compare the same stretch of both lists
+print(book_lines[100:105])
+print(mansfield_cleaned[100:105])
+
+# Same length: one cleaned line for every original line
+print(len(book_lines), len(mansfield_cleaned))
+```
+
+## Cleaning Mansfield: Challenge
+
+``` python
+mansfield_nonempty = [line for line in mansfield_cleaned if line != ""]
+
+print(len(mansfield_cleaned) - len(mansfield_nonempty), "empty lines removed")
+```
