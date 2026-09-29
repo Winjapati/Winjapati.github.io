@@ -174,15 +174,6 @@
   },
   {
     "year": 2019,
-    "date": "3/19",
-    "category": "Translation",
-    "cv_section": "Translation of PIE and Ancient Languages",
-    "title": "<em>Draw Curiosity</em>",
-    "rest": ": translation featured in “Let’s Talk about PIE (Proto-Indo-European) – Reconstructing Old Languages”",
-    "url": "https://www.youtube.com/watch?v=x-x9EUCTzRo"
-  },
-  {
-    "year": 2019,
     "date": "6/19",
     "category": "Interview",
     "cv_section": "Interviews and Media Coverage",
@@ -214,7 +205,7 @@
     "category": "Interview",
     "cv_section": "Interviews and Media Coverage",
     "title": "Let’s Talk About PIE (Proto-Indo-European) – Reconstructing Old Languages",
-    "rest": ", <em>Draw Curiosity</em>",
+    "rest": ", <em>Draw Curiosity</em>, featuring our PIE translation",
     "url": "https://www.youtube.com/watch?v=x-x9EUCTzRo&t=199s"
   },
   {
@@ -277,8 +268,8 @@
     "date": "4/17",
     "category": "Interview",
     "cv_section": "Interviews and Media Coverage",
-    "pre": "National Geographic’s <em>Origins</em>: ",
     "title": "UKNow",
+    "rest": " feature on the languages created for National Geographic’s <em>Origins</em>",
     "url": "https://uknow.uky.edu/professional-news/uk-linguist-andrew-byrd-creates-languages-national-geographics-origins-journey"
   },
   {

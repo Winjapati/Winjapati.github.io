@@ -15,7 +15,7 @@
       "<em>K̂orh₂ikós and the Snake</em>",
       "<em>The Cattle Raid</em>",
       "<em>The Labors of K̂orh₂ikós</em>",
-      "<em>In the Beginning</em>"
+      "<em>Two Births</em>"
     ],
     "note": "Five volumes; novella titles are tentative."
   },
@@ -35,7 +35,7 @@
   {
     "year": 2026,
     "category": "Grant/Award (Internal)",
-    "text": "Award: CURATE award, $5,000, to continue work on DERBi PIE.",
+    "text": "Award: CURATE award, $5,000, to integrate dictionaries of multiple languages into DERBi PIE.",
     "url": null,
     "abstract": ""
   },
@@ -74,7 +74,7 @@
     "category": "Talk",
     "date": "9/24",
     "title": "The Business of Making Conlangs (with Brenna Reinhart Byrd)",
-    "venue": "UTA guest lecture in <em>Constructed Languages</em>, Austin, TX",
+    "venue": "UT Austin guest lecture in <em>Constructed Languages</em>, Austin, TX",
     "url": null,
     "abstract": ""
   },
@@ -206,7 +206,8 @@
       "A.M. Byrd"
     ],
     "title": "Teaching Proto-Indo-European as a Constructed Language",
-    "venue": "Jeffrey Penske, Amy Fountain, and Nathan Sanders (eds.), Language Invention in Linguistics Pedagogy, Oxford: OUP",
+    "venue": "Jeffrey Punske, Nathan Sanders, and Amy V. Fountain (eds.), Language Invention in Linguistics Pedagogy",
+    "publisher": "Oxford: Oxford University Press",
     "volume": "",
     "pages": "186–207",
     "url": "https://oxford.universitypressscholarship.com/view/10.1093/oso/9780198829874.001.0001/oso-9780198829874-chapter-12",
@@ -267,7 +268,7 @@
       "A.M. Byrd"
     ],
     "title": "Motivating Lindeman’s Law",
-    "venue": "Adam Alvah Catt, Ronald I. Kim, and Brent Vine (eds.), QAZZU warrai. Anatolian and Indo-European Studies in Honor of Kazuhiko Yoshida",
+    "venue": "Adam Alvah Catt, Ronald I. Kim, and Brent Vine (eds.), QAZZU warrai: Anatolian and Indo-European Studies in Honor of Kazuhiko Yoshida",
     "volume": "",
     "pages": "6–20",
     "url": "http://speakingprimal.com/wp-content/uploads/2019/12/Byrd-Motivating-Lindemans-Law.pdf",
@@ -339,7 +340,8 @@
       "A.M. Byrd"
     ],
     "title": "121. The Phonology of Proto-Indo-European",
-    "venue": "Handbook of Comparative and Historical Indo-European Linguistics",
+    "venue": "Jared Klein, Brian Joseph, and Matthias Fritz (eds.), Handbook of Comparative and Historical Indo-European Linguistics",
+    "publisher": "Berlin: De Gruyter Mouton",
     "volume": "vol. 3",
     "pages": "2056–79",
     "url": "https://www.degruyter.com/view/product/487972",
@@ -349,7 +351,7 @@
   {
     "year": 2018,
     "category": "Grant (External)",
-    "text": "Grant: NEH Digital Projects for the Public Discovery Grant — $30,000, to work on the development of The Anatolian Trail: an Indo-European Adventure",
+    "text": "Grant: NEH Digital Projects for the Public Discovery Grant — $30,000, to work on the development of <em>The Anatolian Trail: An Indo-European Adventure</em>",
     "url": "https://apps.neh.gov/publicquery/AwardDetail.aspx?gn=MD-263922-19",
     "abstract": ""
   },
@@ -388,7 +390,7 @@
       "A.M. Byrd"
     ],
     "title": "The Rules of Reconstruction: Making our Etymologies More Grounded",
-    "venue": "Etymology and the European Lexicon, Proceedings of the 14<sup>th</sup> Fachtagung of the Indogermanische Gesellschaft, 17-22 September 2012, Copenhagen, Denmark",
+    "venue": "Etymology and the European Lexicon, Proceedings of the 14<sup>th</sup> Fachtagung of the Indogermanische Gesellschaft, 17–22 September 2012, Copenhagen, Denmark",
     "volume": "",
     "pages": "81–92",
     "url": "https://reichert-verlag.de/buchreihen/sprachwissenschaft_reihen/sprachwissenschaft_akten_der_fachtagung_der_indogermanischen_gesellschaft/9783954902026_etymology_and_the_european_lexikon-detail",
@@ -447,7 +449,7 @@
       "A.M. Byrd"
     ],
     "title": "Stressful Conversions: Internal Derivation within the Compositional Approach",
-    "venue": "Tavet Tat Satyam. Studies in Honor of Jared S. Klein on the Occasion of His Seventieth Birthday",
+    "venue": "A.M. Byrd, Jessica DeLisi, and Mark Wenthe (eds.), Tavet Tat Satyam: Studies in Honor of Jared S. Klein on the Occasion of His Seventieth Birthday",
     "volume": "",
     "pages": "322–333",
     "url": "http://www.beechstave.com/tavet.htm",
@@ -462,7 +464,7 @@
       "A.M. Byrd"
     ],
     "title": "Schwa Indogermanicum and Compensatory Lengthening",
-    "venue": "Sahasram Ati Srajas. Indo-Iranian and Indo-European Studies in Honor of Stephanie W. Jamison",
+    "venue": "Dieter Gunkel, Joshua T. Katz, Brent Vine, and Michael Weiss (eds.), Sahasram Ati Srajas: Indo-Iranian and Indo-European Studies in Honor of Stephanie W. Jamison",
     "volume": "",
     "pages": "18–28",
     "url": "http://www.beechstave.com/sahas.htm",
@@ -547,14 +549,14 @@
   {
     "year": 2013,
     "category": "Grant/Award (Internal)",
-    "text": "Award: Southeastern Conference Visiting Faculty Travel Grant, $2500.",
+    "text": "Award: Southeastern Conference Visiting Faculty Travel Grant, $2,500.",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2013,
     "category": "Grant/Award (Internal)",
-    "text": "Award: Academic Planning, Analytics and Technologies Grant, $1500, to develop an introductory course in Linguistics.",
+    "text": "Award: Academic Planning, Analytics and Technologies Grant, $1,500, to develop an introductory course in Linguistics.",
     "url": null,
     "abstract": ""
   },
@@ -571,8 +573,8 @@
     "year": 2013,
     "category": "Talk",
     "date": "5/13",
-    "title": "The Phonology of Proto-Indo-European. Day 1: Segmental Phonology; Day 2: Suprasegmental Phonology; Day 3: Rules & Constraints; Day 4: Future Directions. (SEC Faculty Exchange Seminar Series)",
-    "venue": "University of Georgia, Athens",
+    "title": "The Phonology of Proto-Indo-European",
+    "venue": "SEC Faculty Exchange Seminar Series, four lectures (Segmental Phonology; Suprasegmental Phonology; Rules & Constraints; Future Directions), University of Georgia, Athens",
     "url": null,
     "abstract": ""
   },
@@ -610,12 +612,12 @@
     "authors": [
       "A.M. Byrd"
     ],
-    "title": "Deriving Dreams from the Divine: Hittite tesha-/zash(a)i-",
+    "title": "Deriving Dreams from the Divine: Hittite <em>tešḫa-/zašḫ(a)i-</em>",
     "venue": "Historische Sprachforschung",
     "volume": "124",
     "pages": "96–105",
     "cv_year": "2011 [2012]",
-    "url": "http://rootsofeurope.ku.dk/english/activities/sound_of_indo-european/",
+    "url": "https://www.jstor.org/stable/41553566",
     "pdf": "research/offprints/byrd_deriving_dreams_from_the_divine.pdf",
     "abstract": ""
   },
@@ -645,7 +647,7 @@
       "A.M. Byrd"
     ],
     "title": "Predicting Indo-European Syllabification through Phonotactic Analysis",
-    "venue": "The Sound of Indo European - selected papers from the conference, held in Copenhagen 16-19 April 2009",
+    "venue": "The Sound of Indo-European: Selected Papers from the Conference Held in Copenhagen, 16–19 April 2009",
     "volume": "",
     "pages": "9–28",
     "url": "http://rootsofeurope.ku.dk/english/activities/sound_of_indo-european/",
@@ -666,7 +668,7 @@
     "category": "Conference Talk",
     "date": "6/11",
     "title": "`Laryngeal Vocalization’ as Schwa Epenthesis: Why does Compensatory Lengthening not Occur?",
-    "venue": "ECIEC 30, Cambridge, MA",
+    "venue": "30<sup>th</sup> East Coast Indo-European Conference, Cambridge, MA",
     "url": null,
     "abstract": ""
   },
@@ -707,8 +709,8 @@
     "year": 2009,
     "category": "Conference Talk",
     "date": "3/09",
-    "title": "Deriving Dreams from the Divine: Hittite <em>tesha-/zash(a)i-</em>",
-    "venue": "The 219<sup>th</sup> Meeting of the American Oriental Society, Albuquerque, NM",
+    "title": "Deriving Dreams from the Divine: Hittite <em>tešḫa-/zašḫ(a)i-</em>",
+    "venue": "219<sup>th</sup> Meeting of the American Oriental Society, Albuquerque, NM",
     "url": null,
     "abstract": ""
   },
@@ -728,7 +730,7 @@
     "authors": [
       "A.M. Byrd"
     ],
-    "title": "Return to Dative anmaimm",
+    "title": "Return to Dative <em>anmaimm</em>",
     "venue": "Ériu",
     "volume": "56",
     "pages": "145–55",

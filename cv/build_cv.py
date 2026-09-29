@@ -129,6 +129,14 @@ def fmt_date(d):
     return d
 
 
+def expected(d):
+    """Prefix 'Exp.' to an M/YY date that lies in the future."""
+    m = re.fullmatch(r"(\d{1,2})/(\d{2})", str(d))
+    if m and (2000 + int(m.group(2)), int(m.group(1))) > (dt.date.today().year, dt.date.today().month):
+        return "Exp. " + fmt_date(d)
+    return fmt_date(d)
+
+
 # ---------------------------------------------------------------- pieces
 def authors_tex(auths, editors=False):
     names = [r"\textbf{" + esc(a) + "}" if a in SELF_NAMES else esc(a) for a in auths]
@@ -153,9 +161,12 @@ def pub_article(e):
         venue_t = "In " + tex(m.group(1)) + r" (eds.), \emph{" + tex(m.group(2)) + "}"
     else:
         venue_t = r"\emph{" + tex(venue) + "}"
-    vol = " " + tex(e["volume"]) if e.get("volume") else ""
+    vol = ""
+    if e.get("volume"):
+        vol = (", " if e["volume"].startswith("vol.") else " ") + tex(e["volume"])
+    pub = ". " + tex(e["publisher"]) if e.get("publisher") else ""
     pages = ", " + tex(e["pages"]) if e.get("pages") else ""
-    return f"{authors_tex(e['authors'])}. ``{title}.'' {venue_t}{vol}{pages}.{pdf_link(e)}"
+    return f"{authors_tex(e['authors'])}. ``{title}.'' {venue_t}{vol}{pages}{pub}.{pdf_link(e)}"
 
 
 def pub_book(e):
@@ -197,18 +208,26 @@ def talk(e):
     if m:
         title = f"``{m.group(1)}'' {m.group(2)},"
     else:
-        title = f"``{title},''"
+        title = f"``{title}''" if re.search(r"[?!]$", plain(e["title"])) else f"``{title},''"
     return fmt_date(e.get("date") or e["year"]), f"{link(e.get('url'), title)} \\venue{{{tex(e['venue'])}}}."
 
 
 def end(s):
     """Add a final period unless the text already ends in punctuation (possibly inside quotes/braces)."""
-    return s if re.search(r"[.!?][}'’”]*\s*$", s) else s + "."
+    if re.search(r"[.!?][}'’”]*\s*$", s):
+        return s
+    m = re.search(r"”(}*)\s*$", s)
+    return s[: m.start()] + ".”" + m.group(1) if m else s + "."
+
+
+def quote_comma(s):
+    """Move a comma that follows a closing quote (possibly after a link's closing brace) inside it."""
+    return re.sub(r"”(}*),", r",”\1", s)
 
 
 def pe_body(e):
     t = tex(e.get("title", ""))
-    return tex(e.get("pre", "")) + link(e.get("url"), t) + tex(e.get("rest", ""))
+    return quote_comma(tex(e.get("pre", "")) + link(e.get("url"), t) + tex(e.get("rest", "")))
 
 
 # ---------------------------------------------------------------- document
@@ -300,7 +319,7 @@ def build():
     courses = [c["name"] for c in T["courses_regular"] + T["courses_other"]]
     body.append("\\begin{courselist}\n" + "\n".join(f"\\item {esc(c)}" for c in courses) + "\n\\end{courselist}\n")
     body.append(subsection("Theses Supervised"))
-    body.append(entries((fmt_date(t["date"]), f"{esc(t['name'])}, {esc(t['degree'])}, University of Kentucky. "
+    body.append(entries((expected(t["date"]), f"{esc(t['name'])}, {esc(t['degree'])}, University of Kentucky. "
                          + link(t.get("url"), f"``{tex(t['title'])}.''")) for t in T["theses"]))
     body.append(subsection("Other Advising"))
     body.append(entries((fmt_date(a["date"]), esc(a["name"]) + (f", {esc(a['program'])}" if a.get("program") else "")

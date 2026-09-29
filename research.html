@@ -160,6 +160,7 @@
         let v = e.venue || '';
         if(e.volume) v += ' ' + e.volume;
         if(e.pages) v += ', ' + e.pages;
+        if(e.publisher) v += '. ' + e.publisher;
         return `${e.type === 'book' ? 'Book' : 'Publication'}: ${e.title}${withOthers(e)} — ${v}`;
       }
       return `${e.category}: ${e.title} — ${e.venue}`;
