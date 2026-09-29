@@ -185,7 +185,8 @@ def pub_digital(e):
 def pub_contracted(e):
     venue = f" ({tex(e['venue'])})" if e.get("venue") else ""
     note = f" {tex(e['note'])}" if e.get("note") else ""
-    return f"{authors_tex(e['authors'])}. {tex(e['title'])}{venue}. Under contract.{note}"
+    status = esc(e["status"]).capitalize()
+    return f"{authors_tex(e['authors'])}. {tex(e['title'])}{venue}. {status}.{note}"
 
 
 def grant(e):
@@ -289,7 +290,7 @@ def build():
     body.append(section("Publications"))
     contracted = [p for p in pubs if p.get("status")]
     if contracted:
-        body.append(subsection("Books under Contract"))
+        body.append(subsection("Books " + " and ".join(dict.fromkeys(esc(e["status"]).title().replace("In ", "in ").replace("Under ", "under ") for e in contracted))))
         body.append(entries((f"Exp. {e['year']}", pub_contracted(e), [tex(v) for v in e.get("volumes", [])])
                             for e in desc(contracted)))
     body.append(subsection("Books"))

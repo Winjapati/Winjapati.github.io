@@ -149,9 +149,9 @@
     }
     function entryText(e){
       if(e.text) return e.text;
-      if(e.status){  // e.g. books under contract
+      if(e.status){  // e.g. books in preparation
         const vols = (e.volumes||[]).length ? ` — ${e.volumes.join('; ')}` : '';
-        return `Book (${e.status}, expected ${e.year}): ${e.title}${withOthers(e)}${vols}`;
+        return `Book (${e.status}, expected ${e.year}): ${e.title}${withOthers(e)}${vols}${e.note ? '. ' + e.note : ''}`;
       }
       if(e.category === 'Digital Publication'){
         return `Digital Publication: ${e.title}${e.role ? ` (${e.role})` : ''} — ${e.venue}, ${e.url.replace(/^https?:\/\//,'')}${e.note ? '. ' + e.note : ''}`;
