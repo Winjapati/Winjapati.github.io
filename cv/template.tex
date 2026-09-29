@@ -8,6 +8,7 @@
 \usepackage{titlesec}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
+\usepackage{needspace}
 \usepackage[hidelinks]{hyperref}
 
 % ---- fonts (bundled in ../fonts)
@@ -39,8 +40,9 @@
 \titlespacing*{\section}{0pt}{14pt}{6pt}
 \titleformat{\subsection}[block]{\filright\itshape\color{muted}}{}{0pt}{}
 \titlespacing*{\subsection}{0pt}{6pt}{3pt}
-\newcommand{\cvsection}[1]{\section*{#1}}
-\newcommand{\cvsubsection}[1]{\subsection*{#1}}
+% never leave a heading stranded at the bottom of a page: require room for a few lines beneath it
+\newcommand{\cvsection}[1]{\needspace{7\baselineskip}\section*{#1}}
+\newcommand{\cvsubsection}[1]{\needspace{4\baselineskip}\subsection*{#1}}
 
 \newlength{\datewidth}\setlength{\datewidth}{1.15in}
 \newlist{entries}{description}{1}

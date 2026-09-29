@@ -245,8 +245,11 @@ def entries(items):
     out = ["\\begin{entries}"]
     for it in items:
         date, body = it[0], it[1]
-        out.append(f"\\item[\\datebox{{{date}}}] {body}")
         subs = it[2] if len(it) > 2 else []
+        if subs:  # keep an entry and its sub-list on one page
+            body_lines = -(-len(re.sub(r"\\[a-z]+|[{}]", "", body)) // 80)  # rough line count of the entry text
+            out.append(f"\\needspace{{{len(subs) + body_lines + 2}\\baselineskip}}")
+        out.append(f"\\item[\\datebox{{{date}}}] {body}")
         if subs:
             out.append("\\begin{subentries}")
             out += [f"\\item {s}" for s in subs]
@@ -358,7 +361,18 @@ def build():
 
     updated = dt.date.today().strftime("%B %Y")
     tpl = (CV_DIR / "template.tex").read_text(encoding="utf-8")
-    return tpl.replace("%%NAME%%", esc(P["name"])).replace("%%UPDATED%%", updated).replace("%%BODY%%", "\n".join(body))
+    return tpl.replace("%%NAME%%", esc(P["name"])).replace("%%UPDATED%%", updated).replace("%%BODY%%", keep_headings("\n".join(body)))
+
+
+def keep_headings(doc):
+    """If the first entry under a heading must stay together, reserve that space *before* the heading(s),
+    so a heading is never left at the bottom of a page while its first entry moves on."""
+    heading = r"(?:\n*\\cv(?:sub)?section\{[^\n]*\}\n)"
+    pat = re.compile(r"((?:" + heading + r")+)(\n*\\begin\{entries\}\n)\\needspace\{(\d+)\\baselineskip\}\n")
+    def fix(m):
+        n = int(m.group(3)) + 3 * m.group(1).count("\\cv")
+        return f"\n\\needspace{{{n}\\baselineskip}}{m.group(1)}{m.group(2)}"
+    return pat.sub(fix, doc)
 
 
 def main():
