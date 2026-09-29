@@ -1,0 +1,122 @@
+{
+  "name": "Andrew M. Byrd",
+  "position": "Associate Professor of Linguistics",
+  "specializations": "Historical Phonology, Proto-Indo-European, and Constructed Languages",
+  "tagline": "Historical Linguistics · Conlangs · Computation",
+  "department": {
+    "name": "Department of Linguistics",
+    "url": "https://linguistics.as.uky.edu/"
+  },
+  "university": {
+    "name": "University of Kentucky",
+    "url": "https://www.uky.edu/"
+  },
+  "email": "andrewbyrd@uky.edu",
+  "website": "https://winjapati.github.io",
+  "statement": [
+    "My primary research focus is the creation and application of innovative approaches to solve difficult problems in historical linguistics.",
+    "I also work to educate the public about Proto-Indo-European (PIE) and historical linguistics through constructed languages and other forms of outreach."
+  ],
+  "appointments": [
+    {
+      "title": "Associate Professor of Linguistics",
+      "org": "University of Kentucky",
+      "dates": "2017–present"
+    },
+    {
+      "title": "Assistant Professor of Linguistics",
+      "org": "University of Kentucky",
+      "dates": "2014–2017"
+    },
+    {
+      "title": "Lecturer of Linguistics",
+      "org": "University of Kentucky",
+      "dates": "2011–2014"
+    }
+  ],
+  "education": [
+    {
+      "degree": "PhD, Indo-European Studies",
+      "school": "University of California, Los Angeles",
+      "dates": "2004–2010",
+      "details": [
+        "Dissertation: <a href=\"https://uknowledge.uky.edu/cgi/viewcontent.cgi?article=1054&context=lin_facpub\">“Reconstructing Indo-European Syllabification”</a>",
+        "Advisor: H. Craig Melchert",
+        "2<sup>nd</sup> place, “Best Dissertation of 2011 in the field of Indo-European,” Indogermanische Gesellschaft"
+      ]
+    },
+    {
+      "degree": "Visiting Student, Linguistics",
+      "school": "Harvard University",
+      "dates": "2003–2004",
+      "details": []
+    },
+    {
+      "degree": "BA, Linguistics (minors: Latin, German, and Italian)",
+      "school": "University of Georgia",
+      "dates": "1997–2002",
+      "details": [
+        "Thesis: “The Phonology of the Laryngeals”",
+        "Advisor: Jared S. Klein",
+        "Summa Cum Laude, with Honors"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "<a href=\"https://derbi-pie.org\">DERBi PIE</a>",
+      "description": "A searchable database of the PIE language (Database of Etymological Roots Beginning in PIE), which includes multiple etymological reference works and search functions."
+    },
+    {
+      "name": "<em>Immersive Proto-Indo-European</em>",
+      "description": "With <a href=\"https://mcl.as.uky.edu/users/brbr224\">Brenna Reinhart Byrd</a>, a textbook and four novellas that introduce the Proto-Indo-European language and archaeology through engaging, immersive stories."
+    }
+  ],
+  "service": [
+    {
+      "group": "College of Arts & Sciences",
+      "items": [
+        {
+          "role": "Educational Policy Committee (EPC)",
+          "dates": "Fall 2026"
+        },
+        {
+          "role": "Arts & Sciences Rankin Fellow: Career Readiness, Curricular Innovation, and Student Engagement",
+          "dates": "2025–26"
+        }
+      ]
+    },
+    {
+      "group": "Department of Linguistics",
+      "items": [
+        {
+          "role": "Curriculum Committee, member",
+          "dates": "current"
+        },
+        {
+          "role": "Director of Undergraduate Studies and Curriculum Committee chair",
+          "dates": "2018–2025"
+        }
+      ]
+    }
+  ],
+  "affiliations": [
+    "Linguistic Society of America",
+    "Indogermanische Gesellschaft",
+    "American Oriental Society",
+    "Southeastern Conference on Linguistics",
+    "American Council on the Teaching of Foreign Languages (ACTFL)",
+    "Modern Language Association (MLA)"
+  ],
+  "reviewing": [
+    "<em>*Wékwos</em>",
+    "Brill’s Studies in Indo-European Languages & Linguistics",
+    "<em>Diachronica</em>",
+    "<em>Indogermanische Forschungen</em>",
+    "<em>Indo-European Linguistics</em>",
+    "<em>Journal of Germanic Linguistics</em>",
+    "<em>Kratylos</em>",
+    "Cambridge University Press",
+    "Springer / Palgrave"
+  ]
+}

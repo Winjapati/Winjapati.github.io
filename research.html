@@ -139,9 +139,35 @@
       return {years, m};
     };
 
+    // Display text is composed from structured fields (the same fields build_cv.py uses for the PDF CV).
+    const SELF = 'A.M. Byrd';
+    function withOthers(e){
+      const others = (e.authors||[]).filter(a => a !== SELF);
+      if(!others.length) return e.editors ? ' (ed.)' : '';
+      const list = others.length > 1 ? others.slice(0,-1).join(', ') + ' and ' + others.at(-1) : others[0];
+      return e.editors ? ` (edited with ${list})` : ` (with ${list})`;
+    }
+    function entryText(e){
+      if(e.text) return e.text;
+      if(e.status){  // e.g. books under contract
+        const vols = (e.volumes||[]).length ? ` — ${e.volumes.join('; ')}` : '';
+        return `Book (${e.status}, expected ${e.year}): ${e.title}${withOthers(e)}${vols}`;
+      }
+      if(e.category === 'Digital Publication'){
+        return `Digital Publication: ${e.title}${e.role ? ` (${e.role})` : ''} — ${e.venue}, ${e.url.replace(/^https?:\/\//,'')}${e.note ? '. ' + e.note : ''}`;
+      }
+      if(e.category === 'Publication'){
+        let v = e.venue || '';
+        if(e.volume) v += ' ' + e.volume;
+        if(e.pages) v += ', ' + e.pages;
+        return `${e.type === 'book' ? 'Book' : 'Publication'}: ${e.title}${withOthers(e)} — ${v}`;
+      }
+      return `${e.category}: ${e.title} — ${e.venue}`;
+    }
+
     function entryHTML(e){
-      const y = e.year ? ` <span class="muted">(${e.year})</span>` : '';
-      const inner = `${e.text}${y}`;
+      const y = e.ongoing ? ` <span class="muted">(${e.year}–)</span>` : e.year ? ` <span class="muted">(${e.year})</span>` : '';
+      const inner = `${entryText(e)}${y}`;
       const linked = e.url ? `<a href="${e.url}" target="_blank" rel="noreferrer noopener">${inner}</a>` : inner;
       const pdfLink = e.pdf ? ` <a href="${e.pdf}" target="_blank" rel="noreferrer noopener" class="pdf-link">PDF</a>` : '';
       const cat = (e.category||'').toLowerCase();

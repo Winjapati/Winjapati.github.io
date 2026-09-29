@@ -1,0 +1,199 @@
+{
+  "courses_regular": [
+    {
+      "name": "An Immersive Introduction to Proto-Indo-European"
+    },
+    {
+      "name": "Introduction to Sanskrit"
+    },
+    {
+      "name": "Historical Linguistics"
+    },
+    {
+      "name": "Phonological Analysis"
+    },
+    {
+      "name": "Writing Systems"
+    },
+    {
+      "name": "Decipherment",
+      "url": "courses/decipherment/index.html"
+    },
+    {
+      "name": "Introduction to the Study of Language"
+    },
+    {
+      "name": "Introduction to Linguistics"
+    },
+    {
+      "name": "How to Create Your Own Language",
+      "url": "courses/200/200_homepage.html"
+    },
+    {
+      "name": "Words & Sentences"
+    },
+    {
+      "name": "Computation for Linguists",
+      "url": "courses/301/301_homepage.html"
+    }
+  ],
+  "courses_other": [
+    {
+      "name": "The History of English"
+    },
+    {
+      "name": "Constructed Languages"
+    },
+    {
+      "name": "Homeric Greek"
+    },
+    {
+      "name": "Ancient Greek Dialects"
+    },
+    {
+      "name": "Research Methods in Linguistics"
+    },
+    {
+      "name": "Optimality Theory"
+    },
+    {
+      "name": "Classical Armenian"
+    },
+    {
+      "name": "Oscan & Umbrian"
+    },
+    {
+      "name": "Hittite"
+    }
+  ],
+  "theses": [
+    {
+      "name": "Joey Smath",
+      "degree": "MA in Linguistics",
+      "title": "Reconstructing Proto-Indo-European Music",
+      "date": "12/26"
+    },
+    {
+      "name": "Patrick Gehringer",
+      "degree": "MA in Linguistic Theory and Typology",
+      "title": "Albanian Nasal Clusters",
+      "date": "5/24"
+    },
+    {
+      "name": "Eleanor Wren-Hardin",
+      "degree": "MA in Linguistic Theory and Typology",
+      "title": "Cognate Detection in the Nakh-Daghestanian Language Family",
+      "date": "5/24"
+    },
+    {
+      "name": "Ryan McDonald",
+      "profile": "https://linguistics.as.uky.edu/users/rmc257",
+      "degree": "MA in Linguistic Theory and Typology",
+      "title": "PMKN PIE: A Parsed Morphological KATR Network for Proto-Indo-European",
+      "date": "11/20"
+    },
+    {
+      "name": "Zia Khoshsirat",
+      "profile": "https://anthro.ucla.edu/grads/zia-khoshsirat",
+      "degree": "MA in Linguistic Theory and Typology",
+      "title": "The Origins of the Gilaki Causative Suffix <em>-bē-</em>",
+      "url": "https://uknowledge.uky.edu/ltt_etds/30/",
+      "date": "7/18"
+    },
+    {
+      "name": "Phillip Barnett",
+      "profile": "https://linguistics.ucla.edu/person/phillip-barnett/",
+      "degree": "MA in Linguistic Theory and Typology",
+      "title": "Investigating PIE stops using modern empirical methods",
+      "url": "https://uknowledge.uky.edu/ltt_etds/28/",
+      "date": "5/18"
+    }
+  ],
+  "advising": [
+    {
+      "name": "Arnav Jasapara",
+      "title": "Analyzing Grammatical and Semantic Gender in Ancient Indo-European Languages",
+      "date": "1/26–"
+    },
+    {
+      "name": "Kendal Smith",
+      "title": "A Computational Analysis of Sanskrit Gender Distribution",
+      "date": "1/26–7/26"
+    },
+    {
+      "name": "Neihal Saini",
+      "program": "Lexington Summer Youth Program",
+      "title": "Integrating <em>The Oxford Introduction to Proto-Indo-European and the Proto-Indo-European World</em> into DERBi PIE",
+      "date": "6/25–7/25"
+    },
+    {
+      "name": "Lasantha Senanayake",
+      "program": "PhD in Computer Science",
+      "title": "LLMs and Storytelling Systems",
+      "date": "5/25–"
+    },
+    {
+      "name": "James Epperson",
+      "title": "What the <em>Fuit</em>: Double Marking in Classical Latin Passives",
+      "date": "5/25"
+    },
+    {
+      "name": "Casey Smith",
+      "title": "Towards Proto-Niger-Congo Phonology: Evidence from Divergent Branches",
+      "date": "11/24–5/25"
+    },
+    {
+      "name": "Gabriel Wallace",
+      "title": "Reconstructing Semantic Hyperspaces for Ancient and Reconstructed IE Languages",
+      "date": "5/23–10/24"
+    },
+    {
+      "name": "Anton Vinogradov",
+      "program": "PhD in Computer Science",
+      "title": "Recovering From And Accommodating For Player Preference Shifts In A Player Modeled Experience Management Environment",
+      "url": "https://uknowledge.uky.edu/cs_etds/145/",
+      "date": "8/24"
+    },
+    {
+      "name": "Gihyun Gal",
+      "title": "Rhyming Tactics in Korean Hip-Hop with Two Approaches of English and Korean Syllable Structures",
+      "url": "https://uknowledge.uky.edu/ltt_etds/54/",
+      "date": "4/23"
+    },
+    {
+      "name": "Tara Singh",
+      "title": "Connecting Lexical Aspect and Morphology in PIE",
+      "url": "https://docs.google.com/document/d/1xHEmuhhpM6MCgbzIsouXcADb8B-G9aEuPiX2yxnTHFQ/edit",
+      "date": "2018–2022"
+    },
+    {
+      "name": "Jarred Brewster",
+      "title": "Language Contact and Covert Prominence in the Śḥerēt-Jibbāli Language of Oman",
+      "url": "https://uknowledge.uky.edu/ltt_etds/43/",
+      "date": "4/21"
+    },
+    {
+      "name": "Noor Bueasa",
+      "title": "The Adaptation of Loanwords in Classical Arabic: the Governing Factors",
+      "url": "https://uknowledge.uky.edu/cgi/viewcontent.cgi?article=1006&context=ltt_etds",
+      "date": "5/15"
+    },
+    {
+      "name": "Joseph Rhyne",
+      "title": "Indo-European Nominal Morphology: a Phonotactic Approach",
+      "date": "5/14"
+    },
+    {
+      "name": "Lindley Winchester",
+      "title": "Egyptian Arabic Plurals in Theory and Computation",
+      "url": "https://uknowledge.uky.edu/ltt_etds/4/",
+      "date": "5/14"
+    },
+    {
+      "name": "Erica Mattingly",
+      "program": "Chellgren Fellows Program",
+      "title": "Tongues from Across the Mediterranean: The Influence of Classical Arabic on Spanish Phonology",
+      "date": "5/13"
+    }
+  ]
+}

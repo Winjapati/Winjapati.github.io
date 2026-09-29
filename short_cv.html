@@ -64,64 +64,14 @@
 
     <!-- All cards live directly under .grid now -->
     <div class="grid">
-      <section class="card">
-        <h2>Profile</h2>
-        <p class="small">
-          My primary research focus is the creation and application of innovative approaches to solve difficult problems in historical linguistics.
-      </p>  <p>
-          I also work to educate the public about Proto-Indo-European (PIE) and historical linguistics through constructed languages and other forms of outreach.
-        </p>
-      </section>
+        <!-- These cards are rendered from profile.json (also used by build_cv.py for the PDF CV). -->
+        <section class="card"><h2>Profile</h2><div id="p-statement"></div></section>
+        <section class="card"><h2>Positions</h2><ul id="p-appointments"></ul></section>
+        <section class="card"><h2>Education</h2><ul id="p-education"></ul></section>
+        <section class="card"><h2>Current Projects</h2><ul id="p-projects"></ul></section>
+        <section class="card"><h2>Service</h2><div id="p-service"></div></section>
+        <section class="card"><h2>Professional Affiliations &amp; Reviewing</h2><div id="p-orgs"></div></section>
 
-      <section class="card">
-        <h2>Positions</h2>
-        <ul>
-          <li><strong>Associate Professor of Linguistics</strong>, University of Kentucky, 2017-present</li>
-          <li><strong>Assistant Professor of Linguistics</strong>, University of Kentucky, 2014-2017</li>
-          <li><strong>Lecturer of Linguistics</strong>, University of Kentucky, 2011-2014</li>
-        </ul>
-      </section>
-
-
-        <section class="card">
-          <h2>Education</h2>
-          <ul>
-            <li><strong>PhD, Indo-European Studies</strong>, University of California, Los Angeles, 2010<br>
-              <span class="small">Dissertation: <a href="https://uknowledge.uky.edu/cgi/viewcontent.cgi?article=1054&amp;context=lin_facpub" target="_blank" rel="noopener">“Reconstructing Indo-European Syllabification”</a> (advisor: H. Craig Melchert). 2<sup>nd</sup> place, Best Dissertation of 2011 in Indo-European, Indogermanische Gesellschaft.</span></li>
-            <li><strong>Visiting Student, Linguistics</strong>, Harvard University, 2003–2004</li>
-            <li><strong>BA, Linguistics</strong> (minors: Latin, German, Italian), University of Georgia, 2002<br>
-              <span class="small">Thesis: “The Phonology of the Laryngeals” (advisor: Jared S. Klein). Summa Cum Laude, with Honors.</span></li>
-          </ul>
-        </section>
-
-        <section class="card">
-          <h2>Current Projects</h2>
-          <ul>
-            <li><strong>DERBi PIE</strong> — a searchable database of Proto-Indo-European (Database of Etymological Roots Beginning in PIE), integrating multiple etymological reference works and search functions.</li>
-            <li><strong><em>Five Novellas in Proto-Indo-European</em></strong> (with Brenna Reinhart Byrd) — immersive stories in PIE introducing the public to Proto-Indo-European language, culture, and archaeology.</li>
-          </ul>
-        </section>
-
-        <section class="card">
-          <h2>Service</h2>
-          <p class="small"><strong>College of Arts &amp; Sciences</strong></p>
-          <ul>
-            <li>Educational Policy Committee (EPC) (Fall 2026)</li>
-            <li>Arts &amp; Sciences Rankin Fellow: Career Readiness, Curricular Innovation, and Student Engagement (2025–26)</li>
-          </ul>
-          <p class="small"><strong>Department of Linguistics</strong></p>
-          <ul>
-            <li>Director of Undergraduate Studies</li>
-            <li>Curriculum Committee, chair</li>
-            <li>Cognitive Science Minor Faculty of Record</li>
-          </ul>
-        </section>
-
-        <section class="card">
-          <h2>Professional Affiliations &amp; Reviewing</h2>
-          <p class="small"><strong>Member:</strong> Linguistic Society of America; Indogermanische Gesellschaft; American Oriental Society; Southeastern Conference on Linguistics; American Council on the Teaching of Foreign Languages (ACTFL); Modern Language Association (MLA).</p>
-          <p class="small"><strong>Reviewer for:</strong> <em>*Wékwos</em>; Brill’s Studies in Indo-European Languages &amp; Linguistics; <em>Diachronica</em>; <em>Indogermanische Forschungen</em>; <em>Indo-European Linguistics</em>; <em>Journal of Germanic Linguistics</em>; <em>Kratylos</em>; Cambridge University Press; Springer / Palgrave.</p>
-        </section>
 
       <section class="card">
         <h2>Selected Publications</h2>
@@ -147,16 +97,12 @@
         <p class="small">Full list: see <a href="research.html">Research</a>.</p>
       </section>
 
-      <section class="card">
-        <h2>Recent Grants &amp; Awards</h2>
-        <ul>
-          <li><strong>CURATE award</strong>, $5,000 — DERBi PIE (2026).</li>
-          <li><strong>CURATE award</strong>, $5,000 — DERBi PIE (2025).</li>
-          <li><strong>NEH Digital Humanities Advancement Grant</strong> (with <a href=https://liberalarts.utexas.edu/linguistics/faculty/dal725> Danny Law</a>), $75,000 — DERBi PIE prototype (2024).</li>
-          <li><strong>RCASP</strong> (with <a href=https://linguistics.as.uky.edu/users/abu258>Allison Burkette</a>), $5,000 — OCR for linguistic texts (2024).</li>
-          <li><strong>Broadening Our Funded Research Base in A&amp;S</strong>, $20,000 — DERBi PIE (2023).</li>
-        </ul>
-      </section>
+        <section class="card">
+          <h2>Recent Grants &amp; Awards</h2>
+          <ul id="p-grants"></ul>
+          <p class="small">Full list: see <a href="research.html">Research</a>.</p>
+        </section>
+
 
       <section class="card">
         <h2>Teaching</h2>
@@ -175,7 +121,7 @@
       <section class="card">
         <h2>Public Engagement</h2>
         <p class="small">
-          Work includes language creation and consulting for games and media (e.g., <a href=https://www.ubisoft.com/en-us/game/far-cry/far-cry-primal><em>Far Cry Primal</em></a>; <a href=https://www.playflintlock.com/><em>Flintlock: Siege of Dawn</em></a>; <a href=https://www.marchofgiants.com/en-us><em>March of Giants</em></a>), translations/performances in PIE, and media interviews.
+          Work includes language creation and consulting for games and media (e.g., <a href=https://www.ubisoft.com/en-us/game/far-cry/far-cry-primal><em>Far Cry Primal</em></a>; <a href=https://www.playflintlock.com/><em>Flintlock: Siege of Dawn</em></a>), translations/performances in PIE, and media interviews.
           See the <a href="public_engagement.html">Public Engagement</a> page for a full timeline and links.
         </p>
       </section>
@@ -191,5 +137,24 @@
       
     </div>
   </div>
+
+  <script>
+    (async () => {
+      const get = f => fetch(f + '?ts=' + Date.now(), { cache: 'no-store' }).then(r => r.json());
+      const [P, R] = await Promise.all([get('profile.json'), get('research_entries.json')]);
+      const $ = id => document.getElementById(id);
+      $('p-statement').innerHTML = P.statement.map(p => `<p class="small">${p}</p>`).join('');
+      $('p-appointments').innerHTML = P.appointments.map(a => `<li><strong>${a.title}</strong>, ${a.org}, ${a.dates}</li>`).join('');
+      $('p-education').innerHTML = P.education.map(e => `<li><strong>${e.degree}</strong>, ${e.school}, ${e.dates}` +
+        (e.details.length ? `<br><span class="small">${e.details.join('. ')}.</span>` : '') + '</li>').join('');
+      $('p-projects').innerHTML = P.projects.map(p => `<li><strong>${p.name}</strong> — ${p.description}</li>`).join('');
+      $('p-service').innerHTML = P.service.map(g => `<p class="small"><strong>${g.group}</strong></p><ul>` +
+        g.items.map(i => `<li>${i.role}${i.dates === 'current' ? '' : ` (${i.dates})`}</li>`).join('') + '</ul>').join('');
+      $('p-orgs').innerHTML = `<p class="small"><strong>Member:</strong> ${P.affiliations.join('; ')}.</p>` +
+        `<p class="small"><strong>Reviewer for:</strong> ${P.reviewing.join('; ')}.</p>`;
+      const grants = R.filter(e => e.category.startsWith('Grant')).sort((a, b) => b.year - a.year).slice(0, 5);
+      $('p-grants').innerHTML = grants.map(g => `<li>${g.text.replace(/^(Award|Grant): /, '').replace(' — ', ' ')} (${g.year})</li>`).join('');
+    })();
+  </script>
 </body>
 </html>

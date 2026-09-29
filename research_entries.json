@@ -1,5 +1,38 @@
 [
   {
+    "year": 2027,
+    "category": "Publication",
+    "type": "book",
+    "status": "under contract",
+    "authors": [
+      "A.M. Byrd",
+      "Brenna Reinhart Byrd"
+    ],
+    "title": "Immersive PIE Introduction Core Curriculum Series",
+    "venue": "textbooks, grammar, vocabulary, and companion literature texts",
+    "volumes": [
+      "<em>An Immersive Introduction to Proto-Indo-European</em> (textbook)",
+      "<em>K̂orh₂ikós and the Snake</em>",
+      "<em>The Cattle Raid</em>",
+      "<em>The Labors of K̂orh₂ikós</em>",
+      "<em>In the Beginning</em>"
+    ],
+    "note": "Five volumes; novella titles are tentative."
+  },
+  {
+    "year": 2026,
+    "ongoing": true,
+    "category": "Digital Publication",
+    "authors": [
+      "A.M. Byrd"
+    ],
+    "role": "creator and director",
+    "title": "DERBi PIE: Database of Etymological Roots Beginning in Proto-Indo-European",
+    "venue": "University of Kentucky",
+    "url": "https://derbi-pie.org",
+    "note": "Limited-access beta; public release forthcoming."
+  },
+  {
     "year": 2026,
     "category": "Grant/Award (Internal)",
     "text": "Award: CURATE award, $5,000, to continue work on DERBi PIE.",
@@ -30,35 +63,51 @@
   {
     "year": 2024,
     "category": "Talk",
-    "text": "Talk: An Immersive Approach to Teaching Indo-European Studies (with Brenna Reinhart Byrd) — UCLA Indo-European Studies Seminar, Los Angeles, CA",
+    "date": "10/24",
+    "title": "An Immersive Approach to Teaching Indo-European Studies (with Brenna Reinhart Byrd)",
+    "venue": "UCLA Indo-European Studies Seminar, Los Angeles, CA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2024,
     "category": "Talk",
-    "text": "Talk: The Business of Making Conlangs (with Brenna Reinhart Byrd) — UTA guest lecture in Constructed Languages, Austin, TX",
+    "date": "9/24",
+    "title": "The Business of Making Conlangs (with Brenna Reinhart Byrd)",
+    "venue": "UTA guest lecture in <em>Constructed Languages</em>, Austin, TX",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2024,
     "category": "Talk",
-    "text": "Talk: Being a Public Scholar in Linguistics — UGA Graduate Student Invited Talk, Athens, GA",
+    "date": "2/24",
+    "title": "Being a Public Scholar in Linguistics",
+    "venue": "UGA Graduate Student Invited Talk, Athens, GA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2024,
     "category": "Conference Talk",
-    "text": "Conference Talk: Representing Semantic Relationships in Ancient IE Languages: A Pilot Study (with Anton Vinogradov and Gabriel Wallace) — 35th UCLA Indo-European Conference, Los Angeles, CA",
+    "date": "10/24",
+    "title": "Representing Semantic Relationships in Ancient IE Languages: A Pilot Study (with Anton Vinogradov and Gabriel Wallace)",
+    "venue": "35<sup>th</sup> UCLA Indo-European Conference, Los Angeles, CA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2023,
     "category": "Publication",
-    "text": "Publication: The Indo-Iranian labial-extended causative suffix: Indic <em>-(ā)páya-</em>, Eastern Iranian <em>*-(ā)u̯ai̯a-</em>, and Proto-Caspian <em>*-āwēn-</em> — Indo-European Linguistics 11, 64–95",
+    "type": "article",
+    "authors": [
+      "Zia Khoshsirat",
+      "A.M. Byrd"
+    ],
+    "title": "The Indo-Iranian labial-extended causative suffix: Indic <em>-(ā)páya-</em>, Eastern Iranian <em>*-(ā)u̯ai̯a-</em>, and Proto-Caspian <em>*-āwēn-</em>",
+    "venue": "Indo-European Linguistics",
+    "volume": "11",
+    "pages": "64–95",
     "url": "https://doi.org/10.1163/22125892-bja10025",
     "pdf": "research/offprints/khoshsirat_and_byrd_the_iir_lecs.pdf",
     "abstract": ""
@@ -80,28 +129,48 @@
   {
     "year": 2023,
     "category": "Talk",
-    "text": "Talk: LECS: Reconstructing Proto-Caspian Causative Suffix (کس: بازسازی پسوند واداری در کاسپین آغازی) (with Zia Khoshsirat) — Allameh Tabataba'i University, Tehran, Iran",
+    "date": "12/23",
+    "title": "LECS: Reconstructing Proto-Caspian Causative Suffix (کس: بازسازی پسوند واداری در کاسپین آغازی) (with Zia Khoshsirat)",
+    "venue": "Allameh Tabataba'i University, Tehran, Iran",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2023,
     "category": "Talk",
-    "text": "Talk: Constructed Languages and World['] Building in Video Games (with Brenna Reinhart Byrd) — UK",
+    "date": "11/23",
+    "title": "Constructed Languages and World Building in Video Games (with Brenna Reinhart Byrd)",
+    "venue": "University of Kentucky",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2022,
     "category": "Publication",
-    "text": "Publication: The Use of the Google Suite in LIN 200: How To Create Your Own Language — Greater Faculties: A Review of Teaching and Learning 3, Article 12",
+    "type": "article",
+    "authors": [
+      "A.M. Byrd"
+    ],
+    "title": "The Use of the Google Suite in LIN 200: How To Create Your Own Language",
+    "venue": "Greater Faculties: A Review of Teaching and Learning",
+    "volume": "3",
+    "pages": "Article 12",
     "url": "https://uknowledge.uky.edu/greaterfaculties/vol3/iss1/12",
     "abstract": ""
   },
   {
     "year": 2021,
     "category": "Publication",
-    "text": "Publication: Mistake Captioning: A Machine Learning Approach For Detecting Mistakes And Generating Instructive Feedback — Proceedings of Recent Advances in Natural Language Processing, September 1–3, 2021, 1455–1462",
+    "type": "article",
+    "authors": [
+      "Anton Vinogradov",
+      "A.M. Byrd",
+      "Brent Harrison"
+    ],
+    "title": "Mistake Captioning: A Machine Learning Approach For Detecting Mistakes And Generating Instructive Feedback",
+    "venue": "Proceedings of Recent Advances in Natural Language Processing, September 1–3, 2021",
+    "volume": "",
+    "pages": "1455–1462",
     "url": "https://ranlp.org/ranlp2021/proceedings-20Sep.pdf",
     "abstract": ""
   },
@@ -122,14 +191,24 @@
   {
     "year": 2021,
     "category": "Conference Talk",
-    "text": "Conference Talk: Connecting Lexical Aspect and Morphology in Proto-Indo-European (with Tara Singh) — LCUGA7, Athens, GA",
+    "date": "10/21",
+    "title": "Connecting Lexical Aspect and Morphology in Proto-Indo-European (with Tara Singh)",
+    "venue": "7<sup>th</sup> Annual Linguistics Conference at the University of Georgia (LCUGA7), Athens, GA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2020,
     "category": "Publication",
-    "text": "Publication: Teaching Proto-Indo-European as a Constructed Language — Jeffrey Penske, Amy Fountain, and Nathan Sanders (eds.), Language Invention in Linguistics Pedagogy, Oxford: OUP",
+    "type": "article",
+    "authors": [
+      "Brenna Reinhart Byrd",
+      "A.M. Byrd"
+    ],
+    "title": "Teaching Proto-Indo-European as a Constructed Language",
+    "venue": "Jeffrey Penske, Amy Fountain, and Nathan Sanders (eds.), Language Invention in Linguistics Pedagogy, Oxford: OUP",
+    "volume": "",
+    "pages": "186–207",
     "url": "https://oxford.universitypressscholarship.com/view/10.1093/oso/9780198829874.001.0001/oso-9780198829874-chapter-12",
     "pdf": "research/offprints/byrdx2_teaching_pie_as_a_conlang.pdf",
     "abstract": ""
@@ -165,21 +244,32 @@
   {
     "year": 2020,
     "category": "Talk",
-    "text": "Talk: Using Proto-Indo-European as a Conlang in Video Games & the Classroom — University of Louisville",
+    "date": "2/20",
+    "title": "Using Proto-Indo-European as a Conlang in Video Games & the Classroom",
+    "venue": "University of Louisville",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2020,
     "category": "Talk",
-    "text": "Talk: Conlanging Proto-Indo-European: An Immersive Experience within Prehistory (with Brenna Reinhart Byrd) — 2020 MLA Conference, Seattle, WA",
+    "date": "1/20",
+    "title": "Conlanging Proto-Indo-European: An Immersive Experience within Prehistory (with Brenna Reinhart Byrd)",
+    "venue": "2020 MLA Conference, Seattle, WA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2019,
     "category": "Publication",
-    "text": "Publication: Motivating Lindeman’s Law — Adam Alvah Catt, Ronald I. Kim, and Brent Vine (eds.), QAZZU warrai. Anatolian and Indo-European Studies in Honor of Kazuhiko Yoshida, 6–20",
+    "type": "article",
+    "authors": [
+      "A.M. Byrd"
+    ],
+    "title": "Motivating Lindeman’s Law",
+    "venue": "Adam Alvah Catt, Ronald I. Kim, and Brent Vine (eds.), QAZZU warrai. Anatolian and Indo-European Studies in Honor of Kazuhiko Yoshida",
+    "volume": "",
+    "pages": "6–20",
     "url": "http://speakingprimal.com/wp-content/uploads/2019/12/Byrd-Motivating-Lindemans-Law.pdf",
     "pdf": "research/offprints/byrd_lindemans.pdf",
     "abstract": ""
@@ -201,28 +291,42 @@
   {
     "year": 2019,
     "category": "Talk",
-    "text": "Talk: Making the Esoteric Exoteric: Introducing the Public to Historical Linguistics through Film, TV, and Video Games — Marshall College of Liberal Arts R&C Conference, keynote",
+    "date": "4/19",
+    "title": "Making the Esoteric Exoteric: Introducing the Public to Historical Linguistics through Film, TV, and Video Games",
+    "venue": "Marshall College of Liberal Arts Research and Creativity Conference, keynote speaker",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2019,
     "category": "Talk",
-    "text": "Talk: Making PIE for the People: Far Cry Primal, Vikings, and The Anatolian Trail — University of Richmond",
+    "date": "4/19",
+    "title": "Making PIE for the People: <em>Far Cry Primal</em>, The History Channel's <em>Vikings</em>, and <em>The Anatolian Trail</em>",
+    "venue": "University of Richmond",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2019,
     "category": "Conference Talk",
-    "text": "Conference Talk: Transparent Learning through Video Game Puzzles: Making Indo-European Studies Accessible (with Brenna R. Byrd) — 2019 Pedagogicon, Richmond, KY",
+    "date": "5/19",
+    "title": "Transparent Learning through Video Game Puzzles: Making Indo-European Studies Accessible (with Brenna Reinhart Byrd)",
+    "venue": "2019 Pedagogicon: Transparency in Teaching and Learning, Richmond, KY",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2018,
     "category": "Publication",
-    "text": "Publication: A Markedly Different Approach: an Experimental Look at the Rarity of PIE */b/ — Proceedings of the 29<sup>th</sup> Annual UCLA Indo-European Conference, 11–28",
+    "type": "article",
+    "authors": [
+      "Phillip Barnett",
+      "A.M. Byrd"
+    ],
+    "title": "A Markedly Different Approach: an Experimental Look at the Rarity of PIE */b/",
+    "venue": "Proceedings of the 29<sup>th</sup> Annual UCLA Indo-European Conference",
+    "volume": "",
+    "pages": "11–28",
     "url": "https://ucla.app.box.com/v/weciec2017-barnett-byrd",
     "pdf": "research/offprints/barnett_and_byrd_a_markedly_different_approach.pdf",
     "abstract": ""
@@ -230,7 +334,14 @@
   {
     "year": 2018,
     "category": "Publication",
-    "text": "Publication: 121. The Phonology of Proto-Indo-European — Handbook of Comparative and Historical Indo-European Linguistics vol. 3, 2056–79",
+    "type": "article",
+    "authors": [
+      "A.M. Byrd"
+    ],
+    "title": "121. The Phonology of Proto-Indo-European",
+    "venue": "Handbook of Comparative and Historical Indo-European Linguistics",
+    "volume": "vol. 3",
+    "pages": "2056–79",
     "url": "https://www.degruyter.com/view/product/487972",
     "pdf": "research/offprints/byrd_the_phonology_of_pie.pdf",
     "abstract": ""
@@ -245,28 +356,41 @@
   {
     "year": 2018,
     "category": "Conference Talk",
-    "text": "Conference Talk: The Anatolian Trail: An Interactive Introduction to Proto-Indo-European (with Brenna R. Byrd) — ACTFL, New Orleans, LA",
+    "date": "11/18",
+    "title": "The Anatolian Trail: An Interactive Introduction to Proto-Indo-European (with Brenna Reinhart Byrd)",
+    "venue": "ACTFL, New Orleans, LA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2018,
     "category": "Conference Talk",
-    "text": "Conference Talk: The Gilaki Causative Suffix -be(:)-: Its Function and Origins (with Zia Khoshsirat) — 30th UCLA Indo-European Conference, Los Angeles, CA",
+    "date": "11/18",
+    "title": "The Gilaki Causative Suffix <em>-be(ː)-</em>: Its Function and Origins (with Zia Khoshsirat)",
+    "venue": "30<sup>th</sup> UCLA Indo-European Conference, Los Angeles, CA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2018,
     "category": "Conference Talk",
-    "text": "Conference Talk: An Empirical Look at the Rarity of PIE */b/ (with Phillip Barnett) — ECIEC 37, Ann Arbor, MI",
+    "date": "6/18",
+    "title": "An Empirical Look at the Rarity of PIE */b/ (with Phillip Barnett)",
+    "venue": "37<sup>th</sup> East Coast Indo-European Conference, Ann Arbor, MI",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2017,
     "category": "Publication",
-    "text": "Publication: The Rules of Reconstruction: Making our Etymologies More Grounded — Etymology and the European Lexicon, Proceedings of the 14<sup>th</sup> Fachtagung of the Indogermanische Gesellschaft, 17–22 September 2012, Copenhagen, Denmark, 81–92",
+    "type": "article",
+    "authors": [
+      "A.M. Byrd"
+    ],
+    "title": "The Rules of Reconstruction: Making our Etymologies More Grounded",
+    "venue": "Etymology and the European Lexicon, Proceedings of the 14<sup>th</sup> Fachtagung of the Indogermanische Gesellschaft, 17-22 September 2012, Copenhagen, Denmark",
+    "volume": "",
+    "pages": "81–92",
     "url": "https://reichert-verlag.de/buchreihen/sprachwissenschaft_reihen/sprachwissenschaft_akten_der_fachtagung_der_indogermanischen_gesellschaft/9783954902026_etymology_and_the_european_lexikon-detail",
     "pdf": "research/offprints/byrd_rules_of_reconstruction.pdf",
     "abstract": ""
@@ -274,28 +398,42 @@
   {
     "year": 2017,
     "category": "Talk",
-    "text": "Talk: Reconstructing the Proto-Indo-European Stop System: An Experimental Approach — Princeton University",
+    "date": "12/17",
+    "title": "Reconstructing the Proto-Indo-European Stop System: An Experimental Approach",
+    "venue": "Princeton University",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2017,
     "category": "Talk",
-    "text": "Talk: Resurrecting a Dead Language for Far Cry Primal (with Brenna Reinhart Byrd) — Centre College convocation",
+    "date": "2/17",
+    "title": "Resurrecting a Dead Language for <em>Far Cry Primal</em> (with Brenna Reinhart Byrd)",
+    "venue": "Centre College convocation",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2017,
     "category": "Conference Talk",
-    "text": "Conference Talk: A Markedly Different Solution: Perceptual Confusability Explains the Rarity of PIE */b/ (with Phillip Barnett) — 29th UCLA Indo-European Conference, Los Angeles, CA",
+    "date": "11/17",
+    "title": "A Markedly Different Solution: Perceptual Confusability Explains the Rarity of PIE */b/ (with Phillip Barnett)",
+    "venue": "29<sup>th</sup> UCLA Indo-European Conference, Los Angeles, CA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2016,
     "category": "Publication",
-    "text": "Publication: Tavet Tat Satyam. Studies in Honor of Jared S. Klein on the Occasion of His Seventieth Birthday — Ann Arbor & New York: Beech Stave Press",
+    "type": "book",
+    "authors": [
+      "A.M. Byrd",
+      "J. DeLisi",
+      "M. Wenthe"
+    ],
+    "editors": true,
+    "title": "Tavet Tat Satyam: Studies in Honor of Jared S. Klein on the Occasion of His Seventieth Birthday",
+    "venue": "Ann Arbor & New York: Beech Stave Press",
     "url": "http://www.beechstave.com/tavet.htm",
     "pdf": "research/offprints/tavet_tat_satyam.pdf",
     "abstract": ""
@@ -303,7 +441,15 @@
   {
     "year": 2016,
     "category": "Publication",
-    "text": "Publication: Stressful Conversions: Internal Derivation within the Compositional Approach — Tavet Tat Satyam. Studies in Honor of Jared S. Klein on the Occasion of His Seventieth Birthday, 322–333",
+    "type": "article",
+    "authors": [
+      "Joseph Rhyne",
+      "A.M. Byrd"
+    ],
+    "title": "Stressful Conversions: Internal Derivation within the Compositional Approach",
+    "venue": "Tavet Tat Satyam. Studies in Honor of Jared S. Klein on the Occasion of His Seventieth Birthday",
+    "volume": "",
+    "pages": "322–333",
     "url": "http://www.beechstave.com/tavet.htm",
     "pdf": "research/offprints/rhone_and_byrd_stressful_conversions.pdf",
     "abstract": ""
@@ -311,63 +457,89 @@
   {
     "year": 2016,
     "category": "Publication",
-    "text": "Publication: Schwa Indogermanicum and Compensatory Lengthening — Sahasram Ati Srajas. Indo-Iranian and Indo-European Studies in Honor of Stephanie W. Jamison, 18–28",
+    "type": "article",
+    "authors": [
+      "A.M. Byrd"
+    ],
+    "title": "Schwa Indogermanicum and Compensatory Lengthening",
+    "venue": "Sahasram Ati Srajas. Indo-Iranian and Indo-European Studies in Honor of Stephanie W. Jamison",
+    "volume": "",
+    "pages": "18–28",
     "url": "http://www.beechstave.com/sahas.htm",
     "abstract": ""
   },
   {
     "year": 2016,
     "category": "Talk",
-    "text": "Talk: The Wenja Language from Far Cry Primal (with Brenna Reinhart Byrd) — OMG!con, featured panelist",
+    "date": "6/16",
+    "title": "The Wenja Language from <em>Far Cry Primal</em> (with Brenna Reinhart Byrd)",
+    "venue": "OMG!con, featured panelist",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2015,
     "category": "Publication",
-    "text": "Publication: The Indo-European Syllable — Leiden: Brill",
-    "url": "https://brill.com/display/title/31666?language=en&srsltid=AfmBOoq3oL1HuWr9PiIFovN9veVbrnJJli6e5Uwvgb0L5p_fatAwltU2",
+    "type": "book",
+    "authors": [
+      "A.M. Byrd"
+    ],
+    "title": "The Indo-European Syllable",
+    "venue": "Leiden: Brill",
+    "url": "https://brill.com/display/title/31666?language=en",
     "abstract": ""
   },
   {
     "year": 2015,
     "category": "Conference Talk",
-    "text": "Conference Talk: Motivating Lindeman’s Law — 27th UCLA Indo-European Conference, Los Angeles, CA",
+    "date": "10/15",
+    "title": "Motivating Lindeman’s Law",
+    "venue": "27<sup>th</sup> UCLA Indo-European Conference, Los Angeles, CA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2015,
     "category": "Conference Talk",
-    "text": "Conference Talk: Extrametricality and Non-Local Compensatory Lengthening: The Case of Szemerényi’s Law (with Ryan Sandell) — 89th LSA, Portland, OR",
+    "date": "1/15",
+    "title": "Extrametricality and Non-Local Compensatory Lengthening: The Case of Szemerényi’s Law (with Ryan Sandell)",
+    "venue": "89<sup>th</sup> Annual Meeting of the LSA, Portland, OR",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2014,
     "category": "Talk",
-    "text": "Talk: Vowels vs. Vader: Exploring the Light and Dark Sides of Indo-European (with Joshua T. Katz) — Kentucky Foreign Language Conference, keynote",
+    "date": "4/14",
+    "title": "Vowels vs. Vader: Exploring the Light and Dark Sides of Indo-European (with Joshua T. Katz)",
+    "venue": "Kentucky Foreign Language Conference, keynote presentation",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2014,
     "category": "Conference Talk",
-    "text": "Conference Talk: Raising a Language from the Dead: On Teaching IE Linguistics in the Age of the Internet — 29th Interdisciplinary Conf. in the Humanities, Carrollton, GA",
+    "date": "11/14",
+    "title": "Raising a Language from the Dead: On Teaching Indo-European Linguistics in the Age of the Internet",
+    "venue": "29<sup>th</sup> Annual Interdisciplinary Conference in the Humanities, Carrollton, GA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2014,
     "category": "Conference Talk",
-    "text": "Conference Talk: Stressful Conversions: an Analysis of Internal Derivation within the Compositional Approach (with Joseph Rhyne) — 26th UCLA Indo-European Conference, Los Angeles, CA",
+    "date": "10/14",
+    "title": "Stressful Conversions: an Analysis of Internal Derivation within the Compositional Approach (with Joseph Rhyne)",
+    "venue": "26<sup>th</sup> UCLA Indo-European Conference, Los Angeles, CA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2014,
     "category": "Conference Talk",
-    "text": "Conference Talk: In Defense of Szemerényi’s Law (with Ryan Sandell) — ECIEC 33, Blacksburg, VA",
+    "date": "6/14",
+    "title": "In Defense of Szemerényi’s Law (with Ryan Sandell)",
+    "venue": "33<sup>rd</sup> East Coast Indo-European Conference, Blacksburg, VA",
     "url": null,
     "pdf": "research/offprints/sandell_and_byrd_in_defense_of_szl.pdf",
     "abstract": ""
@@ -389,42 +561,60 @@
   {
     "year": 2013,
     "category": "Talk",
-    "text": "Talk: Speaking Proto-Indo-European: What Modern-Day Linguistics Can Teach Us About a 7000-year-old Language — Centre College convocation",
+    "date": "11/13",
+    "title": "Speaking Proto-Indo-European: What Modern-Day Linguistics Can Teach Us About a 7000-year-old Language",
+    "venue": "Centre College convocation",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2013,
     "category": "Talk",
-    "text": "Talk: The Phonology of Proto-Indo-European. Day 1: Segmental Phonology; Day 2: Suprasegmental Phonology; Day 3: Rules & Constraints; Day 4: Future Directions. (SEC Faculty Exchange Seminar Series) — University of Georgia, Athens",
+    "date": "5/13",
+    "title": "The Phonology of Proto-Indo-European. Day 1: Segmental Phonology; Day 2: Suprasegmental Phonology; Day 3: Rules & Constraints; Day 4: Future Directions. (SEC Faculty Exchange Seminar Series)",
+    "venue": "University of Georgia, Athens",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2013,
     "category": "Talk",
-    "text": "Talk: A Crazy Rule in PIE? A Closer Look at the Saussure Effect — 10th Annual OSU Linguistics Symposium, Columbus, OH",
+    "date": "1/13",
+    "title": "A Crazy Rule in PIE? A Closer Look at the Saussure Effect",
+    "venue": "10<sup>th</sup> Annual Ohio State Linguistics Symposium, Columbus, OH",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2013,
     "category": "Conference Talk",
-    "text": "Conference Talk: Accounting for the Absence of Expected Lengthened Grade: Szemerényi's Law in Word-Medial Position — 2013 Arbeitstagung der Indogermanischen Gesellschaft, Leiden",
+    "date": "7/13",
+    "title": "Accounting for the Absence of Expected Lengthened Grade: Szemerényi's Law in Word-Medial Position",
+    "venue": "2013 Arbeitstagung der Indogermanischen Gesellschaft, Leiden, the Netherlands",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2013,
     "category": "Conference Talk",
-    "text": "Conference Talk: The Indo-European Homeland Hypothesis: an Examination of Bouckaert, et al. (with Darin Arrick and Victoria Milam) — SECOL LXXX, Spartanburg, SC",
+    "date": "4/13",
+    "title": "The Indo-European Homeland Hypothesis: an Examination of Bouckaert, et al. (with Darin Arrick and Victoria Milam)",
+    "venue": "SECOL LXXX, Spartanburg, SC",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2012,
     "category": "Publication",
-    "text": "Publication: Deriving Dreams from the Divine: Hittite tesha-/zash(a)i- — Historische Sprachforschung 124, 96–105",
+    "type": "article",
+    "authors": [
+      "A.M. Byrd"
+    ],
+    "title": "Deriving Dreams from the Divine: Hittite tesha-/zash(a)i-",
+    "venue": "Historische Sprachforschung",
+    "volume": "124",
+    "pages": "96–105",
+    "cv_year": "2011 [2012]",
     "url": "http://rootsofeurope.ku.dk/english/activities/sound_of_indo-european/",
     "pdf": "research/offprints/byrd_deriving_dreams_from_the_divine.pdf",
     "abstract": ""
@@ -432,21 +622,32 @@
   {
     "year": 2012,
     "category": "Conference Talk",
-    "text": "Conference Talk: It's Complicated: the Relationship between Syllabification & Morphology in PIE — 24th UCLA Indo-European Conference, Los Angeles, CA",
+    "date": "10/12",
+    "title": "`It's Complicated': the Relationship between Syllabification & Morphology in PIE",
+    "venue": "24<sup>th</sup> UCLA Indo-European Conference, Los Angeles, CA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2012,
     "category": "Conference Talk",
-    "text": "Conference Talk: The Use of Linguistic Typology and Universals in Indo-European Linguistics, with a Brief Note on the Hittite s ~ Luvian t Correspondence — SECOL LXXIX, Lexington, KY",
+    "date": "4/12",
+    "title": "The Use of Linguistic Typology and Universals in Indo-European Linguistics, with a Brief Note on the Hittite s ~ Luvian t Correspondence",
+    "venue": "SECOL LXXIX, Lexington, KY",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2011,
     "category": "Publication",
-    "text": "Publication: Predicting Indo-European Syllabification through Phonotactic Analysis — The Sound of Indo European - selected papers from the conference, held in Copenhagen 16–19 April 2009, 9–28",
+    "type": "article",
+    "authors": [
+      "A.M. Byrd"
+    ],
+    "title": "Predicting Indo-European Syllabification through Phonotactic Analysis",
+    "venue": "The Sound of Indo European - selected papers from the conference, held in Copenhagen 16-19 April 2009",
+    "volume": "",
+    "pages": "9–28",
     "url": "http://rootsofeurope.ku.dk/english/activities/sound_of_indo-european/",
     "pdf": "research/offprints/byrd_predicting_ie_syllabification.pdf",
     "abstract": ""
@@ -454,21 +655,32 @@
   {
     "year": 2011,
     "category": "Conference Talk",
-    "text": "Conference Talk: A Fresh Look at Pinault’s Law — 23rd UCLA Indo-European Conference, Los Angeles, CA",
+    "date": "10/11",
+    "title": "A Fresh Look at Pinault’s Law",
+    "venue": "23<sup>rd</sup> UCLA Indo-European Conference, Los Angeles, CA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2011,
     "category": "Conference Talk",
-    "text": "Conference Talk: 'Laryngeal Vocalization’ as Schwa Epenthesis: Why does Compensatory Lengthening not Occur? — ECIEC 30, Cambridge, MA",
+    "date": "6/11",
+    "title": "`Laryngeal Vocalization’ as Schwa Epenthesis: Why does Compensatory Lengthening not Occur?",
+    "venue": "ECIEC 30, Cambridge, MA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2010,
     "category": "Publication",
-    "text": "Publication: Motivating Sievers’ Law — Proceedings of the 21<sup>st</sup> Annual UCLA Indo-European Conference, 45–67",
+    "type": "article",
+    "authors": [
+      "A.M. Byrd"
+    ],
+    "title": "Motivating Sievers’ Law",
+    "venue": "Proceedings of the 21<sup>st</sup> Annual UCLA Indo-European Conference",
+    "volume": "",
+    "pages": "45–67",
     "url": "https://www.academia.edu/1166462/Motivating_Sievers_Law",
     "pdf": "research/offprints/byrd_sievers.pdf",
     "abstract": ""
@@ -476,35 +688,50 @@
   {
     "year": 2009,
     "category": "Conference Talk",
-    "text": "Conference Talk: Motivating Sievers’ Law in a Stratal OT Framework — 21st UCLA Indo-European Conference, Los Angeles, CA.",
+    "date": "10/09",
+    "title": "Motivating Sievers’ Law in a Stratal OT Framework",
+    "venue": "21<sup>st</sup> UCLA Indo-European Conference, Los Angeles, CA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2009,
     "category": "Conference Talk",
-    "text": "Conference Talk: Predicting PIE Syllabification through Phonotactic Analysis — The Sound of Indo-European Conference, Copenhagen, Denmark",
+    "date": "4/09",
+    "title": "Predicting PIE Syllabification through Phonotactic Analysis",
+    "venue": "The Sound of Indo-European Conference, Copenhagen, Denmark",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2009,
     "category": "Conference Talk",
-    "text": "Conference Talk: Deriving Dreams from the Divine: Hittite tesha-/zash(a)i- — 219th AOS, Albuquerque, NM",
+    "date": "3/09",
+    "title": "Deriving Dreams from the Divine: Hittite <em>tesha-/zash(a)i-</em>",
+    "venue": "The 219<sup>th</sup> Meeting of the American Oriental Society, Albuquerque, NM",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2008,
     "category": "Conference Talk",
-    "text": "Conference Talk: Towards a Predictive and Explanatory Theory of Laryngeal Deletion in Proto-Indo-European — ECIEC 27, Athens, GA",
+    "date": "7/08",
+    "title": "Towards a Predictive and Explanatory Theory of Laryngeal Deletion in Proto-Indo-European",
+    "venue": "27<sup>th</sup> East Coast Indo-European Conference, Athens, GA",
     "url": null,
     "abstract": ""
   },
   {
     "year": 2006,
     "category": "Publication",
-    "text": "Publication: Return to Dative anmaimm — Ériu 56, 145–55",
+    "type": "article",
+    "authors": [
+      "A.M. Byrd"
+    ],
+    "title": "Return to Dative anmaimm",
+    "venue": "Ériu",
+    "volume": "56",
+    "pages": "145–55",
     "url": "https://bill.celt.dias.ie/vol4/displayObject.php?TreeID=3182",
     "abstract": "Discusses the origin of the ending <em>-(a)im(m)</em> of the dative singular of Old Irish neuter <em>n</em>-stems, providing substantiation for <span class='sc'>C. Marstrander</span>’s suggestion (in <em>Ériu</em> 5 (1911), p. 200) of an assimilation of <em>*-mmVn#</em> to <em>*-mmVm#</em>."
   },
@@ -525,7 +752,9 @@
   {
     "year": 2004,
     "category": "Conference Talk",
-    "text": "Conference Talk: The Long Dative Singular of Neuter n-Stems in Old Irish — 16th UCLA Indo-European Conference, Los Angeles, CA",
+    "date": "11/04",
+    "title": "The Long Dative Singular of Neuter n-Stems in Old Irish",
+    "venue": "16<sup>th</sup> UCLA Indo-European Conference, Los Angeles, CA",
     "url": null,
     "abstract": ""
   },

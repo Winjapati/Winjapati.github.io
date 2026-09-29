@@ -1,230 +1,356 @@
 [
   {
     "year": 2025,
+    "date": "2025",
     "category": "Translation",
-    "text": "The Ancients: The Birth of Indo-European (Interview with Laura Spinney)",
+    "cv_section": "Translation of PIE and Ancient Languages",
+    "title": "“The Birth of Indo-European”",
+    "rest": ", <em>The Ancients</em> podcast: interview with Laura Spinney featuring our PIE translation",
     "url": "https://podcasts.apple.com/us/podcast/the-birth-of-indo-european/id1520403988?i=1000704468243"
-  },  
+  },
   {
     "year": 2025,
+    "date": "3/25",
     "category": "Translation",
-    "text": "Translation: The PIE Creation Myth (on YouTube)",
+    "cv_section": "Translation of PIE and Ancient Languages",
+    "title": "The PIE Creation Myth",
+    "rest": ", with Riccardo Ginevra and Phill Barnett",
     "url": "https://www.youtube.com/watch?v=JBGYC_UKM54"
   },
   {
     "year": 2024,
+    "date": "1/24",
     "category": "Translation",
-    "text": "Translation: Dragon Slaying Myth (on YouTube)",
-    "url": "https://www.youtube.com/watch?v=J1SXeSHY9p0"
+    "cv_section": "Translation of PIE and Ancient Languages",
+    "title": "Dragon Slaying Myth on YouTube",
+    "url": "https://www.youtube.com/watch?v=J1SXeSHY9p0",
+    "cv_under": "kamu"
   },
   {
     "year": 2024,
+    "date": "12/24",
     "category": "Interview",
-    "text": "Interview: Is There Anybody Out There?",
+    "cv_section": "Interviews and Media Coverage",
+    "title": "Is There Anybody Out There?",
+    "rest": ", <em>KET – Kentucky Educational Television</em>",
     "url": "https://www.youtube.com/watch?v=d0fBcsz-nEM"
   },
   {
     "year": 2024,
+    "date": "2/24",
     "category": "Interview",
-    "text": "Interview: Strange Talk S3E24 Ep.94 How I Learned to Stop Worrying and Love the Laser (feat. Dr. Brenna Byrd and Dr. Andrew Byrd)",
+    "cv_section": "Interviews and Media Coverage",
+    "title": "Ep. 94: How I Learned to Stop Worrying and Love the Laser (feat. Dr. Brenna Byrd and Dr. Andrew Byrd)",
+    "rest": ", <em>Strange Talk</em>",
     "url": "https://www.spreaker.com/episode/strange-talk-s3e24-ep-94-how-i-learned-to-stop-worrying-and-love-the-laser-feat-dr-brenna-byrd-and-dr-andrew-byrd--58759401?af_channel=widget&deep_link_value=https%3A%2F%2Fwww.spreaker.com%2Fepisode%2Fstrange-talk-s3e24-ep-94-how-i-learned-to-stop-worrying-and-love-the-laser-feat-dr-brenna-byrd-and-dr-andrew-byrd--58759401%3Futm_medium%3Dapp%26utm_source%3Dwidget%26utm_campaign%3Depisode-title"
   },
   {
     "year": 2024,
+    "date": "2023–24",
     "category": "Consulting",
-    "text": "Consulting: \"Hey Aliens! Look at Lexington!\" (VisitLEX)",
+    "cv_section": "Outreach, Service, and Consulting",
+    "pre": "Consultant for Cornett, ",
+    "title": "“Hey Aliens! Look at Lexington!”",
+    "rest": "; advertising campaign for Lexington, KY (VisitLEX)",
     "url": "https://www.visitlex.com/aliens/"
   },
   {
     "year": 2024,
+    "date": "1/24",
     "category": "Media",
-    "text": "Media: L'invasione (podcast, #1 in Italy)",
-    "url": "https://open.spotify.com/show/6QrdBI77Kwg5rFjQwaeByQ?si=83e48b1201354572&nd=1&dlsi=ec57daa8804b4408"
+    "cv_section": "Translation of PIE and Ancient Languages",
+    "pre": "Featured in Riccardo Ginevra’s podcast ",
+    "title": "<em>L’invasione</em>",
+    "rest": ", #1 on Spotify in Italy",
+    "url": "https://open.spotify.com/show/6QrdBI77Kwg5rFjQwaeByQ?si=83e48b1201354572&nd=1&dlsi=ec57daa8804b4408",
+    "cv_under": "kamu"
   },
   {
     "year": 2024,
+    "date": "1/24",
     "category": "Media",
-    "text": "Media: Il Post article about L'invasione",
-    "url": "https://www.ilpost.it/2024/01/05/invasione-testi/"
+    "cv_section": "Translation of PIE and Ancient Languages",
+    "pre": "Article in ",
+    "title": "<em>Il Post</em>",
+    "rest": " about <em>L’invasione</em>",
+    "url": "https://www.ilpost.it/2024/01/05/invasione-testi/",
+    "cv_under": "kamu"
   },
   {
     "year": 2023,
+    "date": "3/22–1/23",
     "category": "Translation",
-    "text": "Translation: KAMU Espoo City Museum",
-    "url": "https://www.espoo.fi/en/events/espooevents:af7mlp3mre"
+    "cv_section": "Translation of PIE and Ancient Languages",
+    "title": "KAMU Espoo City Museum (Finland)",
+    "rest": ": translation of the PIE Dragon Slaying myth for the “Clues to our Roots” exhibition, with Riccardo Ginevra and Phill Barnett",
+    "url": "https://www.espoo.fi/en/events/espooevents:af7mlp3mre",
+    "id": "kamu"
   },
   {
     "year": 2023,
+    "date": "8/23",
     "category": "Interview",
-    "text": "Interview: Conlangs: Making Up a Language",
+    "cv_section": "Interviews and Media Coverage",
+    "title": "<em>Conlangs: Making Up a Language (with Profs. Andrew and Brenna Byrd)</em>",
+    "rest": ", interview with Jackson Crawford, YouTube",
     "url": "https://www.youtube.com/watch?v=Onjx-QOS8X0&t=30s"
   },
   {
     "year": 2023,
+    "date": "2021–23",
     "category": "Language Creation",
-    "text": "Language Creation: Flintlock: Siege of Dawn (Th'anthk; Kepler/A44)",
+    "cv_section": "Language Creation",
+    "title": "<em>Flintlock: Siege of Dawn</em>",
+    "rest": ": co-creator, translator, and dialect coach of the Th’anthk language; Kepler/A44",
     "url": "https://www.playflintlock.com/"
   },
   {
     "year": 2022,
+    "date": "4/22",
     "category": "Interview",
-    "text": "Interview: Speaking Proto-Indo-European",
+    "cv_section": "Interviews and Media Coverage",
+    "title": "<em>Speaking Proto-Indo-European (with Dr. Andrew Byrd)</em>",
+    "rest": ", interview with Jackson Crawford, YouTube",
     "url": "https://www.youtube.com/watch?v=LnZMuAHmmvo"
   },
   {
     "year": 2022,
+    "date": "2022",
     "category": "Language Creation",
-    "text": "Language Creation: Battle Shapers (Latin; Metric Empire)",
+    "cv_section": "Language Creation",
+    "title": "<em>Battle Shapers</em>",
+    "rest": ": Latin translation; Metric Empire, Inc.",
     "url": "https://www.battleshapers.com/"
   },
   {
     "year": 2021,
+    "date": "12/21",
     "category": "Interview",
-    "text": "Interview: I Don't Understand with William Shatner",
+    "cv_section": "Interviews and Media Coverage",
+    "title": "<em>I Don’t Understand with William Shatner</em>",
+    "rest": ", RT",
     "url": "https://www.rt.com/shows/i-don-t-understand-with-william-shatner/544544-idu-where-did-language-come/"
   },
   {
     "year": 2021,
+    "date": "2017–21",
     "category": "Project",
-    "text": "Project: Roots of the Ancients (Co‑Director)",
-    "url": null
+    "cv_section": "Outreach, Service, and Consulting",
+    "pre": "Project Co-Director (with Brenna Reinhart Byrd), ",
+    "title": "<em>Roots of the Ancients</em>",
+    "url": null,
+    "cv_details": [
+      "Secured funding for the project",
+      "Translated in-game dialogue from English into PIE and trained actors to speak the language",
+      "Coordinated the work of nearly thirty game designers, artists, musicians, and scholars"
+    ]
   },
   {
     "year": 2020,
+    "date": "11/20",
     "category": "Interview",
-    "text": "Interview: PRZEtłumacze podcast",
+    "cv_section": "Interviews and Media Coverage",
+    "title": "Andrew Byrd, czyli jak rozmawiali ze sobą jaskiniowcy?",
+    "rest": ", <em>PRZEtłumacze</em> podcast",
     "url": "https://anchor.fm/diuna-lsp/episodes/PRZEtumacze---Prof--Jerzy-Bralczyk-w-rozmowie-o-jzyku--pandemii-i-gonieniu-krliczka-egp4cd"
   },
   {
     "year": 2020,
+    "date": "2/20",
     "category": "Interview",
-    "text": "Interview: To Bee or Not to Bee?",
+    "cv_section": "Interviews and Media Coverage",
+    "title": "To Bee or Not to Bee? UK’s spelling bee may not exist next year",
+    "rest": ", <em>Kentucky Kernel</em>",
     "url": "http://www.kykernel.com/news/to-bee-or-not-to-bee-uk-s-spelling-bee/article_830a7710-57d4-11ea-9a0a-bb36cb1da593.html"
   },
   {
     "year": 2020,
+    "date": "12/20",
     "category": "Translation",
-    "text": "Translation: Vikings — season 6, ep.13 (PIE → Proto‑Germanic)",
+    "cv_section": "Translation of PIE and Ancient Languages",
+    "title": "<em>Vikings</em>, season 6, episode 13",
+    "rest": ": PIE poem reconstructed for Proto-Germanic",
     "url": "https://www.imdb.com/title/tt7412196/?ref_=ttep_ep13"
   },
   {
     "year": 2019,
-    "category": "Media",
-    "text": "Media: Draw Curiosity",
+    "date": "3/19",
+    "category": "Translation",
+    "cv_section": "Translation of PIE and Ancient Languages",
+    "title": "<em>Draw Curiosity</em>",
+    "rest": ": translation featured in “Let’s Talk about PIE (Proto-Indo-European) – Reconstructing Old Languages”",
     "url": "https://www.youtube.com/watch?v=x-x9EUCTzRo"
   },
   {
     "year": 2019,
+    "date": "6/19",
     "category": "Interview",
-    "text": "Interview: Archaeo-Chat: Creating Prehistoric Languages",
+    "cv_section": "Interviews and Media Coverage",
+    "title": "Archaeo-Chat: Creating Prehistoric Languages for <em>Far Cry Primal</em>! (With some KFC)",
+    "rest": ", interview with Archaeology Soup",
     "url": "https://www.youtube.com/watch?v=Ar-esK0JnFY&t=463s"
   },
   {
     "year": 2019,
+    "date": "5/19",
     "category": "Interview",
-    "text": "Interview: First Horse Warriors",
+    "cv_section": "Interviews and Media Coverage",
+    "title": "<em>First Horse Warriors</em>",
+    "rest": ", NOVA documentary, PBS",
     "url": "https://www.pbs.org/wgbh/nova/video/first-horse-warriors/"
   },
   {
     "year": 2019,
+    "date": "4/19",
     "category": "Interview",
-    "text": "Interview: UK professor speaks about developing PIE languages",
+    "cv_section": "Interviews and Media Coverage",
+    "title": "“UK professor speaks about developing Proto-Indo-European languages for video games”",
+    "rest": ", <em>The Collegian</em>",
     "url": "https://www.thecollegianur.com/article/2019/04/uk-professor-speaks-about-developing-proto-indo-european-languages-for-video-games"
   },
   {
     "year": 2019,
+    "date": "3/19",
     "category": "Interview",
-    "text": "Interview: Let's Talk About PIE",
+    "cv_section": "Interviews and Media Coverage",
+    "title": "Let’s Talk About PIE (Proto-Indo-European) – Reconstructing Old Languages",
+    "rest": ", <em>Draw Curiosity</em>",
     "url": "https://www.youtube.com/watch?v=x-x9EUCTzRo&t=199s"
   },
   {
     "year": 2018,
+    "date": "2018–19",
     "category": "Service",
-    "text": "Service: Fayette County Spelling Bee",
+    "cv_section": "Outreach, Service, and Consulting",
+    "pre": "Pronouncer, ",
+    "title": "Fayette County Spelling Bee",
     "url": "http://www.fayettecofarmbureau.com/2018-fayette-county-farm-bureau-spelling-bee/"
   },
   {
     "year": 2018,
+    "date": "2018–21",
     "category": "Service",
-    "text": "Service: Bluegrass Literacy Project",
+    "cv_section": "Outreach, Service, and Consulting",
+    "pre": "Advisory Board, ",
+    "title": "Bluegrass Literacy Project",
+    "rest": ", a community organization dedicated to advancing English language literacy in Kentucky",
     "url": "https://thewordexplorer.blog/2018/01/10/bluegrass-literacy-project/"
   },
   {
     "year": 2018,
-    "category": "Media",
-    "text": "Media: The Birth of Humanity",
+    "date": "2018",
+    "category": "Language Creation",
+    "cv_section": "Language Creation",
+    "title": "<em>The Birth of Humanity</em>",
+    "rest": ": NHK documentary on the evolution of humankind, featuring languages created for early <em>Homo sapiens</em>, Neanderthals, and <em>Homo erectus</em>",
     "url": "https://hh.pid.nhk.or.jp/pidh07/ProgramIntro/Show.do?pkey=001-20180404-21-18926"
   },
   {
     "year": 2018,
+    "date": "3/18",
     "category": "Translation",
-    "text": "Translation: <em>AXE</em>, John Yates' play set in 3,600 BCE — prayers and storytelling in PIE",
+    "cv_section": "Translation of PIE and Ancient Languages",
+    "title": "<em>AXE</em>",
+    "rest": ": John Yates’ play, set in 3,600 BCE, features prayers and storytelling in PIE",
     "url": "https://www.forestforgetheatre.co.uk/page-stage-arts-council-funding-brings-axe-life/"
   },
   {
     "year": 2018,
+    "date": "3/18",
     "category": "Interview",
-    "text": "Interview: The Long Linguistic Journey to 'Dagnabbit'",
+    "cv_section": "Interviews and Media Coverage",
+    "title": "“The Long Linguistic Journey to ‘Dagnabbit’”",
+    "rest": ", <em>Atlas Obscura</em>",
     "url": "https://www.atlasobscura.com/articles/what-does-dagnabbit-mean"
   },
   {
     "year": 2017,
+    "date": "2017",
     "category": "Language Creation",
-    "text": "Language Creation: <em>Origins: The Journey of Humankind</em> (National Geographic) — eight prehistoric and ancient languages created, translated, and trained: two varieties of PIE, Proto-Afro-Asiatic, Proto-Nostratic, Proto-Dené-Caucasian, Proto-Pama-Nyungan, Lydian, and Gaulish",
+    "cv_section": "Language Creation",
+    "title": "<em>Origins: The Journey of Humankind</em>",
+    "rest": " (National Geographic): eight prehistoric and ancient languages created, translated, and trained, including two varieties of PIE, Proto-Afro-Asiatic, Proto-Nostratic, Proto-Dené-Caucasian, Proto-Pama-Nyungan, Lydian, and Gaulish",
     "url": "http://channel.nationalgeographic.com/origins-the-journey-of-humankind/"
   },
   {
     "year": 2017,
+    "date": "4/17",
     "category": "Interview",
-    "text": "Interview: National Geographic's Origins: UKNow",
+    "cv_section": "Interviews and Media Coverage",
+    "pre": "National Geographic’s <em>Origins</em>: ",
+    "title": "UKNow",
     "url": "https://uknow.uky.edu/professional-news/uk-linguist-andrew-byrd-creates-languages-national-geographics-origins-journey"
   },
   {
     "year": 2016,
+    "date": "2016",
     "category": "Interview",
-    "text": "Interview: Far Cry Primal",
-    "url": "http://www.spiegel.de/netzwelt/games/far-cry-primal-fuer-playstation-4-xbox-one-und-pc-im-test-a-1078633.html"
+    "cv_section": "Interviews and Media Coverage",
+    "pre": "<em>Far Cry Primal</em>: ",
+    "rest": "roughly 70 interviews with mainstream media outlets, including <a href=\"http://www.spiegel.de/netzwelt/games/far-cry-primal-fuer-playstation-4-xbox-one-und-pc-im-test-a-1078633.html\">Der Spiegel</a>, <a href=\"https://youtu.be/hdCEL2ZhNao?t=1759\">Le Figaro</a>, <a href=\"http://www.elmundo.es/tecnologia/2016/02/05/56b49a2346163f0e5e8b4600.html\">El Mundo</a>, <a href=\"http://www.news.com.au/technology/home-entertainment/gaming/the-difficulties-in-creating-a-script-using-a-language-which-hasnt-been-spoken-since-the-stone-age/news-story/d79289365301c4f07f09ebd0085ae8da\">News Corp Australia</a>, <a href=\"https://www.vice.com/en_uk/article/yvjx3k/speaking-to-the-professors-who-invented-the-tribal-languages-of-far-cry-primal-030\">Vice</a>, and <a href=\"http://www.player.one/far-cry-primal-interview-how-ubisoft-brought-ancient-languages-back-life-513075\">Player.One</a>",
+    "url": null
   },
   {
     "year": 2016,
+    "date": "2014–16",
     "category": "Language Creation",
-    "text": "Language Creation: Far Cry Primal (Wenja & Izila; Ubisoft)",
+    "cv_section": "Language Creation",
+    "title": "<em>Far Cry Primal</em>",
+    "rest": ": lead creator, translator, and dialect coach of the Wenja & Izila languages; Ubisoft",
     "url": "https://www.ubisoft.com/en-us/game/far-cry-primal/"
   },
   {
     "year": 2014,
+    "date": "5/14",
     "category": "Translation",
-    "text": "Translation: The Drop That Contained the Sea",
+    "cv_section": "Translation of PIE and Ancient Languages",
+    "title": "<em>The Drop That Contained the Sea</em>",
+    "rest": ": PIE translations for “Water Prelude” on the album by Grammy-winning composer Christopher Tin",
     "url": "https://christophertin.com/albums/thedropthatcontainedthesea.html"
   },
   {
-    "year": 2004,
+    "year": 2007,
+    "date": "2007",
     "category": "Publication",
-    "text": "Publication: Shaap Kaij? (Akimel O’odham primer; UCLA)",
+    "cv_section": "Other Contributions",
+    "rest": "Pamela Munro, Virgil Lewis, and Nicole Gfroerer, with Marcus Smith, Andrew Byrd, Kevin Ryan, Kyle Wanberg, Heather Willson, and Jennifer Fischer. <em>Shaap Kaij?</em> An introductory primer to the Akimel O’odham language. Academic Publishing, UCLA",
     "url": null
   },
   {
     "year": 2013,
+    "date": "2013–21",
     "category": "Service",
-    "text": "Service: University of Kentucky Spelling Bee",
+    "cv_section": "Outreach, Service, and Consulting",
+    "pre": "Pronouncer, ",
+    "title": "University of Kentucky Spelling Bee",
     "url": "https://ci.uky.edu/jam/scripps-howard-first-amendment-center"
   },
   {
     "year": 2013,
+    "date": "2013",
     "category": "Interview",
-    "text": "Interview: BBC Brazil",
-    "url": "http://www.bbc.com/portuguese/noticias/2013/10/131002_gravacao_lingua_ancestrais_an"
+    "cv_section": "Interviews and Media Coverage",
+    "pre": "Recordings for <em>Archaeology Magazine</em>, covered by ",
+    "rest": "<a href=\"http://www.bbc.com/portuguese/noticias/2013/10/131002_gravacao_lingua_ancestrais_an\">BBC Brazil</a>, <a href=\"https://www.as.uky.edu/podcasts/linguistics-professor-andrew-byrd-interviewed-bbcs-newsday\">BBC World Service’s <em>Newsday</em></a>, <a href=\"https://www.huffingtonpost.com/2013/09/28/proto-indo-european-language-ancestors_n_4005545.html\">Huffington Post</a>, and <a href=\"https://www.as.uky.edu/fables-reconstruction-andrew-byrd\">UKNow</a>",
+    "url": null
   },
   {
     "year": 2013,
-    "category": "Media",
-    "text": "Media: Telling Tales in Proto-Indo-European",
+    "date": "9/13",
+    "category": "Translation",
+    "cv_section": "Translation of PIE and Ancient Languages",
+    "pre": "“Telling Tales in Proto-Indo-European”: PIE recordings of ",
+    "title": "Schleicher’s Fable & The King and the God",
+    "rest": ", <em>Archaeology Magazine</em>",
     "url": "http://www.archaeology.org/exclusives/articles/1302-proto-indo-european-schleichers-fable"
   },
   {
     "year": 2013,
+    "date": "9/13",
     "category": "Interview",
-    "text": "Interview: On Talk Like a Pirate Day",
+    "cv_section": "Interviews and Media Coverage",
+    "title": "“On Talk Like a Pirate Day, it’s time to go beyond ‘aarrr, matey’”",
+    "rest": ", <em>Lexington Herald-Leader</em>",
     "url": "http://www.kentucky.com/entertainment/movies-news-reviews/article44444556.html"
   }
 ]

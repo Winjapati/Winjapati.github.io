@@ -114,11 +114,13 @@
       return {years, m};
     }
 
+    // Display text is composed from structured fields (the same fields build_cv.py uses for the PDF CV).
     function entryHTML(e){
       const y = e.year? ` <span class="muted">(${e.year})</span>`: '';
-      const inner = `${e.text}${y}`;
-      const linked = e.url ? `<a href="${e.url}" target="_blank" rel="noreferrer noopener">${inner}</a>` : inner;
-      return `<div class="entry" data-cat="${(e.category||'').toLowerCase()}"><div class="title">${linked}</div></div>`
+      const t = e.title ? (e.url ? `<a href="${e.url}" target="_blank" rel="noreferrer noopener">${e.title}</a>` : e.title) : '';
+      const inner = `${e.category}: ${e.pre||''}${t}${e.rest||''}${y}`;
+      const details = (e.cv_details||[]).length ? `<ul class="details">${e.cv_details.map(d=>`<li>${d}</li>`).join('')}</ul>` : '';
+      return `<div class="entry" data-cat="${(e.category||'').toLowerCase()}"><div class="title">${inner}</div>${details}</div>`
     }
 
     function render(containerId, data){

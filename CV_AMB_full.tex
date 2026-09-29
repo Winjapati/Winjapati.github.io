@@ -1,0 +1,557 @@
+\documentclass[paper=letter,fontsize=11pt,enabledeprecatedfontcommands]{scrartcl} % KOMA-article class
+
+\usepackage[LFE,LAE,T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[english,farsi]{babel}
+\usepackage[utf8]{inputenc}
+% \usepackage{CJKutf8}
+\usepackage{tipa}
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{amsmath,amsfonts,amsthm}     % Math packages
+\usepackage{graphicx}                    % Enable pdflatex
+\usepackage[svgnames]{xcolor}            % Colors by their 'svgnames'
+\usepackage{geometry}
+	%\textheight=700px                    % Saving trees ;-)
+%\usepackage{url}
+\usepackage[colorlinks=true,
+linkcolor=blue,
+urlcolor=blue]{hyperref}
+\usepackage{float}
+\usepackage{etaremune}
+\usepackage{wrapfig}
+
+\usepackage{attachfile}
+
+\frenchspacing              % Better looking spacings after periods
+\pagestyle{empty}           % No pagenumbers/headers/footers
+
+%\addtolength{\voffset}{-40pt}
+%\addtolength{\textheight}{20pt}
+
+\setlength\topmargin{0pt}
+\addtolength\topmargin{-\headheight}
+\addtolength\topmargin{-\headsep}
+\setlength\oddsidemargin{0pt}
+\setlength\textwidth{\paperwidth}
+\addtolength\textwidth{-2in}
+\setlength\textheight{\paperheight}
+%\addtolength\textheight{-3in}
+\addtolength\textheight{-2in}
+\usepackage{layout}
+
+%%% Custom sectioning}{sectsty package)
+%%% ------------------------------------------------------------
+\usepackage{sectsty}
+
+\sectionfont{%			            % Change font of \section command
+	\usefont{OT1}{phv}{b}{n}%		% bch-b-n: CharterBT-Bold font
+	\sectionrule{0pt}{0pt}{-5pt}{3pt}}
+
+%%% Macros
+%%% ------------------------------------------------------------
+\newlength{\spacebox}
+\settowidth{\spacebox}{8888888888}			% Box to align text
+\newcommand{\sepspace}{\vspace*{1em}}		% Vertical space macro
+
+\newcommand{\MyName}[1]{ % Name
+		\Huge \usefont{OT1}{phv}{b}{n} \hfill #1
+		\par \normalsize \normalfont}
+		
+\newcommand{\MySlogan}[1]{ % Slogan}{optional)
+		\large \usefont{OT1}{phv}{m}{n}\hfill \textit{#1}
+		\par \normalsize \normalfont}
+
+\newcommand{\NewPart}[2]{\section*{\uppercase{#1} #2}}
+
+\newcommand{\PersonalEntry}[2]{
+		\noindent\hangindent=2em\hangafter=0 % Indentation
+		\parbox{\spacebox}{        % Box to align text
+		\textit{#1}}		       % Entry name}{birth, address, etc.)
+		\hspace{1.5em} #2 \par}    % Entry value
+
+\newcommand{\SkillsEntry}[2]{      % Same as \PersonalEntry
+		\noindent\hangindent=2em\hangafter=0 % Indentation
+		\parbox{\spacebox}{        % Box to align text
+		\textit{#1}}			   % Entry name}{birth, address, etc.)
+		\hspace{1.5em} #2 \par}    % Entry value	
+		
+\newcommand{\EducationEntry}[4]{
+		\noindent \textbf{#1} \hfill      % Study
+		\colorbox{White}{%
+			\parbox{6em}{%
+			\hfill\color{Black}#2}} \par  % Duration
+		\noindent \textit{#3} \par        % School
+		\noindent\hangindent=2em\hangafter=0 \small #4 % Description
+		\normalsize \par}
+
+\newcommand{\WorkEntry}[4]{				  % Same as \EducationEntry
+		\noindent \textbf{#1} \hfill      % Jobname
+		\colorbox{White}{\color{White}#2} \par  % Duration
+		\noindent \textit{#3} \par              % Company
+		\noindent\hangindent=2em\hangafter=0 \small #4 % Description
+		\normalsize \par}
+
+\newcommand{\PaperEntry}[7]{
+		\noindent #1, ``\href{#7}{#2}", \textit{#3} \textbf{#4}, #5 (#6).}
+
+% \newcommand{\ArxivEntry}[3]{
+% 		\noindent #1, ``\href{http://arxiv.org/abs/#3}{#2}", \textit{{cond-mat/}#3}.}
+        
+\newcommand{\BookEntry}[4]{
+		\noindent #1, ``\href{#3}{#4}", \textit{#3}.}
+        
+% \newcommand{\FundingEntry}[5]{
+%         \noindent #1, ``#2", \$#3 (#4, #5).}
+
+\newcommand{\TalkEntry}[4]{
+		\noindent #1, #2, #3 #4}
+
+\newcommand{\ThesisEntry}[5]{
+		\noindent #1 -- #2 #3 ``#4" \textit{#5}}
+
+% \newcommand{\CourseEntry}[3]{
+% 		\noindent \item{#1: \textbf{#2} \\ #3}}
+
+%%% Begin Document
+%%% ------------------------------------------------------------
+\begin{document}
+
+%\layout
+
+% you can upload a photo and include it here...
+% \begin{wrapfigure}{l}{0.5\textwidth}
+% 	\vspace*{-2em}
+% 		\includegraphics[width=0.165\textwidth]{Byrd_photo_1.jpg}
+% \end{wrapfigure}
+
+\selectlanguage{english}
+
+\MyName{Andrew M. Byrd}
+\MySlogan{\vspace{-0.3in}\begin{flushright}\href{https://www.google.com/maps/place/Patterson+Office+Tower,+Lexington,+KY+40508/@38.0386439,-84.5063818,17z/data=!3m1!4b1!4m5!3m4!1s0x884244be5219f26f:0x17838fcfc35b24be!8m2!3d38.0386495!4d-84.5042683}{Department of Linguistics}\\\href{http://www.uky.edu/UKHome/}{University of Kentucky} \\
+\href{mailto:andrewbyrd@uky.edu}{andrewbyrd@uky.edu}\\
+% \href{https://twitter.com/SpeakingPrimal}{@SpeakingPrimal}\\
+% \href{http://speakingprimal.com}{http://speakingprimal.com}
+\end{flushright}}
+
+%\sepspace
+ \NewPart{Overview}{}
+ Associate Professor of Linguistics\\
+ Specializes in Historical Phonology, Proto-Indo-European, and Constructed Languages
+
+%%% ------------------------------------------------------------
+\NewPart{Appointments}{}
+
+\noindent \textbf{Associate Professor of Linguistics} \hfill      % Study
+		\colorbox{White}{%
+			\parbox{6em}{%
+			\hfill\color{Black}2017-$\qquad$}} \par
+\noindent \textbf{\color{Black}Assistant Professor of Linguistics} \hfill      % Study
+		\colorbox{White}{%
+			\parbox{6em}{%
+			\hfill\color{Black}2014-2017}} \par
+\EducationEntry{{\color{Black}Lecturer of Linguistics}}{2011-2014}{University of Kentucky}
+%%
+{\begin{itemize}
+%%
+\item{My primary research focus is the creation and application of innovative approaches to solve difficult problems in historical linguistics.}
+%%%
+\item I also work to educate the public about Proto-Indo-European (PIE) and historical linguistics through constructed languages and other forms of outreach.
+%%
+%%
+\item{Courses Taught:\\
+\\
+\begin{tabular}{l l l}
+The History of English & Proto-Indo-European  & Historical Linguistics \\
+Homeric Greek & Ancient Greek Dialects & Sanskrit	\\
+Phonological Analysis & Research Methods in Linguistics & Optimality Theory	\\
+Writing Systems & Introduction to the Study of Language & Introduction to Linguistics \\
+Constructed Languages & How to Create Your Own Language & Words \& Sentences\\
+Computation for Linguists & Decipherment & Classical Armenian \\
+Oscan \&~Umbrian & Hittite& \\
+\end{tabular}}
+\end{itemize}}
+
+\sepspace
+%\EducationEntry{Visiting Scholar}{Spring 2013}{Harvard University}{\begin{itemize}\item{Research on Majorana fermion detection during sabbatical semester with Prof. A. Yacoby}\end{itemize}}
+
+%%% Education
+%%% ------------------------------------------------------------
+\NewPart{Education}{}
+
+\EducationEntry{PhD Indo-European Studies}{2004-2010}{University of California, Los Angeles}{{\href{https://uknowledge.uky.edu/cgi/viewcontent.cgi?referer=https://www.google.com/&httpsredir=1&article=1054&context=lin_facpub}{``Reconstructing Indo-European Syllabification"}\\
+Thesis advisor: H. Craig Melchert\\
+2\textsuperscript{nd} place, ``Best Dissertation of 2011 in the field of Indo-European”, Indogermanische Gesellschaft}
+}
+% \sepspace
+\noindent\rule{8cm}{0.2pt}
+
+\EducationEntry{Visiting Student, Linguistics}{2003-2004}{Harvard University}
+
+% \sepspace
+\noindent\rule{8cm}{0.2pt}
+
+\EducationEntry{BA Linguistics (minors: Latin, German, and Italian)}{1997-2002}{University of Georgia, Athens}
+{``The Phonology of the Laryngeals"\\
+Thesis advisor: Jared S. Klein\\
+Summa Cum Laude, with Honors}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NewPart{Current Projects}{}
+\begin{enumerate}
+\item{{\textbf{DERBi PIE}}: I am creating a searchable database of the PIE language called DERBi PIE (Database of Etymological Roots Beginning in PIE), which includes multiple etymological reference works and search functions.}
+% \item{{\bf \textit{Roots of the Ancients}}}. I am co-leading (with Brenna Reinhart Byrd) a large team of experts to design a video game that will engage a broad audience on the scholarship of  Proto-Indo-European and ancient Indo-European (IE) languages and cultures. In the game, players will be able to battle ancient monsters from IE folklore, gain blessings from the gods of the IE pantheon, and even converse with the locals in their native tongue. I am designing the game together with award-winning teacher and language-pedagogy expert \href{https://mcl.as.uky.edu/users/brbr224}{Brenna Reinhart Byrd} (UK) and \href{https://supersoul.co/}{John Meister}, owner of Super Soul games, a local game development company.
+\item{{\textit{\textbf{Five Novellas in Proto-Indo-European}}}}. Brenna Reinhart Byrd and I are working on five novellas for the public that introduces the study of Proto-Indo-European language, culture, and archaeology through immersive stories in PIE.
+% \item{{\bf Experimental Indo-European Linguistics.} I am keenly interested in designing experiments to test theories on PIE and the prehistory of IE languages.
+
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%% Books
+
+\NewPart{Books}{}
+\begin{etaremune}
+\item \BookEntry{\underline{A.M. Byrd}, J.~DeLisi, and M.~Wenthe (eds.)}{http://www.beechstave.com/tavet.htm}
+{Ann Arbor \&~New York: Beech Stave Press} {Tavet Tat Satyam. Studies in Honor of Jared S. Klein on the Occasion of His Seventieth Birthday}{ (2016).}
+\item \BookEntry{A.M. Byrd}{http://www.beechstave.com/tavet.htm}{Leiden: Brill}{The Indo-European Syllable}{ (2015).}
+\end{etaremune}
+
+%%% Papers
+%%% ------------------------------------------------------------
+
+\NewPart{Articles and Chapters}{}
+\begin{etaremune}
+
+% \item \PaperEntry{Anton Vinogradov, Gabriel Wallace, and \underline{A.M. Byrd}}{Generating better models for low-resource languages using information from descendant models}{Proceedings of Recent Advances in Natural Language Processing, September X--X, 2024}{\hspace{-.35em}}{XX-XX}{2024}{xx}
+
+\item \PaperEntry{Zia Khoshsirat and \underline{A.M. Byrd}}{The Indo-Iranian labial-extended causative suffix: Indic \textit{-(ā)páya-}, Eastern Iranian \textit{*-(ā)\textsubarch{u}a\textsubarch{i}a}-, and Proto-Caspian \textit{*-\={a}w\={e}n}-}{Indo-European Linguistics}{11}{64-95}{2023}{https://doi.org/10.1163/22125892-bja10025}
+
+\item \PaperEntry{\underline{A.M. Byrd}}{The Use of the Google Suite in LIN 200: How To Create Your Own Language}{Greater Faculties: A Review of Teaching and Learning}{3}{Article 12}{2022}{https://uknowledge.uky.edu/greaterfaculties/vol3/iss1/12}
+
+\item \PaperEntry{Anton Vinogradov, \underline{A.M. Byrd}, and Brent Harrison}{Mistake Captioning: A Machine Learning Approach For Detecting Mistakes And Generating Instructive Feedback}{Proceedings of Recent Advances in Natural Language Processing, September 1--3, 2021}{\hspace{-.35em}}{1455-1462}{2021}{https://ranlp.org/ranlp2021/proceedings-20Sep.pdf}
+
+\item \PaperEntry{Brenna Reinhart Byrd and \underline{A.M. Byrd}}{Teaching Proto-Indo-European as a Constructed Language}{Jeffrey Penske, Amy Fountain, and Nathan Sanders (eds.), Language Invention in Linguistics Pedagogy, Oxford: OUP}{\hspace{-.35em}}{186-207}{2020}{https://oxford.universitypressscholarship.com/view/10.1093/oso/9780198829874.001.0001/oso-9780198829874-chapter-12}
+
+\item \PaperEntry{A.M. Byrd}{Motivating Lindeman’s Law}{Adam Alvah Catt, Ronald I.~Kim, and Brent Vine (eds.), QAZZU warrai. Anatolian and Indo-European Studies in Honor of Kazuhiko Yoshida}{\hspace{-.35em}}{6-20}{2019}{http://speakingprimal.com/wp-content/uploads/2019/12/Byrd-Motivating-Lindemans-Law.pdf}
+
+\item \PaperEntry{Phillip Barnett and \underline{A.M. Byrd}}{A Markedly Different Approach: an Experimental Look at the Rarity of PIE */b/}{Proceedings of the 29\textsuperscript{th} Annual UCLA Indo-European Conference}{\hspace{-.35em}}{11-28}{2018}{http://box2018.temp.domains/~speakjb5/wp-content/uploads/2018/03/Barnett-Byrd-A-Markedly-Different-Approach.pdf}
+
+\item \PaperEntry{A.M. Byrd}{121.~The Phonology of Proto-Indo-European}{Handbook of Comparative and Historical Indo-European Linguistics}{vol.~3}{2056-79}{2018}{https://www.degruyter.com/view/product/487972} 
+
+\item \PaperEntry{A.M. Byrd}{The Rules of Reconstruction: Making our Etymologies More Grounded}{Etymology and the European Lexicon, Proceedings of the 14\textsuperscript{th} Fachtagung of the Indogermanische Gesellschaft, 17-22 September 2012, Copenhagen, Denmark}{\hspace{-.35em}}{81-92}{2017}{https://reichert-verlag.de/buchreihen/sprachwissenschaft_reihen/sprachwissenschaft_akten_der_fachtagung_der_indogermanischen_gesellschaft/9783954902026_etymology_and_the_european_lexicon-detail} 
+
+\item \PaperEntry{Joseph Rhyne and \underline{A.M. Byrd}}{Stressful Conversions: Internal Derivation within the Compositional Approach}{Tavet Tat Satyam. Studies in Honor of Jared S. Klein on the Occasion of His Seventieth Birthday}{\hspace{-.35em}}{322-333}{2016}{http://www.beechstave.com/tavet.htm}
+%In T. Edited by Andrew Miles Byrd, Jessica DeLisi, and Mark Wenthe. Ann Arbor & New York: Beech Stave Press.
+
+\item \PaperEntry{A.M. Byrd}{Schwa Indogermanicum and Compensatory Lengthening}{Sahasram Ati Srajas. Indo-Iranian and Indo-European Studies in Honor of Stephanie W. Jamison}{\hspace{-.35em}}{18-28}{2016}{http://www.beechstave.com/sahas.htm}
+%Edited by Dieter Gunkel, Joshua T. Katz, Brent Vine, and Michael Weiss. 
+
+\item \PaperEntry{A.M. Byrd}{Deriving Dreams from the Divine: Hittite tesha-/zash(a)i-}{Historische Sprachforschung}{124}{96-105}{2011 [2012]}{http://rootsofeurope.ku.dk/english/activities/sound_of_indo-european/}
+
+%Göttingen: Vandenhoeck & Ruprecht
+
+\item \PaperEntry{A.M. Byrd}{Predicting Indo-European Syllabification through Phonotactic Analysis}{The Sound of Indo European - selected papers from the conference, held in Copenhagen 16-19 April 2009}{\hspace{-.35em}}{9-28}{2011}{http://rootsofeurope.ku.dk/english/activities/sound_of_indo-european/}
+
+\item \PaperEntry{A.M. Byrd}{Motivating Sievers’ Law}{Proceedings of the 21\textsuperscript{st} Annual UCLA Indo-European Conference}{\hspace{-.35em}}{45-67}{2010}{https://www.academia.edu/1166462/Motivating_Sievers_Law} 
+
+\item \PaperEntry{A.M. Byrd}{Return to Dative anmaimm}{Ériu}{56}{145-55}{2006}{https://bill.celt.dias.ie/vol4/displayObject.php?TreeID=3182} 
+
+
+\end{etaremune}
+
+
+%\NewPart{Pending manuscripts}{\href{http://arxiv.org/find/cond-mat/1/au:+Appelbaum_I/0/1/0/all/0/1}{[arxiv]}}
+%\begin{itemize}
+%\item \ArxivEntry{J. Li and \underline{I. Appelbaum}}{D$^-$ donor spin coupling to conduction electrons in silicon}{1308.5621}
+%\end{itemize}
+
+% \NewPart{Book Chapters}{}
+% \begin{itemize}
+% \item \underline{I. Appelbaum}, \href{http://www.crcpress.com/product/isbn/9781439803776}{``Spin-Polarized Ballistic Hot-Electron Injection and Detection in Hybrid Metal Semiconductor Devices"}, Handbook of Spin Transport and Magnetism (CRC Press, 2011), E.Y. Tsymbal \& I. \v{Z}uti\'c, eds.
+% \end{itemize}
+
+\NewPart{Public Engagement}{}
+\begin{itemize}
+
+\item Consultant for Cornett, \href{https://www.visitlex.com/aliens/}{"Hey Aliens! Look at Lexington!"}; advertising campaign for Lexington, KY (VisitLEX) (2023-24)
+
+\item Project Co-Director (with Brenna Reinhart Byrd), \textit{Roots of the Ancients} (2017-21). My responsibilites were:
+
+\begin{itemize}
+    \item To secure funding for the  project;
+    \item To translate dialogue from English to PIE and train actors to speak the language within in-game dialogue;
+    \item To coordinate tasks among the nearly thirty individuals enlisted to work on the project, including game designers, artists, musicians, and scholars.
+\end{itemize}
+\item Pronouncer,  \href{https://ci.uky.edu/jam/scripps-howard-first-amendment-center}{University of Kentucky Spelling Bee} (2013-21), \href{http://www.fayettecofarmbureau.com/2018-fayette-county-farm-bureau-spelling-bee/}{Fayette County Spelling Bee} (2018-19)
+
+\item Advisory Board, \href{https://thewordexplorer.blog/2018/01/10/bluegrass-literacy-project/}{Bluegrass Literacy Project}, a community organization dedicated to improving and advancing English language literacy in the state of Kentucky (2018-21)
+
+\item{Language Creation}
+\begin{etaremune}
+% \item \textit{\href{https://www.playflintlock.com/}{XXXXX}}: co-creator, translator, and dialect coach of the XXXX language; Amazon Games (2024)
+% \item \textit{\href{https://www.playflintlock.com/}{Spiritbound}}: co-creator, translator, and dialect coach of the Wildertongue language; Eidos (2023-25)
+\item \textit{\href{https://www.playflintlock.com/}{Flintlock: Siege of Dawn}}: co-creator, translator, and dialect coach of the Th'anthk language; Kepler/A44 (2021-23)
+\item
+\textit{\href{https://www.battleshapers.com/}{Battle Shapers}}: Latin translation; Metric Empire, Inc. (2022)
+\item \textit{\href{https://www.ubisoft.com/en-us/game/far-cry-primal/}{Far Cry Primal}}: lead creator, translator, and dialect coach of the Wenja \&~Izila languages; Ubisoft (2014-16)
+
+\end{etaremune}
+
+\item Translation of PIE and Ancient Languages
+\begin{etaremune}
+\item \href{https://podcasts.apple.com/us/podcast/the-birth-of-indo-european/id1520403988?i=1000704468243}{``The Birth of Indo-European''}, \textit{The Ancients} podcast: interview with Laura Spinney featuring our PIE translation (2025)
+\item \href{https://www.youtube.com/watch?v=JBGYC_UKM54}{The PIE Creation Myth}, with Riccardo Ginevra and Phill Barnett (3/25)
+\item \href{https://www.espoo.fi/en/events/espooevents:af7mlp3mre}{\textit{KAMU Espoo City Museum} (Finland)}, translation of the PIE Dragon Slaying myth for the "Clues to our Roots" exhibition, with Riccardo Ginevra and Phill Barnett (3/17/22-1/29/23)
+\begin{itemize}
+\item Featured in Ginevra's new podcast, \href{https://open.spotify.com/show/6QrdBI77Kwg5rFjQwaeByQ?si=83e48b1201354572&nd=1&dlsi=ec57daa8804b4408}{\textit{L'invasione}}, \#1 on Spotify in Italy (1/24)
+\item Article in \href{https://www.ilpost.it/2024/01/05/invasione-testi/}{\textit{Il Post}} about \textit{L'invasione} (1/24)
+\item \href{https://www.youtube.com/watch?v=J1SXeSHY9p0}{Myth on YouTube} (1/24)
+\end{itemize}
+\item \textit{Vikings}, {\href{https://www.imdb.com/title/tt7412196/?ref_=ttep_ep13}{season 6, episode 13}}: PIE poem reconstructed for Proto-Germanic  (12/20)
+\item \href{https://www.youtube.com/watch?v=x-x9EUCTzRo}{\textit{Draw Curiosity}}: translation featured on ``Let's Talk about PIE (Proto-Indo-European) - Reconstructing Old Languages'' (3/19)
+\item \textit{\href{https://www.forestforgetheatre.co.uk/page-stage-arts-council-funding-brings-axe-life/}{AXE}}: set in 3,600 \textsc{bce}, John Yates' play features prayers and story-telling in PIE (3/18)
+\item \href{https://hh.pid.nhk.or.jp/pidh07/ProgramIntro/Show.do?pkey=001-20180404-21-18926} {\textit{The Birth of Humanity}}: a documentary for NHK on the evolution of humankind. Features languages created for early Homo Sapiens, Neanderthal, and Homo Erectus. (2018)
+% \begin{CJK}{UTF8}{min}人類誕生メイキング\end{CJK}}
+\item {\href{http://channel.nationalgeographic.com/origins-the-journey-of-humankind/}{\textit{Origins: The Journey of Humankind}}}: features eight prehistoric and ancient languages created,
+translated, and trained, including two varieties of PIE, Proto-Afro-Asiatic, Proto-Nostratic, Proto-Den\'{e}-Caucasian, Proto-Pama-Nyungan, Lydian, and Gaulish, shown on National Geographic (2017)
+\item \href{https://christophertin.com/albums/thedropthatcontainedthesea.html}{\textit{The Drop That Contained the Sea}}: PIE translations for “Water Prelude” in the album by Grammy-award winning composer \href{https://christophertin.com/index.html}{Christopher Tin} (5/14)
+\item “Telling Tales in Proto-Indo-European”: PIE recordings of \href{http://www.archaeology.org/exclusives/articles/1302-proto-indo-european-schleichers-fable}{Schleicher’s Fable} \&~\href{https://www.archaeology.org/exclusives/articles/1302-proto-indo-european-schleichers-fable#art_page2}{the King and the God}, \textit{ Archaeology Magazine}, (9/13)
+\end{etaremune}
+
+
+\item Interviews
+\begin{etaremune}
+\item \href{https://www.youtube.com/watch?v=d0fBcsz-nEM}{Is There Anybody Out There?}, \textit{KET - Kentucky Educational Television} (12/24)
+\item \href{https://www.radioartifact.com/strange-talk}{Ep.94 How I Learned to Stop Worrying and Love the Laser (feat. Dr. Brenna Byrd and Dr. Andrew Byrd)}, \textit{ Strange Talk} (2/24)
+\item \href{https://www.youtube.com/watch?v=Onjx-QOS8X0&t=30s}{\textit{Conlangs: Making Up a Language (with Profs. Andrew and Brenna Byrd)}}, {Interview with Jackson Crawford, Youtube} (8/23)
+\item \href{https://www.youtube.com/watch?v=LnZMuAHmmvo}{\textit{Speaking Proto-Indo-European (with Dr. Andrew Byrd)}}, {Interview with Jackson Crawford, Youtube} (4/22)
+\item \href{https://www.rt.com/shows/i-don-t-understand-with-william-shatner/544544-idu-where-did-language-come/}{\textit{I Don't Understand with William Shatner}}, {RT} (12/21)
+\item \href{https://anchor.fm/diuna-lsp/episodes/PRZEtumacze---Prof--Jerzy-Bralczyk-w-rozmowie-o-jzyku--pandemii-i-gonieniu-krliczka-egp4cd}{Andrew Byrd, czyli jak rozmawiali ze sobą jaskiniowcy?}, {PRZEtłumacze podcast} (11/20)
+\item \href{http://www.kykernel.com/news/to-bee-or-not-to-bee-uk-s-spelling-bee/article_830a7710-57d4-11ea-9a0a-bb36cb1da593.html} {To Bee or Not to Bee? UK's spelling bee may not exist next year}, {\textit{Kentucky Kernel}} (2/20)
+\item \href{https://www.youtube.com/watch?v=Ar-esK0JnFY&t=463s}{Archaeo-Chat: Creating Prehistoric Languages for Far Cry Primal! (With some KFC)}, Interview with Archaeology Soup (6/19)
+\item \href{https://www.pbs.org/wgbh/nova/video/first-horse-warriors/}{\textit{First Horse Warriors}}, NOVA documentary, PBS (5/19)
+\item \href{https://www.thecollegianur.com/article/2019/04/uk-professor-speaks-about-developing-proto-indo-european-languages-for-video-games}{``UK professor speaks about developing Proto-Indo-European languages for video games''}, \textit{The Collegian} (4/19)
+\item \href{https://www.youtube.com/watch?v=x-x9EUCTzRo&t=199s}{Let's Talk About PIE (Proto-Indo-European) - Reconstructing Old Languages}, \textit{Draw Curiosity} (3/19)
+\item \href{https://www.atlasobscura.com/articles/what-does-dagnabbit-mean}{``The Long Linguistic Journey to `Dagnabbit'"}, \textit{Atlas Obscura} (3/18)
+\item National Geographic's \textit{Origins}: \href{https://uknow.uky.edu/professional-news/uk-linguist-andrew-byrd-creates-languages-national-geographics-origins-journey}{UKNow} (4/17)
+\item \textit{Far Cry Primal}: roughly 70 interviews given with mainstream media outlets, including \href{http://www.spiegel.de/netzwelt/games/far-cry-primal-fuer-playstation-4-xbox-one-und-pc-im-test-a-1078633.html}{der Spiegel}, \href{https://youtu.be/hdCEL2ZhNao?t=1759}{le Figaro}, \href{http://www.elmundo.es/tecnologia/2016/02/05/56b49a2346163f0e5e8b4600.html}{el Mundo}, \href{http://www.news.com.au/technology/home-entertainment/gaming/the-difficulties-in-creating-a-script-using-a-language-which-hasnt-been-spoken-since-the-stone-age/news-story/d79289365301c4f07f09ebd0085ae8da}{News Corp Australia}, \href{https://www.vice.com/en_uk/article/yvjx3k/speaking-to-the-professors-who-invented-the-tribal-languages-of-far-cry-primal-030}{Vice}, \href{http://www.player.one/far-cry-primal-interview-how-ubisoft-brought-ancient-languages-back-life-513075}{Player.One} (2016)
+\item Recordings for \textit{Archaeology Magazine}: \href{http://www.bbc.com/portuguese/noticias/2013/10/131002_gravacao_lingua_ancestrais_an}{BBC Brazil}, \href{https://www.as.uky.edu/podcasts/linguistics-professor-andrew-byrd-interviewed-bbcs-newsday}{BBC World Service's Newsday}, \href{https://www.huffingtonpost.com/2013/09/28/proto-indo-european-language-ancestors_n_4005545.html}{Huffington Post}, \href{https://www.as.uky.edu/fables-reconstruction-andrew-byrd}{UKNow} (2013)
+\item  \href{http://www.kentucky.com/entertainment/movies-news-reviews/article44444556.html}{“On Talk Like a Pirate Day, it’s time to go beyond ‘aarrr, matey’”}, \textit{Lexington Herald Leader}. (9/13)
+\end{etaremune}
+\item Pamela Munro, Virgil Lewis, and Nicole Gfroerer, with Marcus Smith, Andrew Byrd, Kevin Ryan, Kyle Wanberg, Heather Willson, and Jennifer Fischer. \textit{Shaap Kaij?} (An introductory primer to the Akimel O’odham language.) Academic Publishing, UCLA. (2007)
+\end{itemize}
+
+\NewPart{External Grants}{}
+
+\begin{itemize}
+\item \href{https://apps.neh.gov/PublicQuery/AwardDetail.aspx?gn=HAA-303944-25}{NEH Digital Humanities Advancement Grant} (with Danny Law, University of Texas, Austin), \$75,000, to work on the development of a DERBi PIE prototype. (2024)
+\item \href{https://apps.neh.gov/publicquery/AwardDetail.aspx?gn=MD-263922-19}{NEH Digital Projects for the Public Discovery Grant}, \$30,000, to work on the development of \textit{The Anatolian Trail: an Indo-European Adventure}. (2018)
+\end{itemize}
+
+
+\NewPart{Internal Grants \& Awards}{}
+\begin{itemize}
+\item CURATE award, \$5,000, to continue work on DERBi PIE. (2026)
+\item CURATE award, \$5,000, to continue work on DERBi PIE. (2025)
+\item Research and Creative Activities Support Program award (with Allison Burkette), \$5,000, to build an OCR program to digitize linguistic texts. (2024)
+\item Broadening our Funded Research Base in Arts and Sciences, \$20,000, to continue work on DERBi PIE. (2023)
+\item Research and Creative Activities Support Program award (with Allison Burkette), \$5,000, to build an OCR program to digitize linguistic texts. (2023)
+\item Alternative Textbook Grant Program award (with Brenna Reinhart Byrd), \$2,500, to create a free textbook that teaches about PIE through immersion. (2021)
+\item UK Arts \&~Sciences Innovative Teaching Award (2021)
+\item Research and Creative Activities Support Program award (with Brenna Reinhart Byrd), \$3,000, for work on {\it Roots of the Ancients}. (2020)
+\item Teachers Who Made a Difference Award (2020)
+\item Alternative Textbook Grant Program award (with Brenna Reinhart Byrd), \$2,500, to create a free textbook that teaches about PIE through immersion. (2020)
+\item CELT Teaching Innovation Institute award, \$6,000. (2020)
+\item Alternative Textbook Grant Program award (with Brenna Reinhart Byrd), \$2,500, to create a free textbook that teaches about PIE through immersion. (2019)
+\item Research and Creative Activities Support Program award (with Brenna Reinhart Byrd), \$5,000, for work on {\it The Anatolian Trail: Roots of the Ancients}. (2019)
+\item Southeastern Conference Visiting Faculty Travel Grant, \$2500. (2013)
+\item Academic Planning, Analytics and Technologies Grant, \$1500, to develop an introductory course in Linguistics. (2013)
+\item UCLA Graduate Research Mentorship Award. (2005-2006)
+\item Linguistic Society of America Summer Institute Fellowship. (2005)
+\item Fulbright Fellowship for Study in Pavia, Italy, at l'Università degli Studi di Pavia. (2002-2003)
+\end{itemize}
+
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NewPart{Invited Talks}{}
+
+\begin{etaremune}
+\item\TalkEntry{An Immersive Approach to Teaching Indo-European Studies (with Brenna Reinhart Byrd)}{UCLA Indo-European Studies Seminar, Los Angeles, CA}{10/24}
+\item\TalkEntry{The Business of Making Conlangs (with Brenna Reinhart Byrd)}{UTA guest lecture in \textit{Constructed Languages}, Austin, TX}{9/24}
+\item\TalkEntry{Being a Public Scholar in Linguistics}{UGA Graduate Student Invited Talk, Athens, GA}{2/24}
+\item\TalkEntry{LECS: Reconstructing Proto-Caspian Causative Suffix \begin{otherlanguage}{farsi} کس: بازسازی پسوند واداری در کاسپین آغازی \end{otherlanguage}(with Zia Khoshsirat)}{Allameh Tabataba'i University, Tehran, Iran}{12/23}
+\item\TalkEntry{Constructed Languages and World['] Building in Video Games (with Brenna Reinhart Byrd)}{UK}{11/23}
+\item\TalkEntry{Using Proto-Indo-European as a Conlang in Video Games \&~the Classroom}{University of Louisville}{2/20}
+\item\TalkEntry{Conlanging Proto-Indo-European: An Immersive Experience within Prehistory (with Brenna Reinhart Byrd)}{2020 MLA Conference, Seattle, WA}{1/20}
+\item\TalkEntry{Making the Esoteric Exoteric: Introducing the Public to Historical Linguistics through Film, TV, and Video Games}{Marshall College of Liberal Arts Research and Creativity Conference, keynote speaker}{4/19}
+\item\TalkEntry{Making PIE for the People: {\it Far Cry Primal}, The History Channel's {\it Vikings}, and {\textit{The Anatolian Trail}}}{University of Richmond}{4/19}
+\item\TalkEntry{Reconstructing the Proto-Indo-European Stop System: An Experimental Approach}{Princeton University}{12/17}
+\item\TalkEntry{Resurrecting a Dead Language for \textit{Far Cry Primal} (with Brenna Reinhart Byrd)}{Centre College convocation}{2/17}
+\item\TalkEntry{The Wenja Language from \textit{Far Cry Primal} (with Brenna Reinhart Byrd)}{OMG!con, featured panelist}{6/16}
+\item\TalkEntry{Vowels vs. Vader: Exploring the Light and Dark Sides of Indo-European (with Joshua T. Katz)}{Kentucky Foreign Language Conference, keynote presentation}{4/14}
+\item\TalkEntry{Speaking Proto-Indo-European: What Modern-Day Linguistics Can Teach Us About a 7000-year-old Language}{Centre College convocation}{11/13}
+\item\TalkEntry{The Phonology of Proto-Indo-European. Day 1: Segmental Phonology; Day 2: Suprasegmental Phonology; Day 3: Rules \&~Constraints; Day 4: Future Directions.” (SEC Faculty Exchange Seminar Series)}{University of Georgia, Athens}{5/13}
+\item\TalkEntry{A Crazy Rule in PIE? A Closer Look at the Saussure Effect}{10\textsuperscript{th} Annual Ohio State Linguistics Symposium, Columbus, OH}{1/13}
+\end{etaremune}
+
+\NewPart{Conference and Symposium Presentations}{}
+\begin{etaremune}
+\item\TalkEntry{Representing Semantic Relationships in Ancient IE Languages: A Pilot Study (with Anton Vinogradov and Gabriel Wallace)}{35\textsuperscript{th} UCLA Indo-European Conference, Los Angeles, CA}{10/24}
+\item\TalkEntry{Connecting Lexical Aspect and Morphology in Proto-Indo-European (with Tara Singh)}{7\textsuperscript{th} Annual Linguistics Conference at the University of Georgia (LCUGA7), Athens, GA}{10/21}
+\item\TalkEntry{Transparent Learning through Video Game Puzzles: Making Indo-European Studies Accessible (with Brenna Reinhart Byrd)}{2019 Pedagogicon: Transparency in Teaching and Learning, Richmond, KY}{5/19}
+\item\TalkEntry{The Anatolian Trail: An Interactive Introduction to Proto-Indo-European (with Brenna Reinhart Byrd)}{ACTFL, New Orleans, LA}{11/18}
+\item\TalkEntry{The Gilaki Causative Suffix \textit{-be(\textlengthmark)-}: Its Function and Origins (with Zia Khoshsirat)}{30\textsuperscript{th} UCLA Indo-European Conference, Los Angeles, CA}{11/18}
+\item\TalkEntry{An Empirical Look at the Rarity of PIE */b/ (with Phillip Barnett)}{37\textsuperscript{th} East Coast Indo-European Conference, Ann Arbor, MI}{6/18}
+\item\TalkEntry{A Markedly Different Solution: Perceptual Confusability Explains the Rarity of PIE */b/ (with Phillip Barnett)}{29\textsuperscript{th} UCLA Indo-European Conference, Los Angeles, CA}{11/17}
+\item\TalkEntry{Motivating Lindeman’s Law}{27\textsuperscript{th} UCLA Indo-European Conference, Los Angeles, CA}{10/15}
+\item\TalkEntry{Extrametricality and Non-Local Compensatory Lengthening: The Case of Szemerényi’s Law (with Ryan Sandell)}{89\textsuperscript{th} Annual Meeting of the LSA, Portland, OR}{1/15}
+\item\TalkEntry{Raising a Language from the Dead: On Teaching Indo-European Linguistics in the Age of the Internet}{29\textsuperscript{th} Annual Interdisciplinary Conference in the Humanities, Carrollton, GA}{11/14}
+\item\TalkEntry{Stressful Conversions: an Analysis of Internal Derivation within the Compositional Approach(with Joseph Rhyne)}{26\textsuperscript{th} UCLA Indo-European Conference, Los Angeles, CA}{10/14}
+\item\TalkEntry{In Defense of Szemerényi’s Law (with Ryan Sandell)}{33\textsuperscript{rd} East Coast Indo-European Conference, Blacksburg, VA}{6/14}
+\item\TalkEntry{Accounting for the Absence of Expected Lengthened Grade: Szemerényi's Law in Word-Medial Position}{2013 Arbeitstagung der Indogermanischen Gesellschaft, Leiden, the Netherlands}{7/13}
+\item\TalkEntry{The Indo-European Homeland Hypothesis : an Examination of Bouckaert, et al. (with Darin Arrick and Victoria Milam)}{SECOL LXXX, Spartanburg, SC}{4/13}
+\item\TalkEntry{`It's Complicated': the Relationship between Syllabification \&~Morphology in PIE}{24\textsuperscript{th} UCLA Indo-European Conference, Los Angeles, CA}{10/12}
+\item\TalkEntry{The Use of Linguistic Typology and Universals in Indo-European Linguistics, with a Brief Note on the Hittite s $\sim$ Luvian t Correspondence}{SECOL LXXIX, Lexington, KY}{4/12}
+\item\TalkEntry{A Fresh Look at Pinault’s Law}{23\textsuperscript{rd} UCLA Indo-European Conference, Los Angeles, CA}{10/11}
+\item\TalkEntry{`Laryngeal Vocalization’ as Schwa Epenthesis: Why does Compensatory Lengthening not Occur?}{ECIEC 30, Cambridge, MA}{6/11} 
+\item\TalkEntry{Motivating Sievers’ Law in a Stratal OT Framework}{21\textsuperscript{st} UCLA Indo-European Conference, Los Angeles, CA.}{10/09}
+\item\TalkEntry{Predicting PIE Syllabification through Phonotactic Analysis}{The Sound of Indo-European Conference, Copenhagen, Denmark}{4/09} 
+\item\TalkEntry{Deriving Dreams from the Divine: Hittite \textit{tesha-/zash(a)i-}}{The 219\textsuperscript{th} Meeting of the American Oriental Society, Albuquerque, NM}{3/09} 
+\item\TalkEntry{Towards a Predictive and Explanatory Theory of Laryngeal Deletion in Proto-Indo-European}{27\textsuperscript{th} East Coast Indo-European Conference, Athens, GA}{7/08}
+\item\TalkEntry{The Long Dative Singular of Neuter n-Stems in Old Irish}{16\textsuperscript{th} UCLA Indo-European Conference, Los Angeles, CA}{11/04}
+\end{etaremune}
+
+
+
+%\newpage
+
+
+% \NewPart{Federal Funding}{[$\approx$\$4M/10yr]}
+
+% \begin{itemize}
+
+% \item\FundingEntry {National Science Foundation (NSF)}{\href{http://www.nsf.gov/awardsearch/showAward?AWD_ID=1408796}{Harmonic detection of the Majorana fermion in narrow bandgap InAsSb}}{120,000}{PI}{6/14 - 5/15}
+
+% \end{itemize}
+
+% \begin{etaremune}
+% \item\TalkEntry{Nano-Spin Conversion Workshop}{RIKEN Tokyo}{10/16}{(declined)} 
+
+% \end{etaremune}
+
+
+\NewPart{Theses Supervised}{}
+\begin{etaremune}
+\item Joey Smath, MA in Linguistics, University of Kentucky. ``Reconstructing Proto-Indo-European Music'' (12/26)
+\item
+\href{https://linguistics.as.uky.edu/users/rmc257}{Patrick Gehringer}, MA in Linguistic Theory and Typology, University of Kentucky. ``Albanian Nasal Clusters'' (05/24)
+\item \href{https://linguistics.as.uky.edu/users/rmc257}{Eleanor Wren-Hardin}, MA in Linguistic Theory and Typology, University of Kentucky. ``Cognate Detection in the Nakh-Daghestanian Language Family'' (05/24)
+\item \href{https://linguistics.as.uky.edu/users/rmc257}{Ryan McDonald}, MA in Linguistic Theory and Typology, University of Kentucky. ``PMKN PIE: A Parsed Morphological KATR Network for Proto-Indo-European.'' (11/20)
+\item \href{https://anthro.ucla.edu/grads/zia-khoshsirat}{Zia Khoshsirat}, MA in Linguistic Theory and Typology, University of Kentucky. {\href{https://uknowledge.uky.edu/ltt_etds/30/}{``The Origins of the Gilaki Causative Suffix \textit{-b\={e}-}.''}} (7/18)
+\item \href{https://linguistics.ucla.edu/person/phillip-barnett/}{Phillip Barnett}, MA in Linguistic Theory and Typology, University of Kentucky. {\href{https://uknowledge.uky.edu/ltt_etds/28/}{``Investigating PIE stops using modern empirical methods.''}} (5/18)
+
+% \item\ThesisEntry{}{MA}{5/18}{\href{https://uknowledge.uky.edu/ltt_etds/28/}{Investigating PIE stops using modern empirical methods}}{UK}
+% \item\ThesisEntry{\href{https://linguistics.as.uky.edu/users/zkh222}{Zia Khoshsirat}}{MA}{7/18}{\href{http://drum.lib.umd.edu/handle/1903/15485}{The Gilaki suffix \textit{-b\={e}-}}}{UK}
+\end{etaremune}
+
+\NewPart{Other Advising}{}
+\begin{etaremune}
+
+\item Arnav Jasapara. {``Analyzing Grammatical and Semantic Gender in Ancient Indo-European Languages''} (1/26-)
+\item Kendal Smith. {``A Computational Analysis of Sanskrit Gender Distribution''} (1/26-7/26)
+\item Neihal Saini, Lexington Summer Youth Program. {``Integrating {\it The Oxford Introduction to Proto-Indo-European and the Proto-Indo-European World} into DERBi PIE''} (6/25-7/25)
+\item Lasantha Senanayake, PhD in Computer Science. {``LLMs and Storytelling Systems''} (5/25-)
+\item James Epperson. {``What the \textit{Fuit}: Double Marking in Classical 
+Latin Passives.''} (5/25)
+\item Casey Smith. {``Towards Proto-Niger-Congo Phonology: Evidence
+from Divergent Branches.''} (11/24-5/25)
+\item Gabriel Wallace. {``Reconstructing Semantic Hyperspaces for Ancient and Reconstructed IE Languages."} (5/23-10/24)
+\item Anton Vinogradov, PhD in Computer Science. \href{https://uknowledge.uky.edu/cs_etds/145/}{``Recovering From And Accommodating For Player Preference Shifts In A Player Modeled Experience Management Environment.''} (8/24)
+\item Gihyun Gal. \href{https://uknowledge.uky.edu/ltt_etds/54/}{``Rhyming Tactics in Korean Hip-Hop with Two Approaches of English and Korean
+Syllable Structures.''} (4/23)
+\item Tara Singh. {\href{https://docs.google.com/document/d/1xHEmuhhpM6MCgbzIsouXcADb8B-G9aEuPiX2yxnTHFQ/edit}{``Connecting Lexical Aspect and Morphology in PIE"}} (2018-2022)
+\item Jarred Brewster. \href{https://uknowledge.uky.edu/ltt_etds/43/}{``Language Contact and Covert Prominence in the \'{S}\textsubdot{h}er\={e}t-Jibb\={a}li Language of Oman''} (4/21)
+% \item Hallie Brotherton. “On the etymology of Old Norse \textit{sei\textipa{\dh}r}.”  (5/19)
+\item Noor Bueasa. {\href{https://uknowledge.uky.edu/cgi/viewcontent.cgi?referer=https://www.google.com/&httpsredir=1&article=1006&context=ltt_etds}{“The Adaptation of Loanwords in Classical Arabic: the Governing Factors.”}} (5/15)
+\item Joseph Rhyne.  “Indo-European Nominal Morphology: a Phonotactic Approach.” (5/14)
+\item Lindley Winchester. {\href{https://uknowledge.uky.edu/ltt_etds/4/}{“Egyptian Arabic Plurals in Theory and Computation.”}} (5/14)
+\item Erica Mattingly. “Tongues from Across the Mediterranean: The Influence of Classical Arabic on Spanish Phonology.” Chellgren Fellows Program. (5/13)
+\end{etaremune}
+
+
+
+
+
+
+% \NewPart{Synergistic Activities}{}
+% \begin{itemize}
+% \item Proposal reviewer: NSF (ECCS panel 9/08, 1/10, 5/11, 11/12, 2/16), Research Corporation, DOE, EPSCoR, Defense Threat Reduction Agency, Science Foundation Ireland, Icelandic Centre for Research, Israel Science Foundation, Austrian Science Fund
+% \item Referee: Nature Physics, Nature Nanotech, Nature Materials, Physical Review Letters, Physical Review B, Applied Physics Letters, Europhysics Letters, Journal of Applied Physics, J. Magn. Magn. Mat., Semiconductor Sci. and Tech., etc.
+% \item Proposed and chaired 2015 APS March meeting invited symposium session, \href{http://meeting.aps.org/Meeting/MAR15/Session/Y20}{Spin Accumulation: Experiment and Theory Behind the Controversy}.
+% \item Tutorial Instructor and session chair: \href{http://appelbaum.physics.umd.edu/docs/ppt/Appelbaum_102414.pdf}{``Spintronics"}, APS March meeting (2014), Spin Transport Physics short course, DRC (2010).
+% \item Program Committee: 12th Joint MMM/Intermag (2013), PASPS-7 (Eindhoven August 5-8 2012), 2010 and 2011 Electronic Materials Conference, Device Research Conference (2009, 2010 and 2011), Focus Session on Spin Dependent Phenomena in Semiconductors, APS March meeting (2009), Chinese-American Kavli Frontiers in Science Symposium, US National Academy of Sciences (2008)
+% \item Five lectures viewed by over 3000 students worldwide on coursera.org MOOC \href{https://www.coursera.org/course/eqp}{``Exploring Quantum Physics"}
+% \item U.S. Patent 7244997, ``\href{http://www.google.com/patents/US7244997}{Magneto-Luminescent Transducer}"
+% \item Life Member 61024031, American Physical Society
+% \end{itemize}
+
+
+
+% \NewPart{Awards}{}
+% \begin{itemize}
+% % \item Co-Recipient of a Grant for the Arts, United Kingdom, for translation work on \textit{AXE}, a play by John Yates, performed at the Forest Forge Theatre, Endeavour Park, Crow Arch Lane, Ringwood, Hampshire. (1/18)
+
+% \item UCLA Graduate Research Mentorship Award. (2005-2006)
+% \item Linguistic Society of America Summer Institute Fellowship. (2005)
+% \item Fulbright Fellowship for Study in Pavia, Italy, for work with Onofrio Carruba at the Università degli Studi di Pavia. (2002-2003)
+% \end{itemize}
+
+
+
+
+\NewPart{Service}{}
+\begin{itemize}
+\item College of Arts \&~Sciences
+\begin{itemize}
+    \item Educational Policy Committee (EPC) (Fall 2026)
+    \item Arts \&~Sciences Rankin Fellow: Career Readiness, Curricular Innovation, and Student Engagement (2025-26)
+\end{itemize}
+\item Department of Linguistics, current
+\begin{itemize}
+    \item Director of Undergraduate Studies
+    \item Curriculum Committee, chair
+    \item Member of the Cognitive Science Minor Faculty of Record
+% \item UK Linguistics Club, Faculty Advisor
+% \item Admissions \&~Awards Committee, chair
+% \item Linguistics Executive Committee
+% \item North American Computational Linguistics Olympiad (NACLO), Organizer
+\end{itemize}
+\end{itemize}
+
+\NewPart{Professional organizations}{}
+\begin{itemize}
+\item Affiliations
+\begin{itemize}
+    \item Linguistic Society of America
+    \item Indogermanische Gesellschaft
+    \item American Oriental Society
+    \item Southeastern Conference on Linguistics
+    \item American Council on the Teaching of Foreign Languages (ACTFL)
+    \item Modern Language Association (MLA)
+\end{itemize}
+\item Reviews
+\begin{itemize}
+    \item *\textsubarch{U}\'{e}\textroundcap{k}\textsubarch{u}os
+    \item Brill’s Studies in Indo-European Languages \&~Linguistics 
+    \item Indogermanische Forschungen
+    \item Kratylos
+    \item Indo-European Linguistics
+    \item Journal of Germanic Linguistics
+    \item Diachronica
+    \item Springer / Palgrave
+    \item Cambridge University Press
+\end{itemize}
+\end{itemize}
+
+\end{document}
