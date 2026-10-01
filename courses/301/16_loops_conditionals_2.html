@@ -413,8 +413,6 @@ Dr.&nbsp;Andrew M. Byrd
 <li><a href="#/handling-errors-try-except" id="/toc-handling-errors-try-except">Handling Errors: <code>try</code> / <code>except</code></a></li>
 <li><a href="#/for-loops" id="/toc-for-loops">For Loops</a></li>
 <li><a href="#/cleaning-text" id="/toc-cleaning-text">Cleaning Text</a></li>
-<li><a href="#/building-new-lists" id="/toc-building-new-lists">Building New Lists</a></li>
-<li><a href="#/activity" id="/toc-activity">Activity</a></li>
 <li><a href="#/activity-answers" id="/toc-activity-answers">Activity Answers</a></li>
 </ul>
 </nav>
@@ -708,182 +706,31 @@ Dr.&nbsp;Andrew M. Byrd
 <div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href=""></a>one_line.strip().lower()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section></section>
 <section>
-<section id="building-new-lists" class="title-slide slide level1 center">
-<h1>Building New Lists</h1>
-
-</section>
-<section id="cleaning-every-line" class="slide level2 center">
-<h2>Cleaning Every Line?</h2>
-<ul>
-<li>We now know how to clean <em>one</em> line.</li>
-<li>A <code>for</code> loop lets us clean <em>every</em> line:</li>
-</ul>
-<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href=""></a><span class="cf">for</span> line <span class="kw">in</span> book_lines[<span class="dv">100</span>:<span class="dv">105</span>]:</span>
-<span id="cb22-2"><a href=""></a>    <span class="bu">print</span>(line.strip().lower())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>But <code>print()</code> just displays the result – it doesn’t <strong>save</strong> it anywhere.</li>
-<li>How do we end up with a new <em>list</em> of cleaned lines?</li>
-</ul>
-</section>
-<section id="append" class="slide level2 center">
-<h2><code>.append()</code></h2>
-<ul>
-<li><code>.append()</code> adds an item to the end of a list:</li>
-</ul>
-<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a>terms <span class="op">=</span> [<span class="st">"phoneme"</span>, <span class="st">"morpheme"</span>]</span>
-<span id="cb23-2"><a href=""></a>terms.append(<span class="st">"lexeme"</span>)</span>
-<span id="cb23-3"><a href=""></a><span class="bu">print</span>(terms)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>So we can start with an <strong>empty list</strong> and fill it up inside a loop.</li>
-</ul>
-</section>
-<section id="building-a-list-with-a-loop" class="slide level2 center">
-<h2>Building a List with a Loop</h2>
-<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href=""></a>messy <span class="op">=</span> [<span class="st">" Phoneme</span><span class="ch">\n</span><span class="st">"</span>, <span class="st">"MORPHEME "</span>, <span class="st">"  syntax"</span>, <span class="st">"Semantics</span><span class="ch">\n</span><span class="st">"</span>]</span>
-<span id="cb24-2"><a href=""></a></span>
-<span id="cb24-3"><a href=""></a>clean <span class="op">=</span> []                            <span class="co"># 1. start with an empty list</span></span>
-<span id="cb24-4"><a href=""></a><span class="cf">for</span> term <span class="kw">in</span> messy:                    <span class="co"># 2. go through each item</span></span>
-<span id="cb24-5"><a href=""></a>    clean.append(term.strip().lower())   <span class="co"># 3. add the cleaned version</span></span>
-<span id="cb24-6"><a href=""></a></span>
-<span id="cb24-7"><a href=""></a><span class="bu">print</span>(clean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>What does <code>clean</code> look like? How about <code>messy</code>?</li>
-</ul>
-</section>
-<section id="list-comprehensions" class="slide level2 center">
-<h2>List Comprehensions</h2>
-<ul>
-<li>This pattern (empty list → loop → append) is so common that Python has a shortcut: the <strong>list comprehension</strong></li>
-</ul>
-<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href=""></a>clean <span class="op">=</span> [term.strip().lower() <span class="cf">for</span> term <span class="kw">in</span> messy]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Same result, one line, no <code>.append()</code>.</li>
-</ul>
-</section>
-<section id="reading-a-list-comprehension" class="slide level2 center">
-<h2>Reading a List Comprehension</h2>
-<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href=""></a>clean <span class="op">=</span> [term.strip().lower() <span class="cf">for</span> term <span class="kw">in</span> messy]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Read it from the middle out:
-<ul>
-<li><code>for term in messy</code> → go through each item in <code>messy</code>, calling it <code>term</code></li>
-<li><code>term.strip().lower()</code> → what to do to each <code>term</code></li>
-<li><code>[ ... ]</code> → collect all the results into a new list</li>
-</ul></li>
-<li>General template: <code>[</code> <em>do something to</em> <code>item</code> <code>for item in some_list]</code></li>
-</ul>
-</section>
-<section id="loop-vs.-comprehension" class="slide level2 center">
-<h2>Loop vs.&nbsp;Comprehension</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href=""></a>clean <span class="op">=</span> []</span>
-<span id="cb27-2"><a href=""></a><span class="cf">for</span> term <span class="kw">in</span> messy:</span>
-<span id="cb27-3"><a href=""></a>    clean.append(term.strip().lower())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href=""></a>clean <span class="op">=</span> [term.strip().lower() <span class="cf">for</span> term <span class="kw">in</span> messy]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
-<ul>
-<li>Same three parts: the source list, the loop variable, and what to do to each item.</li>
-</ul>
-</section>
-<section id="quick-practice" class="slide level2 center">
-<h2>Quick Practice</h2>
-<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href=""></a>words <span class="op">=</span> [<span class="st">"phoneme"</span>, <span class="st">"phrase"</span>, <span class="st">"morpheme"</span>, <span class="st">"reconstruction"</span>, <span class="st">"index"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Write a list comprehension that creates:
-<ol type="1">
-<li><code>shouting</code>: every word in upper case</li>
-<li><code>lengths</code>: the length of every word</li>
-<li><code>firsts</code>: the first letter of every word</li>
-</ol></li>
-</ul>
-</section></section>
-<section>
-<section id="activity" class="title-slide slide level1 center">
-<h1>Activity</h1>
-
-</section>
-<section id="activity-cleaning-mansfield-park" class="slide level2 center">
-<h2>Activity: Cleaning <em>Mansfield Park</em></h2>
-<ol type="1">
-<li>Open “mansfield_park.txt” and read it in <strong>line by line</strong>, saving it as <code>book_lines</code></li>
-<li>Write a <strong>list comprehension</strong> that strips the whitespace from both sides of each line <em>and</em> makes it lower case. Save the result as <code>mansfield_cleaned</code>.</li>
-<li>Check that it worked by comparing the same stretch of both lists:</li>
-</ol>
-<div class="sourceCode" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href=""></a><span class="bu">print</span>(book_lines[<span class="dv">100</span>:<span class="dv">105</span>])</span>
-<span id="cb30-2"><a href=""></a><span class="bu">print</span>(mansfield_cleaned[<span class="dv">100</span>:<span class="dv">105</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Do the two lists have the same <code>len()</code>? Why?</li>
-</ul>
-</section>
-<section id="activity-challenge" class="slide level2 center">
-<h2>Activity: Challenge</h2>
-<ul>
-<li>Many of the lines in <code>mansfield_cleaned</code> are now empty strings (<code>''</code>). Let’s get rid of them.</li>
-<li>A list comprehension can take an <code>if</code> at the end, keeping only the items that pass the test:</li>
-</ul>
-<div class="sourceCode" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href=""></a>[item <span class="cf">for</span> item <span class="kw">in</span> some_list <span class="cf">if</span> CONDITION]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Create <code>mansfield_nonempty</code>, which contains only the lines of <code>mansfield_cleaned</code> that are not <code>''</code>.</li>
-<li>How many lines did you remove?</li>
-</ul>
-</section></section>
-<section>
 <section id="activity-answers" class="title-slide slide level1 center">
 <h1>Activity Answers</h1>
 
 </section>
 <section id="plural-generator" class="slide level2 center">
 <h2>Plural Generator</h2>
-<div class="sourceCode" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href=""></a>word <span class="op">=</span> <span class="st">"bʌs"</span></span>
-<span id="cb32-2"><a href=""></a></span>
-<span id="cb32-3"><a href=""></a>sibilants <span class="op">=</span> [<span class="st">"s"</span>, <span class="st">"z"</span>, <span class="st">"ʃ"</span>, <span class="st">"ʒ"</span>, <span class="st">"tʃ"</span>, <span class="st">"dʒ"</span>] </span>
-<span id="cb32-4"><a href=""></a>voiceless <span class="op">=</span> [<span class="st">"p"</span>, <span class="st">"t"</span>, <span class="st">"k"</span>, <span class="st">"f"</span>, <span class="st">"θ"</span>]</span>
-<span id="cb32-5"><a href=""></a></span>
-<span id="cb32-6"><a href=""></a><span class="cf">if</span> word[<span class="op">-</span><span class="dv">1</span>] <span class="kw">in</span> sibilants:</span>
-<span id="cb32-7"><a href=""></a>    plural <span class="op">=</span> word <span class="op">+</span> <span class="st">"ɪz"</span> </span>
-<span id="cb32-8"><a href=""></a><span class="cf">elif</span> word[<span class="op">-</span><span class="dv">1</span>] <span class="kw">in</span> voiceless:</span>
-<span id="cb32-9"><a href=""></a>    plural <span class="op">=</span> word <span class="op">+</span> <span class="st">"s"</span> </span>
-<span id="cb32-10"><a href=""></a><span class="cf">else</span>: </span>
-<span id="cb32-11"><a href=""></a>    plural <span class="op">=</span> word <span class="op">+</span> <span class="st">"z"</span></span>
-<span id="cb32-12"><a href=""></a></span>
-<span id="cb32-13"><a href=""></a><span class="bu">print</span>(<span class="st">"Plural: "</span>, plural)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href=""></a>word <span class="op">=</span> <span class="st">"bʌs"</span></span>
+<span id="cb22-2"><a href=""></a></span>
+<span id="cb22-3"><a href=""></a>sibilants <span class="op">=</span> [<span class="st">"s"</span>, <span class="st">"z"</span>, <span class="st">"ʃ"</span>, <span class="st">"ʒ"</span>, <span class="st">"tʃ"</span>, <span class="st">"dʒ"</span>] </span>
+<span id="cb22-4"><a href=""></a>voiceless <span class="op">=</span> [<span class="st">"p"</span>, <span class="st">"t"</span>, <span class="st">"k"</span>, <span class="st">"f"</span>, <span class="st">"θ"</span>]</span>
+<span id="cb22-5"><a href=""></a></span>
+<span id="cb22-6"><a href=""></a><span class="cf">if</span> word[<span class="op">-</span><span class="dv">1</span>] <span class="kw">in</span> sibilants:</span>
+<span id="cb22-7"><a href=""></a>    plural <span class="op">=</span> word <span class="op">+</span> <span class="st">"ɪz"</span> </span>
+<span id="cb22-8"><a href=""></a><span class="cf">elif</span> word[<span class="op">-</span><span class="dv">1</span>] <span class="kw">in</span> voiceless:</span>
+<span id="cb22-9"><a href=""></a>    plural <span class="op">=</span> word <span class="op">+</span> <span class="st">"s"</span> </span>
+<span id="cb22-10"><a href=""></a><span class="cf">else</span>: </span>
+<span id="cb22-11"><a href=""></a>    plural <span class="op">=</span> word <span class="op">+</span> <span class="st">"z"</span></span>
+<span id="cb22-12"><a href=""></a></span>
+<span id="cb22-13"><a href=""></a><span class="bu">print</span>(<span class="st">"Plural: "</span>, plural)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="for-loop-activity" class="slide level2 center">
 <h2><code>for</code> loop Activity</h2>
-<div class="sourceCode" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href=""></a>words <span class="op">=</span> [<span class="st">"phoneme"</span>, <span class="st">"phrase"</span>, <span class="st">"morpheme"</span>, <span class="st">"reconstruction"</span>, <span class="st">"index"</span>]</span>
-<span id="cb33-2"><a href=""></a><span class="cf">for</span> wd <span class="kw">in</span> words:</span>
-<span id="cb33-3"><a href=""></a>    <span class="bu">print</span>(<span class="st">"The word"</span>, wd, <span class="st">"has"</span>, <span class="bu">len</span>(wd), <span class="st">"letters."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="list-comprehension-practice" class="slide level2 center">
-<h2>List Comprehension Practice</h2>
-<div class="sourceCode" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href=""></a>words <span class="op">=</span> [<span class="st">"phoneme"</span>, <span class="st">"phrase"</span>, <span class="st">"morpheme"</span>, <span class="st">"reconstruction"</span>, <span class="st">"index"</span>]</span>
-<span id="cb34-2"><a href=""></a></span>
-<span id="cb34-3"><a href=""></a>shouting <span class="op">=</span> [wd.upper() <span class="cf">for</span> wd <span class="kw">in</span> words]</span>
-<span id="cb34-4"><a href=""></a>lengths <span class="op">=</span> [<span class="bu">len</span>(wd) <span class="cf">for</span> wd <span class="kw">in</span> words]</span>
-<span id="cb34-5"><a href=""></a>firsts <span class="op">=</span> [wd[<span class="dv">0</span>] <span class="cf">for</span> wd <span class="kw">in</span> words]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="cleaning-mansfield" class="slide level2 center">
-<h2>Cleaning Mansfield</h2>
-<div class="sourceCode" id="cb35"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href=""></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"../../data/gutenberg/mansfield_park.txt"</span>, <span class="st">"r"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
-<span id="cb35-2"><a href=""></a>    book_lines <span class="op">=</span> f.readlines()</span>
-<span id="cb35-3"><a href=""></a></span>
-<span id="cb35-4"><a href=""></a><span class="co"># Clean it: strip whitespace + lowercase</span></span>
-<span id="cb35-5"><a href=""></a>mansfield_cleaned <span class="op">=</span> [line.strip().lower() <span class="cf">for</span> line <span class="kw">in</span> book_lines]</span>
-<span id="cb35-6"><a href=""></a></span>
-<span id="cb35-7"><a href=""></a><span class="co"># Compare the same stretch of both lists</span></span>
-<span id="cb35-8"><a href=""></a><span class="bu">print</span>(book_lines[<span class="dv">100</span>:<span class="dv">105</span>])</span>
-<span id="cb35-9"><a href=""></a><span class="bu">print</span>(mansfield_cleaned[<span class="dv">100</span>:<span class="dv">105</span>])</span>
-<span id="cb35-10"><a href=""></a></span>
-<span id="cb35-11"><a href=""></a><span class="co"># Same length: one cleaned line for every original line</span></span>
-<span id="cb35-12"><a href=""></a><span class="bu">print</span>(<span class="bu">len</span>(book_lines), <span class="bu">len</span>(mansfield_cleaned))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="cleaning-mansfield-challenge" class="slide level2 center">
-<h2>Cleaning Mansfield: Challenge</h2>
-<div class="sourceCode" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href=""></a>mansfield_nonempty <span class="op">=</span> [line <span class="cf">for</span> line <span class="kw">in</span> mansfield_cleaned <span class="cf">if</span> line <span class="op">!=</span> <span class="st">""</span>]</span>
-<span id="cb36-2"><a href=""></a></span>
-<span id="cb36-3"><a href=""></a><span class="bu">print</span>(<span class="bu">len</span>(mansfield_cleaned) <span class="op">-</span> <span class="bu">len</span>(mansfield_nonempty), <span class="st">"empty lines removed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a>words <span class="op">=</span> [<span class="st">"phoneme"</span>, <span class="st">"phrase"</span>, <span class="st">"morpheme"</span>, <span class="st">"reconstruction"</span>, <span class="st">"index"</span>]</span>
+<span id="cb23-2"><a href=""></a><span class="cf">for</span> wd <span class="kw">in</span> words:</span>
+<span id="cb23-3"><a href=""></a>    <span class="bu">print</span>(<span class="st">"The word"</span>, wd, <span class="st">"has"</span>, <span class="bu">len</span>(wd), <span class="st">"letters."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 

@@ -1,0 +1,414 @@
+---
+title: "Computation for Linguists"
+subtitle: "Beginning Python: More Tricks with Lists"
+date: "October 2, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Time
+
+-   Conditionals: `if` = 1 x
+-   Loops: `for` = multiple times
+-   Cleaning text with `.strip()`, `.lower()`
+
+# Building New Lists
+
+## Cleaning Every Line?
+
+-   We now know how to clean *one* line.
+-   A `for` loop lets us clean *every* line:
+
+``` python
+
+try:
+    with open("../../data/gutenberg/mansfield_park.txt", "r", encoding="utf-8") as f:
+        book_lines = f.readlines()
+except FileNotFoundError:
+    print("Couldn't find that file — check the filename and location.")
+
+for line in book_lines[100:105]:
+    print(line.strip().lower())
+```
+
+-   But `print()` just displays the result -- it doesn't **save** it anywhere.
+-   How do we end up with a new *list* of cleaned lines?
+
+## `.append()`
+
+-   `.append()` adds an item to the end of a list:
+
+``` python
+terms = ["phoneme", "morpheme"]
+terms.append("lexeme")
+print(terms)
+```
+
+-   So we can start with an **empty list** and fill it up inside a loop.
+
+## Building a List with a Loop
+
+``` python
+messy = [" Phoneme\n", "MORPHEME ", "  syntax", "Semantics\n"]
+
+clean = []                            # 1. start with an empty list
+for term in messy:                    # 2. go through each item
+    clean.append(term.strip().lower())   # 3. add the cleaned version
+
+print(clean)
+```
+
+## List Comprehensions
+
+-   This pattern (empty list → loop → append) is so common that Python has a shortcut: the **list comprehension**
+
+``` python
+clean = [term.strip().lower() for term in messy]
+```
+
+-   Same result, one line, no `.append()`.
+
+## Reading a List Comprehension
+
+``` python
+clean = [term.strip().lower() for term in messy]
+```
+
+-   Read it from the middle out:
+    -   `for term in messy` → go through each item in `messy`, calling it `term`
+    -   `term.strip().lower()` → what to do to each `term`
+    -   `[ ... ]` → collect all the results into a new list
+-   General template: `[` *do something to* `item` `for item in some_list]`
+
+## Loop vs. Comprehension
+
+::::: columns
+::: {.column width="50%"}
+``` python
+clean = []
+for term in messy:
+    clean.append(term.strip().lower())
+```
+:::
+
+::: {.column width="50%"}
+``` python
+clean = [term.strip().lower() for term in messy]
+```
+:::
+:::::
+
+-   Same three parts: the source list, the loop variable, and what to do to each item.
+
+## Quick Practice: Together
+
+``` python
+words = ["phoneme", "phrase", "morpheme", "reconstruction", "index"]
+```
+
+-   Write a list comprehension that creates:
+    1.  `shouting`: every word in upper case
+    2.  `lengths`: the length of every word
+    3.  `firsts`: the first letter of every word
+
+# Activity
+
+## Activity: Cleaning *Mansfield Park*
+
+1.  Open "mansfield_park.txt" and read it in **line by line**, saving it as `book_lines`
+2.  Write a **list comprehension** that strips the whitespace from both sides of each line *and* makes it lower case. Save the result as `mansfield_cleaned`.
+3.  Check that it worked by comparing the same stretch of both lists:
+
+``` python
+print(book_lines[100:105])
+print(mansfield_cleaned[100:105])
+```
+
+## Activity: Challenge
+
+-   Many of the lines in `mansfield_cleaned` are now empty strings (`''`). Let's get rid of them.
+-   A list comprehension can take an `if` at the end, keeping only the items that pass the test:
+
+``` python
+[item for item in some_list if CONDITION]
+```
+
+-   Create `mansfield_nonempty`, which contains only the lines of `mansfield_cleaned` that are not `''`.
+    - How do you say "is not equal to" in Python?
+-   How many lines did you remove?
+
+
+# Counters
+
+-   In Linguistics, we often want to know how many words are in a text or how many sounds are in a word.
+
+## Counters
+
+-   We could use the `len()` command:
+
+``` python
+items = ["color", "flavour", "theater", "center", "analyze", "organize", "favorite", "neighbor", "honor", "catalog", "honour", "flavor", "analyse", "flavor", "traveler"]
+print(len(items))
+```
+
+## Counters
+
+-   Or we could create a **counter**, to count how many items there are:
+
+``` python
+items = ["color", "flavour", "theater", "center", "analyze", "organize", "favorite", "neighbor", "honor", "catalog", "honour", "flavor", "analyse", "flavor", "traveler"]
+
+item_count = 0
+for item in items:
+    item_count += 1
+    print(item, item_count)
+```
+
+## Counters
+
+-   We can do *much* more interesting things with counters, such as:
+
+``` python
+items = ["color", "flavour", "theater", "center", "analyze", "organize", "favorite", "neighbor", "honor", "catalog", "honour", "flavor", "analyse", "flavor", "traveler"]
+
+c_item_count = 0
+for item in items:
+    if item[0] == "c":
+        c_item_count += 1
+        print(item, c_item_count)
+```
+
+## Counter Activity
+
+-   Identify how many words end in "r" in the following list:
+
+``` python
+items = ["color", "flavour", "theater", "center", "analyze", "organize", "favorite", "neighbor", "honor", "catalog", "honour", "flavor", "analyse", "flavor", "traveler"]
+```
+
+## Confused by index vs. integer?
+
+-   Index:
+    [1] = second item in a list/string/etc.
+-   Integer:
+    1 = the number one
+
+## `.replace()`
+
+-   Let's return to our `items` list
+-   Notice some inconsistencies in spellings?
+
+``` python
+items = ["color", "flavour", "theater", "center", "analyze", "organize", "favorite", "neighbor", "honor", "catalog", "honour", "flavor", "analyse", "flavor", "traveler"]
+```
+
+## `.replace()`
+
+-   A method to replace one string with another.
+
+``` python
+word = "four"
+new_word  = word.replace("our", "or")
+print(new_word)
+```
+
+## `.replace()`
+
+-   Let's broaden the scope so that it applies to all words ending in "-our"
+
+``` python
+items = ["color", "flavour", "theater", "center", "analyze", "organize", "favorite", "neighbor", "honor", "catalog", "honour", "flavor", "analyse", "flavor", "traveler"]
+
+down_with_brits = []
+for word in items:
+    if word.endswith("our"):
+        word = word.replace("our", "or")
+    down_with_brits.append(word)
+
+print(down_with_brits)
+```
+
+-   Note the `.endswith()` method - there's also `.startswith()`
+
+## `.replace()` Activity
+
+-   Broaden your `if` block to have words ending in "-yse" respelled as "-yze"
+
+## `.split()`
+
+-   We can also take a line of text and split it up into a list.
+
+``` python
+getty = "Four score and seven years ago our fathers brought forth on this continent, a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal."
+
+print(getty.split())
+```
+
+-   By default, `split()` separates according to whitespace.
+
+## `.split()`
+
+-   But what happens if you do the following?
+
+``` python
+getty = "Four score and seven years ago our fathers brought forth on this continent, a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal."
+
+getty_1 = getty.split(",")
+getty_2 = getty.split(".")
+getty_3 = getty.split("e")
+print(getty_1, "\n", getty_2, "\n", getty_3)
+```
+
+## `re.split()`
+
+-   How would you split according to whitespace *and* punctuation?
+-   Our old friend `regex`
+
+``` python
+import re
+
+text = "Hello, world!   This... is a test."
+words = re.split(r"[\W]+", text)
+words = [w for w in words if w != ""]
+print(words)
+```
+
+## `re.split()`
+
+``` python
+import re
+
+text = "Hello, world!   This... is a test."
+words = re.split(r"[\W]+", text)
+words = [w for w in words if w != ""]
+print(words)
+```
+
+-   `\W` = non-word characters (punctuation, symbols, etc.)
+-   `+` = one or more preceding
+
+## `re.split()`: Downloading *Alice*
+
+-   Let's grab a fresh copy of *Alice* and put it in our `data/gutenberg/` folder, just like we did with *Mansfield Park*:
+
+``` python
+import urllib.request
+
+url = "https://www.gutenberg.org/cache/epub/11/pg11.txt"  # Alice in Wonderland
+filename = "../../data/gutenberg/alice.txt"
+
+try:
+    urllib.request.urlretrieve(url, filename)
+    print("Downloaded:", filename)
+except FileNotFoundError:
+    print("Couldn't save the file — does the ../../data/gutenberg/ folder exist?")
+```
+
+## `re.split()`: Splitting *Alice*
+
+-   Load up `alice.txt` in Python using the following code:
+
+``` python
+
+try:
+    with open("../../data/gutenberg/alice.txt", "r", encoding="utf-8") as f:
+        alice_text = f.read()
+except FileNotFoundError:
+    print("Couldn't find that file — check the filename and location.")
+
+```
+
+-   Using `re.split()` create a new list called `alice_list`, containing all words, minus whitespace and non-word characters
+-   Confirm it worked by using `print(alice_list[0:100])`
+
+
+# Activity Answers
+
+## List Comprehension Practice
+
+``` python
+words = ["phoneme", "phrase", "morpheme", "reconstruction", "index"]
+
+shouting = [wd.upper() for wd in words]
+lengths = [len(wd) for wd in words]
+firsts = [wd[0] for wd in words]
+```
+
+## Cleaning Mansfield
+
+``` python
+with open("../../data/gutenberg/mansfield_park.txt", "r", encoding="utf-8") as f:
+    book_lines = f.readlines()
+
+# Clean it: strip whitespace + lowercase
+mansfield_cleaned = [line.strip().lower() for line in book_lines]
+
+# Compare the same stretch of both lists
+print(book_lines[100:105])
+print(mansfield_cleaned[100:105])
+
+# Same length: one cleaned line for every original line
+print(len(book_lines), len(mansfield_cleaned))
+```
+
+## Cleaning Mansfield: Challenge
+
+``` python
+mansfield_nonempty = [line for line in mansfield_cleaned if line != ""]
+
+print(len(mansfield_cleaned) - len(mansfield_nonempty), "empty lines removed")
+```
+
+## Counter Activity
+
+``` python
+items = ["color", "flavour", "theater", "center", "analyze", "organize", "favorite", "neighbor", "honor", "catalog", "honour", "flavor", "analyse", "flavor", "traveler"]
+
+r_item_count = 0
+for item in items:
+    if item[-1] == "r":
+        r_item_count += 1
+        print(item, r_item_count)
+```
+
+## `.replace()` Activity
+
+``` python
+items = ["color", "flavour", "theater", "center", "analyze", "organize", "favorite", "neighbor", "honor", "catalog", "honour", "flavor", "analyse", "flavor", "traveler"]
+
+down_with_brits = []
+for word in items: 
+    if word.endswith("our"): 
+        word = word.replace("our", "or") 
+    elif word.endswith("yse"): 
+        word = word.replace("yse", "yze") 
+    down_with_brits.append(word)
+print(down_with_brits)
+```
+
+## `re.split()` Activity
+
+``` python
+
+import re
+with open("../../data/gutenberg/alice.txt", "r", encoding="utf-8") as f:
+    alice_text = f.read()
+alice_list = re.split(r"[\W]+", alice_text)
+alice_list = [w for w in alice_list if w != ""]
+print(alice_list[0:100]) 
+```
