@@ -1,0 +1,357 @@
+---
+title: "Computation for Linguists"
+subtitle: "Splitting Text; Counting; Visualizations"
+date: "October 5, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Time
+
+-   List comprehensions: `[` *do something to* `item` `for item in some_list]`
+-   Filtering with a comprehension: `[item for item in some_list if CONDITION]`
+-   Counters: `count += 1`
+-   String methods: `.replace()`, `.endswith()`, `.split()`
+
+# Splitting Text
+
+## `re.split()`
+
+-   Last time, we saw that `.split()` can split on whitespace, *or* on a comma, *or* on a period...
+-   How would you split according to whitespace *and* punctuation?
+-   Our old friend `regex`
+
+``` python
+import re
+
+text = "Hello, world!   This... is a test."
+words = re.split(r"[\W]+", text)
+words = [w for w in words if w != ""]
+print(words)
+```
+
+## `re.split()`
+
+``` python
+import re
+
+text = "Hello, world!   This... is a test."
+words = re.split(r"[\W]+", text)
+words = [w for w in words if w != ""]
+print(words)
+```
+
+-   `\W` = non-word characters (punctuation, symbols, etc.)
+-   `+` = one or more preceding
+
+## `re.split()` Activity: Splitting *Alice*
+
+-   Remember the `alice.txt` you downloaded with the terminal back on Day 7? It's waiting in your `data/gutenberg/` folder.
+-   Load it up in Python using the following code:
+
+``` python
+try:
+    with open("../../data/gutenberg/alice.txt", "r", encoding="utf-8") as f:
+        alice_text = f.read()
+except FileNotFoundError:
+    print("Couldn't find that file — check the filename and location.")
+```
+
+## `re.split()` Activity: Splitting *Alice*
+
+-   Using `re.split()`, create a new list called `alice_list`, containing all words, minus whitespace and non-word characters
+-   Confirm it worked by using `print(alice_list[0:100])`
+
+# Counting Words
+
+## How Often Does Each Word Appear?
+
+-   Last time we counted *one* thing with a counter:
+
+``` python
+r_item_count = 0
+for item in items:
+    if item[-1] == "r":
+        r_item_count += 1
+```
+
+-   But what if we want a count for *every* word at once?
+-   We need somewhere to store many counts, one per word...
+-   Which data structure pairs a **key** with a **value**?
+
+## Counting with a Dictionary
+
+``` python
+sentence = "the cat saw the dog and the dog saw the cat"
+words = sentence.split()
+
+counts = {}                     # 1. start with an empty dict
+for w in words:                 # 2. go through each word
+    if w in counts:             # 3a. seen it before? add 1
+        counts[w] += 1
+    else:                       # 3b. new word? start at 1
+        counts[w] = 1
+
+print(counts)
+```
+
+-   How many times does "the" appear?
+    -   Remember to search by the key "the"!
+
+## Counting *Mansfield Park*
+
+-   Let's run the same loop on a whole novel:
+
+``` python
+import re
+
+with open("../../data/gutenberg/mansfield_park.txt", "r", encoding="utf-8") as f:
+    mansfield_text = f.read()
+
+mansfield_words = re.split(r"[\W]+", mansfield_text.lower())
+mansfield_words = [w for w in mansfield_words if w != ""]
+
+mansfield_counts = {}
+for w in mansfield_words:
+    if w in mansfield_counts:
+        mansfield_counts[w] += 1
+    else:
+        mansfield_counts[w] = 1
+
+print(mansfield_counts["fanny"])
+print(len(mansfield_counts))
+```
+
+## Which Words Are Most Common?
+
+-   We have the counts... but a dictionary isn't sorted by frequency.
+-   Try `print(mansfield_counts)`. Can you find the top 10?
+-   We need a better tool.
+
+## `Counter`: The Shortcut
+
+-   Counting is so common that Python has a built-in tool for it:
+
+``` python
+from collections import Counter
+
+counts = Counter(words)
+print(counts)
+print(counts.most_common(2))
+```
+
+-   Same result as our loop, in one line.
+-   `.most_common(n)` gives the top `n`, already sorted.
+
+## `Counter` on *Mansfield Park*
+
+``` python
+mansfield_counter = Counter(mansfield_words)
+top10 = mansfield_counter.most_common(10)
+print(top10)
+```
+
+-   What does `top10` look like? What's inside each pair of parentheses?
+
+# Visualizations
+
+## Why Visualize?
+
+-   A list of numbers is hard to read at a glance.
+-   A chart lets you *see* the pattern: which words dominate, how fast frequencies drop off, how two texts differ.
+-   Python's standard plotting library is **matplotlib**.
+
+## Make sure you've installed matplotlib
+
+-   In your terminal, run:
+
+``` bash
+python(3) -m pip install matplotlib
+```
+
+-   Then, at the top of your code:
+
+``` python
+import matplotlib.pyplot as plt
+```
+
+-   `plt` is just a nickname, so we don't have to type `matplotlib.pyplot` every time.
+
+## Your First Chart
+
+-   Let's chart our cat-and-dog sentence:
+
+``` python
+sentence_words = list(counts.keys())      # the words: labels along the bottom
+sentence_freqs = list(counts.values())    # the counts: how tall each bar is
+
+plt.bar(sentence_words, sentence_freqs)
+plt.savefig("cat_dog_counts.png")   # this saves the chart as an image file
+plt.show()
+```
+
+-   Check it against `print(counts)`: does each bar have the right height?
+
+## Labeling Your Chart
+
+-   A chart without labels can be confusing. Always add a title and axis labels:
+
+``` python
+plt.bar(sentence_words, sentence_freqs)
+plt.title("Word Counts: The Cat and the Dog")
+plt.xlabel("Word")
+plt.ylabel("Frequency")
+plt.savefig("cat_dog_counts_w_labels.png")
+plt.show()
+```
+
+-   Every chart follows this pattern: **data → chart → labels → `plt.savefig()` → `plt.show()`**
+    -   `plt.savefig()` must come **before** `plt.show()`, or you'll save a blank image!
+
+## Getting the Data Ready
+
+-   Now for a real book.
+
+-   `.most_common()` gives us a list of `(word, count)` pairs.
+-   Just like before, the bar chart wants **two separate lists**: one of labels, one of heights.
+
+``` python
+top_words = [pair[0] for pair in top10] # pair[0] = the word
+top_freqs = [pair[1] for pair in top10] # pair[1] = its count
+
+print(top_words)
+print(top_freqs)
+```
+
+## Bar Chart
+
+``` python
+plt.bar(top_words, top_freqs)
+plt.title("Top 10 Words in Mansfield Park")
+plt.xlabel("Word")
+plt.ylabel("Frequency")
+plt.savefig("mansfield_top10.png")
+plt.show()
+```
+
+-   What do you notice about the top 10 words?
+
+## Function Words vs. Content Words
+
+-   The most frequent words are almost always **function words**: *the*, *to*, *and*, *of*...
+-   To see what a book is *about*, we filter them out with a **stopword** list:
+
+``` python
+stopwords = ["the", "to", "and", "of", "a", "her", "i", "in", "was", "it",
+             "she", "he", "be", "that", "you", "not", "had", "as", "his", "for",
+             "with", "is", "have", "but", "at", "so", "all", "my", "been", "him",
+             "on", "by", "could", "would", "very", "no", "what", "which", "they",
+             "were", "there", "me", "an", "must", "this", "said", "from", "or",
+             "will", "any", "much", "than", "such", "their", "them", "if", "do",
+             "did", "one", "when", "your", "more", "are", "we", "who", "up",
+             "out", "down", "into", "s", "t"]
+
+content_words = [w for w in mansfield_words if w not in stopwords]
+```
+
+-   `not in` is the opposite of `in`.
+
+## Bar Chart: Content Words
+
+``` python
+content_top10 = Counter(content_words).most_common(10)
+content_labels = [pair[0] for pair in content_top10]
+content_freqs = [pair[1] for pair in content_top10]
+
+plt.bar(content_labels, content_freqs)
+plt.title("Top 10 Content Words in Mansfield Park")
+plt.xlabel("Word")
+plt.ylabel("Frequency")
+plt.xticks(rotation=45)
+plt.tight_layout()    # keeps the rotated labels from getting cut off
+plt.savefig("mansfield_content_top10.png")
+plt.show()
+```
+
+-   Now what do you notice about the top 10 words?
+
+# Activity
+
+## Activity: Visualizing *Alice*
+
+1.  Start from your `alice_list` from earlier today. Make it all lowercase.
+    -   Hint: it's easiest to lowercase `alice_text` *before* you split it.
+2.  Make a **bar chart** of the **top 15 content words** in *Alice* (reuse your `stopwords` list).
+    -   Don't forget a title and axis labels!
+    -   Save your *Alice* chart as an image file called `alice_top15.png`.
+3.  Compare it to *Mansfield Park*. What do the top words tell you about each book?
+
+# Activity Answers
+
+## Splitting *Alice*
+
+``` python
+import re
+
+try:
+    with open("../../data/gutenberg/alice.txt", "r", encoding="utf-8") as f:
+        alice_text = f.read()
+except FileNotFoundError:
+    print("Couldn't find that file — check the filename and location.")
+
+alice_list = re.split(r"[\W]+", alice_text)
+alice_list = [w for w in alice_list if w != ""]
+print(alice_list[0:100])
+```
+
+## Visualizing *Alice*: Load & Count
+
+``` python
+import re
+from collections import Counter
+import matplotlib.pyplot as plt
+
+alice_list = re.split(r"[\W]+", alice_text.lower())    # lowercase this time!
+alice_list = [w for w in alice_list if w != ""]
+
+alice_content = [w for w in alice_list if w not in stopwords]
+alice_top15 = Counter(alice_content).most_common(15)
+```
+
+## Visualizing *Alice*: Bar Chart
+
+``` python
+alice_labels = [pair[0] for pair in alice_top15]
+alice_freqs = [pair[1] for pair in alice_top15]
+
+plt.bar(alice_labels, alice_freqs)
+plt.title("Top 15 Content Words in Alice in Wonderland")
+plt.xlabel("Word")
+plt.ylabel("Frequency")
+plt.xticks(rotation=45)
+plt.tight_layout()    # keeps the rotated labels from getting cut off
+plt.savefig("alice_top15.png")    # saves to the folder you're running from
+plt.show()
+```
+
+## Comparing *Alice* and *Mansfield Park*
+
+-   *Mansfield Park*: **fanny**, **crawford**, mr, miss, **edmund**, mrs, sir, **thomas**...
+    -   Character names and titles of address (*Mr*, *Miss*, *Sir*): a novel about family, rank, and marriage
+-   *Alice*: **alice**, little, about, then, know, like, went, thought, **queen**...
+    -   One main character, size words (*little*), and verbs of motion and thinking (*went*, *thought*, *know*)
+-   And **gutenberg** and **project** in *Alice*'s top 15? That's the license text at the top and bottom of the file, still being counted!
