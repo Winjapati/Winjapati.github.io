@@ -1,0 +1,448 @@
+---
+title: "Computation for Linguists"
+subtitle: "While Loops; Activity Day: Detective Gutenberg"
+date: "October 7, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: source
+---
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Time
+
+-   `re.split()` to split on whitespace *and* punctuation
+-   Counting every word with a dictionary... or with `Counter`
+-   `.most_common(n)` for the top `n` items
+-   Bar charts with matplotlib
+
+## Review Question
+
+``` python
+from collections import Counter
+
+words = "the cat saw the dog and the dog saw the cat".split()
+print(Counter(words).most_common(3))
+```
+## Review: TTR
+
+- What is the type–token ratio (TTR)?
+- How do you calculate it? And what does it mean?
+
+# Last Time: Alice Activity
+
+## Activity: Visualizing *Alice*
+
+1.  Start from your `alice_list` from earlier today. Make it all lowercase.
+    -   Hint: it's easiest to lowercase `alice_text` *before* you split it.
+2.  Make a **bar chart** of the **top 15 content words** in *Alice* (reuse your `stopwords` list).
+    -   Don't forget a title and axis labels!
+    -   Save your *Alice* chart as an image file called `alice_top15.png`.
+3.  Compare it to *Mansfield Park*. What do the top words tell you about each book?
+
+## Activity: Visualizing *Alice*
+
+``` python
+import re
+from collections import Counter
+import matplotlib.pyplot as plt
+
+stopwords = ["the", "to", "and", "of", "a", "her", "i", "in", "was", "it",
+             "she", "he", "be", "that", "you", "not", "had", "as", "his", "for",
+             "with", "is", "have", "but", "at", "so", "all", "my", "been", "him",
+             "on", "by", "could", "would", "very", "no", "what", "which", "they",
+             "were", "there", "me", "an", "must", "this", "said", "from", "or",
+             "will", "any", "much", "than", "such", "their", "them", "if", "do",
+             "did", "one", "when", "your", "more", "are", "we", "who", "up",
+             "out", "down", "into", "s", "t"]
+
+try:
+    with open("../../data/gutenberg/alice.txt", "r", encoding="utf-8") as f:
+        alice_text = f.read()
+except FileNotFoundError:
+    print("Couldn't find that file — check the filename and location.")
+
+alice_list = re.split(r"[\W]+", alice_text.lower())    # lowercase this time!
+alice_list = [w for w in alice_list if w != ""]
+
+alice_content = [w for w in alice_list if w not in stopwords]
+alice_top15 = Counter(alice_content).most_common(15)
+
+alice_labels = [pair[0] for pair in alice_top15]
+alice_freqs = [pair[1] for pair in alice_top15]
+
+plt.bar(alice_labels, alice_freqs)
+plt.title("Top 15 Content Words in Alice in Wonderland")
+plt.xlabel("Word")
+plt.ylabel("Frequency")
+plt.xticks(rotation=45)
+plt.tight_layout()    # keeps the rotated labels from getting cut off
+plt.savefig("alice_top15.png")    # saves to the folder you're running from
+plt.show()
+```
+
+# `while` Loops
+
+## `while` Loops
+
+-   They're a lot like `if` statements, where something happens if a condition is met:
+
+``` python
+x = 0
+if x < 10:
+    print(x, "is less than 10.")
+```
+
+## `while` Loops
+
+-   In `while` loops, there's also a logical condition
+-   But instead of running the code once, Python will loop back and recheck the conditional
+-   It will do this **forever** until the conditional returns `False`
+
+``` python
+x = 0
+while x < 10:
+    print(x, "is less than 10.")
+    x = x + 1
+```
+
+## `while` Loops
+
+-   Be **careful** with `while` loops! Code (like below) will run ad infinitum and could crash your computer:
+
+``` python
+x = 0
+while x < 10:
+    print(x, "is less than 10.")
+    x = x - 1
+```
+
+-   If you ever get stuck in an infinite loop, press `Ctrl + C` in the terminal to stop it.
+
+## `while` Loops
+
+-   In this class, we will mostly use `for` loops
+-   But you can do some interesting things with `while` loops, like:
+
+``` python
+name = "The University of Kentucky"
+while name:
+    print("|" + name + "|")
+    name = name[0:-1]
+```
+
+-   `while name:` keeps going as long as `name` isn't empty
+    -   An empty string `""` counts as `False`
+
+## `while` Loop Activity
+
+-   Here's a messy word with trailing punctuation:
+
+``` python
+messy = "Really?!?!"
+```
+
+-   Use a `while` loop to chop off the **last character** as long as it's one of `"?!.,"`
+-   When you're done, `messy` should be `"Really"`
+
+
+## `while` Loop Activity
+
+``` python
+messy = "Really?!?!"
+punct = "?!.,"  # characters to chop off
+
+while messy[-1] in punct:
+    messy = messy[:-1]
+
+print(messy)
+```
+
+## Why `while`?
+
+-   A `for` loop goes through items you **already have**: every word in a list, every line in a book.
+-   A `while` loop keeps going **until something changes** -- useful when you *don't know* how many steps it will take.
+    -   How many `?` and `!` were on the end of `messy`? We didn't need to know!
+
+## A Real Problem: Gutenberg Headers
+
+-   Open `alice.txt` and look at the top. Before the story starts, there's a block of license text, ending in a line like:
+
+```
+*** START OF THE PROJECT GUTENBERG EBOOK ALICE'S ADVENTURES IN WONDERLAND ***
+```
+
+-   There's a similar footer at the end, starting with `*** END OF THE PROJECT GUTENBERG EBOOK`.
+-   That's where *gutenberg* and *project* came from in Monday's chart!
+-   How many lines long is the header? It's different for every book...
+
+## Chopping the Header
+
+-   Same idea as `messy`, but chopping **lines** off the **front** of a list:
+
+``` python
+with open("../../data/gutenberg/alice.txt", "r", encoding="utf-8") as f:
+    alice_lines = f.readlines()
+
+while not alice_lines[0].startswith("*** START"):
+    alice_lines = alice_lines[1:]     # chop off the first line
+alice_lines = alice_lines[1:]         # chop off the *** START line itself
+
+print(alice_lines[0:5])
+```
+
+-   `not` flips `True` and `False`: keep chopping as long as the first line does **not** start with `"*** START"`.
+
+## Chopping the Footer
+
+-   Now let's chop lines off the **end** of `alice_lines` until the last line starts with `"*** END"`, then remove that line too.
+    -   Hint: the last line is `alice_lines[-1]`, and `alice_lines[:-1]` is everything but the last line.
+-   Check it with `print(alice_lines[-5:])`
+-   Finally, glue the lines back together into one string:
+
+``` python
+alice_text = "".join(alice_lines)   # glue the lines back together into a string
+```
+
+## Chopping the Footer
+
+``` python
+while not alice_lines[-1].startswith("*** END"):
+    alice_lines = alice_lines[:-1]    # chop off the last line
+alice_lines = alice_lines[:-1]        # chop off the *** END line itself
+
+alice_text = "".join(alice_lines)
+
+print(alice_lines[-5:])
+```
+## We Can Then Clean and Split the Text as Normal
+
+``` python
+import re
+
+alice_words = re.split(r"[\W]+", alice_text.lower())
+alice_words = [w for w in alice_words if w != ""]
+```
+
+# Activity: Detective Gutenberg
+
+## Detective Gutenberg
+
+**Goal:** discover what makes an author's writing style distinctive using the Python tools you already know.
+
+-   If you don't remember how to do something, revisit past lectures.
+
+## Detective Gutenberg
+
+**Today, you'll:**
+
+1.  Download two novels of your choice from Project Gutenberg
+2.  Load the texts, chop off the Gutenberg headers & footers, and clean them
+3.  Count words: total, unique, and the type–token ratio
+4.  Measure average word length
+
+**Next time:** affixes, dialogue, most common words, and a chart.
+
+## Setup
+
+-   Create a new file called `gut_detective.qmd` or `gut_detective.py`. You'll keep working in this same file next time.
+-   Choose *any* **two novels** from [Project Gutenberg](https://www.gutenberg.org/), ideally by **two different authors**.
+    -   On the book's page, find the **Plain Text UTF-8** link and copy its URL.
+-   Download both using Python, the way we downloaded *Mansfield Park* (Day 16), saving them to `../../data/gutenberg/`
+    -   Use simple filenames, like `moby_dick.txt`
+
+## Read & Clean
+
+-   Read both files **line by line** with `.readlines()`, and assign each to a clear variable name.
+    -   Wrap your file-reading step in a `try`/`except` block, so a typo'd filename doesn't crash your whole script.
+-   Use your `while` loops to chop off the Gutenberg **header** and **footer** of each book.
+    -   Keep these header-free lists of lines -- you'll use them again next time!
+
+## Read & Clean
+
+-   Glue the lines back together with `"".join()`.
+-   Make the text lowercase, then split it into words with `re.split()`, removing whitespace and punctuation.
+-   Remove any empty strings.
+-   You did most of this with *Alice* -- reuse that code!
+
+## Explore 1: Tokens & Types
+
+1.  How many words are there **in total** (tokens)?
+2.  How many **unique** words are there (types)?
+3.  What is the **type–token ratio** (TTR) of each book?
+
+-   Hint: remember `set()` from our Sets & TTR day.
+
+## Explore 2: A Fair Comparison?
+
+-   Longer books repeat more words, so their TTR comes out *lower*, even if the author's vocabulary is just as rich.
+-   First, compare the TTRs of your two books. Which author has the richer vocabulary?
+-   Next, to compare fairly, compute the TTR of just the **first 10,000 words** of each book.
+    -   Remember: lists are indexable, so slicing works!
+-   Now which author has the richer vocabulary? Did the answer change?
+
+## Explore 3: Average Word Length
+
+-   What is the **average word length** in each book?
+-   Average = total number of letters ÷ number of words
+-   Hint: use a **counter**, like we did with `r_item_count`
+    -   Start a counter at `0`, loop through the words, and add each word's `len()` instead of `1`
+
+## If You Finish Early
+
+-   Make a **bar chart** comparing your two authors' TTRs (first 10,000 words)
+    -   `plt.bar(["Author 1", "Author 2"], [ttr_1, ttr_2])`
+-   Add a third author (Dickens, Poe, Twain)
+
+## Go for it!
+
+# Andrew's Solution
+
+## Andrew's Solution
+
+```python
+import re
+import matplotlib.pyplot as plt
+
+try:
+    with open("../../data/gutenberg/mansfield_park.txt", "r", encoding="utf-8") as f:
+        mansfield_lines = f.readlines()
+    with open("../../data/gutenberg/alice.txt", "r", encoding="utf-8") as f:
+        alice_lines = f.readlines()
+except FileNotFoundError:
+    print("Couldn't find a file — check the filename and location.")
+
+## alice text
+
+while not alice_lines[0].startswith("*** START"):
+    alice_lines = alice_lines[1:]     # chop off the first line
+alice_lines = alice_lines[1:]         # chop off the *** START line itself
+
+while not alice_lines[-1].startswith("*** END"):
+    alice_lines = alice_lines[:-1]    # chop off the last line
+alice_lines = alice_lines[:-1]        # chop off the *** END line itself
+
+alice_text = "".join(alice_lines)
+
+## mansfield park text
+
+while not mansfield_lines[0].startswith("*** START"):
+    mansfield_lines = mansfield_lines[1:]     # chop off the first line
+mansfield_lines = mansfield_lines[1:]         # chop off the *** START line itself
+
+while not mansfield_lines[-1].startswith("*** END"):
+    mansfield_lines = mansfield_lines[:-1]    # chop off the last line
+mansfield_lines = mansfield_lines[:-1]        # chop off the *** END line itself
+
+mansfield_text = "".join(mansfield_lines)
+
+## cleaning and splitting
+
+alice_words = re.split(r"[\W]+", alice_text.lower())
+alice_words = [w for w in alice_words if w != ""]
+
+mansfield_words = re.split(r"[\W]+", mansfield_text.lower())
+mansfield_words = [w for w in mansfield_words if w != ""]
+
+
+## TTR, total
+
+alice_ttr = len(set(alice_words)) / len(alice_words)
+mansfield_ttr = len(set(mansfield_words)) / len(mansfield_words)
+print("Alice TTR:", alice_ttr)
+print("Mansfield Park TTR:", mansfield_ttr)
+
+## TTR, 10000
+
+alice_ttr_10000 = len(set(alice_words[:10000])) / len(alice_words[:10000])
+mansfield_ttr_10000 = len(set(mansfield_words[:10000])) / len(mansfield_words[:10000])
+print("Alice TTR (10,000 words):", alice_ttr_10000)
+print("Mansfield Park TTR (10,000 words):", mansfield_ttr_10000)
+
+## Explore 3: Average Word Length
+
+alice_wd_len_total = 0
+for w in alice_words:
+    alice_wd_len_total += len(w)
+alice_avg_word_len = alice_wd_len_total / len(alice_words)
+
+mansfield_wd_len_total = 0
+for w in mansfield_words:
+    mansfield_wd_len_total += len(w)
+mansfield_avg_word_len = mansfield_wd_len_total / len(mansfield_words)
+
+print("Mansfield Park Average Word Length:", mansfield_avg_word_len)
+print("Alice Average Word Length:", alice_avg_word_len)
+
+## Plotting it Out
+
+plt.bar(["Lewis Carroll", "Jane Austen"], [alice_ttr_10000, mansfield_ttr_10000])
+plt.title("TTR Comparison: Alice vs Mansfield Park")
+plt.xlabel("Author")
+plt.ylabel("TTR")
+plt.show()
+
+## Adding a Third Author
+
+try:
+    with open("../../data/gutenberg/odyssey.txt", "r", encoding="utf-8") as f:
+        odyssey_lines = f.readlines()
+except FileNotFoundError:
+    print("Couldn't find a file — check the filename and location.")
+
+## odyssey text
+
+while not odyssey_lines[0].startswith("*** START"):
+    odyssey_lines = odyssey_lines[1:]     # chop off the first line
+odyssey_lines = odyssey_lines[1:]         # chop off the *** START line itself
+
+while not odyssey_lines[-1].startswith("*** END"):
+    odyssey_lines = odyssey_lines[:-1]    # chop off the last line
+odyssey_lines = odyssey_lines[:-1]        # chop off the *** END line itself
+
+odyssey_text = "".join(odyssey_lines)
+
+## cleaning and splitting
+
+odyssey_words = re.split(r"[\W]+", odyssey_text.lower())
+odyssey_words = [w for w in odyssey_words if w != ""]
+
+## TTR, total
+
+odyssey_ttr = len(set(odyssey_words)) / len(odyssey_words)
+print("The Odyssey TTR:", odyssey_ttr)
+
+## TTR, 10000
+
+odyssey_ttr_10000 = len(set(odyssey_words[:10000])) / len(odyssey_words[:10000])
+print("The Odyssey TTR (10,000 words):", odyssey_ttr_10000)
+
+## Explore 3: Average Word Length
+
+odyssey_wd_len_total = 0
+for w in odyssey_words:
+    odyssey_wd_len_total += len(w)
+odyssey_avg_word_len = odyssey_wd_len_total / len(odyssey_words)
+
+print("Mansfield Park Average Word Length:", mansfield_avg_word_len)
+print("Alice Average Word Length:", alice_avg_word_len)
+print("The Odyssey Average Word Length:", odyssey_avg_word_len)
+
+## Plotting it Out
+
+plt.bar(["Lewis Carroll", "Jane Austen", "Homer (tr. Butler)"], [alice_ttr_10000, mansfield_ttr_10000, odyssey_ttr_10000])
+plt.title("TTR Comparison: Alice vs Mansfield Park vs The Odyssey")
+plt.xlabel("Author")
+plt.ylabel("TTR")
+plt.show()
+```
