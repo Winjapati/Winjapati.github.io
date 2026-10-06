@@ -1,0 +1,190 @@
+---
+title: "HW 4 — Detective Gutenberg: The Full Investigation"
+subtitle: "LIN 301: Computation for Linguists"
+author: "Dr. Andrew M. Byrd"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-tools: true
+jupyter: python3
+fontsize: 12pt
+---
+
+## Overview
+
+This homework is the Detective Gutenberg activity from October 7 and October 9, finished and polished into one submittable document. If you kept up with both activity days, most of the work here is already done in your `gut_detective.qmd` — this assignment asks you to bring it all together on your **final** two novels, make sure every step actually runs start to finish, and write up your verdict.
+
+Everything below has already been modeled in class — in the slides, in the activity, or in the sample solutions I walked through. There are no new techniques here. That means there's no excuse for code that doesn't run, and it also means the thing I'm actually grading is whether you can explain, in your own words, what your code is doing and why — because copying a working pattern is not the same as understanding it.
+
+**Pick your own two novels**, by two different authors, from Project Gutenberg. (Don't just turn in the class examples — *Alice in Wonderland* and *Mansfield Park* — as your submission; pick two of your own.) Everything you do should run on *your* books, not the ones from the slides.
+
+You will create **one** Quarto document named `hw4_detective_gutenberg_lastname_firstname.qmd`, living inside a folder called `hw4` in your `homework/` folder. As always, fence every chunk with ```` ```{python} ```` (not plain ```` ```python ````), and make sure your document renders cleanly to HTML before you submit.
+
+**Explain-and-disclose requirement:** under each part below, write a few sentences in your own words explaining what your code does — not what the output shows, but how the code gets there — and say whether and how you used any AI tool (ChatGPT, Copilot, autocomplete suggestions, anything) for that part. This isn't a gotcha; using these tools well is a real skill, and I'd rather know how you're using them than have you hide it. But since the exact code for this assignment is sitting in the lecture slides, an explanation of code you don't actually understand is usually easy to spot.
+
+------------------------------------------------------------------------
+
+## Part 1 — Setup and Cleaning
+
+**Goal:** download your two novels, strip off the Gutenberg header and footer from each, and end up with a clean list of lowercase words for each book.
+
+-   Download both novels (Plain Text UTF-8) into `../../data/gutenberg/` — or wherever your `hw4` folder expects them — with clear filenames.
+-   Read each one in with `.readlines()`, inside a `try`/`except` so a bad filename doesn't crash the whole document.
+-   Use your `while` loops to chop the header off the front and the footer off the back of each book, the same way you did with *Alice*.
+-   Glue the lines back together, lowercase, and split into words with `re.split()`, removing any empty strings left behind.
+
+*Explain what your cleaning code is doing, and disclose any AI use for this part.*
+
+------------------------------------------------------------------------
+
+## Part 2 — Tokens, Types, and a Fair Comparison
+
+**Goal:** compare the vocabulary richness of your two books, correctly.
+
+-   For each book, report the total word count (tokens), the number of unique words (types), and the type–token ratio.
+-   Compare the two raw TTRs — which book looks like it has the richer vocabulary?
+-   Now compute the TTR of just the first 10,000 words of each book, and compare again. Explain, in your own words, why this second comparison is the fairer one.
+-   Report the average word length for each book.
+
+*Explain your code for this part, and disclose any AI use.*
+
+------------------------------------------------------------------------
+
+## Part 3 — Affixes, Dialogue, and Common Words
+
+**Goal:** find measurable differences between your two authors' styles.
+
+-   Report each book's rate of **-ly** words per 1,000 words, and look at the actual list — are they all adverbs, or does something else sneak in?
+-   Pick **three more affixes** of your own choosing and report the per-1,000-word rate of each, for both books.
+-   Using your header-free lines from Part 1, report what percentage of each book's lines contain dialogue, however your book happens to mark it.
+-   Report each book's **10 most common content words** (after removing stopwords), and say what they suggest about each book's characters, setting, or themes.
+
+*Explain your code for this part, and disclose any AI use.*
+
+------------------------------------------------------------------------
+
+## Part 4 — Visualize It
+
+**Goal:** show your findings as charts.
+
+-   Make **one bar chart** comparing your two authors on a single measure of your choice from Part 3.
+-   Make **one Zipf plot** — rank vs. frequency, log scale on both axes — with **both** books on the same chart, each with its own label and a legend.
+-   Every chart needs a title, axis labels, and should be saved to a file with `plt.savefig()`.
+
+*Explain your code for this part, and disclose any AI use.*
+
+------------------------------------------------------------------------
+
+## Part 5 — The Verdict
+
+Below your code, write a short paragraph:
+
+-   What makes each author's style distinctive, based on what you measured?
+-   Which measure was the most revealing? Which was the least useful?
+-   If someone handed you an anonymous chapter, which single measure would you reach for first to guess the author, and why?
+
+------------------------------------------------------------------------
+
+## Part 6 — Reflection
+
+A short (4–6 sentence) reflection:
+
+-   What was the biggest difference between running this activity in class on Day 1/2 and finishing it on your own for homework?
+-   Of everything you found, what's the most interesting or surprising result?
+-   Overall, where did you lean most on an AI tool, if anywhere — and where did you deliberately not use one? Why?
+
+------------------------------------------------------------------------
+
+## Quick Reference
+
+Here is a quick reference for the Python techniques you will need to use in this assignment. You can copy and paste these snippets into your own code, but make sure you understand what each one does before you do.
+
+| What you need to do | How |
+|---|---|
+| Read a file line by line | `with open(path, encoding="utf-8") as f: lines = f.readlines()` |
+| Handle a bad filename without crashing | `try: ... except FileNotFoundError: ...` |
+| Chop lines off the front while a condition holds | `while not lines[0].startswith("..."): lines = lines[1:]` |
+| Chop lines off the back while a condition holds | `while not lines[-1].startswith("..."): lines = lines[:-1]` |
+| Glue a list of lines back into one string | `"".join(lines)` |
+| Split text into words, removing punctuation | `re.split(r"[\W]+", text.lower())`, then drop empty strings |
+| Count tokens / types / TTR | `len(words)`, `len(set(words))`, `len(set(words)) / len(words)` |
+| Slice the first N items | `words[:10000]` |
+| Running total inside a loop | `total = 0` then `total += len(w)` for each `w` |
+| Turn a count into a rate per 1,000 | `count / len(words) * 1000` |
+| Check the start/end of a string | `word.startswith("un")`, `word.endswith("ly")` |
+| Build a filtered list in one line | `[w for w in words if condition(w)]` |
+| Count and rank items | `Counter(words).most_common(n)` |
+| Bar chart | `plt.bar(labels, values)` |
+| Line chart with a log–log scale | `plt.plot(ranks, freqs)` then `plt.xscale("log")`, `plt.yscale("log")` |
+| Multiple lines on one chart with a legend | `plt.plot(x, y, label="...")` for each, then `plt.legend()` |
+
+------------------------------------------------------------------------
+
+## Submission
+
+Your `LIN_301` repo is public, so instead of uploading a file to Canvas, you'll submit a **link** straight to your `homework/hw4` folder on GitHub.
+
+1.  **Render your document.** Make sure your `.qmd` renders cleanly to HTML.
+2.  **Push everything.** Stage, commit, and push your entire `homework/hw4` folder — your `.qmd`, the rendered `.html`, both novel `.txt` files, and any saved chart images — to your `LIN_301` GitHub repo.
+3.  **Get the folder's GitHub address.** On github.com, navigate into your repo to `homework/hw4`, and copy the URL from your browser's address bar. It'll look like:
+
+    ```
+    https://github.com/your-username/LIN_301/tree/main/homework/hw4
+    ```
+
+4.  **Submit that link on Canvas** — no file upload needed.
+5.  Be sure to replace "lastname_firstname" with your actual last name and first name in your `.qmd` filename.
+
+------------------------------------------------------------------------
+
+## Grading Rubric (100 pts total)
+
+### Part 1 — Setup and Cleaning (15 pts)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| Both novels downloaded, loaded, and correctly cleaned (headers/footers removed, lowercased, split, empties removed) | 10 |
+| Explanation of the code holds up and matches what it actually does | 5 |
+
+### Part 2 — Tokens, Types, and a Fair Comparison (20 pts)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| Tokens, types, TTR, 10,000-word TTR, and average word length all correctly computed for both books | 10 |
+| Correctly explains why the 10,000-word comparison is fairer than the raw one | 5 |
+| Explanation of the code holds up | 5 |
+
+### Part 3 — Affixes, Dialogue, and Common Words (20 pts)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| -ly rate, three chosen affixes, dialogue percentage, and top-10 content words all correctly computed for both books | 12 |
+| Genuine engagement with what the results suggest about each author/book | 3 |
+| Explanation of the code holds up | 5 |
+
+### Part 4 — Visualize It (15 pts)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| Bar chart and dual-book Zipf plot both correct, labeled, and saved to file | 10 |
+| Explanation of the code holds up | 5 |
+
+### Part 5 — The Verdict (10 pts)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| Specific, well-reasoned answers grounded in the student's own results | 10 |
+
+### Part 6 — Reflection & AI Disclosure (15 pts)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| Thoughtful, specific answers to the reflection prompts | 8 |
+| Honest, specific AI-use disclosure (including "I didn't use one," if true) at each point it was asked for | 7 |
+
+### Presentation & Reproducibility (5 pts)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| File named correctly; document renders without errors; code and answers clearly organized by part; GitHub link points to the `hw4` folder | 5 |
