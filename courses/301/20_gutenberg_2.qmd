@@ -1,0 +1,170 @@
+---
+title: "Computation for Linguists"
+subtitle: "Activity Day: Detective Gutenberg, Day 2"
+date: "October 9, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Time
+
+-   Monday: counting words with `Counter`; bar charts with matplotlib
+-   Downloaded two novels, removed the Gutenberg headers & footers
+-   Loaded & cleaned them into lists of words
+-   Tokens, types, and type–token ratio
+-   Why a fair TTR comparison needs texts of the same length
+-   Average word length
+
+# Line Charts & Zipf's Law
+
+## Another Kind of Chart: the **Line** Graph
+
+-   On Monday we made **bar charts**: good for comparing categories (words, authors).
+-   A **line chart** is good when **order matters** (rank, time).
+-   Let's use one to look at *every* word in a book at once.
+
+## Line Chart: Rank vs. Frequency
+
+-   Rank 1 = the most frequent word, rank 2 = the next most frequent, and so on.
+-   Use one of your own word lists (change `book1_words` to your variable name):
+
+``` python
+from collections import Counter
+import matplotlib.pyplot as plt
+
+book1_freqs = [pair[1] for pair in Counter(book1_words).most_common()]
+book1_ranks = range(1, len(book1_freqs) + 1)    # 1, 2, 3, ... up to the number of words
+
+plt.plot(book1_ranks, book1_freqs)
+plt.title("Rank vs. Frequency")
+plt.xlabel("Rank")
+plt.ylabel("Frequency")
+plt.show()
+```
+
+## Line Chart: Rank vs. Frequency
+
+-   Hard to see anything, right?
+    -   Researchers often convert the axes to a **log scale** to make the chart more readable.
+
+## Log Scale
+
+-   A **log scale** spaces 1, 10, 100, 1000 evenly, so huge and tiny numbers fit on the same chart.
+-   Add `plt.xscale("log")` and `plt.yscale("log")` before `plt.show()`:
+
+``` python
+plt.plot(book1_ranks, book1_freqs)
+plt.title("Rank vs. Frequency (Log Scale)")
+plt.xlabel("Rank")
+plt.ylabel("Frequency")
+plt.xscale("log")
+plt.yscale("log")
+plt.savefig("zipf_book1.png")
+plt.show()
+```
+
+## Zipf's Law
+
+-   On a log–log chart, rank vs. frequency comes out as a (roughly) **straight line**.
+-   This is **Zipf's Law**: the 2nd most common word appears about ½ as often as the 1st, the 3rd about ⅓ as often, and so on.
+-   It holds for nearly every language and text ever measured.
+-   Does it hold for your *other* book, too? You'll find out in Explore 7.
+
+# Activity: Detective Gutenberg
+
+## Detective Gutenberg
+
+**Goal:** discover what makes an author's writing style distinctive using the Python tools you already know.
+
+-   If you don't remember how to do something, revisit past lectures.
+
+**Today, you'll:**
+
+-   Investigate affixes, dialogue, and the most common words
+-   Make charts comparing your two authors
+-   Write up your verdict
+
+-   Open your `gut_detective.qmd` from last time and re-run your code, so your word lists are loaded.
+
+## Counting Fairly
+
+-   Your two books are probably different lengths.
+-   200 *-ly* words in a short book is not the same as 200 in a long one!
+-   So we report **rates**: how many per 1,000 words.
+
+``` python
+rate = count / len(words) * 1000
+```
+
+-   Use rates for all of today's comparisons.
+
+## Explore 4: Adverbs & Affixes
+
+1.  How many words end in **-ly**? What is the rate per 1,000 words?
+    -   Look at the actual list of words. Are they all adverbs? What else sneaks in?
+2.  Pick **three other affixes** to investigate (e.g. *un-*, *-ness*, *-ment*, *-ful*).
+    -   Which author uses each one more?
+
+-   Hint: `.startswith()`, `.endswith()`, and a filtered list comprehension.
+
+## Explore 5: Dialogue
+
+-   How much **dialogue** does each author use?
+-   Go back to your header-free **lists of lines** from last time, and remove the empty lines (remember *Mansfield Park*?)
+-   Count how many lines contain an opening quotation mark, and what percentage of all lines that is.
+-   Check how *your* book marks dialogue! Some use `"` or `“`, others `‘`:
+
+``` python
+quot_list = ['"', '“', '‘']
+```
+
+-   Why do we skip `’`? (Hint: *don’t*, *Alice’s*)
+
+## Explore 6: Most Common Words
+
+-   What are the **10 most common content words** in each book?
+-   Use `Counter` and `.most_common()`, plus the `stopwords` list from Monday.
+    -   Add to the stopword list if function words are still sneaking in.
+-   What do the top words tell you about each book? (Characters? Settings? Themes?)
+
+## Explore 7: Visualize It
+
+1.  Make **one bar chart** that compares your two authors on one measure.
+    -   e.g. *-ly* words per 1,000 words, or percentage of dialogue lines
+    -   The labels are your authors, and the heights are your measurements:
+
+``` python
+plt.bar(["Author 1", "Author 2"], [measure_1, measure_2])
+```
+
+## Explore 7: Visualize It
+
+2.  Make a **Zipf plot** with **both** books on the **same** chart.
+    -   Call `plt.plot()` once for each book, giving each a `label`, then add `plt.legend()` before `plt.show()`:
+
+``` python
+plt.plot(book1_ranks, book1_freqs, label="Author 1")
+```
+
+-   Give every chart a title and axis labels, and save each one with `plt.savefig()`!
+
+## If You Finish Early
+
+- Remember: this week's activity is HW4; so go ahead and start writing up your results for the homework
+
+## Go for it!
+
