@@ -1,0 +1,392 @@
+---
+title: "Computation for Linguists"
+subtitle: "Lists to Dicts; Nested Loops & Lists"
+date: "October 12, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Week
+
+-   Splitting text into words: `re.split(r"[\W]+", text)`
+-   Counting words with a `dict` (and with `Counter`)
+-   Type-token ratio; comparing two authors
+-   Bar charts and line charts with `matplotlib`; Zipf's Law
+
+## Review Activity
+
+-   Copy the following passage from JFK's 1962 Rice University speech:
+
+``` python
+jfk = "This year’s space budget is three times what it was in January 1961, and it is greater than the space budget of the previous eight years combined. That budget now stands at $5,400,000 a year — a staggering sum, though somewhat less than we pay for cigarettes and cigars every year. Space expenditures will soon rise some more, from 40 cents per person per week to more than 50 cents a week for every man, woman and child in the United States, for we have given this program a high national priority — even though I realize that this is in some measure an act of faith and vision, for we do not now know what benefits await us. But if I were to say, my fellow citizens, that we shall send to the moon, 240,000 miles away from the control station in Houston, a giant rocket more than 300 feet tall, the length of this football field, made of new metal alloys, some of which have not yet been invented, capable of standing heat and stresses several times more than have ever been experienced, fitted together with a precision better than the finest watch, carrying all the equipment needed for propulsion, guidance, control, communications, food and survival, on an untried mission, to an unknown celestial body, and then return it safely to Earth, re-entering the atmosphere at speeds of over 25,000 miles per hour, causing heat about half that of the temperature of the sun — almost as hot as it is here today — and do all this, and do it right, and do it first before this decade is out — then we must be bold. I’m the one who is doing all the work, so we just want you to stay cool for a minute. [laughter] However, I think we’re going to do it, and I think that we must pay what needs to be paid. I don’t think we ought to waste any money, but I think we ought to do the job. And this will be done in the decade of the sixties. It may be done while some of you are still here at school at this college and university. It will be done during the term of office of some of the people who sit here on this platform. But it will be done. And it will be done before the end of this decade. I am delighted that this university is playing a part in putting a man on the moon as part of a great national effort of the United States of America. Many years ago, the great British explorer George Mallory, who was to die on Mount Everest, was asked why did he want to climb it? He said, “Because it is there.” Well, space is there, and we’re going to climb it, and the moon and the planets are there, and new hopes for knowledge and peace are there. And, therefore, as we set sail we ask God’s blessing on the most hazardous and dangerous and greatest adventure on which man has ever embarked. Thank you."
+```
+
+1.  Split it into a list of lowercase words, with no empty strings.
+2.  How many tokens are there? How many types?
+
+## Review Activity
+
+``` python
+import re
+
+jfk_words = re.split(r"[\W]+", jfk.lower())
+jfk_words = [w for w in jfk_words if w != ""]
+
+print(len(jfk_words))        # tokens
+print(len(set(jfk_words)))   # types
+```
+
+## Review Activity, Part 2
+
+-   Now count how many times each word appears, **without** `Counter`:
+
+1.  Create an empty dictionary
+2.  Loop through your list
+3.  If the current word is already a key, add 1 to its value
+4.  If it isn't, add it with a value of 1
+
+-   Which word is the most frequent?
+
+## Review Activity, Part 2
+
+``` python
+jfk_counts = {}
+
+for w in jfk_words:
+    if w in jfk_counts:
+        jfk_counts[w] += 1
+    else:
+        jfk_counts[w] = 1
+
+print(jfk_counts)
+```
+
+## Review Activity, Part 2 (with Counter)
+
+``` python
+from collections import Counter
+
+jfk_counts = Counter(jfk_words)
+print(jfk_counts)
+```
+
+# Two Lists, One Dict
+
+## Where We've Been
+
+-   In the review, we went from a **string** → a **list** → a **dict**
+-   A dict pairs things up: `key : value`
+-   But often our data comes as two separate lists that *already line up*:
+
+``` python
+languages = ["Hittite", "Sanskrit", "Latin", "Gothic", "Tocharian"]
+dates     = [-1650, -1200, -700, 350, 600]
+```
+-   How could we turn these into a single dict?
+
+## Predict the Output
+
+-   We know how to loop through a list. What if we loop through *both*?
+-   Before you run this: what do you **expect** `attested` to look like?
+
+``` python
+languages = ["Hittite", "Sanskrit", "Latin", "Gothic", "Tocharian"]
+dates     = [-1650, -1200, -700, 350, 600]
+
+attested = {}
+
+for lang in languages:
+    for date in dates:
+        attested[lang] = date
+
+print(attested)
+```
+
+## What Went Wrong?
+
+-   Let's trace what happens when `lang = "Hittite"`:
+
+| inner loop | `date` | `attested["Hittite"]` |
+|------------|--------|-----------------------|
+| 1st turn   | -1650  | -1650                 |
+| 2nd turn   | -1200  | -1200                 |
+| 3rd turn   | -700   | -700                  |
+| 4th turn   | 350    | 350                   |
+| 5th turn   | 600    | **600**               |
+
+-   The **inner** loop runs all the way through for *every* turn of the **outer** loop, overwriting the value each time.
+
+## Nested Loops
+
+-   A loop inside a loop is a **nested loop**
+-   For every one turn of the outer loop, the inner loop runs *completely*
+
+``` python
+for letter in ["a", "b"]:
+    for number in [1, 2, 3]:
+        print(letter, number)
+```
+
+-   Nested loops are very useful (more on that later today!), but they're not what we want for lining up two lists.
+
+## Fix #1: Use the Index
+
+-   We actually saw this, a few weeks back:
+
+``` python
+attested = {}
+
+for i in range(len(languages)):
+    attested[languages[i]] = dates[i]
+
+print(attested)
+```
+
+-   `range(len(languages))` gives us `0, 1, 2, 3, 4`
+-   So we grab item `i` from *both* lists at the same time
+-   It works, but it's a bit clunky to read.
+
+## Fix #2: `zip()`
+
+-   `zip()` takes two (or more) lists and pairs up their items **by position**, like the two sides of a zipper
+
+``` python
+for lang, date in zip(languages, dates):
+    print(lang, date)
+```
+
+-   Notice that we have **two** temporary variables: `lang` and `date`
+-   On each turn, `zip()` hands us one item from each list
+
+## Fix #2: `zip()`
+
+-   So building our dict looks like this:
+
+``` python
+attested = {}
+
+for lang, date in zip(languages, dates):
+    attested[lang] = date
+
+print(attested)
+```
+
+## Dict Comprehensions
+
+-   Remember list comprehensions?
+
+``` python
+lengths = [len(lang) for lang in languages]
+```
+
+-   There's a dict version too, using `{ }` and `key: value`:
+
+``` python
+attested = {lang: date for lang, date in zip(languages, dates)}
+print(attested)
+```
+
+-   Same result as the loop on the previous slide, in one line.
+-   Use whichever one you find easier to read!
+
+## More Than Two Lists
+
+-   `zip()` can line up as many lists as you like
+-   If we want more than one value per key, we can put the values in a list:
+
+``` python
+languages = ["Hittite", "Sanskrit", "Latin", "Gothic", "Tocharian"]
+dates     = [-1650, -1200, -700, 350, 600]
+branch    = ["Anatolian", "Indo-Iranian", "Italic", "Germanic", "Tocharian"]
+
+lang_info = {}
+
+for lang, date, br in zip(languages, dates, branch):
+    lang_info[lang] = [date, br]
+
+print(lang_info)
+```
+-   How would you get Gothic's branch?
+
+## Activity: Consonants
+
+1.  Copy the below lists:
+
+``` python
+consonant =  ["p", "b", "t", "d", "k", "g", "s", "z", "m", "n", "l", "r", "w", "j", "h"]
+place = ["bilabial", "bilabial", "alveolar", "alveolar", "velar", "velar", "alveolar", "alveolar", "bilabial", "alveolar", "alveolar", "alveolar", "labial-velar", "palatal", "glottal"]
+manner = ["stop", "stop", "stop", "stop", "stop", "stop", "fricative", "fricative", "nasal", "nasal", "lateral", "trill", "glide", "glide", "fricative"]
+voice = ["voiceless", "voiced", "voiceless", "voiced", "voiceless", "voiced", "voiceless", "voiced", "voiced", "voiced", "voiced", "voiced", "voiced", "voiced", "voiceless"]
+```
+
+2.  Using `zip()`, build a dictionary called `consonants`, with each consonant as a key, and a list of `[place, manner, voice]` as its value.
+3.  Print the value for `"z"`. Then print just the **manner** of `"z"`.
+4.  Challenge: loop through your dict and print every **voiced stop**.
+
+# Nested Lists
+
+## Nested Loops, Revisited
+
+-   Nested loops weren't the right tool for pairing up lists
+-   But they're perfect when our data has **layers**
+-   A string is a sequence of characters. So a list of strings has two layers:
+
+``` python
+words = ["eeny", "meeny", "miney", "mo"]
+
+for w in words:
+    for c in w:
+        print(c)
+```
+
+-   The outer loop goes through the **words**; the inner loop goes through the **letters** of each word.
+
+## Counting Inside the Inner Loop
+
+-   We can count something for each word, then store it in a dict:
+
+``` python
+words = ["eeny", "meeny", "miney", "mo"]
+vowel_counts = {}
+
+for w in words:
+    vowels = 0                 # reset the counter for each word
+    for c in w:
+        if c in "aeiou":
+            vowels += 1
+    vowel_counts[w] = vowels
+
+print(vowel_counts)
+```
+
+-   Why does `vowels = 0` go *inside* the outer loop, and not above it?
+
+## Nested Lists
+
+-   A list can contain other lists:
+
+``` python
+sentences = [
+    ["the", "cat", "sleeps"],
+    ["the", "dog", "runs"],
+    ["the", "bird", "flies"]
+]
+```
+
+-   This is a natural way to store a text that has been split into **sentences**, and then each sentence into **words**
+
+## Looping Through Nested Lists
+
+``` python
+for sentence in sentences:
+    for w in sentence:
+        print(w)
+```
+
+-   Again: the outer loop gets a sentence (a list), the inner loop gets each word in it.
+
+## Indexing Nested Lists
+
+-   We can index into each layer, one `[ ]` at a time:
+
+``` python
+sentences[1]
+```
+
+``` python
+sentences[1][2]
+```
+
+-   What would `sentences[2][1][0]` give us?
+
+## Activity: Syllables
+
+-   Copy the following list, in which each word has been split into syllables:
+
+``` python
+words = [
+    ["lin", "guis", "tics"],
+    ["pho", "no", "lo", "gy"],
+    ["mor", "pho", "lo", "gy"],
+    ["se", "man", "tics"]
+]
+```
+
+## Activity: Syllables
+
+1.  Print each syllable on its own line. (Hint: look back at the `sentences` loop.)
+2.  Count the total number of syllables. (Hint: set `total = 0` *before* your loops, and add 1 inside the inner loop.)
+3.  For each word, print how many syllables it has. (Hint: each word is a list, and you already know how to get the length of a list!)
+4.  Challenge: how many times does the syllable `"pho"` appear?
+
+# Activity Answers
+
+## Activity: Consonants
+
+``` python
+consonants = {}
+
+for c, p, m, v in zip(consonant, place, manner, voice):
+    consonants[c] = [p, m, v]
+
+# or:
+# consonants = {c: [p, m, v]
+#               for c, p, m, v in zip(consonant, place, manner, voice)}
+
+print(consonants["z"])
+print(consonants["z"][1])
+```
+
+## Activity: Consonants (Challenge)
+
+``` python
+for c in consonants:
+    if consonants[c][1] == "stop" and consonants[c][2] == "voiced":
+        print(c)
+```
+
+## Activity: Syllables
+
+``` python
+# 1 & 2
+total = 0
+
+for word in words:
+    for syll in word:
+        print(syll)
+        total += 1
+
+print(total)
+```
+
+## Activity: Syllables
+
+``` python
+# 3
+for word in words:
+    print(word, len(word))
+
+# 4: Challenge
+pho_count = 0
+
+for word in words:
+    for syll in word:
+        if syll == "pho":
+            pho_count += 1
+
+print(pho_count)
+```

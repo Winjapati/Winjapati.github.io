@@ -1,0 +1,444 @@
+---
+title: "Computation for Linguists"
+subtitle: "Nested Dicts"
+date: "October 14, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+<!-- F25 NOTE: CLASS TOO SHORT, LAST ACTIVITY DIDN'T TAKE LONG. -->
+<!-- F26: pandas moved entirely to Day 23; "Mini Lexicon" activity added to fill the back half of class. -->
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Time
+
+-   Nested loops: the inner loop runs *completely* for every turn of the outer loop
+-   `zip()` lines up lists by position:
+
+``` python
+for lang, date in zip(languages, dates):
+    attested[lang] = date
+```
+
+-   Dict comprehensions: `{key: value for ... in ...}`
+-   Nested lists: `sentences[1][2]`
+
+## Review Activity
+
+-   Copy the below lists.
+-   Make a fourth list called `length`, containing the length of each word in `words`. (Use a list comprehension!)
+-   Then, using `zip()`, build a dictionary with `words` as the keys, and a list of the other three values as each value.
+
+``` python
+words = ["zombie", "ghoul", "ghost", "vampire"]
+begins_with_g = [False, True, True, False]
+rhymes_with_most = [False, False, True, False]
+```
+
+# Nested Dictionaries
+
+## A Problem
+
+-   On Monday we built this:
+
+``` python
+consonants = {
+    "p": ["bilabial", "stop", "voiceless"],
+    "b": ["bilabial", "stop", "voiced"],
+    "s": ["alveolar", "fricative", "voiceless"]
+}
+
+consonants["s"][1]
+```
+
+-   What does `consonants["s"][1]` mean? Can you tell without scrolling back?
+-   In six weeks, will you remember that `[1]` is *manner*?
+
+## A Dict Inside a Dict
+
+-   What if each value were *itself* a dictionary, with labeled parts?
+
+``` python
+consonants = {
+    "p": {"place": "bilabial", "manner": "stop", "voice": "voiceless"},
+    "b": {"place": "bilabial", "manner": "stop", "voice": "voiced"},
+    "s": {"place": "alveolar", "manner": "fricative", "voice": "voiceless"}
+}
+```
+
+-   This is a **nested dictionary**: a dict whose values are dicts
+-   The **outer** keys are the sounds; the **inner** keys are the features
+
+## Accessing Nested Items
+
+-   Just like nested lists, we go in one layer at a time:
+
+``` python
+consonants["s"]
+```
+
+``` python
+consonants["s"]["manner"]
+```
+
+-   Compare: `consonants["s"][1]` vs. `consonants["s"]["manner"]`
+-   Which would you rather read?
+
+## When to Use Nested Dictionaries
+
+-   Use them when one thing naturally has **several labeled parts**:
+
+``` python
+students = {
+    "Alice": {"quiz": 9, "homework": 10, "final": 8},
+    "Ben":   {"quiz": 7, "homework": 9, "final": 10}
+}
+```
+
+-   What would `students["Ben"]["final"]` give us?
+-   What other linguistic data could you store this way?
+
+## Building a Nested Dict with `zip()`
+
+-   Usually we don't type these out by hand. We build them from lists:
+
+``` python
+phonemes = ["p", "b", "t", "d", "k", "g"]
+place    = ["bilabial", "bilabial", "alveolar", "alveolar", "velar", "velar"]
+manner   = ["stop"] * 6
+voice    = ["voiceless", "voiced", "voiceless", "voiced", "voiceless", "voiced"]
+
+stops = {}
+
+for ph, pl, m, v in zip(phonemes, place, manner, voice):
+    stops[ph] = {"place": pl, "manner": m, "voice": v}
+
+print(stops)
+```
+
+-   What does `["stop"] * 6` do?
+
+## Adding & Changing Items
+
+-   Adding a new outer key works just like a regular dict:
+
+``` python
+stops["q"] = {"place": "uvular", "manner": "stop", "voice": "voiceless"}
+```
+
+-   And we can change (or add) an inner value by going two layers in:
+
+``` python
+stops["p"]["aspirated"] = True
+print(stops["p"])
+```
+
+# Looping Through Nested Dicts
+
+## Looping Through a Dict
+
+-   When we loop through a dict, we get its **keys**:
+
+``` python
+for ph in stops:
+    print(ph)
+```
+
+-   To get each key *and* its value, we can use `.items()`:
+
+``` python
+for ph, features in stops.items():
+    print(ph, features)
+```
+
+-   Look familiar? Two temporary variables, just like with `zip()`.
+
+## Looping Through a Nested Dict
+
+-   Here, `features` is itself a dict, so we can look inside it:
+
+``` python
+for ph, features in stops.items():
+    print(ph, "is", features["voice"])
+```
+
+## Asking Questions of Our Data
+
+-   Combine a loop with a conditional to *search* the data:
+
+``` python
+for ph, features in stops.items():
+    if features["voice"] == "voiced":
+        print(ph)
+```
+
+-   Compare with Monday's version: `if consonants[c][2] == "voiced":`
+
+## Counting with a Nested Dict
+
+-   Our counting pattern works here, too:
+
+``` python
+place_counts = {}
+
+for ph, features in stops.items():
+    pl = features["place"]
+    if pl in place_counts:
+        place_counts[pl] += 1
+    else:
+        place_counts[pl] = 1
+
+print(place_counts)
+```
+
+## Activity: Consonants, Revisited
+
+-   Copy Monday's four lists (`consonant`, `place`, `manner`, `voice`).
+
+1.  Using `zip()`, rebuild `consonants` as a **nested** dict, with the inner keys `"place"`, `"manner"`, and `"voice"`.
+2.  Print the place of articulation of `"j"`.
+3.  Loop through the dict and print every **voiceless** consonant.
+4.  Count how many consonants there are of each **manner**.
+
+# Lists of Dicts
+
+## Another Way to Nest
+
+-   A nested dict needs a **unique** key for each item
+-   But what if two items share a name?
+
+``` python
+lexicon = {
+    "bank": {"pos": "noun", "gloss": "edge of a river"},
+    "bank": {"pos": "noun", "gloss": "place to keep money"}
+}
+print(lexicon)
+```
+
+-   What happened to the river?
+
+## A List of Dicts
+
+-   Instead, we can make a **list**, where each item is a dict:
+
+``` python
+lexicon = [
+    {"form": "bank", "pos": "noun", "gloss": "edge of a river"},
+    {"form": "bank", "pos": "noun", "gloss": "place to keep money"},
+    {"form": "bank", "pos": "verb", "gloss": "to tilt an airplane"}
+]
+```
+
+-   Each dict is one **entry**: one **row** of a table
+-   Each key (`"form"`, `"pos"`, `"gloss"`) is a **column**
+
+## Looping Through a List of Dicts
+
+-   Since it's a list, we loop through it as normal; each item is a dict:
+
+``` python
+for entry in lexicon:
+    print(entry["form"], "(" + entry["pos"] + "):", entry["gloss"])
+```
+
+-   And `lexicon[2]["gloss"]` gives us...?
+
+## Building a List of Dicts
+
+-   We build one with `.append()`, just like any list:
+
+``` python
+rows = []
+
+for ph, features in stops.items():
+    rows.append({
+        "phoneme": ph,
+        "place": features["place"],
+        "voice": features["voice"]
+    })
+
+print(rows)
+```
+
+-   Hang on to this idea: on Friday, we'll see that this is exactly the shape pandas wants for building a table.
+
+## Dict of Dicts vs. List of Dicts
+
+| | Dict of dicts | List of dicts |
+|----|----|----|
+| Looks like | `{"p": {...}, "b": {...}}` | `[{...}, {...}]` |
+| Find one item | Fast: `d["p"]` | Loop and check |
+| Keys | Must be unique | Duplicates are fine |
+| Good for | Lookup tables, inventories | Entries, tokens, rows |
+
+# Activity: Mini Lexicon
+
+## Mini Lexicon
+
+-   Copy these lists. They're a tiny Latin lexicon:
+
+``` python
+forms     = ["aqua", "rosa", "amō", "canis", "magnus", "videō", "puella", "bonus", "dominus", "portō", "lupus", "longus"]
+glosses   = ["water", "rose", "love", "dog", "big", "see", "girl", "good", "lord", "carry", "wolf", "long"]
+pos       = ["noun", "noun", "verb", "noun", "adj", "verb", "noun", "adj", "noun", "verb", "noun", "adj"]
+syllables = [2, 2, 2, 2, 2, 3, 3, 2, 3, 2, 2, 2]
+```
+
+## Mini Lexicon: Part 1
+
+1.  Using `zip()`, build a nested dict called `latin`, with each **form** as the key, and an inner dict with the keys `"gloss"`, `"pos"`, and `"syllables"`.
+2.  Print the gloss of `"lupus"`.
+3.  Add a new word: `rēx` 'king', a noun with 1 syllable.
+4.  Fix a mistake: the gloss of `amō` should be `"I love"`, and the gloss of `videō` should be `"I see"`. Change them in the dict (not in the lists!).
+
+## Mini Lexicon: Part 2
+
+5.  Loop through `latin` and print every **verb**, along with its gloss.
+6.  Count how many words there are of each part of speech.
+7.  What is the average number of syllables per word?
+8.  Print every word that has more than 2 syllables.
+
+## Mini Lexicon: Part 3
+
+9.  Convert `latin` into a **list of dicts** called `latin_rows`, where each dict has the keys `"form"`, `"gloss"`, `"pos"`, and `"syllables"`.
+10. Print the first three rows.
+
+-   **Challenge:** build a dict called `by_pos` that maps each part of speech to a *list* of the forms with that part of speech, e.g.:
+
+``` python
+{"noun": ["aqua", "rosa", ...], "verb": [...], "adj": [...]}
+```
+
+# Activity Answers
+
+## Review Activity
+
+``` python
+length = [len(w) for w in words]
+
+halloween = {}
+for w, g, r, l in zip(words, begins_with_g, rhymes_with_most, length):
+    halloween[w] = [g, r, l]
+
+# or:
+# halloween = {w: [g, r, l]
+#              for w, g, r, l in zip(words, begins_with_g, rhymes_with_most, length)}
+
+print(halloween)
+```
+
+## Activity: Consonants, Revisited
+
+``` python
+consonants = {}
+for c, p, m, v in zip(consonant, place, manner, voice):
+    consonants[c] = {"place": p, "manner": m, "voice": v}
+
+print(consonants["j"]["place"])
+
+for c, features in consonants.items():
+    if features["voice"] == "voiceless":
+        print(c)
+```
+
+## Activity: Consonants, Revisited
+
+``` python
+manner_counts = {}
+
+for c, features in consonants.items():
+    m = features["manner"]
+    if m in manner_counts:
+        manner_counts[m] += 1
+    else:
+        manner_counts[m] = 1
+
+print(manner_counts)
+```
+
+## Mini Lexicon: Part 1
+
+``` python
+latin = {}
+for f, g, p, s in zip(forms, glosses, pos, syllables):
+    latin[f] = {"gloss": g, "pos": p, "syllables": s}
+
+print(latin["lupus"]["gloss"])
+
+latin["rēx"] = {"gloss": "king", "pos": "noun", "syllables": 1}
+
+latin["amō"]["gloss"] = "I love"
+latin["videō"]["gloss"] = "I see"
+```
+
+## Mini Lexicon: Part 2
+
+``` python
+for form, info in latin.items():
+    if info["pos"] == "verb":
+        print(form, info["gloss"])
+
+pos_counts = {}
+for form, info in latin.items():
+    if info["pos"] in pos_counts:
+        pos_counts[info["pos"]] += 1
+    else:
+        pos_counts[info["pos"]] = 1
+print(pos_counts)
+```
+
+## Mini Lexicon: Part 2
+
+``` python
+total = 0
+for form, info in latin.items():
+    total += info["syllables"]
+print(total / len(latin))
+
+for form, info in latin.items():
+    if info["syllables"] > 2:
+        print(form)
+```
+
+## Mini Lexicon: Part 3
+
+``` python
+latin_rows = []
+for form, info in latin.items():
+    latin_rows.append({
+        "form": form,
+        "gloss": info["gloss"],
+        "pos": info["pos"],
+        "syllables": info["syllables"]
+    })
+
+print(latin_rows[:3])
+```
+
+## Mini Lexicon: Challenge
+
+``` python
+by_pos = {}
+
+for form, info in latin.items():
+    p = info["pos"]
+    if p in by_pos:
+        by_pos[p].append(form)
+    else:
+        by_pos[p] = [form]
+
+print(by_pos)
+```
