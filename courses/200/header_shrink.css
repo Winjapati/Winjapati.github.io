@@ -83,3 +83,18 @@
 .reveal section:not(:has(ul, ol)) p:has(img) ~ p:has(img) img {
   max-height: 40vh !important;
 }
+/* Center video embeds (Quarto's {{< video >}} shortcode wraps YouTube
+   embeds in a responsive Bootstrap "ratio" div, which is block-level
+   and full-width by default -- text-align alone won't center a block
+   element, so pin it with margin auto plus a max-width to leave room
+   to center within. */
+.reveal .ratio {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Opt-in larger text for small 2-3 column tables (example sentences etc.).
+   Usage in a slide:  ::: {.bigtable}  <table>  :::  */
+.reveal .bigtable table {
+  font-size: 0.8em;
+}
