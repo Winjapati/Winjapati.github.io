@@ -412,6 +412,7 @@ Dr.&nbsp;Andrew M. Byrd
 <li><a href="#/review" id="/toc-review">Review</a></li>
 <li><a href="#/nested-dictionaries" id="/toc-nested-dictionaries">Nested Dictionaries</a></li>
 <li><a href="#/looping-through-nested-dicts" id="/toc-looping-through-nested-dicts">Looping Through Nested Dicts</a></li>
+<li><a href="#/activity-answers" id="/toc-activity-answers">Activity Answers</a></li>
 </ul>
 </nav>
 </section>
@@ -630,26 +631,25 @@ Dr.&nbsp;Andrew M. Byrd
 <li>Loop through the dict and print every <strong>voiceless</strong> consonant.</li>
 <li>Count how many consonants there are of each <strong>manner</strong>.</li>
 </ol>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a></span>
-<span id="cb19-2"><a href=""></a>consonants <span class="op">=</span> {c: {<span class="st">'place'</span>:p, <span class="st">'manner'</span>: m, <span class="st">'voice'</span>:v} <span class="cf">for</span> c, p, m, v <span class="kw">in</span> <span class="bu">zip</span>(consonant, place, manner, voice)}</span>
-<span id="cb19-3"><a href=""></a></span>
-<span id="cb19-4"><a href=""></a></span>
-<span id="cb19-5"><a href=""></a><span class="co"># Activity Answers</span></span>
+</section></section>
+<section>
+<section id="activity-answers" class="title-slide slide level1 center">
+<h1>Activity Answers</h1>
+
+</section>
+<section id="review-activity-1" class="slide level2 center">
+<h2>Review Activity</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a>length <span class="op">=</span> [<span class="bu">len</span>(w) <span class="cf">for</span> w <span class="kw">in</span> words]</span>
+<span id="cb19-2"><a href=""></a></span>
+<span id="cb19-3"><a href=""></a>halloween <span class="op">=</span> {}</span>
+<span id="cb19-4"><a href=""></a><span class="cf">for</span> w, g, r, l <span class="kw">in</span> <span class="bu">zip</span>(words, begins_with_g, rhymes_with_most, length):</span>
+<span id="cb19-5"><a href=""></a>    halloween[w] <span class="op">=</span> [g, r, l]</span>
 <span id="cb19-6"><a href=""></a></span>
-<span id="cb19-7"><a href=""></a><span class="co">## Review Activity</span></span>
-<span id="cb19-8"><a href=""></a></span>
-<span id="cb19-9"><a href=""></a>``` python</span>
-<span id="cb19-10"><a href=""></a>length <span class="op">=</span> [<span class="bu">len</span>(w) <span class="cf">for</span> w <span class="kw">in</span> words]</span>
-<span id="cb19-11"><a href=""></a></span>
-<span id="cb19-12"><a href=""></a>halloween <span class="op">=</span> {}</span>
-<span id="cb19-13"><a href=""></a><span class="cf">for</span> w, g, r, l <span class="kw">in</span> <span class="bu">zip</span>(words, begins_with_g, rhymes_with_most, length):</span>
-<span id="cb19-14"><a href=""></a>    halloween[w] <span class="op">=</span> [g, r, l]</span>
-<span id="cb19-15"><a href=""></a></span>
-<span id="cb19-16"><a href=""></a><span class="co"># or:</span></span>
-<span id="cb19-17"><a href=""></a><span class="co"># halloween = {w: [g, r, l]</span></span>
-<span id="cb19-18"><a href=""></a><span class="co">#              for w, g, r, l in zip(words, begins_with_g, rhymes_with_most, length)}</span></span>
-<span id="cb19-19"><a href=""></a></span>
-<span id="cb19-20"><a href=""></a><span class="bu">print</span>(halloween)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-7"><a href=""></a><span class="co"># or:</span></span>
+<span id="cb19-8"><a href=""></a><span class="co"># halloween = {w: [g, r, l]</span></span>
+<span id="cb19-9"><a href=""></a><span class="co">#              for w, g, r, l in zip(words, begins_with_g, rhymes_with_most, length)}</span></span>
+<span id="cb19-10"><a href=""></a></span>
+<span id="cb19-11"><a href=""></a><span class="bu">print</span>(halloween)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="activity-adding-aspiration-to-the-values-1" class="slide level2 center">
 <h2>Activity: Adding Aspiration to the Values</h2>
