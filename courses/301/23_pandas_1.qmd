@@ -1,0 +1,352 @@
+---
+title: "Computation for Linguists"
+subtitle: "Pandasmonium, Day 1"
+date: "October 16, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+<!-- F26: first day of pandas, trimmed to one idea: list of dicts -> DataFrame -> .csv (the Component 2 pipeline). Series/concat/from_dict/.T/iloc etc. cut as minutiae. -->
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Time
+
+-   Nested dicts: `consonants["s"]["manner"]`
+-   Looping with `.items()`: `for key, value in d.items():`
+
+## Review Activity
+
+1.  Copy the nested dict below.
+2.  Print the family of Sanskrit.
+3.  Loop through the dict and print every **Indo-European** language along with its location.
+
+``` python
+lang_info = {
+    "Latin":    {"family": "Indo-European", "location": "Italy"},
+    "Greek":    {"family": "Indo-European", "location": "Greece"},
+    "Sanskrit": {"family": "Indo-European", "location": "India"},
+    "Finnish":  {"family": "Uralic",        "location": "Finland"}
+}
+```
+
+# Lists of Dicts
+
+## Another Way to Nest
+
+-   A nested dict needs a **unique** key for each item
+-   But what if two items share a name?
+
+``` python
+lexicon = {
+    "bank": {"pos": "noun", "gloss": "edge of a river"},
+    "bank": {"pos": "noun", "gloss": "place to keep money"}
+}
+print(lexicon)
+```
+
+-   What happened to the river?
+
+## A List of Dicts
+
+-   Instead, we can make a **list**, where each item is a dict:
+
+``` python
+lexicon = [
+    {"form": "bank", "pos": "noun", "gloss": "edge of a river"},
+    {"form": "bank", "pos": "noun", "gloss": "place to keep money"},
+    {"form": "bank", "pos": "verb", "gloss": "to tilt an airplane"}
+]
+```
+
+-   Each dict is one **entry**: one **row** of a table
+-   Each key (`"form"`, `"pos"`, `"gloss"`) is a **column**
+
+## Looping Through a List of Dicts
+
+-   Since it's a list, we loop through it as normal; each item is a dict:
+
+``` python
+for entry in lexicon:
+    print(entry["form"], "(" + entry["pos"] + "):", entry["gloss"])
+```
+
+-   And `lexicon[2]["gloss"]` gives us...?
+
+## Building a List of Dicts
+
+-   We build one with `.append()`, just like any list
+-   Let's turn our review activity's `lang_info` into a list of dicts:
+
+``` python
+lang_rows = []
+
+for lang, info in lang_info.items():
+    lang_rows.append({
+        "language": lang,
+        "family": info["family"],
+        "location": info["location"]
+    })
+
+print(lang_rows)
+```
+
+## Dict of Dicts vs. List of Dicts
+
+| | Dict of dicts | List of dicts |
+|----|----|----|
+| Looks like | `{"p": {...}, "b": {...}}` | `[{...}, {...}]` |
+| Find one item | Fast: `d["p"]` | Loop and check |
+| Keys | Must be unique | Duplicates are fine |
+| Good for | Lookup tables, inventories | Entries, tokens, rows |
+
+## Tables Everywhere
+
+-   Look at `lang_rows`: every dict has the same keys
+-   That's really a **table**: rows = languages, columns = keys
+-   Python has a library built just for tables...
+
+# Setting up Pandas
+
+## Installing Pandas
+
+-   PC:
+
+``` bash
+pip install pandas
+```
+
+-   Mac:
+
+``` bash
+pip3 install pandas
+```
+
+## Loading Pandas
+
+-   To use it in Python:
+
+``` python
+import pandas as pd
+```
+
+-   `pd` is just a nickname, so we don't have to type `pandas` every time
+-   Like `re`, `Counter`, and `matplotlib`, **pandas** is a **library**: a bundle of extra tools someone else wrote
+
+⚠️ **Avoid file-name shadowing:** Don't name your scripts `pandas.py`, `re.py`, `random.py`, etc.
+
+## What is Pandas?
+
+-   **pandas** is the standard Python library for working with **tables**
+-   Lexicons, word lists, corpora, survey results: if it could live in a spreadsheet, pandas can handle it
+-   For us, pandas does three jobs:
+    1.  Turn our Python data into a table
+    2.  Save that table as a file (and load it back)
+    3.  Ask questions of it (next week!)
+
+# From List of Dicts to Table
+
+## Your First DataFrame
+
+-   A pandas table is called a **DataFrame** (`df` for short)
+-   Remember `lang_rows`? Watch this:
+
+``` python
+import pandas as pd
+
+lang_df = pd.DataFrame(lang_rows)
+print(lang_df)
+```
+
+## What Just Happened?
+
+-   Each **dict** in the list became a **row**
+-   Each **key** became a **column**
+-   The numbers on the left (0, 1, 2, 3) are the **index**: pandas numbers the rows for us
+-   A single column of a DataFrame is called a **Series**
+
+## Another Way: Column by Column
+
+-   Sometimes our data comes as **separate lists**, one per column (like on Monday!)
+-   A dict of lists works too: each key is a column name, each list is that column's values
+
+``` python
+fresh_df = pd.DataFrame({
+    "language": ["Latin", "Greek", "Sanskrit", "Finnish"],
+    "family":   ["Indo-European", "Indo-European", "Indo-European", "Uralic"],
+    "location": ["Italy", "Greece", "India", "Finland"]
+})
+
+print(fresh_df)
+```
+
+-   Same table! Which way is easier depends on what shape your data is already in.
+
+## What If a Key Is Missing?
+
+``` python
+rows = [
+    {"form": "aqua", "gloss": "water"},
+    {"form": "canis", "gloss": "dog", "pos": "noun"}
+]
+
+print(pd.DataFrame(rows))
+```
+
+-   What does pandas put in the empty cell?
+-   `NaN` = "Not a Number," pandas' way of saying *no data here*
+
+## Activity: Phonemic Inventory
+
+-   Using pandas, recreate the following table, once as a **list of dicts**, and once as a **dict of lists**:
+
+|     | sound | voicing   | place    | manner    |
+|-----|-------|-----------|----------|-----------|
+| 0   | p     | voiceless | bilabial | stop      |
+| 1   | b     | voiced    | bilabial | stop      |
+| 2   | t     | voiceless | alveolar | stop      |
+| 3   | d     | voiced    | alveolar | stop      |
+| 4   | s     | voiceless | alveolar | fricative |
+| 5   | h     | voiceless | glottal  | fricative |
+
+# Saving & Loading Tables
+
+## Saving Your Table
+
+-   We can save a `df` as a `.csv` file that opens in Excel or Google Sheets:
+
+``` python
+lang_df.to_csv("languages.csv", index=False, encoding="utf-8-sig")
+```
+
+-   `index=False` leaves out the 0, 1, 2... index
+-   `utf-8-sig` makes Excel display characters like `ō` and `ʰ` correctly
+-   Open `languages.csv` in Excel. What does it look like?
+
+## Loading It Back In
+
+-   And we can read a `.csv` back into a `df`:
+
+``` python
+check = pd.read_csv("languages.csv")
+print(check)
+```
+
+-   This is how you'll start Component 3: by loading the `.csv` you save in Component 2.
+
+## The Whole Pipeline
+
+1.  Start with your data (lists, a text file...)
+2.  Clean it into a **list of dicts** (one dict per row)
+3.  `pd.DataFrame()` it
+4.  `.to_csv()` it
+5.  `pd.read_csv()` it back to check
+
+-   That's Project Component 2!
+
+# Activity: Latin Lexicon
+
+## Activity: Latin Lexicon
+
+-   Copy these lists. They're a tiny Latin lexicon:
+
+``` python
+forms     = ["aqua", "rosa", "amō", "canis", "magnus", "videō", "puella", "bonus", "dominus", "portō", "lupus", "longus"]
+glosses   = ["water", "rose", "I love", "dog", "big", "I see", "girl", "good", "lord", "I carry", "wolf", "long"]
+pos       = ["noun", "noun", "verb", "noun", "adj", "verb", "noun", "adj", "noun", "verb", "noun", "adj"]
+syllables = [2, 2, 2, 2, 2, 3, 3, 2, 3, 2, 2, 2]
+```
+
+## Activity: Latin Lexicon
+
+1.  Using `zip()` and `.append()`, build a **list of dicts** called `latin_rows`, with the keys `"form"`, `"gloss"`, `"pos"`, and `"syllables"`.
+2.  Turn `latin_rows` into a DataFrame called `latin_df`, and print it.
+3.  Save it as `latin_lexicon.csv`.
+4.  Open the file in Excel (or Google Sheets). Do the macrons look right?
+5.  Load it back in with `pd.read_csv()`. Is it the same as `latin_df`?
+
+## If You Finish Early
+
+-   Add **three more Latin words** to your lists (or three words from a language you know!), and run everything again.
+-   Did you have to change any of your code?
+
+# Activity Answers
+
+## Review Activity
+
+``` python
+print(lang_info["Sanskrit"]["family"])
+
+for lang, info in lang_info.items():
+    if info["family"] == "Indo-European":
+        print(lang, info["location"])
+```
+
+## Phonemic Inventory: List of Dicts
+
+``` python
+import pandas as pd
+
+phon_rows = [
+    {"sound": "p", "voicing": "voiceless", "place": "bilabial", "manner": "stop"},
+    {"sound": "b", "voicing": "voiced",    "place": "bilabial", "manner": "stop"},
+    {"sound": "t", "voicing": "voiceless", "place": "alveolar", "manner": "stop"},
+    {"sound": "d", "voicing": "voiced",    "place": "alveolar", "manner": "stop"},
+    {"sound": "s", "voicing": "voiceless", "place": "alveolar", "manner": "fricative"},
+    {"sound": "h", "voicing": "voiceless", "place": "glottal",  "manner": "fricative"}
+]
+
+phon_inv = pd.DataFrame(phon_rows)
+print(phon_inv)
+```
+
+## Phonemic Inventory: Dict of Lists
+
+``` python
+phon_inv = pd.DataFrame({
+    "sound":   ["p", "b", "t", "d", "s", "h"],
+    "voicing": ["voiceless", "voiced", "voiceless", "voiced", "voiceless", "voiceless"],
+    "place":   ["bilabial", "bilabial", "alveolar", "alveolar", "alveolar", "glottal"],
+    "manner":  ["stop", "stop", "stop", "stop", "fricative", "fricative"]
+})
+
+print(phon_inv)
+```
+
+## Latin Lexicon
+
+``` python
+latin_rows = []
+
+for f, g, p, s in zip(forms, glosses, pos, syllables):
+    latin_rows.append({
+        "form": f,
+        "gloss": g,
+        "pos": p,
+        "syllables": s
+    })
+
+latin_df = pd.DataFrame(latin_rows)
+print(latin_df)
+```
+
+## Latin Lexicon
+
+``` python
+latin_df.to_csv("latin_lexicon.csv", index=False, encoding="utf-8-sig")
+
+check = pd.read_csv("latin_lexicon.csv")
+print(check)
+```

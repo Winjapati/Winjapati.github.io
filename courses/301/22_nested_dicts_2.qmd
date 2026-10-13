@@ -1,0 +1,302 @@
+---
+title: "Computation for Linguists"
+subtitle: "Nested Dicts"
+date: "October 14, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Time
+
+-   Nested loops: the inner loop runs *completely* for every turn of the outer loop
+-   `zip()` lines up lists by position:
+
+``` python
+for lang, date in zip(languages, dates):
+    attested[lang] = date
+```
+
+-   Dict comprehensions: `{key: value for ... in ...}`
+-   Nested lists: `sentences[1][2]`
+
+## Review Activity
+
+-   Copy the below lists.
+-   Make a fourth list called `length`, containing the length of each word in `words`. (Use a list comprehension!)
+-   Then, using `zip()`, build a dictionary called `halloween` with `words` as the keys, and a list of the other three values as each value.
+
+``` python
+words = ["zombie", "ghoul", "ghost", "vampire"]
+begins_with_g = [False, True, True, False]
+rhymes_with_most = [False, False, True, False]
+```
+
+# Nested Dictionaries
+
+## A Problem
+
+-   On Monday we built this:
+
+``` python
+consonants = {
+    "p": ["bilabial", "stop", "voiceless"],
+    "b": ["bilabial", "stop", "voiced"],
+    "s": ["alveolar", "fricative", "voiceless"]
+}
+
+consonants["s"][1]
+```
+
+-   What does `consonants["s"][1]` mean?
+-   But in six weeks, will you remember that `[1]` is *manner*?
+
+## A Dict Inside a Dict
+
+-   What if each value were *itself* a dictionary, with labeled parts?
+
+``` python
+consonants = {
+    "p": {"place": "bilabial", "manner": "stop", "voice": "voiceless"},
+    "b": {"place": "bilabial", "manner": "stop", "voice": "voiced"},
+    "s": {"place": "alveolar", "manner": "fricative", "voice": "voiceless"}
+}
+```
+
+-   This is a **nested dictionary**: a dict whose values are dicts
+-   The **outer** keys are the sounds; the **inner** keys are the features
+
+## Accessing Nested Items
+
+-   Just like nested lists, we go in one layer at a time:
+
+``` python
+consonants["s"]
+```
+
+``` python
+consonants["s"]["manner"]
+```
+
+-   Compare: `consonants["s"][1]` vs. `consonants["s"]["manner"]`
+
+## When to Use Nested Dictionaries
+
+-   Use them when one thing naturally has **several labeled parts**:
+
+``` python
+students = {
+    "Alice": {"quiz": 9, "homework": 10, "final": 8},
+    "Ben":   {"quiz": 7, "homework": 9, "final": 10}
+}
+```
+
+-   How would we get the answer to 'What is Ben's homework grade?'
+
+## Building a Nested Dict with `zip()`
+
+-  We don't have to type a dict out by hand. Let's build it from more manageable lists.
+
+``` python
+phonemes = ["p", "b", "t", "d", "k", "g"]
+place    = ["bilabial", "bilabial", "alveolar", "alveolar", "velar", "velar"]
+manner   = ["stop"] * 6
+voice    = ["voiceless", "voiced", "voiceless", "voiced", "voiceless", "voiced"]
+
+stops = {}
+
+for ph, pl, m, v in zip(phonemes, place, manner, voice):
+    stops[ph] = {"place": pl, "manner": m, "voice": v}
+
+print(stops)
+```
+
+-   What does `["stop"] * 6` do?
+
+## Or as a `dict` comprehension
+
+``` python
+stops = {ph: {"place": pl, "manner": m, "voice": v} for ph, pl, m, v in zip(phonemes, place, manner, voice)}
+```
+
+## Adding & Changing Items
+
+-   Adding a new outer key works just like a regular dict:
+
+``` python
+stops["q"] = {"place": "uvular", "manner": "stop", "voice": "voiceless"}
+```
+
+-   And we can change (or add) an inner value by going two layers in:
+
+``` python
+stops["p"]["voice"] = "voiced"
+print(stops["p"])
+```
+
+# Looping Through Nested Dicts
+
+## Looping Through a Dict
+
+-   When we loop through a dict, we get its **keys**:
+
+``` python
+for ph in stops:
+    print(ph)
+```
+
+-   To get each key *and* its value, we can use `.items()`:
+
+``` python
+for ph, features in stops.items():
+    print(ph, features)
+```
+
+-   This should look familiar: we needed this syntax for `zip()`.
+
+## Looping Through a Nested Dict
+
+-   Here, `features` is itself a dict, so we can look inside it:
+
+``` python
+for ph, features in stops.items():
+    print(ph, "is", features["voice"])
+```
+
+## Asking Questions of Our Data
+
+-   Combine a loop with a conditional to *search* the data:
+
+``` python
+for ph, features in stops.items():
+    if features["voice"] == "voiced":
+        print(ph)
+```
+
+-   Compare with Monday's version: `if consonants[c][2] == "voiced":`
+
+## Activity: Adding Aspiration to the Values
+
+-   First, undo our change from earlier:
+
+``` python
+stops["p"]["voice"] = "voiceless"
+```
+
+-   Then, using a loop, add the key `"aspirated"` to every stop in `stops`:
+    -   `True` if its `"voice"` is `"voiceless"`
+    -   `False` otherwise
+-   Print `stops` to check your work.
+
+## Counting with a Nested Dict
+
+-   Our counting pattern works here, too:
+
+``` python
+place_counts = {}
+
+for ph, features in stops.items():
+    pl = features["place"]
+    if pl in place_counts:
+        place_counts[pl] += 1
+    else:
+        place_counts[pl] = 1
+
+print(place_counts)
+```
+
+## Activity: Consonants, Revisited
+
+-   Copy the lists from last time:
+
+``` python
+consonant =  ["p", "b", "t", "d", "k", "g", "s", "z", "m", "n", "l", "r", "w", "j", "h"]
+place = ["bilabial", "bilabial", "alveolar", "alveolar", "velar", "velar", "alveolar", "alveolar", "bilabial", "alveolar", "alveolar", "alveolar", "labial-velar", "palatal", "glottal"]
+manner = ["stop", "stop", "stop", "stop", "stop", "stop", "fricative", "fricative", "nasal", "nasal", "lateral", "trill", "glide", "glide", "fricative"]
+voice = ["voiceless", "voiced", "voiceless", "voiced", "voiceless", "voiced", "voiceless", "voiced", "voiced", "voiced", "voiced", "voiced", "voiced", "voiced", "voiceless"]
+```
+
+1.  Using `zip()`, rebuild `consonants` as a **nested** dict, with the inner keys `"place"`, `"manner"`, and `"voice"`.
+2.  Print the place of articulation of `"j"`.
+3.  Loop through the dict and print every **voiceless** consonant.
+4.  Count how many consonants there are of each **manner**.
+
+
+``` python
+
+consonants = {c: {'place':p, 'manner': m, 'voice':v} for c, p, m, v in zip(consonant, place, manner, voice)}
+
+
+# Activity Answers
+
+## Review Activity
+
+``` python
+length = [len(w) for w in words]
+
+halloween = {}
+for w, g, r, l in zip(words, begins_with_g, rhymes_with_most, length):
+    halloween[w] = [g, r, l]
+
+# or:
+# halloween = {w: [g, r, l]
+#              for w, g, r, l in zip(words, begins_with_g, rhymes_with_most, length)}
+
+print(halloween)
+```
+
+## Activity: Adding Aspiration to the Values
+
+``` python
+stops["p"]["voice"] = "voiceless"
+
+for ph, features in stops.items():
+    if features["voice"] == "voiceless":
+        stops[ph]["aspirated"] = True
+    else:
+        stops[ph]["aspirated"] = False
+
+print(stops)
+```
+
+## Activity: Consonants, Revisited
+
+``` python
+consonants = {}
+for c, p, m, v in zip(consonant, place, manner, voice):
+    consonants[c] = {"place": p, "manner": m, "voice": v}
+
+print(consonants["j"]["place"])
+
+for c, features in consonants.items():
+    if features["voice"] == "voiceless":
+        print(c)
+```
+
+## Activity: Consonants, Revisited
+
+``` python
+manner_counts = {}
+
+for c, features in consonants.items():
+    m = features["manner"]
+    if m in manner_counts:
+        manner_counts[m] += 1
+    else:
+        manner_counts[m] = 1
+
+print(manner_counts)
+```
