@@ -16,8 +16,6 @@ jupyter: python3
 editor: source
 ---
 
-<!-- F26: first day of pandas, trimmed to one idea: list of dicts -> DataFrame -> .csv (the Component 2 pipeline). Series/concat/from_dict/.T/iloc etc. cut as minutiae. -->
-
 # Review
 
 -   What did you learn last time?
@@ -208,18 +206,16 @@ print(pd.DataFrame(rows))
 -   What does pandas put in the empty cell?
 -   `NaN` = "Not a Number," pandas' way of saying *no data here*
 
-## Activity: Phonemic Inventory
+## Activity: Consonants, One More Time
 
--   Using pandas, recreate the following table, once as a **list of dicts**, and once as a **dict of lists**:
+-   You've typed these lists twice already this week. Copy them once more, and then turn the four lists into a DataFrame called `cons_df`, using a **dict of lists**.
 
-|     | sound | voicing   | place    | manner    |
-|-----|-------|-----------|----------|-----------|
-| 0   | p     | voiceless | bilabial | stop      |
-| 1   | b     | voiced    | bilabial | stop      |
-| 2   | t     | voiceless | alveolar | stop      |
-| 3   | d     | voiced    | alveolar | stop      |
-| 4   | s     | voiceless | alveolar | fricative |
-| 5   | h     | voiceless | glottal  | fricative |
+``` python
+consonant =  ["p", "b", "t", "d", "k", "g", "s", "z", "m", "n", "l", "r", "w", "j", "h"]
+place = ["bilabial", "bilabial", "alveolar", "alveolar", "velar", "velar", "alveolar", "alveolar", "bilabial", "alveolar", "alveolar", "alveolar", "labial-velar", "palatal", "glottal"]
+manner = ["stop", "stop", "stop", "stop", "stop", "stop", "fricative", "fricative", "nasal", "nasal", "lateral", "trill", "glide", "glide", "fricative"]
+voice = ["voiceless", "voiced", "voiceless", "voiced", "voiceless", "voiced", "voiceless", "voiced", "voiced", "voiced", "voiced", "voiced", "voiced", "voiced", "voiceless"]
+```
 
 # Saving & Loading Tables
 
@@ -249,10 +245,53 @@ print(check)
 ## The Whole Pipeline
 
 1.  Start with your data (lists, a text file...)
+
+``` python
+with open("../../data/gutenberg/alice.txt", "r", encoding="utf-8") as f:
+    raw_text = f.read()
+```
+
+## The Whole Pipeline
+
 2.  Clean it into a **list of dicts** (one dict per row)
+
+``` python
+import re
+
+words = re.split(r"[\W]+", raw_text.lower())
+words = [w for w in words if w != ""]
+
+rows = []
+for w in words:
+    rows.append({"word": w, "length": len(w)})
+```
+
+## The Whole Pipeline
+
 3.  `pd.DataFrame()` it
+
+``` python
+import pandas as pd
+
+words_df = pd.DataFrame(rows)
+```
+
+## The Whole Pipeline
+
 4.  `.to_csv()` it
+
+``` python
+words_df.to_csv("words.csv", index=False, encoding="utf-8-sig")
+```
+
+## The Whole Pipeline
+
 5.  `pd.read_csv()` it back to check
+
+``` python
+check = pd.read_csv("words.csv")
+print(len(words_df), len(check))
+```
 
 -   That's Project Component 2!
 
@@ -274,13 +313,12 @@ syllables = [2, 2, 2, 2, 2, 3, 3, 2, 3, 2, 2, 2]
 1.  Using `zip()` and `.append()`, build a **list of dicts** called `latin_rows`, with the keys `"form"`, `"gloss"`, `"pos"`, and `"syllables"`.
 2.  Turn `latin_rows` into a DataFrame called `latin_df`, and print it.
 3.  Save it as `latin_lexicon.csv`.
+
+## Activity: Latin Lexicon
+
 4.  Open the file in Excel (or Google Sheets). Do the macrons look right?
 5.  Load it back in with `pd.read_csv()`. Is it the same as `latin_df`?
 
-## If You Finish Early
-
--   Add **three more Latin words** to your lists (or three words from a language you know!), and run everything again.
--   Did you have to change any of your code?
 
 # Activity Answers
 
@@ -294,35 +332,17 @@ for lang, info in lang_info.items():
         print(lang, info["location"])
 ```
 
-## Phonemic Inventory: List of Dicts
+## Consonants, One More Time
 
 ``` python
-import pandas as pd
-
-phon_rows = [
-    {"sound": "p", "voicing": "voiceless", "place": "bilabial", "manner": "stop"},
-    {"sound": "b", "voicing": "voiced",    "place": "bilabial", "manner": "stop"},
-    {"sound": "t", "voicing": "voiceless", "place": "alveolar", "manner": "stop"},
-    {"sound": "d", "voicing": "voiced",    "place": "alveolar", "manner": "stop"},
-    {"sound": "s", "voicing": "voiceless", "place": "alveolar", "manner": "fricative"},
-    {"sound": "h", "voicing": "voiceless", "place": "glottal",  "manner": "fricative"}
-]
-
-phon_inv = pd.DataFrame(phon_rows)
-print(phon_inv)
-```
-
-## Phonemic Inventory: Dict of Lists
-
-``` python
-phon_inv = pd.DataFrame({
-    "sound":   ["p", "b", "t", "d", "s", "h"],
-    "voicing": ["voiceless", "voiced", "voiceless", "voiced", "voiceless", "voiceless"],
-    "place":   ["bilabial", "bilabial", "alveolar", "alveolar", "alveolar", "glottal"],
-    "manner":  ["stop", "stop", "stop", "stop", "fricative", "fricative"]
+cons_df = pd.DataFrame({
+    "consonant": consonant,
+    "place": place,
+    "manner": manner,
+    "voice": voice
 })
 
-print(phon_inv)
+print(cons_df)
 ```
 
 ## Latin Lexicon
@@ -350,3 +370,5 @@ latin_df.to_csv("latin_lexicon.csv", index=False, encoding="utf-8-sig")
 check = pd.read_csv("latin_lexicon.csv")
 print(check)
 ```
+
+<!-- F26: first day of pandas, trimmed to one idea: list of dicts -> DataFrame -> .csv (the Component 2 pipeline). Series/concat/from_dict/.T/iloc etc. cut as minutiae. -->
