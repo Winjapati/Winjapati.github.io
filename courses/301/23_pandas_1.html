@@ -220,6 +220,10 @@ Dr.&nbsp;Andrew M. Byrd
 </ul>
 </nav>
 </section>
+<section class="slide level2 center">
+
+<!-- F26: first day of pandas, trimmed to one idea: list of dicts -> DataFrame -> .csv (the Component 2 pipeline). Series/concat/from_dict/.T/iloc etc. cut as minutiae. -->
+</section>
 <section>
 <section id="review" class="title-slide slide level1 center">
 <h1>Review</h1>
@@ -452,12 +456,20 @@ Dr.&nbsp;Andrew M. Byrd
 <section id="activity-consonants-one-more-time" class="slide level2 center">
 <h2>Activity: Consonants, One More Time</h2>
 <ul>
-<li>You’ve typed these lists twice already this week. Copy them once more, and then turn the four lists into a DataFrame called <code>cons_df</code>, using a <strong>dict of lists</strong>.</li>
+<li>You’ve typed these lists twice already this week. Copy them in once more:</li>
 </ul>
 <div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a>consonant <span class="op">=</span>  [<span class="st">"p"</span>, <span class="st">"b"</span>, <span class="st">"t"</span>, <span class="st">"d"</span>, <span class="st">"k"</span>, <span class="st">"g"</span>, <span class="st">"s"</span>, <span class="st">"z"</span>, <span class="st">"m"</span>, <span class="st">"n"</span>, <span class="st">"l"</span>, <span class="st">"r"</span>, <span class="st">"w"</span>, <span class="st">"j"</span>, <span class="st">"h"</span>]</span>
 <span id="cb12-2"><a href=""></a>place <span class="op">=</span> [<span class="st">"bilabial"</span>, <span class="st">"bilabial"</span>, <span class="st">"alveolar"</span>, <span class="st">"alveolar"</span>, <span class="st">"velar"</span>, <span class="st">"velar"</span>, <span class="st">"alveolar"</span>, <span class="st">"alveolar"</span>, <span class="st">"bilabial"</span>, <span class="st">"alveolar"</span>, <span class="st">"alveolar"</span>, <span class="st">"alveolar"</span>, <span class="st">"labial-velar"</span>, <span class="st">"palatal"</span>, <span class="st">"glottal"</span>]</span>
 <span id="cb12-3"><a href=""></a>manner <span class="op">=</span> [<span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"fricative"</span>, <span class="st">"fricative"</span>, <span class="st">"nasal"</span>, <span class="st">"nasal"</span>, <span class="st">"lateral"</span>, <span class="st">"trill"</span>, <span class="st">"glide"</span>, <span class="st">"glide"</span>, <span class="st">"fricative"</span>]</span>
 <span id="cb12-4"><a href=""></a>voice <span class="op">=</span> [<span class="st">"voiceless"</span>, <span class="st">"voiced"</span>, <span class="st">"voiceless"</span>, <span class="st">"voiced"</span>, <span class="st">"voiceless"</span>, <span class="st">"voiced"</span>, <span class="st">"voiceless"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiceless"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="activity-consonants-one-more-time-1" class="slide level2 center">
+<h2>Activity: Consonants, One More Time</h2>
+<ol type="1">
+<li>Turn the four lists into a DataFrame called <code>cons_df</code>, using a <strong>dict of lists</strong>. (It’s one command!)</li>
+<li>How many rows does it have? How many columns?</li>
+<li>Now break it: remove the last item from <code>voice</code> with <code>voice = voice[:-1]</code>, and build <code>cons_df</code> again. What happens? Why?</li>
+</ol>
 </section></section>
 <section>
 <section id="saving-loading-tables" class="title-slide slide level1 center">
@@ -491,47 +503,11 @@ Dr.&nbsp;Andrew M. Byrd
 <h2>The Whole Pipeline</h2>
 <ol type="1">
 <li>Start with your data (lists, a text file…)</li>
-</ol>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"../../data/gutenberg/alice.txt"</span>, <span class="st">"r"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
-<span id="cb15-2"><a href=""></a>    raw_text <span class="op">=</span> f.read()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="the-whole-pipeline-1" class="slide level2 center">
-<h2>The Whole Pipeline</h2>
-<ol start="2" type="1">
 <li>Clean it into a <strong>list of dicts</strong> (one dict per row)</li>
-</ol>
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a><span class="im">import</span> re</span>
-<span id="cb16-2"><a href=""></a></span>
-<span id="cb16-3"><a href=""></a>words <span class="op">=</span> re.split(<span class="vs">r"[\W]+"</span>, raw_text.lower())</span>
-<span id="cb16-4"><a href=""></a>words <span class="op">=</span> [w <span class="cf">for</span> w <span class="kw">in</span> words <span class="cf">if</span> w <span class="op">!=</span> <span class="st">""</span>]</span>
-<span id="cb16-5"><a href=""></a></span>
-<span id="cb16-6"><a href=""></a>rows <span class="op">=</span> []</span>
-<span id="cb16-7"><a href=""></a><span class="cf">for</span> w <span class="kw">in</span> words:</span>
-<span id="cb16-8"><a href=""></a>    rows.append({<span class="st">"word"</span>: w, <span class="st">"length"</span>: <span class="bu">len</span>(w)})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="the-whole-pipeline-2" class="slide level2 center">
-<h2>The Whole Pipeline</h2>
-<ol start="3" type="1">
 <li><code>pd.DataFrame()</code> it</li>
-</ol>
-<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb17-2"><a href=""></a></span>
-<span id="cb17-3"><a href=""></a>words_df <span class="op">=</span> pd.DataFrame(rows)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="the-whole-pipeline-3" class="slide level2 center">
-<h2>The Whole Pipeline</h2>
-<ol start="4" type="1">
 <li><code>.to_csv()</code> it</li>
-</ol>
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href=""></a>words_df.to_csv(<span class="st">"words.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">"utf-8-sig"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="the-whole-pipeline-4" class="slide level2 center">
-<h2>The Whole Pipeline</h2>
-<ol start="5" type="1">
 <li><code>pd.read_csv()</code> it back to check</li>
 </ol>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a>check <span class="op">=</span> pd.read_csv(<span class="st">"words.csv"</span>)</span>
-<span id="cb19-2"><a href=""></a><span class="bu">print</span>(<span class="bu">len</span>(words_df), <span class="bu">len</span>(check))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>That’s Project Component 2!</li>
 </ul>
@@ -546,10 +522,10 @@ Dr.&nbsp;Andrew M. Byrd
 <ul>
 <li>Copy these lists. They’re a tiny Latin lexicon:</li>
 </ul>
-<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href=""></a>forms     <span class="op">=</span> [<span class="st">"aqua"</span>, <span class="st">"rosa"</span>, <span class="st">"amō"</span>, <span class="st">"canis"</span>, <span class="st">"magnus"</span>, <span class="st">"videō"</span>, <span class="st">"puella"</span>, <span class="st">"bonus"</span>, <span class="st">"dominus"</span>, <span class="st">"portō"</span>, <span class="st">"lupus"</span>, <span class="st">"longus"</span>]</span>
-<span id="cb20-2"><a href=""></a>glosses   <span class="op">=</span> [<span class="st">"water"</span>, <span class="st">"rose"</span>, <span class="st">"I love"</span>, <span class="st">"dog"</span>, <span class="st">"big"</span>, <span class="st">"I see"</span>, <span class="st">"girl"</span>, <span class="st">"good"</span>, <span class="st">"lord"</span>, <span class="st">"I carry"</span>, <span class="st">"wolf"</span>, <span class="st">"long"</span>]</span>
-<span id="cb20-3"><a href=""></a>pos       <span class="op">=</span> [<span class="st">"noun"</span>, <span class="st">"noun"</span>, <span class="st">"verb"</span>, <span class="st">"noun"</span>, <span class="st">"adj"</span>, <span class="st">"verb"</span>, <span class="st">"noun"</span>, <span class="st">"adj"</span>, <span class="st">"noun"</span>, <span class="st">"verb"</span>, <span class="st">"noun"</span>, <span class="st">"adj"</span>]</span>
-<span id="cb20-4"><a href=""></a>syllables <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a>forms     <span class="op">=</span> [<span class="st">"aqua"</span>, <span class="st">"rosa"</span>, <span class="st">"amō"</span>, <span class="st">"canis"</span>, <span class="st">"magnus"</span>, <span class="st">"videō"</span>, <span class="st">"puella"</span>, <span class="st">"bonus"</span>, <span class="st">"dominus"</span>, <span class="st">"portō"</span>, <span class="st">"lupus"</span>, <span class="st">"longus"</span>]</span>
+<span id="cb15-2"><a href=""></a>glosses   <span class="op">=</span> [<span class="st">"water"</span>, <span class="st">"rose"</span>, <span class="st">"I love"</span>, <span class="st">"dog"</span>, <span class="st">"big"</span>, <span class="st">"I see"</span>, <span class="st">"girl"</span>, <span class="st">"good"</span>, <span class="st">"lord"</span>, <span class="st">"I carry"</span>, <span class="st">"wolf"</span>, <span class="st">"long"</span>]</span>
+<span id="cb15-3"><a href=""></a>pos       <span class="op">=</span> [<span class="st">"noun"</span>, <span class="st">"noun"</span>, <span class="st">"verb"</span>, <span class="st">"noun"</span>, <span class="st">"adj"</span>, <span class="st">"verb"</span>, <span class="st">"noun"</span>, <span class="st">"adj"</span>, <span class="st">"noun"</span>, <span class="st">"verb"</span>, <span class="st">"noun"</span>, <span class="st">"adj"</span>]</span>
+<span id="cb15-4"><a href=""></a>syllables <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="activity-latin-lexicon-2" class="slide level2 center">
 <h2>Activity: Latin Lexicon</h2>
@@ -557,14 +533,16 @@ Dr.&nbsp;Andrew M. Byrd
 <li>Using <code>zip()</code> and <code>.append()</code>, build a <strong>list of dicts</strong> called <code>latin_rows</code>, with the keys <code>"form"</code>, <code>"gloss"</code>, <code>"pos"</code>, and <code>"syllables"</code>.</li>
 <li>Turn <code>latin_rows</code> into a DataFrame called <code>latin_df</code>, and print it.</li>
 <li>Save it as <code>latin_lexicon.csv</code>.</li>
-</ol>
-</section>
-<section id="activity-latin-lexicon-3" class="slide level2 center">
-<h2>Activity: Latin Lexicon</h2>
-<ol start="4" type="1">
 <li>Open the file in Excel (or Google Sheets). Do the macrons look right?</li>
 <li>Load it back in with <code>pd.read_csv()</code>. Is it the same as <code>latin_df</code>?</li>
 </ol>
+</section>
+<section id="if-you-finish-early" class="slide level2 center">
+<h2>If You Finish Early</h2>
+<ul>
+<li>Add <strong>three more Latin words</strong> to your lists (or three words from a language you know!), and run everything again.</li>
+<li>Did you have to change any of your code?</li>
+</ul>
 </section></section>
 <section>
 <section id="activity-answers" class="title-slide slide level1 center">
@@ -573,45 +551,50 @@ Dr.&nbsp;Andrew M. Byrd
 </section>
 <section id="review-activity-1" class="slide level2 center">
 <h2>Review Activity</h2>
-<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href=""></a><span class="bu">print</span>(lang_info[<span class="st">"Sanskrit"</span>][<span class="st">"family"</span>])</span>
-<span id="cb21-2"><a href=""></a></span>
-<span id="cb21-3"><a href=""></a><span class="cf">for</span> lang, info <span class="kw">in</span> lang_info.items():</span>
-<span id="cb21-4"><a href=""></a>    <span class="cf">if</span> info[<span class="st">"family"</span>] <span class="op">==</span> <span class="st">"Indo-European"</span>:</span>
-<span id="cb21-5"><a href=""></a>        <span class="bu">print</span>(lang, info[<span class="st">"location"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a><span class="bu">print</span>(lang_info[<span class="st">"Sanskrit"</span>][<span class="st">"family"</span>])</span>
+<span id="cb16-2"><a href=""></a></span>
+<span id="cb16-3"><a href=""></a><span class="cf">for</span> lang, info <span class="kw">in</span> lang_info.items():</span>
+<span id="cb16-4"><a href=""></a>    <span class="cf">if</span> info[<span class="st">"family"</span>] <span class="op">==</span> <span class="st">"Indo-European"</span>:</span>
+<span id="cb16-5"><a href=""></a>        <span class="bu">print</span>(lang, info[<span class="st">"location"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="consonants-one-more-time" class="slide level2 center">
 <h2>Consonants, One More Time</h2>
-<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href=""></a>cons_df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb22-2"><a href=""></a>    <span class="st">"consonant"</span>: consonant,</span>
-<span id="cb22-3"><a href=""></a>    <span class="st">"place"</span>: place,</span>
-<span id="cb22-4"><a href=""></a>    <span class="st">"manner"</span>: manner,</span>
-<span id="cb22-5"><a href=""></a>    <span class="st">"voice"</span>: voice</span>
-<span id="cb22-6"><a href=""></a>})</span>
-<span id="cb22-7"><a href=""></a></span>
-<span id="cb22-8"><a href=""></a><span class="bu">print</span>(cons_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href=""></a>cons_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb17-2"><a href=""></a>    <span class="st">"consonant"</span>: consonant,</span>
+<span id="cb17-3"><a href=""></a>    <span class="st">"place"</span>: place,</span>
+<span id="cb17-4"><a href=""></a>    <span class="st">"manner"</span>: manner,</span>
+<span id="cb17-5"><a href=""></a>    <span class="st">"voice"</span>: voice</span>
+<span id="cb17-6"><a href=""></a>})</span>
+<span id="cb17-7"><a href=""></a></span>
+<span id="cb17-8"><a href=""></a><span class="bu">print</span>(cons_df)</span>
+<span id="cb17-9"><a href=""></a><span class="bu">print</span>(<span class="bu">len</span>(cons_df), <span class="bu">len</span>(cons_df.columns))    <span class="co"># 15 rows, 4 columns</span></span>
+<span id="cb17-10"><a href=""></a></span>
+<span id="cb17-11"><a href=""></a>voice <span class="op">=</span> voice[:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb17-12"><a href=""></a><span class="co"># pd.DataFrame({...}) again gives:</span></span>
+<span id="cb17-13"><a href=""></a><span class="co"># ValueError: All arrays must be of the same length</span></span>
+<span id="cb17-14"><a href=""></a><span class="co"># Every column needs exactly one value per row!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="latin-lexicon" class="slide level2 center">
 <h2>Latin Lexicon</h2>
-<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a>latin_rows <span class="op">=</span> []</span>
-<span id="cb23-2"><a href=""></a></span>
-<span id="cb23-3"><a href=""></a><span class="cf">for</span> f, g, p, s <span class="kw">in</span> <span class="bu">zip</span>(forms, glosses, pos, syllables):</span>
-<span id="cb23-4"><a href=""></a>    latin_rows.append({</span>
-<span id="cb23-5"><a href=""></a>        <span class="st">"form"</span>: f,</span>
-<span id="cb23-6"><a href=""></a>        <span class="st">"gloss"</span>: g,</span>
-<span id="cb23-7"><a href=""></a>        <span class="st">"pos"</span>: p,</span>
-<span id="cb23-8"><a href=""></a>        <span class="st">"syllables"</span>: s</span>
-<span id="cb23-9"><a href=""></a>    })</span>
-<span id="cb23-10"><a href=""></a></span>
-<span id="cb23-11"><a href=""></a>latin_df <span class="op">=</span> pd.DataFrame(latin_rows)</span>
-<span id="cb23-12"><a href=""></a><span class="bu">print</span>(latin_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href=""></a>latin_rows <span class="op">=</span> []</span>
+<span id="cb18-2"><a href=""></a></span>
+<span id="cb18-3"><a href=""></a><span class="cf">for</span> f, g, p, s <span class="kw">in</span> <span class="bu">zip</span>(forms, glosses, pos, syllables):</span>
+<span id="cb18-4"><a href=""></a>    latin_rows.append({</span>
+<span id="cb18-5"><a href=""></a>        <span class="st">"form"</span>: f,</span>
+<span id="cb18-6"><a href=""></a>        <span class="st">"gloss"</span>: g,</span>
+<span id="cb18-7"><a href=""></a>        <span class="st">"pos"</span>: p,</span>
+<span id="cb18-8"><a href=""></a>        <span class="st">"syllables"</span>: s</span>
+<span id="cb18-9"><a href=""></a>    })</span>
+<span id="cb18-10"><a href=""></a></span>
+<span id="cb18-11"><a href=""></a>latin_df <span class="op">=</span> pd.DataFrame(latin_rows)</span>
+<span id="cb18-12"><a href=""></a><span class="bu">print</span>(latin_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="latin-lexicon-1" class="slide level2 center">
 <h2>Latin Lexicon</h2>
-<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href=""></a>latin_df.to_csv(<span class="st">"latin_lexicon.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">"utf-8-sig"</span>)</span>
-<span id="cb24-2"><a href=""></a></span>
-<span id="cb24-3"><a href=""></a>check <span class="op">=</span> pd.read_csv(<span class="st">"latin_lexicon.csv"</span>)</span>
-<span id="cb24-4"><a href=""></a><span class="bu">print</span>(check)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<!-- F26: first day of pandas, trimmed to one idea: list of dicts -> DataFrame -> .csv (the Component 2 pipeline). Series/concat/from_dict/.T/iloc etc. cut as minutiae. -->
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a>latin_df.to_csv(<span class="st">"latin_lexicon.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">"utf-8-sig"</span>)</span>
+<span id="cb19-2"><a href=""></a></span>
+<span id="cb19-3"><a href=""></a>check <span class="op">=</span> pd.read_csv(<span class="st">"latin_lexicon.csv"</span>)</span>
+<span id="cb19-4"><a href=""></a><span class="bu">print</span>(check)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </section></section>
     </div>

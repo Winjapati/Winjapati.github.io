@@ -101,14 +101,6 @@ for lang, info in lang_info.items():
 print(lang_rows)
 ```
 
-## Dict of Dicts vs. List of Dicts
-
-| | Dict of dicts | List of dicts |
-|----|----|----|
-| Looks like | `{"p": {...}, "b": {...}}` | `[{...}, {...}]` |
-| Find one item | Fast: `d["p"]` | Loop and check |
-| Keys | Must be unique | Duplicates are fine |
-| Good for | Lookup tables, inventories | Entries, tokens, rows |
 
 ## Tables Everywhere
 
