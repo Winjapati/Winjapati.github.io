@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dr.&nbsp;Andrew M. Byrd">
+
+<title>Project Component 2 — Cleaning &amp; Processing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="project2_cleaning_and_processing_files/libs/clipboard/clipboard.min.js"></script>
+<script src="project2_cleaning_and_processing_files/libs/quarto-html/quarto.js"></script>
+<script src="project2_cleaning_and_processing_files/libs/quarto-html/popper.min.js"></script>
+<script src="project2_cleaning_and_processing_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="project2_cleaning_and_processing_files/libs/quarto-html/anchor.min.js"></script>
+<link href="project2_cleaning_and_processing_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="project2_cleaning_and_processing_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="project2_cleaning_and_processing_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="project2_cleaning_and_processing_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="project2_cleaning_and_processing_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#before-you-start-whats-one-row" id="toc-before-you-start-whats-one-row" class="nav-link" data-scroll-target="#before-you-start-whats-one-row">Before You Start: What’s One Row?</a></li>
+  <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions">Instructions</a></li>
+  <li><a href="#deliverables" id="toc-deliverables" class="nav-link" data-scroll-target="#deliverables">Deliverables</a></li>
+  <li><a href="#submission" id="toc-submission" class="nav-link" data-scroll-target="#submission">Submission</a></li>
+  <li><a href="#grading-rubric-100-pts-total" id="toc-grading-rubric-100-pts-total" class="nav-link" data-scroll-target="#grading-rubric-100-pts-total">Grading Rubric (100 pts total)</a></li>
+  <li><a href="#checklist" id="toc-checklist" class="nav-link" data-scroll-target="#checklist">Checklist</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Project Component 2 — Cleaning &amp; Processing</h1>
+<p class="subtitle lead">LIN 301: Computation for Linguists</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Dr.&nbsp;Andrew M. Byrd </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p><strong>Due:</strong> Monday, November 2, 2026<br>
+<strong>Weight:</strong> 5% of your final grade</p>
+<p>In Component 1 you picked a dataset and said what you wanted to ask of it. Now you’ll get it into shape. Raw data is almost never ready to analyze: it has headers and footers, stray punctuation, inconsistent capitals, blank lines, and things you don’t want to count. Your job in this component is to turn your raw file into a <strong>clean pandas table</strong>, saved as a <code>.csv</code>, that you’ll analyze in Component 3.</p>
+<p>By the end, you should have:</p>
+<ol type="1">
+<li>Your raw data saved in your <code>course_project</code> folder.</li>
+<li>Python code that reads it, cleans it, and turns it into a pandas <code>DataFrame</code>.</li>
+<li>A <code>.csv</code> file of that <code>DataFrame</code>.</li>
+<li>A short write-up explaining what you did and what you ended up with.</li>
+</ol>
+<p>This component is <strong>only</strong> about cleaning and storing your data. Counting, comparing, and looking for patterns all come in Component 3. You’ll look at your data a lot while you clean it, but you don’t need to report any results yet.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+See a model
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>My own Component 2 is posted next to these instructions: <a href="project2_example_byrd.html">Example: Dr.&nbsp;Byrd’s Component 2</a>. My data (a dictionary of roots) is messier than most of yours, so my cleaning code is longer than yours needs to be.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="before-you-start-whats-one-row" class="level2">
+<h2 class="anchored" data-anchor-id="before-you-start-whats-one-row">Before You Start: What’s One Row?</h2>
+<p>The most important decision in this component is what <strong>one row</strong> of your table stands for. Go back to the <em>unit of analysis</em> you named in Component 1, Section 3. That’s your row.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 29%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>If your unit is…</th>
+<th>One row is…</th>
+<th>Example columns</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Words in a text</strong></td>
+<td>one word, in order</td>
+<td><code>word</code></td>
+</tr>
+<tr class="even">
+<td><strong>Sentences or lines</strong></td>
+<td>one sentence or line</td>
+<td><code>sentence</code></td>
+</tr>
+<tr class="odd">
+<td><strong>Entries</strong> (dictionary, word list, Swadesh list)</td>
+<td>one entry</td>
+<td><code>form</code>, <code>meaning</code>, <code>language</code></td>
+</tr>
+<tr class="even">
+<td><strong>Texts</strong> (speeches, recipes, songs)</td>
+<td>one whole text</td>
+<td><code>title</code>, <code>author</code>, <code>year</code>, <code>text</code></td>
+</tr>
+</tbody>
+</table>
+<p>Your columns should hold what’s <strong>in your data</strong>, cleaned up. Any new columns you calculate from it (word length, frequency, part of speech…) belong in Component 3.</p>
+<p>If you’re comparing several texts, you can either make one table with a column saying which text each row comes from, or make one table per text. Either is fine.</p>
+<hr>
+</section>
+<section id="instructions" class="level2">
+<h2 class="anchored" data-anchor-id="instructions">Instructions</h2>
+<p>Do all of your work in a single Quarto document named <code>project2_lastname_firstname.qmd</code> in your <code>course_project</code> folder. Your code goes in <code>{python}</code> chunks, and your explanations go in the text around them.</p>
+<section id="get-your-raw-data-into-course_project" class="level3">
+<h3 class="anchored" data-anchor-id="get-your-raw-data-into-course_project">1. Get Your Raw Data into <code>course_project</code></h3>
+<ul>
+<li>Save your raw data in your <code>course_project</code> folder as a <code>.txt</code> file (or a <code>.csv</code>, if that’s how it came).</li>
+<li>Give it a short, clear name with no spaces, such as <code>lincoln_speeches.txt</code> or <code>quechua_swadesh.csv</code>.</li>
+<li><strong>Don’t edit the raw file by hand.</strong> Every change you make to your data should happen in your Python code, so that anyone (including you, in December) can see exactly what you did. The one exception: if you copied your data from a web page, it’s fine to paste it into the <code>.txt</code> file in the first place.</li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Copyright, again
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If your raw text is copyrighted (see Component 1), don’t push the raw file to your public repo. Be careful with your <code>.csv</code> too: a table with one row per word, in order, <em>is</em> the text. If this applies to you, talk to me and we’ll work out what to keep out of the repo.</p>
+</div>
+</div>
+</section>
+<section id="read-your-file-into-python" class="level3">
+<h3 class="anchored" data-anchor-id="read-your-file-into-python">2. Read Your File into Python</h3>
+<p>Open and read your file the same way we did with <em>Alice</em> and <em>Mansfield Park</em>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"lincoln_speeches.txt"</span>, <span class="st">"r"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    raw_text <span class="op">=</span> f.read()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Because your <code>.qmd</code> and your data file are in the same folder, you only need the file name, not a longer path.</p>
+<p>Print a small piece of it (e.g.&nbsp;<code>raw_text[:500]</code>) to make sure it loaded correctly. If you see strange characters like <code>Ã©</code> where you expected <code>é</code>, your file isn’t in UTF-8, you should send me an e-mail.</p>
+</section>
+<section id="clean-your-data-into-a-list" class="level3">
+<h3 class="anchored" data-anchor-id="clean-your-data-into-a-list">3. Clean Your Data into a List</h3>
+<p>Your goal here is a Python <strong>list</strong> of your units: words, lines, entries, or whatever your row is. What “clean” means depends on your data, but most of you will do some version of the following:</p>
+<ul>
+<li><strong>Trim the edges.</strong> Remove anything that isn’t part of your data: Project Gutenberg headers and footers, a table of contents, page numbers, website menus.</li>
+<li><strong>Split</strong> the text into units. For words, use <code>re.split(r"[\W]+", ...)</code>, which splits on whitespace <em>and</em> punctuation. For lines, <code>.split("\n")</code> works. For entries, you’ll need to split on whatever marks the start of each entry.</li>
+<li><strong>Standardize.</strong> Use <code>.strip()</code> to remove extra whitespace and <code>.lower()</code> so that <code>The</code> and <code>the</code> will count as the same word.</li>
+<li><strong>Remove empty strings</strong>, which <code>re.split()</code> leaves behind at the start and end of a text. A list comprehension does this in one line: <code>[w for w in words if w != ""]</code>.</li>
+</ul>
+<p>When you’re done, look at your list. Print the first 20 items, the last 20, and <code>len()</code> of the whole thing. Does anything look wrong? If so, fix it in your code and run everything again. That’s normal, and it’s the whole point of keeping your cleaning in code.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cleaning means making decisions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Every cleaning step throws something away, so make each one on purpose:</p>
+<ul>
+<li><code>re.split(r"[\W]+", ...)</code> splits <code>don't</code> into <code>don</code> and <code>t</code>, and <code>well-known</code> into <code>well</code> and <code>known</code>. Is that OK for your question?</li>
+<li><code>.lower()</code> erases the difference between <code>Bill</code> (a name) and <code>bill</code>. In German, it erases the capital letters that mark every noun. Do you need those?</li>
+<li>Does your data have numbers? Words in a second language? Speaker labels like <code>INTERVIEWER:</code>? Do you keep them or drop them?</li>
+</ul>
+<p>There isn’t one right answer. There’s only the answer that fits <em>your</em> questions from Component 1. Whatever you decide, say so in your write-up (Section 2 below).</p>
+</div>
+</div>
+</section>
+<section id="turn-your-list-into-a-pandas-dataframe" class="level3">
+<h3 class="anchored" data-anchor-id="turn-your-list-into-a-pandas-dataframe">4. Turn Your List into a pandas <code>DataFrame</code></h3>
+<p>This is the same pipeline we used in class (Day 23). First, turn your list into a <strong>list of dicts</strong>, one dict per row, with your column names as the keys:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> words:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    rows.append({<span class="st">"word"</span>: w})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If each unit has several pieces of information, give each one its own key:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rows.append({<span class="st">"form"</span>: form, <span class="st">"meaning"</span>: meaning, <span class="st">"language"</span>: language})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then hand the whole list to pandas:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(rows)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Each dict becomes a <strong>row</strong>, and each key becomes a <strong>column</strong>. pandas numbers the rows for you (0, 1, 2, …). If your units already have their own numbers, like entries in a dictionary, put the number in its own column (e.g.&nbsp;<code>"entry": 12</code>) so it’s saved with the data.</p>
+</section>
+<section id="check-your-dataframe" class="level3">
+<h3 class="anchored" data-anchor-id="check-your-dataframe">5. Check Your <code>DataFrame</code></h3>
+<p>Before you save, take a look:</p>
+<ul>
+<li><code>len(df)</code>: about how many rows did you expect? Is this close?</li>
+<li><code>df.head()</code> and <code>df.tail()</code>: do the first and last rows look like real data, or like leftover headers and footers?</li>
+<li>Spot-check a few rows in the middle against your raw file. Did anything get cut off, merged, or split in the wrong place?</li>
+</ul>
+</section>
+<section id="save-your-dataframe-as-a-.csv" class="level3">
+<h3 class="anchored" data-anchor-id="save-your-dataframe-as-a-.csv">6. Save Your <code>DataFrame</code> as a <code>.csv</code></h3>
+<p>Save your table into your <code>course_project</code> folder:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df.to_csv(<span class="st">"project2_lastname_firstname.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">"utf-8-sig"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>index=False</code> leaves out pandas’ row numbers, which you don’t need in the file.</li>
+<li><code>encoding="utf-8-sig"</code> makes sure Excel displays accented and non-Latin characters correctly when you open the file there.</li>
+</ul>
+</section>
+<section id="reload-your-.csv-to-check-it" class="level3">
+<h3 class="anchored" data-anchor-id="reload-your-.csv-to-check-it">7. Reload Your <code>.csv</code> to Check It</h3>
+<p>Read the file back in and confirm it matches what you saved:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>check <span class="op">=</span> pd.read_csv(<span class="st">"project2_lastname_firstname.csv"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(df), <span class="bu">len</span>(check))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>check.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Same number of rows? Same columns? Do the special characters look right? (One thing that <em>will</em> look different: empty cells come back as <code>NaN</code>, pandas’ marker for “nothing here.” That’s normal.) Open it in Excel (or Google Sheets) once, too. This file is what you’ll start from in Component 3, so make sure it’s right now.</p>
+<hr>
+</section>
+</section>
+<section id="deliverables" class="level2">
+<h2 class="anchored" data-anchor-id="deliverables">Deliverables</h2>
+<p>Your <code>course_project</code> folder should contain:</p>
+<ol type="1">
+<li><code>project2_lastname_firstname.qmd</code>, your code and write-up</li>
+<li><code>project2_lastname_firstname.html</code>, the rendered version</li>
+<li><code>project2_lastname_firstname.csv</code>, your clean table</li>
+<li>Your raw data file (unless it’s copyrighted)</li>
+</ol>
+<p>Your <code>.qmd</code> must <strong>render from top to bottom without errors</strong>: I should be able to see your code, its output, and your explanations in the <code>.html</code>.</p>
+<p>Alongside your code, include a write-up of about <strong>250–400 words</strong> with these four sections, using these headings:</p>
+<section id="the-raw-data" class="level3">
+<h3 class="anchored" data-anchor-id="the-raw-data">1. The Raw Data</h3>
+<ul>
+<li>What’s in your raw file, and where did it come from? Include the link from Component 1.</li>
+<li>Did your dataset change at all since Component 1 (a different source, a smaller excerpt, an added text)? If so, why?</li>
+</ul>
+</section>
+<section id="cleaning-steps" class="level3">
+<h3 class="anchored" data-anchor-id="cleaning-steps">2. Cleaning Steps</h3>
+<ul>
+<li>List the steps you took, in order (trimming, splitting, lowercasing, removing empty strings, etc.).</li>
+<li>For at least <strong>one</strong> step, explain a decision you made and what it costs you (see the box in step 3 above).</li>
+</ul>
+</section>
+<section id="the-clean-table" class="level3">
+<h3 class="anchored" data-anchor-id="the-clean-table">3. The Clean Table</h3>
+<ul>
+<li>What does one row represent?</li>
+<li>What are your columns? Give a one-line description of each.</li>
+<li>About how many rows are there?</li>
+</ul>
+</section>
+<section id="still-messy" class="level3">
+<h3 class="anchored" data-anchor-id="still-messy">4. Still Messy</h3>
+<ul>
+<li>What problems are left in your data that you’ll need to deal with before or during Component 3?</li>
+<li>Is there anything you had to throw away that you wish you could have kept?</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Using AI
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Per the syllabus, you’re allowed to use GenAI on the final project, including for help writing your cleaning code. If you do, add a short note at the end of your write-up saying what you used and how (e.g., “Used ChatGPT to write the regex that splits the text into entries”). You’re still responsible for understanding every line of your code, and for checking that the output is correct.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="submission" class="level2">
+<h2 class="anchored" data-anchor-id="submission">Submission</h2>
+<p>As with Component 1, you’ll submit a <strong>link</strong> to your folder on GitHub instead of uploading files.</p>
+<ol type="1">
+<li><p><strong>Render your document</strong> to HTML and make sure the code runs and the output looks right.</p></li>
+<li><p><strong>Push everything.</strong> Stage, commit, and push your <code>course_project</code> folder (your <code>.qmd</code>, <code>.html</code>, <code>.csv</code>, and raw data) to your <code>LIN_301</code> GitHub repo.</p></li>
+<li><p><strong>Get the folder’s GitHub address.</strong> It’s the same link as Component 1:</p>
+<pre><code>https://github.com/your-username/LIN_301/tree/main/course_project</code></pre></li>
+<li><p><strong>Submit that link on Canvas.</strong></p></li>
+<li><p>Be sure to replace “lastname_firstname” with your actual last and first name in your filenames.</p></li>
+</ol>
+<hr>
+</section>
+<section id="grading-rubric-100-pts-total" class="level2">
+<h2 class="anchored" data-anchor-id="grading-rubric-100-pts-total">Grading Rubric (100 pts total)</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 72%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Criteria</th>
+<th style="text-align: center;">Points</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Reading &amp; Cleaning:</strong> raw data read in with Python; cleaning steps done in code (not by hand) and appropriate to the data; cleaned list checked</td>
+<td style="text-align: center;">35</td>
+</tr>
+<tr class="even">
+<td><strong>DataFrame:</strong> built from a list (or list of dicts); one clear unit per row; sensible columns; checked with <code>len()</code>, <code>.head()</code>, <code>.tail()</code></td>
+<td style="text-align: center;">25</td>
+</tr>
+<tr class="odd">
+<td><strong>CSV:</strong> saved with the correct name, <code>index=False</code>, and <code>utf-8-sig</code>; reloaded and checked; opens correctly in Excel</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr class="even">
+<td><strong>Write-up:</strong> all four sections present; at least one cleaning decision and its cost explained</td>
+<td style="text-align: center;">20</td>
+</tr>
+<tr class="odd">
+<td><strong>Presentation:</strong> files named correctly, <code>.qmd</code> renders without errors, headings used, GitHub link points to <code>course_project</code></td>
+<td style="text-align: center;">5</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="checklist" class="level2">
+<h2 class="anchored" data-anchor-id="checklist">Checklist</h2>
+<p>The same checklist from class:</p>
+<ol type="1">
+<li>Raw data saved in <code>course_project</code></li>
+<li>Read it into Python</li>
+<li>Clean it into a <strong>list</strong> (or a <strong>list of dicts</strong>)</li>
+<li><code>pd.DataFrame()</code> it</li>
+<li>Check it: <code>len()</code>, <code>.head()</code>, <code>.tail()</code></li>
+<li><code>.to_csv()</code> it, then <code>pd.read_csv()</code> it back to check</li>
+</ol>
+<p>Then, before you submit:</p>
+<ul class="task-list">
+<li><label><input type="checkbox">All cleaning done in Python, not by hand</label></li>
+<li><label><input type="checkbox">Copyrighted raw data kept out of your public repo (if that applies to you)</label></li>
+<li><label><input type="checkbox">All four write-up sections written</label></li>
+<li><label><input type="checkbox">Rendered, pushed, and submitted your GitHub link on Canvas</label></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

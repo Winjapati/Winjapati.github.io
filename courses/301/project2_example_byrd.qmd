@@ -1,0 +1,259 @@
+---
+title: "Project Component 2 — Example"
+subtitle: "Roots of the Proto-Indo-European Lexicon: Cleaning Pokorny's Dictionary"
+author: "Dr. Andrew M. Byrd"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-tools: true
+jupyter: python3
+fontsize: 12pt
+---
+
+::: callout-note
+This is my own Component 2, written as a model for yours. It picks up where [my Component 1](project1_example_byrd.html) left off. My data is an HTML page, so my cleaning has more steps than most of yours will. Focus on the overall shape: read, clean into a Python structure, build a `DataFrame`, check it, save, reload.
+:::
+
+## 1. The Raw Data
+
+My raw data is the online version of Julius Pokorny's *Indogermanisches etymologisches Wörterbuch* (1959), scanned by George Starostin, with English meanings added by him and corrections by Alexander Lubotsky and the site's maintainer:
+
+-   <https://aeb.win.tue.nl/natlang/ie/pokorny.html>
+
+The whole dictionary is one very large web page. I opened its source (`view-source:` in the browser), copied all of it, and pasted it into a file called `pokorny_site.txt` in my `course_project` folder. I didn't change anything by hand after that.
+
+One change since Component 1: I'd planned to copy the *visible* text of the page, but I switched to the HTML source. The source has tags like `<h1>` and `<b>English</b>` that mark exactly where each entry and each field begins, and that makes the splitting much more reliable than guessing from the visible text.
+
+::: callout-warning
+## Copyright
+
+The printed IEW is still under copyright, so `pokorny_site.txt` is listed in my `.gitignore` and isn't in my public repo. My `.csv` also contains a lot of the dictionary's text (see Section 3), so it's kept out of the repo too.
+:::
+
+Let's read it in:
+
+```{python}
+import re
+from collections import Counter
+import pandas as pd
+
+with open("pokorny_site.txt", "r", encoding="utf-8") as f:
+    raw = f.read()
+
+print(len(raw))
+print(raw[:300])
+```
+
+That's almost 5 million characters, starting with some HTML boilerplate. Here's what one entry looks like in the source (entry 2, shortened):
+
+``` html
+<h1>    2. <b><i><a name="ab-">ab-</a></i></b></h1>
+<p><b>English</b>   : ‘water, river’
+<p><b>German</b>    : ‘Wasser, Fluß’
+<p><b>Material</b>  : Lat. <i>amnis</i> f., später m. ...; air. <i>ab</i> ...
+<p><b>Ref</b>       : WP. I 46 f., WH. I 40, ...
+<p><b>Page</b>     : 1
+<p><b>PIET</b>      :    0
+```
+
+So every entry starts with `<h1>`, and every field starts with `<p><b>Label</b> :`. Those two patterns are what I'll split on.
+
+## 2. Cleaning Steps
+
+### Step 1: Superscripts and subscripts
+
+Before splitting, I have to deal with one problem. Pokorny uses superscripts and subscripts *inside* root forms, e.g. `ab<sub>e</sub>l-` (a reduced vowel) and `ba<sup>x</sup>b-`. These tags sometimes show up inside other tags, and that breaks the tag-removal regex I use later. But they're also part of Pokorny's notation, so I don't want to just delete them.
+
+Luckily, Unicode has subscript and superscript versions of most of the characters Pokorny uses: `ₑ`, `ₒ`, `ₔ`, `ˣ`, `²`... So I make two lookup dictionaries, from each ordinary character to its subscript or superscript version:
+
+```{python}
+sub_chars = {"a": "ₐ", "e": "ₑ", "o": "ₒ", "u": "ᵤ", "ə": "ₔ", "(": "₍", ")": "₎"}
+
+sup_chars = {"0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴",
+             "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹",
+             "a": "ᵃ", "b": "ᵇ", "e": "ᵉ", "f": "ᶠ", "h": "ʰ", "i": "ⁱ", "m": "ᵐ",
+             "n": "ⁿ", "o": "ᵒ", "r": "ʳ", "s": "ˢ", "u": "ᵘ", "v": "ᵛ", "x": "ˣ",
+             "z": "ᶻ", "ə": "ᵊ", "(": "⁽", ")": "⁾"}
+```
+
+Then, for every different thing that appears between `<sub>` and `</sub>`, I build its subscript version one character at a time and swap it in, tags and all. `.get(ch, ch)` means "look up `ch`, and if it isn't in the dictionary, just keep `ch`." The same goes for superscripts.
+
+```{python}
+for inside in set(re.findall(r"<sub>(.*?)</sub>", raw)):
+    new = ""
+    for ch in inside:
+        new = new + sub_chars.get(ch, ch)
+    raw = raw.replace("<sub>" + inside + "</sub>", new)
+
+for inside in set(re.findall(r"<sup>(.*?)</sup>", raw)):
+    new = ""
+    for ch in inside:
+        new = new + sup_chars.get(ch, ch)
+    raw = raw.replace("<sup>" + inside + "</sup>", new)
+
+print("<sub>" in raw, "<sup>" in raw)
+```
+
+Now `ab<sub>e</sub>l-` is `abₑl-`, and `ba<sup>x</sup>b-` is `baˣb-`. Most of the superscripts in the Material are footnote and edition numbers (`WP.²`), and they come through as `²`, `³`, and so on.
+
+*What this costs me:* two characters have no superscript version in Unicode, the asterisk (Pokorny's footnote mark) and one stray semicolon, so they stay ordinary characters. And for searching, `abₑl-` is now a different string from `abel-`. If I search the roots for `el` in Component 3, I'll miss this one unless I plan for it.
+
+### Step 2: Split into entries
+
+Splitting on `<h1>` gives one chunk per entry. The first piece (`[0]`) is everything *before* the first entry, which is the page header, so I throw it away with `[1:]`.
+
+```{python}
+chunks = re.split(r"<h1>", raw)[1:]
+print(len(chunks))
+```
+
+2,222 entries, which is exactly what the dictionary's own numbering goes up to.
+
+### Step 3: Build a nested dictionary
+
+Now I go through each chunk and pull it apart into a dictionary of dictionaries. The **key** is the entry number, and the **value** is a dictionary of that entry's fields:
+
+``` python
+iew[2] = {"forms": "ab-", "English": "‘water, river’", "German": "‘Wasser, Fluß’", ...}
+```
+
+I use the entry number as the key, not the root, because Pokorny has many homonyms (`ad-1`, `ad-2`), and because numbers sort correctly.
+
+For each chunk, the header is everything before `</h1>`, and the body is everything after. To clean up each piece, I remove the HTML tags with `re.sub(r"<[^>]+>", "", ...)` (a `<`, then anything that isn't `>`, then `>`), and squash runs of spaces and line breaks down to a single space with `re.sub(r"\s+", " ", ...)`.
+
+To split the body into fields, I use `re.split()` with a **capturing group** `(...)` around the label. That keeps the labels in the result, so `parts` alternates: the text before the first label, then label, value, label, value... That means the labels are at positions 1, 3, 5..., and each value comes right after its label. `range(1, len(parts), 2)` counts 1, 3, 5... for me.
+
+```{python}
+iew = {}
+
+for chunk in chunks:
+    head, body = chunk.split("</h1>", 1)
+    head = re.sub(r"<[^>]+>", "", head).strip()     # e.g. "2. ab-"
+    number, forms = head.split(". ", 1)
+
+    entry = {"forms": forms}
+    parts = re.split(r"<p><b>([^<]+)</b>\s*:", body)
+    for i in range(1, len(parts), 2):
+        label = parts[i].strip()
+        value = re.sub(r"<[^>]+>", "", parts[i + 1])    # remove tags
+        value = re.sub(r"\s+", " ", value).strip()     # tidy whitespace
+        entry[label] = value
+
+    iew[int(number)] = entry
+
+print(len(iew))
+iew[2]
+```
+
+### Step 4: Check the fields
+
+Which labels did I find, and how often?
+
+```{python}
+label_counts = Counter()
+for entry in iew.values():
+    label_counts.update(entry.keys())
+
+label_counts.most_common()
+```
+
+Three things jump out:
+
+-   `Page` and `Pages` are the same field under two different labels (`Pages` is used when an entry runs over more than one page). I'll merge them.
+-   Every entry has `PIET`, but only 2,077 have `English`. What are the other 145?
+
+```{python}
+no_english = [num for num, entry in iew.items() if "English" not in entry]
+print(len(no_english))
+iew[no_english[0]]
+```
+
+They're **cross-references**: entries like *aĝro-s* whose only content is "s. aĝ-" ("see *aĝ-*"). They aren't real roots, so I'm dropping them.
+
+```{python}
+roots = {}
+for num, entry in iew.items():
+    if "English" in entry:
+        roots[num] = entry
+
+print(len(roots))
+```
+
+## 3. The Clean Table
+
+Now I build one row per root. Just like in class, I make a **list of dicts**, one dict per row, and hand it to `pd.DataFrame()`. The entry number goes in its own `entry` column, so it's saved with the data. Two last fixes happen along the way:
+
+-   Pokorny puts meanings in curly quotes (‘water, river’). I remove the quote marks around them, using a capturing group again: `‘([^’]*)’` matches a whole quoted stretch, and `r"\1"` puts back just what was inside. Apostrophes in the middle of a meaning are left alone.
+-   `Page` and `Pages` become one `page` column. When an entry runs over several pages (`1-2`), I keep the first page number, so the column can be a number. `re.split(r"\D", ...)` splits on anything that isn't a digit, and `[0]` takes the first piece.
+
+```{python}
+rows = []
+
+for num, entry in roots.items():
+    english = re.sub(r"‘([^’]*)’", r"\1", entry["English"])
+    german = re.sub(r"‘([^’]*)’", r"\1", entry.get("German", ""))
+    pages = entry.get("Page", entry.get("Pages", ""))
+    page = int(re.split(r"\D", pages)[0])
+
+    rows.append({
+        "entry": num,
+        "forms": entry["forms"],
+        "english": english.strip(),
+        "german": german.strip(),
+        "material": entry.get("Material", ""),
+        "page": page,
+    })
+
+df = pd.DataFrame(rows)
+df.head()
+```
+
+Checking it over:
+
+```{python}
+print(len(df))
+df.tail()
+```
+
+2,077 rows, one per root. The last row is entry 2222, *u̯rughi̯o-* 'rye', the last entry on the page, so nothing got cut off at the end.
+
+One row represents one **root entry** in Pokorny. The columns:
+
+| Column | What it is |
+|-------------------|-------------------------------------------------------|
+| `entry` | Pokorny's entry number |
+| `forms` | the root, with any variants, as Pokorny lists them (e.g. `ā̆bel-, ā̆bōl-, abel-`) |
+| `english` | Starostin's English meaning |
+| `german` | Pokorny's German meaning |
+| `material` | the daughter-language words, as one long string of German text |
+| `page` | first page of the entry in the printed IEW |
+
+I left out the `Ref`, `Comments`, `See also`, `Derivative`, `Grammar` and `PIET` fields. They're scholarly references and notes that I don't need for my questions, and they're still in my `iew` dictionary if I change my mind.
+
+I kept `material`, even though it's long and messy, because my question about which branches attest each root depends on it. That also means my `.csv` contains a big chunk of the dictionary's actual text, so the `.csv` is in my `.gitignore` too, just like the raw file.
+
+### Save and Reload
+
+```{python}
+df.to_csv("project2_byrd_andrew.csv", index=False, encoding="utf-8-sig")
+
+check = pd.read_csv("project2_byrd_andrew.csv")
+print(len(df), len(check))
+check.head()
+```
+
+Same number of rows (2,077), same six columns, and the special characters survive. One difference: the five roots with no `material` come back with `NaN` (pandas' "nothing here") instead of an empty string. I'll need to deal with that when I start searching `material` in Component 3.
+
+## 4. Still Messy
+
+-   **Several forms per entry.** The `forms` column often holds more than one form, and sometimes notes like `oder` ('or') and question marks. To ask how roots begin, I'll need to pick one form per entry.
+-   **Notation.** Forms are full of diacritics and special symbols: `ĝ`, `k̂`, `kʷ`, `u̯`, `ə`, the s-mobile `(s)`, homonym numbers like `ad-1`. I'll have to decide which of these count as separate sounds.
+-   **The material is unstructured.** Languages are marked only by abbreviations inside German prose (`ai.`, `lat.`, `ags.`...). Some look misleading: `skr.` in Pokorny is *serbokroatisch*, Serbo-Croatian, not Sanskrit (that's `ai.`, *altindisch*). I'll need a lookup table from abbreviation to branch.
+-   **Five roots have no material.** Some of them, like *u̯er-* 'to turn, bend', have their words listed under their root extensions, which have their own entries.
+-   **Subscript and superscript letters.** Forms like `abₑl-` and `baˣb-` keep Pokorny's notation, but they won't match a search for plain `abel-` or `bab-`. I'll have to decide how to treat them before searching the roots.
+-   **The English meanings vary in style** (`to swell`, `a k. of big fish`, `indefinite/interrogative pronominal base`), which will matter when I get to WordNet.
+
+## AI Use
+
+I used Claude to help plan and debug the regular expressions and to draft parts of this write-up.
