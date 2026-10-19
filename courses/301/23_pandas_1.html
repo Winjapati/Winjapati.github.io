@@ -6,8 +6,8 @@
 <script src="23_pandas_1_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="23_pandas_1_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="23_pandas_1_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="23_pandas_1_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.6.42">
+<link href="23_pandas_1_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Dr.&nbsp;Andrew M. Byrd">
   <meta name="dcterms.date" content="2026-10-16">
@@ -18,10 +18,16 @@
   <link rel="stylesheet" href="23_pandas_1_files/libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="23_pandas_1_files/libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -30,8 +36,9 @@
       vertical-align: middle;
     }
     /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -42,7 +49,7 @@
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -95,7 +102,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="23_pandas_1_files/libs/revealjs/dist/theme/quarto-57343497419617c1be750129a3bb94d1.css">
+  <link rel="stylesheet" href="23_pandas_1_files/libs/revealjs/dist/theme/quarto-5c8106c274dac56d8e05e3022a5a12af.css">
   <link rel="stylesheet" href="header_shrink.css">
   <link href="23_pandas_1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="23_pandas_1_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -200,7 +207,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Dr.&nbsp;Andrew M. Byrd 
+Dr.&nbsp;Andrew M. Byrd
 </div>
 </div>
 </div>
@@ -219,10 +226,6 @@ Dr.&nbsp;Andrew M. Byrd
 <li><a href="#/activity-answers" id="/toc-activity-answers">Activity Answers</a></li>
 </ul>
 </nav>
-</section>
-<section class="slide level2 center">
-
-<!-- F26: first day of pandas, trimmed to one idea: list of dicts -> DataFrame -> .csv (the Component 2 pipeline). Series/concat/from_dict/.T/iloc etc. cut as minutiae. -->
 </section>
 <section>
 <section id="review" class="title-slide slide level1 center">
@@ -245,12 +248,12 @@ Dr.&nbsp;Andrew M. Byrd
 <li>Print the family of Sanskrit.</li>
 <li>Loop through the dict and print every <strong>Indo-European</strong> language along with its location.</li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a>lang_info <span class="op">=</span> {</span>
-<span id="cb1-2"><a href=""></a>    <span class="st">"Latin"</span>:    {<span class="st">"family"</span>: <span class="st">"Indo-European"</span>, <span class="st">"location"</span>: <span class="st">"Italy"</span>},</span>
-<span id="cb1-3"><a href=""></a>    <span class="st">"Greek"</span>:    {<span class="st">"family"</span>: <span class="st">"Indo-European"</span>, <span class="st">"location"</span>: <span class="st">"Greece"</span>},</span>
-<span id="cb1-4"><a href=""></a>    <span class="st">"Sanskrit"</span>: {<span class="st">"family"</span>: <span class="st">"Indo-European"</span>, <span class="st">"location"</span>: <span class="st">"India"</span>},</span>
-<span id="cb1-5"><a href=""></a>    <span class="st">"Finnish"</span>:  {<span class="st">"family"</span>: <span class="st">"Uralic"</span>,        <span class="st">"location"</span>: <span class="st">"Finland"</span>}</span>
-<span id="cb1-6"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-label="1"></a>lang_info <span class="op">=</span> {</span>
+<span id="cb1-2"><a href="" aria-label="2"></a>    <span class="st">"Latin"</span>:    {<span class="st">"family"</span>: <span class="st">"Indo-European"</span>, <span class="st">"location"</span>: <span class="st">"Italy"</span>},</span>
+<span id="cb1-3"><a href="" aria-label="3"></a>    <span class="st">"Greek"</span>:    {<span class="st">"family"</span>: <span class="st">"Indo-European"</span>, <span class="st">"location"</span>: <span class="st">"Greece"</span>},</span>
+<span id="cb1-4"><a href="" aria-label="4"></a>    <span class="st">"Sanskrit"</span>: {<span class="st">"family"</span>: <span class="st">"Indo-European"</span>, <span class="st">"location"</span>: <span class="st">"India"</span>},</span>
+<span id="cb1-5"><a href="" aria-label="5"></a>    <span class="st">"Finnish"</span>:  {<span class="st">"family"</span>: <span class="st">"Uralic"</span>,        <span class="st">"location"</span>: <span class="st">"Finland"</span>}</span>
+<span id="cb1-6"><a href="" aria-label="6"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section></section>
 <section>
 <section id="lists-of-dicts" class="title-slide slide level1 center">
@@ -263,11 +266,11 @@ Dr.&nbsp;Andrew M. Byrd
 <li>A nested dict needs a <strong>unique</strong> key for each item</li>
 <li>But what if two items share a name?</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a>lexicon <span class="op">=</span> {</span>
-<span id="cb2-2"><a href=""></a>    <span class="st">"bank"</span>: {<span class="st">"pos"</span>: <span class="st">"noun"</span>, <span class="st">"gloss"</span>: <span class="st">"edge of a river"</span>},</span>
-<span id="cb2-3"><a href=""></a>    <span class="st">"bank"</span>: {<span class="st">"pos"</span>: <span class="st">"noun"</span>, <span class="st">"gloss"</span>: <span class="st">"place to keep money"</span>}</span>
-<span id="cb2-4"><a href=""></a>}</span>
-<span id="cb2-5"><a href=""></a><span class="bu">print</span>(lexicon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-label="1"></a>lexicon <span class="op">=</span> {</span>
+<span id="cb2-2"><a href="" aria-label="2"></a>    <span class="st">"bank"</span>: {<span class="st">"pos"</span>: <span class="st">"noun"</span>, <span class="st">"gloss"</span>: <span class="st">"edge of a river"</span>},</span>
+<span id="cb2-3"><a href="" aria-label="3"></a>    <span class="st">"bank"</span>: {<span class="st">"pos"</span>: <span class="st">"noun"</span>, <span class="st">"gloss"</span>: <span class="st">"place to keep money"</span>}</span>
+<span id="cb2-4"><a href="" aria-label="4"></a>}</span>
+<span id="cb2-5"><a href="" aria-label="5"></a><span class="bu">print</span>(lexicon)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>What happened to the river?</li>
 </ul>
@@ -277,11 +280,11 @@ Dr.&nbsp;Andrew M. Byrd
 <ul>
 <li>Instead, we can make a <strong>list</strong>, where each item is a dict:</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a>lexicon <span class="op">=</span> [</span>
-<span id="cb3-2"><a href=""></a>    {<span class="st">"form"</span>: <span class="st">"bank"</span>, <span class="st">"pos"</span>: <span class="st">"noun"</span>, <span class="st">"gloss"</span>: <span class="st">"edge of a river"</span>},</span>
-<span id="cb3-3"><a href=""></a>    {<span class="st">"form"</span>: <span class="st">"bank"</span>, <span class="st">"pos"</span>: <span class="st">"noun"</span>, <span class="st">"gloss"</span>: <span class="st">"place to keep money"</span>},</span>
-<span id="cb3-4"><a href=""></a>    {<span class="st">"form"</span>: <span class="st">"bank"</span>, <span class="st">"pos"</span>: <span class="st">"verb"</span>, <span class="st">"gloss"</span>: <span class="st">"to tilt an airplane"</span>}</span>
-<span id="cb3-5"><a href=""></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-label="1"></a>lexicon <span class="op">=</span> [</span>
+<span id="cb3-2"><a href="" aria-label="2"></a>    {<span class="st">"form"</span>: <span class="st">"bank"</span>, <span class="st">"pos"</span>: <span class="st">"noun"</span>, <span class="st">"gloss"</span>: <span class="st">"edge of a river"</span>},</span>
+<span id="cb3-3"><a href="" aria-label="3"></a>    {<span class="st">"form"</span>: <span class="st">"bank"</span>, <span class="st">"pos"</span>: <span class="st">"noun"</span>, <span class="st">"gloss"</span>: <span class="st">"place to keep money"</span>},</span>
+<span id="cb3-4"><a href="" aria-label="4"></a>    {<span class="st">"form"</span>: <span class="st">"bank"</span>, <span class="st">"pos"</span>: <span class="st">"verb"</span>, <span class="st">"gloss"</span>: <span class="st">"to tilt an airplane"</span>}</span>
+<span id="cb3-5"><a href="" aria-label="5"></a>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Each dict is one <strong>entry</strong>: one <strong>row</strong> of a table</li>
 <li>Each key (<code>"form"</code>, <code>"pos"</code>, <code>"gloss"</code>) is a <strong>column</strong></li>
@@ -292,8 +295,8 @@ Dr.&nbsp;Andrew M. Byrd
 <ul>
 <li>Since it’s a list, we loop through it as normal; each item is a dict:</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a><span class="cf">for</span> entry <span class="kw">in</span> lexicon:</span>
-<span id="cb4-2"><a href=""></a>    <span class="bu">print</span>(entry[<span class="st">"form"</span>], <span class="st">"("</span> <span class="op">+</span> entry[<span class="st">"pos"</span>] <span class="op">+</span> <span class="st">"):"</span>, entry[<span class="st">"gloss"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-label="1"></a><span class="cf">for</span> entry <span class="kw">in</span> lexicon:</span>
+<span id="cb4-2"><a href="" aria-label="2"></a>    <span class="bu">print</span>(entry[<span class="st">"form"</span>], <span class="st">"("</span> <span class="op">+</span> entry[<span class="st">"pos"</span>] <span class="op">+</span> <span class="st">"):"</span>, entry[<span class="st">"gloss"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>And <code>lexicon[2]["gloss"]</code> gives us…?</li>
 </ul>
@@ -304,50 +307,16 @@ Dr.&nbsp;Andrew M. Byrd
 <li>We build one with <code>.append()</code>, just like any list</li>
 <li>Let’s turn our review activity’s <code>lang_info</code> into a list of dicts:</li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a>lang_rows <span class="op">=</span> []</span>
-<span id="cb5-2"><a href=""></a></span>
-<span id="cb5-3"><a href=""></a><span class="cf">for</span> lang, info <span class="kw">in</span> lang_info.items():</span>
-<span id="cb5-4"><a href=""></a>    lang_rows.append({</span>
-<span id="cb5-5"><a href=""></a>        <span class="st">"language"</span>: lang,</span>
-<span id="cb5-6"><a href=""></a>        <span class="st">"family"</span>: info[<span class="st">"family"</span>],</span>
-<span id="cb5-7"><a href=""></a>        <span class="st">"location"</span>: info[<span class="st">"location"</span>]</span>
-<span id="cb5-8"><a href=""></a>    })</span>
-<span id="cb5-9"><a href=""></a></span>
-<span id="cb5-10"><a href=""></a><span class="bu">print</span>(lang_rows)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="dict-of-dicts-vs.-list-of-dicts" class="slide level2 center">
-<h2>Dict of Dicts vs.&nbsp;List of Dicts</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th></th>
-<th>Dict of dicts</th>
-<th>List of dicts</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Looks like</td>
-<td><code>{"p": {...}, "b": {...}}</code></td>
-<td><code>[{...}, {...}]</code></td>
-</tr>
-<tr class="even">
-<td>Find one item</td>
-<td>Fast: <code>d["p"]</code></td>
-<td>Loop and check</td>
-</tr>
-<tr class="odd">
-<td>Keys</td>
-<td>Must be unique</td>
-<td>Duplicates are fine</td>
-</tr>
-<tr class="even">
-<td>Good for</td>
-<td>Lookup tables, inventories</td>
-<td>Entries, tokens, rows</td>
-</tr>
-</tbody>
-</table>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-label="1"></a>lang_rows <span class="op">=</span> []</span>
+<span id="cb5-2"><a href="" aria-label="2"></a></span>
+<span id="cb5-3"><a href="" aria-label="3"></a><span class="cf">for</span> lang, info <span class="kw">in</span> lang_info.items():</span>
+<span id="cb5-4"><a href="" aria-label="4"></a>    lang_rows.append({</span>
+<span id="cb5-5"><a href="" aria-label="5"></a>        <span class="st">"language"</span>: lang,</span>
+<span id="cb5-6"><a href="" aria-label="6"></a>        <span class="st">"family"</span>: info[<span class="st">"family"</span>],</span>
+<span id="cb5-7"><a href="" aria-label="7"></a>        <span class="st">"location"</span>: info[<span class="st">"location"</span>]</span>
+<span id="cb5-8"><a href="" aria-label="8"></a>    })</span>
+<span id="cb5-9"><a href="" aria-label="9"></a></span>
+<span id="cb5-10"><a href="" aria-label="10"></a><span class="bu">print</span>(lang_rows)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="tables-everywhere" class="slide level2 center">
 <h2>Tables Everywhere</h2>
@@ -367,18 +336,18 @@ Dr.&nbsp;Andrew M. Byrd
 <ul>
 <li>PC:</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href=""></a><span class="ex">pip</span> install pandas</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="" aria-label="1"></a><span class="ex">pip</span> install pandas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Mac:</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href=""></a><span class="ex">pip3</span> install pandas</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="" aria-label="1"></a><span class="ex">pip3</span> install pandas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="loading-pandas" class="slide level2 center">
 <h2>Loading Pandas</h2>
 <ul>
 <li>To use it in Python:</li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-label="1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>pd</code> is just a nickname, so we don’t have to type <code>pandas</code> every time</li>
 <li>Like <code>re</code>, <code>Counter</code>, and <code>matplotlib</code>, <strong>pandas</strong> is a <strong>library</strong>: a bundle of extra tools someone else wrote</li>
@@ -409,10 +378,10 @@ Dr.&nbsp;Andrew M. Byrd
 <li>A pandas table is called a <strong>DataFrame</strong> (<code>df</code> for short)</li>
 <li>Remember <code>lang_rows</code>? Watch this:</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb9-2"><a href=""></a></span>
-<span id="cb9-3"><a href=""></a>lang_df <span class="op">=</span> pd.DataFrame(lang_rows)</span>
-<span id="cb9-4"><a href=""></a><span class="bu">print</span>(lang_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-label="1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb9-2"><a href="" aria-label="2"></a></span>
+<span id="cb9-3"><a href="" aria-label="3"></a>lang_df <span class="op">=</span> pd.DataFrame(lang_rows)</span>
+<span id="cb9-4"><a href="" aria-label="4"></a><span class="bu">print</span>(lang_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="what-just-happened" class="slide level2 center">
 <h2>What Just Happened?</h2>
@@ -429,25 +398,25 @@ Dr.&nbsp;Andrew M. Byrd
 <li>Sometimes our data comes as <strong>separate lists</strong>, one per column (like on Monday!)</li>
 <li>A dict of lists works too: each key is a column name, each list is that column’s values</li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a>fresh_df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb10-2"><a href=""></a>    <span class="st">"language"</span>: [<span class="st">"Latin"</span>, <span class="st">"Greek"</span>, <span class="st">"Sanskrit"</span>, <span class="st">"Finnish"</span>],</span>
-<span id="cb10-3"><a href=""></a>    <span class="st">"family"</span>:   [<span class="st">"Indo-European"</span>, <span class="st">"Indo-European"</span>, <span class="st">"Indo-European"</span>, <span class="st">"Uralic"</span>],</span>
-<span id="cb10-4"><a href=""></a>    <span class="st">"location"</span>: [<span class="st">"Italy"</span>, <span class="st">"Greece"</span>, <span class="st">"India"</span>, <span class="st">"Finland"</span>]</span>
-<span id="cb10-5"><a href=""></a>})</span>
-<span id="cb10-6"><a href=""></a></span>
-<span id="cb10-7"><a href=""></a><span class="bu">print</span>(fresh_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="" aria-label="1"></a>fresh_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb10-2"><a href="" aria-label="2"></a>    <span class="st">"language"</span>: [<span class="st">"Latin"</span>, <span class="st">"Greek"</span>, <span class="st">"Sanskrit"</span>, <span class="st">"Finnish"</span>],</span>
+<span id="cb10-3"><a href="" aria-label="3"></a>    <span class="st">"family"</span>:   [<span class="st">"Indo-European"</span>, <span class="st">"Indo-European"</span>, <span class="st">"Indo-European"</span>, <span class="st">"Uralic"</span>],</span>
+<span id="cb10-4"><a href="" aria-label="4"></a>    <span class="st">"location"</span>: [<span class="st">"Italy"</span>, <span class="st">"Greece"</span>, <span class="st">"India"</span>, <span class="st">"Finland"</span>]</span>
+<span id="cb10-5"><a href="" aria-label="5"></a>})</span>
+<span id="cb10-6"><a href="" aria-label="6"></a></span>
+<span id="cb10-7"><a href="" aria-label="7"></a><span class="bu">print</span>(fresh_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Same table! Which way is easier depends on what shape your data is already in.</li>
 </ul>
 </section>
 <section id="what-if-a-key-is-missing" class="slide level2 center">
 <h2>What If a Key Is Missing?</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a>rows <span class="op">=</span> [</span>
-<span id="cb11-2"><a href=""></a>    {<span class="st">"form"</span>: <span class="st">"aqua"</span>, <span class="st">"gloss"</span>: <span class="st">"water"</span>},</span>
-<span id="cb11-3"><a href=""></a>    {<span class="st">"form"</span>: <span class="st">"canis"</span>, <span class="st">"gloss"</span>: <span class="st">"dog"</span>, <span class="st">"pos"</span>: <span class="st">"noun"</span>}</span>
-<span id="cb11-4"><a href=""></a>]</span>
-<span id="cb11-5"><a href=""></a></span>
-<span id="cb11-6"><a href=""></a><span class="bu">print</span>(pd.DataFrame(rows))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="" aria-label="1"></a>rows <span class="op">=</span> [</span>
+<span id="cb11-2"><a href="" aria-label="2"></a>    {<span class="st">"form"</span>: <span class="st">"aqua"</span>, <span class="st">"gloss"</span>: <span class="st">"water"</span>},</span>
+<span id="cb11-3"><a href="" aria-label="3"></a>    {<span class="st">"form"</span>: <span class="st">"canis"</span>, <span class="st">"gloss"</span>: <span class="st">"dog"</span>, <span class="st">"pos"</span>: <span class="st">"noun"</span>}</span>
+<span id="cb11-4"><a href="" aria-label="4"></a>]</span>
+<span id="cb11-5"><a href="" aria-label="5"></a></span>
+<span id="cb11-6"><a href="" aria-label="6"></a><span class="bu">print</span>(pd.DataFrame(rows))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>What does pandas put in the empty cell?</li>
 <li><code>NaN</code> = “Not a Number,” pandas’ way of saying <em>no data here</em></li>
@@ -456,20 +425,12 @@ Dr.&nbsp;Andrew M. Byrd
 <section id="activity-consonants-one-more-time" class="slide level2 center">
 <h2>Activity: Consonants, One More Time</h2>
 <ul>
-<li>You’ve typed these lists twice already this week. Copy them in once more:</li>
+<li>You’ve typed these lists twice already this week. Copy them once more, and then turn the four lists into a DataFrame called <code>cons_df</code>, using a <strong>dict of lists</strong>.</li>
 </ul>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a>consonant <span class="op">=</span>  [<span class="st">"p"</span>, <span class="st">"b"</span>, <span class="st">"t"</span>, <span class="st">"d"</span>, <span class="st">"k"</span>, <span class="st">"g"</span>, <span class="st">"s"</span>, <span class="st">"z"</span>, <span class="st">"m"</span>, <span class="st">"n"</span>, <span class="st">"l"</span>, <span class="st">"r"</span>, <span class="st">"w"</span>, <span class="st">"j"</span>, <span class="st">"h"</span>]</span>
-<span id="cb12-2"><a href=""></a>place <span class="op">=</span> [<span class="st">"bilabial"</span>, <span class="st">"bilabial"</span>, <span class="st">"alveolar"</span>, <span class="st">"alveolar"</span>, <span class="st">"velar"</span>, <span class="st">"velar"</span>, <span class="st">"alveolar"</span>, <span class="st">"alveolar"</span>, <span class="st">"bilabial"</span>, <span class="st">"alveolar"</span>, <span class="st">"alveolar"</span>, <span class="st">"alveolar"</span>, <span class="st">"labial-velar"</span>, <span class="st">"palatal"</span>, <span class="st">"glottal"</span>]</span>
-<span id="cb12-3"><a href=""></a>manner <span class="op">=</span> [<span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"fricative"</span>, <span class="st">"fricative"</span>, <span class="st">"nasal"</span>, <span class="st">"nasal"</span>, <span class="st">"lateral"</span>, <span class="st">"trill"</span>, <span class="st">"glide"</span>, <span class="st">"glide"</span>, <span class="st">"fricative"</span>]</span>
-<span id="cb12-4"><a href=""></a>voice <span class="op">=</span> [<span class="st">"voiceless"</span>, <span class="st">"voiced"</span>, <span class="st">"voiceless"</span>, <span class="st">"voiced"</span>, <span class="st">"voiceless"</span>, <span class="st">"voiced"</span>, <span class="st">"voiceless"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiceless"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="activity-consonants-one-more-time-1" class="slide level2 center">
-<h2>Activity: Consonants, One More Time</h2>
-<ol type="1">
-<li>Turn the four lists into a DataFrame called <code>cons_df</code>, using a <strong>dict of lists</strong>. (It’s one command!)</li>
-<li>How many rows does it have? How many columns?</li>
-<li>Now break it: remove the last item from <code>voice</code> with <code>voice = voice[:-1]</code>, and build <code>cons_df</code> again. What happens? Why?</li>
-</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="" aria-label="1"></a>consonant <span class="op">=</span>  [<span class="st">"p"</span>, <span class="st">"b"</span>, <span class="st">"t"</span>, <span class="st">"d"</span>, <span class="st">"k"</span>, <span class="st">"g"</span>, <span class="st">"s"</span>, <span class="st">"z"</span>, <span class="st">"m"</span>, <span class="st">"n"</span>, <span class="st">"l"</span>, <span class="st">"r"</span>, <span class="st">"w"</span>, <span class="st">"j"</span>, <span class="st">"h"</span>]</span>
+<span id="cb12-2"><a href="" aria-label="2"></a>place <span class="op">=</span> [<span class="st">"bilabial"</span>, <span class="st">"bilabial"</span>, <span class="st">"alveolar"</span>, <span class="st">"alveolar"</span>, <span class="st">"velar"</span>, <span class="st">"velar"</span>, <span class="st">"alveolar"</span>, <span class="st">"alveolar"</span>, <span class="st">"bilabial"</span>, <span class="st">"alveolar"</span>, <span class="st">"alveolar"</span>, <span class="st">"alveolar"</span>, <span class="st">"labial-velar"</span>, <span class="st">"palatal"</span>, <span class="st">"glottal"</span>]</span>
+<span id="cb12-3"><a href="" aria-label="3"></a>manner <span class="op">=</span> [<span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"stop"</span>, <span class="st">"fricative"</span>, <span class="st">"fricative"</span>, <span class="st">"nasal"</span>, <span class="st">"nasal"</span>, <span class="st">"lateral"</span>, <span class="st">"trill"</span>, <span class="st">"glide"</span>, <span class="st">"glide"</span>, <span class="st">"fricative"</span>]</span>
+<span id="cb12-4"><a href="" aria-label="4"></a>voice <span class="op">=</span> [<span class="st">"voiceless"</span>, <span class="st">"voiced"</span>, <span class="st">"voiceless"</span>, <span class="st">"voiced"</span>, <span class="st">"voiceless"</span>, <span class="st">"voiced"</span>, <span class="st">"voiceless"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiced"</span>, <span class="st">"voiceless"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section></section>
 <section>
 <section id="saving-loading-tables" class="title-slide slide level1 center">
@@ -481,7 +442,7 @@ Dr.&nbsp;Andrew M. Byrd
 <ul>
 <li>We can save a <code>df</code> as a <code>.csv</code> file that opens in Excel or Google Sheets:</li>
 </ul>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a>lang_df.to_csv(<span class="st">"languages.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">"utf-8-sig"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="" aria-label="1"></a>lang_df.to_csv(<span class="st">"languages.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">"utf-8-sig"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>index=False</code> leaves out the 0, 1, 2… index</li>
 <li><code>utf-8-sig</code> makes Excel display characters like <code>ō</code> and <code>ʰ</code> correctly</li>
@@ -493,8 +454,8 @@ Dr.&nbsp;Andrew M. Byrd
 <ul>
 <li>And we can read a <code>.csv</code> back into a <code>df</code>:</li>
 </ul>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a>check <span class="op">=</span> pd.read_csv(<span class="st">"languages.csv"</span>)</span>
-<span id="cb14-2"><a href=""></a><span class="bu">print</span>(check)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="" aria-label="1"></a>check <span class="op">=</span> pd.read_csv(<span class="st">"languages.csv"</span>)</span>
+<span id="cb14-2"><a href="" aria-label="2"></a><span class="bu">print</span>(check)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>This is how you’ll start Component 3: by loading the <code>.csv</code> you save in Component 2.</li>
 </ul>
@@ -503,11 +464,47 @@ Dr.&nbsp;Andrew M. Byrd
 <h2>The Whole Pipeline</h2>
 <ol type="1">
 <li>Start with your data (lists, a text file…)</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="" aria-label="1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"../../data/gutenberg/alice.txt"</span>, <span class="st">"r"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb15-2"><a href="" aria-label="2"></a>    raw_text <span class="op">=</span> f.read()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-whole-pipeline-1" class="slide level2 center">
+<h2>The Whole Pipeline</h2>
+<ol start="2" type="1">
 <li>Clean it into a <strong>list of dicts</strong> (one dict per row)</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="" aria-label="1"></a><span class="im">import</span> re</span>
+<span id="cb16-2"><a href="" aria-label="2"></a></span>
+<span id="cb16-3"><a href="" aria-label="3"></a>words <span class="op">=</span> re.split(<span class="vs">r"</span><span class="pp">[</span><span class="dv">\W</span><span class="pp">]</span><span class="op">+</span><span class="vs">"</span>, raw_text.lower())</span>
+<span id="cb16-4"><a href="" aria-label="4"></a>words <span class="op">=</span> [w <span class="cf">for</span> w <span class="kw">in</span> words <span class="cf">if</span> w <span class="op">!=</span> <span class="st">""</span>]</span>
+<span id="cb16-5"><a href="" aria-label="5"></a></span>
+<span id="cb16-6"><a href="" aria-label="6"></a>rows <span class="op">=</span> []</span>
+<span id="cb16-7"><a href="" aria-label="7"></a><span class="cf">for</span> w <span class="kw">in</span> words:</span>
+<span id="cb16-8"><a href="" aria-label="8"></a>    rows.append({<span class="st">"word"</span>: w, <span class="st">"length"</span>: <span class="bu">len</span>(w)})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-whole-pipeline-2" class="slide level2 center">
+<h2>The Whole Pipeline</h2>
+<ol start="3" type="1">
 <li><code>pd.DataFrame()</code> it</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="" aria-label="1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb17-2"><a href="" aria-label="2"></a></span>
+<span id="cb17-3"><a href="" aria-label="3"></a>words_df <span class="op">=</span> pd.DataFrame(rows)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-whole-pipeline-3" class="slide level2 center">
+<h2>The Whole Pipeline</h2>
+<ol start="4" type="1">
 <li><code>.to_csv()</code> it</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="" aria-label="1"></a>words_df.to_csv(<span class="st">"words.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">"utf-8-sig"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-whole-pipeline-4" class="slide level2 center">
+<h2>The Whole Pipeline</h2>
+<ol start="5" type="1">
 <li><code>pd.read_csv()</code> it back to check</li>
 </ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="" aria-label="1"></a>check <span class="op">=</span> pd.read_csv(<span class="st">"words.csv"</span>)</span>
+<span id="cb19-2"><a href="" aria-label="2"></a><span class="bu">print</span>(<span class="bu">len</span>(words_df), <span class="bu">len</span>(check))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>That’s Project Component 2!</li>
 </ul>
@@ -522,10 +519,10 @@ Dr.&nbsp;Andrew M. Byrd
 <ul>
 <li>Copy these lists. They’re a tiny Latin lexicon:</li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a>forms     <span class="op">=</span> [<span class="st">"aqua"</span>, <span class="st">"rosa"</span>, <span class="st">"amō"</span>, <span class="st">"canis"</span>, <span class="st">"magnus"</span>, <span class="st">"videō"</span>, <span class="st">"puella"</span>, <span class="st">"bonus"</span>, <span class="st">"dominus"</span>, <span class="st">"portō"</span>, <span class="st">"lupus"</span>, <span class="st">"longus"</span>]</span>
-<span id="cb15-2"><a href=""></a>glosses   <span class="op">=</span> [<span class="st">"water"</span>, <span class="st">"rose"</span>, <span class="st">"I love"</span>, <span class="st">"dog"</span>, <span class="st">"big"</span>, <span class="st">"I see"</span>, <span class="st">"girl"</span>, <span class="st">"good"</span>, <span class="st">"lord"</span>, <span class="st">"I carry"</span>, <span class="st">"wolf"</span>, <span class="st">"long"</span>]</span>
-<span id="cb15-3"><a href=""></a>pos       <span class="op">=</span> [<span class="st">"noun"</span>, <span class="st">"noun"</span>, <span class="st">"verb"</span>, <span class="st">"noun"</span>, <span class="st">"adj"</span>, <span class="st">"verb"</span>, <span class="st">"noun"</span>, <span class="st">"adj"</span>, <span class="st">"noun"</span>, <span class="st">"verb"</span>, <span class="st">"noun"</span>, <span class="st">"adj"</span>]</span>
-<span id="cb15-4"><a href=""></a>syllables <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="" aria-label="1"></a>forms     <span class="op">=</span> [<span class="st">"aqua"</span>, <span class="st">"rosa"</span>, <span class="st">"amō"</span>, <span class="st">"canis"</span>, <span class="st">"magnus"</span>, <span class="st">"videō"</span>, <span class="st">"puella"</span>, <span class="st">"bonus"</span>, <span class="st">"dominus"</span>, <span class="st">"portō"</span>, <span class="st">"lupus"</span>, <span class="st">"longus"</span>]</span>
+<span id="cb20-2"><a href="" aria-label="2"></a>glosses   <span class="op">=</span> [<span class="st">"water"</span>, <span class="st">"rose"</span>, <span class="st">"I love"</span>, <span class="st">"dog"</span>, <span class="st">"big"</span>, <span class="st">"I see"</span>, <span class="st">"girl"</span>, <span class="st">"good"</span>, <span class="st">"lord"</span>, <span class="st">"I carry"</span>, <span class="st">"wolf"</span>, <span class="st">"long"</span>]</span>
+<span id="cb20-3"><a href="" aria-label="3"></a>pos       <span class="op">=</span> [<span class="st">"noun"</span>, <span class="st">"noun"</span>, <span class="st">"verb"</span>, <span class="st">"noun"</span>, <span class="st">"adj"</span>, <span class="st">"verb"</span>, <span class="st">"noun"</span>, <span class="st">"adj"</span>, <span class="st">"noun"</span>, <span class="st">"verb"</span>, <span class="st">"noun"</span>, <span class="st">"adj"</span>]</span>
+<span id="cb20-4"><a href="" aria-label="4"></a>syllables <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="activity-latin-lexicon-2" class="slide level2 center">
 <h2>Activity: Latin Lexicon</h2>
@@ -533,16 +530,14 @@ Dr.&nbsp;Andrew M. Byrd
 <li>Using <code>zip()</code> and <code>.append()</code>, build a <strong>list of dicts</strong> called <code>latin_rows</code>, with the keys <code>"form"</code>, <code>"gloss"</code>, <code>"pos"</code>, and <code>"syllables"</code>.</li>
 <li>Turn <code>latin_rows</code> into a DataFrame called <code>latin_df</code>, and print it.</li>
 <li>Save it as <code>latin_lexicon.csv</code>.</li>
+</ol>
+</section>
+<section id="activity-latin-lexicon-3" class="slide level2 center">
+<h2>Activity: Latin Lexicon</h2>
+<ol start="4" type="1">
 <li>Open the file in Excel (or Google Sheets). Do the macrons look right?</li>
 <li>Load it back in with <code>pd.read_csv()</code>. Is it the same as <code>latin_df</code>?</li>
 </ol>
-</section>
-<section id="if-you-finish-early" class="slide level2 center">
-<h2>If You Finish Early</h2>
-<ul>
-<li>Add <strong>three more Latin words</strong> to your lists (or three words from a language you know!), and run everything again.</li>
-<li>Did you have to change any of your code?</li>
-</ul>
 </section></section>
 <section>
 <section id="activity-answers" class="title-slide slide level1 center">
@@ -551,50 +546,45 @@ Dr.&nbsp;Andrew M. Byrd
 </section>
 <section id="review-activity-1" class="slide level2 center">
 <h2>Review Activity</h2>
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a><span class="bu">print</span>(lang_info[<span class="st">"Sanskrit"</span>][<span class="st">"family"</span>])</span>
-<span id="cb16-2"><a href=""></a></span>
-<span id="cb16-3"><a href=""></a><span class="cf">for</span> lang, info <span class="kw">in</span> lang_info.items():</span>
-<span id="cb16-4"><a href=""></a>    <span class="cf">if</span> info[<span class="st">"family"</span>] <span class="op">==</span> <span class="st">"Indo-European"</span>:</span>
-<span id="cb16-5"><a href=""></a>        <span class="bu">print</span>(lang, info[<span class="st">"location"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="" aria-label="1"></a><span class="bu">print</span>(lang_info[<span class="st">"Sanskrit"</span>][<span class="st">"family"</span>])</span>
+<span id="cb21-2"><a href="" aria-label="2"></a></span>
+<span id="cb21-3"><a href="" aria-label="3"></a><span class="cf">for</span> lang, info <span class="kw">in</span> lang_info.items():</span>
+<span id="cb21-4"><a href="" aria-label="4"></a>    <span class="cf">if</span> info[<span class="st">"family"</span>] <span class="op">==</span> <span class="st">"Indo-European"</span>:</span>
+<span id="cb21-5"><a href="" aria-label="5"></a>        <span class="bu">print</span>(lang, info[<span class="st">"location"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="consonants-one-more-time" class="slide level2 center">
 <h2>Consonants, One More Time</h2>
-<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href=""></a>cons_df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb17-2"><a href=""></a>    <span class="st">"consonant"</span>: consonant,</span>
-<span id="cb17-3"><a href=""></a>    <span class="st">"place"</span>: place,</span>
-<span id="cb17-4"><a href=""></a>    <span class="st">"manner"</span>: manner,</span>
-<span id="cb17-5"><a href=""></a>    <span class="st">"voice"</span>: voice</span>
-<span id="cb17-6"><a href=""></a>})</span>
-<span id="cb17-7"><a href=""></a></span>
-<span id="cb17-8"><a href=""></a><span class="bu">print</span>(cons_df)</span>
-<span id="cb17-9"><a href=""></a><span class="bu">print</span>(<span class="bu">len</span>(cons_df), <span class="bu">len</span>(cons_df.columns))    <span class="co"># 15 rows, 4 columns</span></span>
-<span id="cb17-10"><a href=""></a></span>
-<span id="cb17-11"><a href=""></a>voice <span class="op">=</span> voice[:<span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb17-12"><a href=""></a><span class="co"># pd.DataFrame({...}) again gives:</span></span>
-<span id="cb17-13"><a href=""></a><span class="co"># ValueError: All arrays must be of the same length</span></span>
-<span id="cb17-14"><a href=""></a><span class="co"># Every column needs exactly one value per row!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="" aria-label="1"></a>cons_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb22-2"><a href="" aria-label="2"></a>    <span class="st">"consonant"</span>: consonant,</span>
+<span id="cb22-3"><a href="" aria-label="3"></a>    <span class="st">"place"</span>: place,</span>
+<span id="cb22-4"><a href="" aria-label="4"></a>    <span class="st">"manner"</span>: manner,</span>
+<span id="cb22-5"><a href="" aria-label="5"></a>    <span class="st">"voice"</span>: voice</span>
+<span id="cb22-6"><a href="" aria-label="6"></a>})</span>
+<span id="cb22-7"><a href="" aria-label="7"></a></span>
+<span id="cb22-8"><a href="" aria-label="8"></a><span class="bu">print</span>(cons_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="latin-lexicon" class="slide level2 center">
 <h2>Latin Lexicon</h2>
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href=""></a>latin_rows <span class="op">=</span> []</span>
-<span id="cb18-2"><a href=""></a></span>
-<span id="cb18-3"><a href=""></a><span class="cf">for</span> f, g, p, s <span class="kw">in</span> <span class="bu">zip</span>(forms, glosses, pos, syllables):</span>
-<span id="cb18-4"><a href=""></a>    latin_rows.append({</span>
-<span id="cb18-5"><a href=""></a>        <span class="st">"form"</span>: f,</span>
-<span id="cb18-6"><a href=""></a>        <span class="st">"gloss"</span>: g,</span>
-<span id="cb18-7"><a href=""></a>        <span class="st">"pos"</span>: p,</span>
-<span id="cb18-8"><a href=""></a>        <span class="st">"syllables"</span>: s</span>
-<span id="cb18-9"><a href=""></a>    })</span>
-<span id="cb18-10"><a href=""></a></span>
-<span id="cb18-11"><a href=""></a>latin_df <span class="op">=</span> pd.DataFrame(latin_rows)</span>
-<span id="cb18-12"><a href=""></a><span class="bu">print</span>(latin_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="" aria-label="1"></a>latin_rows <span class="op">=</span> []</span>
+<span id="cb23-2"><a href="" aria-label="2"></a></span>
+<span id="cb23-3"><a href="" aria-label="3"></a><span class="cf">for</span> f, g, p, s <span class="kw">in</span> <span class="bu">zip</span>(forms, glosses, pos, syllables):</span>
+<span id="cb23-4"><a href="" aria-label="4"></a>    latin_rows.append({</span>
+<span id="cb23-5"><a href="" aria-label="5"></a>        <span class="st">"form"</span>: f,</span>
+<span id="cb23-6"><a href="" aria-label="6"></a>        <span class="st">"gloss"</span>: g,</span>
+<span id="cb23-7"><a href="" aria-label="7"></a>        <span class="st">"pos"</span>: p,</span>
+<span id="cb23-8"><a href="" aria-label="8"></a>        <span class="st">"syllables"</span>: s</span>
+<span id="cb23-9"><a href="" aria-label="9"></a>    })</span>
+<span id="cb23-10"><a href="" aria-label="10"></a></span>
+<span id="cb23-11"><a href="" aria-label="11"></a>latin_df <span class="op">=</span> pd.DataFrame(latin_rows)</span>
+<span id="cb23-12"><a href="" aria-label="12"></a><span class="bu">print</span>(latin_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="latin-lexicon-1" class="slide level2 center">
 <h2>Latin Lexicon</h2>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a>latin_df.to_csv(<span class="st">"latin_lexicon.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">"utf-8-sig"</span>)</span>
-<span id="cb19-2"><a href=""></a></span>
-<span id="cb19-3"><a href=""></a>check <span class="op">=</span> pd.read_csv(<span class="st">"latin_lexicon.csv"</span>)</span>
-<span id="cb19-4"><a href=""></a><span class="bu">print</span>(check)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="" aria-label="1"></a>latin_df.to_csv(<span class="st">"latin_lexicon.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">"utf-8-sig"</span>)</span>
+<span id="cb24-2"><a href="" aria-label="2"></a></span>
+<span id="cb24-3"><a href="" aria-label="3"></a>check <span class="op">=</span> pd.read_csv(<span class="st">"latin_lexicon.csv"</span>)</span>
+<span id="cb24-4"><a href="" aria-label="4"></a><span class="bu">print</span>(check)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<!-- F26: first day of pandas, trimmed to one idea: list of dicts -> DataFrame -> .csv (the Component 2 pipeline). Series/concat/from_dict/.T/iloc etc. cut as minutiae. -->
 
 </section></section>
     </div>
@@ -786,7 +776,7 @@ Dr.&nbsp;Andrew M. Byrd
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -813,190 +803,173 @@ Dr.&nbsp;Andrew M. Byrd
       });
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
-        }
-      }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
-      }
-      toggleBodyColorPrimary();  
-      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-      tabsets.forEach(function(tabset) {
-        const tabby = new Tabby('#' + tabset.id);
-      });
-      const isCodeAnnotation = (el) => {
-        for (const clz of el.classList) {
-          if (clz.startsWith('code-annotation-')) {                     
-            return true;
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
           }
+          return false;
         }
-        return false;
-      }
-      const onCopySuccess = function(e) {
-        // button target
-        const button = e.trigger;
-        // don't keep focus
-        button.blur();
-        // flash "checked"
-        button.classList.add('code-copy-button-checked');
-        var currentTitle = button.getAttribute("title");
-        button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
-        setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
           }
-          button.setAttribute("title", currentTitle);
-          button.classList.remove('code-copy-button-checked');
-        }, 1000);
-        // clear code selection
-        e.clearSelection();
-      }
-      const getTextToCopy = function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
           for (const childEl of codeEl.children) {
             if (isCodeAnnotation(childEl)) {
               childEl.remove();
             }
           }
           return codeEl.innerText;
-      }
-      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-        text: getTextToCopy
-      });
-      clipboard.on('success', onCopySuccess);
-      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-          text: getTextToCopy,
-          container: window.document.getElementById('quarto-embedded-source-code-modal')
-        });
-        clipboardModal.on('success', onCopySuccess);
-      }
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-        var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
         }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-            // undo the damage that might have been done by quarto-nav.js in the case of
-            // links that we want to consider external
-            if (link.dataset.originalHref !== undefined) {
-              link.href = link.dataset.originalHref;
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
             }
           }
-        }
-      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-        const config = {
-          allowHTML: true,
-          maxWidth: 500,
-          delay: 100,
-          arrow: false,
-          appendTo: function(el) {
-              return el.closest('section.slide') || el.parentElement;
-          },
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'light-border',
-          placement: 'bottom-start',
-        };
-        if (contentFn) {
-          config.content = contentFn;
-        }
-        if (onTriggerFn) {
-          config.onTrigger = onTriggerFn;
-        }
-        if (onUntriggerFn) {
-          config.onUntrigger = onUntriggerFn;
-        }
-          config['offset'] = [0,0];
-          config['maxWidth'] = 700;
-        window.tippy(el, config); 
-      }
-      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-      for (var i=0; i<noterefs.length; i++) {
-        const ref = noterefs[i];
-        tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-          try { href = new URL(href).hash; } catch {}
-          const id = href.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note) {
-            return note.innerHTML;
-          } else {
-            return "";
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
           }
-        });
-      }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
           }
-        } else {
-          return undefined;
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
         }
-      };
-      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-      for (var i=0; i<bibliorefs.length; i++) {
-        const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
-              }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
           });
         }
-      }
-    });
-    </script>
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
     
 
 </body></html>
