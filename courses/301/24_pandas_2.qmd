@@ -1,0 +1,471 @@
+---
+title: "Computation for Linguists"
+subtitle: "Pandasmonium, Day 2: Filtering & Counting Data"
+date: "October 19, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Time
+
+-   A **list of dicts**: one dict per row
+
+-   `pd.DataFrame(rows)`: dicts become **rows**, keys become **columns**
+
+-   Saving and loading:
+
+``` python
+df.to_csv("file.csv", index=False, encoding="utf-8-sig")
+df = pd.read_csv("file.csv")
+```
+
+## Activity: Latin Lexicon
+
+-   Copy these lists. They're a tiny Latin lexicon:
+
+``` python
+forms     = ["aqua", "rosa", "amō", "canis", "magnus", "videō", "puella", "bonus", "dominus", "portō", "lupus", "longus"]
+glosses   = ["water", "rose", "I love", "dog", "big", "I see", "girl", "good", "lord", "I carry", "wolf", "long"]
+pos       = ["noun", "noun", "verb", "noun", "adj", "verb", "noun", "adj", "noun", "verb", "noun", "adj"]
+syllables = [2, 2, 2, 2, 2, 3, 3, 2, 3, 2, 2, 2]
+```
+
+## Activity: Latin Lexicon
+
+1.  Using `zip()` and `.append()`, build a **list of dicts** called `latin_rows`, with the keys `"form"`, `"gloss"`, `"pos"`, and `"syllables"`.
+2.  Turn `latin_rows` into a DataFrame called `latin_df`, and print it.
+3.  Save it as `latin_lexicon.csv`.
+
+## Activity: Latin Lexicon
+
+4.  Open the file in Excel (or Google Sheets). Do the macrons look right?
+5.  Load it back in with `pd.read_csv()`. Is it the same as `latin_df`?
+
+## Activity: Latin Lexicon (Solution)
+
+``` python
+latin_rows = []
+
+for f, g, p, s in zip(forms, glosses, pos, syllables):
+    latin_rows.append({
+        "form": f,
+        "gloss": g,
+        "pos": p,
+        "syllables": s
+    })
+
+latin_df = pd.DataFrame(latin_rows)
+print(latin_df)
+```
+## Activity: Latin Lexicon (Solution)
+
+``` python
+latin_df.to_csv("latin_lexicon.csv", index=False, encoding="utf-8-sig")
+
+check = pd.read_csv("latin_lexicon.csv")
+print(check)
+```
+
+## Review Activity: PIE Time
+
+- We're going to build this table using `pd`
+
+| root    | meaning     | Latin | Greek    | English |
+|:--------|:------------|:------|:---------|:--------|
+| *bʰer-  | 'to carry'  | ferō  | pʰérō    | bear    |
+| *ĝenh₁- | 'to beget'  | gignō | gígnomai | kin     |
+| *ped-   | 'foot'      | pēs   | poús     | foot    |
+| *doh₃-  | 'to give'   | dō    | dídōmi   | donate  |
+
+## Review Activity: PIE Time
+
+-   Build this table as a **list of dicts**, turn it into a DataFrame, save it as `pie_roots.csv`, and load it back in:
+
+```python
+root    = ["*bʰer-", "*ĝenh₁-", "*ped-", "*doh₃-"]
+meaning = ["to carry", "to beget", "foot", "to give"]
+latin   = ["ferō", "gignō", "pēs", "dō"]
+greek   = ["pʰérō", "gígnomai", "poús", "dídōmi"]
+english = ["bear", "kin", "foot", "donate"]
+```
+
+# *Alice*, One Word per Row
+
+## Why Bother with a Table?
+
+-   On Friday we built tables. Why?
+-   Back in Week 7, *Alice* was one long **list** of words
+-   A list can tell us *what* the words are. It can't easily tell us *where* they are.
+-   Today: one row per word, **plus the chapter it's in**
+
+## Step 1: Load *Alice*
+
+-   This is our code from Day 19:
+
+``` python
+import re
+import pandas as pd
+
+with open("../../data/gutenberg/alice.txt", "r", encoding="utf-8") as f:
+    alice_lines = f.readlines()
+
+while not alice_lines[0].startswith("*** START"):
+    alice_lines = alice_lines[1:]
+alice_lines = alice_lines[1:]
+
+while not alice_lines[-1].startswith("*** END"):
+    alice_lines = alice_lines[:-1]
+alice_lines = alice_lines[:-1]
+
+alice_text = "".join(alice_lines)
+```
+
+## Step 2: Split into Chapters
+
+-   Every chapter starts with a line like `CHAPTER IV.`
+-   So we can `re.split()` on that!
+
+``` python
+import re
+
+chapters = re.split(r"\nCHAPTER [IVXL]+", alice_text)
+print(len(chapters))
+```
+
+-   *Alice* has 12 chapters. Why do we get 13?
+
+## Step 2: Split into Chapters
+
+``` python
+print(chapters[0])
+```
+
+-   `chapters[0]` is everything *before* Chapter I: the title and the table of contents
+-   So we chop it off:
+
+``` python
+chapters = chapters[1:]
+print(len(chapters))
+```
+
+## Step 3: One Row per Word
+
+-   A **nested loop**: the outer loop goes through chapters, the inner loop through the words in each chapter
+
+``` python
+rows = []
+chapter_num = 0
+
+for chapter in chapters:
+    chapter_num += 1
+    words = re.split(r"[\W]+", chapter.lower())
+    words = [w for w in words if w != ""]
+    for w in words:
+        rows.append({"word": w, "chapter": chapter_num})
+
+alice_df = pd.DataFrame(rows)
+```
+
+-   What does **one row** stand for?
+
+## Looking at Our Table
+
+-   Run each of these. What do they tell you?
+
+``` python
+alice_df.head()
+```
+
+``` python
+alice_df.tail()
+```
+
+``` python
+len(alice_df)
+```
+
+``` python
+alice_df.columns
+```
+
+-   What is the difference between `.head()`, `.tail()` and `.head(20)`, `.tail(20)`?
+
+## One Column at a Time
+
+-   Square brackets + a column name give us one **column** (a Series):
+
+``` python
+alice_df["word"]
+```
+
+``` python
+alice_df["chapter"]
+```
+
+-   Syntactically, this is just like getting a value from a dict with its key.
+
+## Activity: Meet `alice_df`
+
+1.  How many words are in *Alice*?
+2.  Look at the first 30 rows. Is it all story, or did anything else sneak in?
+3.  Pull out the `"word"` column and store it in a variable called `words`. Is it the same length as `alice_df`?
+
+# Filtering
+
+## Which Rows Are "queen"?
+
+``` python
+alice_df[alice_df["word"] == "queen"]
+```
+
+-   This gives us only the rows where the word is *queen*
+-   How many are there? How would we store that value?
+
+## What's Inside the Brackets?
+
+-   Let's look at just the inside part:
+
+``` python
+alice_df["word"] == "queen"
+```
+
+-   One `True` or `False` for **every row**
+-   `alice_df[ ... ]` keeps the rows that are `True` and throws out the rest
+-   It's our old friend the conditional, run on every row at once
+
+## Filtering with String Methods
+
+-   Remember `.endswith()` and `.startswith()` from Day 17?
+-   Add `.str` and pandas runs them on **every row** of a column:
+
+``` python
+alice_df[alice_df["word"].str.endswith("ly")]
+```
+
+``` python
+alice_df[alice_df["word"].str.startswith("un")]
+```
+
+-   Do all of these look like *-ly* adverbs and *un-* prefixes?
+
+## Activity: One Filter at a Time
+
+1.  How many times does the word **alice** appear in the book? (Hint: `len()`)
+2.  Find all the words that end in *-ing*. Are they all verbs?
+3.  How many words start with *un-*? Store them in a variable called `un`.
+
+## Filtering Out `under`
+
+- But *under* doesn't have the 'un-' prefix! 
+- We can use the following code to filter it out:
+
+```python
+un = alice_df[alice_df["word"].str.startswith("un")]   # step 1: all un- words
+un = un[un["word"] != "under"]                         # step 2: drop "under"
+```
+
+## Two Conditions at Once
+
+-   Use `&` for "and", `|` for "or"
+-   Each condition needs its own **parentheses**:
+
+``` python
+alice_df[(alice_df["word"] == "queen") & (alice_df["chapter"] == 8)]
+```
+
+``` python
+alice_df[(alice_df["word"] == "king") | (alice_df["word"] == "queen")]
+```
+
+## What about combining `&` and `|`?
+
+``` python
+alice_df[((alice_df["word"] == "king") | (alice_df["word"] == "queen")) & (alice_df["chapter"] == 8)]
+```
+
+- Note the use of parentheses to specify the scope of the operators.
+
+## A simpler way: `.isin()`
+
+```python
+alice_df[(alice_df["word"].isin(["king", "queen"])) & (alice_df["chapter"] == 8)]
+```
+
+-   `.isin()` checks whether each row's value is **in** a list (here ["king", "queen"])
+
+
+## Filtering by a List: `.isin()`
+
+-   Remember our **stopword** list from Day 18?
+
+``` python
+stopwords = ["the", "to", "and", "of", "a", "her", "i", "in", "was", "it",
+             "she", "he", "be", "that", "you", "not", "had", "as", "his", "for",
+             "with", "is", "have", "but", "at", "so", "all", "my", "been", "him",
+             "on", "by", "could", "would", "very", "no", "what", "which", "they",
+             "were", "there", "me", "an", "must", "this", "said", "from", "or",
+             "will", "any", "much", "than", "such", "their", "them", "if", "do",
+             "did", "one", "when", "your", "more", "are", "we", "who", "up",
+             "out", "down", "into", "s", "t"]
+```
+
+-   `.isin()` checks whether each row's value is **in** a list:
+
+``` python
+alice_df[alice_df["word"].isin(stopwords)]
+```
+
+## Flipping a Filter: `~`
+
+-   `~` flips `True` and `False`, like `not`
+-   So this keeps every word that is **not** a stopword:
+
+``` python
+content = alice_df[~alice_df["word"].isin(stopwords)]
+```
+
+-   Compare with Day 18:
+
+``` python
+alice_content = [w for w in alice_list if w not in stopwords]
+```
+
+## Activity: Combining Filters
+
+1.  Show all the words in **Chapter 1** that start with *un-*. Are they all prefixes?
+2.  How many times do **king** or **queen** appear in **Chapter 12**? (Try it with `.isin()`!)
+3.  How many words in *Alice* are **content words**? What fraction of the whole book is that?
+
+# Counting
+
+## `.value_counts()`
+
+-   Counts how many times each value appears in a column, most common first:
+
+``` python
+alice_df["word"].value_counts()
+```
+
+``` python
+content["word"].value_counts().head(10)
+```
+
+## How Long Is Each Chapter?
+
+-   Each row is one word, so counting rows **per chapter** = chapter length:
+
+``` python
+alice_df["chapter"].value_counts()
+```
+
+-   `.value_counts()` sorts by count. To sort by chapter number instead:
+
+``` python
+alice_df["chapter"].value_counts().sort_index()
+```
+
+## Activity: Counting
+
+1.  How many **content words** does each chapter have? (Use the df `content`) Is the longest chapter still the longest?
+2.  What are the 10 most common **content words** in **Chapter 7**? Can you tell what happens in that chapter from the words alone?
+
+## Phew! All Done. Save Your Work for Wednesday
+
+``` python
+alice_df.to_csv("alice_words.csv", index=False, encoding="utf-8-sig")
+```
+
+-   On Wednesday we'll start by loading this file back in.
+
+# Activity Answers
+
+## Review Activity: PIE Time
+
+``` python
+import pandas as pd
+
+pie_rows = [
+    {"root": "*bʰer-",  "meaning": "to carry", "Latin": "ferō",  "Greek": "pʰérō",    "English": "bear"},
+    {"root": "*ĝenh₁-", "meaning": "to beget", "Latin": "gignō", "Greek": "gígnomai", "English": "kin"},
+    {"root": "*ped-",   "meaning": "foot",     "Latin": "pēs",   "Greek": "poús",     "English": "foot"},
+    {"root": "*doh₃-",  "meaning": "to give",  "Latin": "dō",    "Greek": "dídōmi",   "English": "donate"}
+]
+
+pie_df = pd.DataFrame(pie_rows)
+pie_df.to_csv("pie_roots.csv", index=False, encoding="utf-8-sig")
+
+check = pd.read_csv("pie_roots.csv")
+print(check)
+```
+
+## Meet `alice_df`
+
+``` python
+# 1. Number of words
+print(len(alice_df))
+
+# 2. First 30 rows: the chapter title is in there too!
+print(alice_df.head(30))
+
+# 3. One column
+words = alice_df["word"]
+print(len(words) == len(alice_df))
+```
+
+## One Filter at a Time
+
+``` python
+# 1. How many times does "alice" appear?
+print(len(alice_df[alice_df["word"] == "alice"]))
+
+# 2. -ing words (look for "nothing", "king", "thing"...)
+print(alice_df[alice_df["word"].str.endswith("ing")])
+
+# 3. un- words
+un = alice_df[alice_df["word"].str.startswith("un")]
+print(len(un))
+```
+
+## Combining Filters
+
+``` python
+# 1. Chapter 1 words starting with un-
+print(alice_df[(alice_df["chapter"] == 1) & (alice_df["word"].str.startswith("un"))])
+
+# 2. king or queen in Chapter 12
+royals = alice_df[(alice_df["word"].isin(["king", "queen"])) & (alice_df["chapter"] == 12)]
+print(len(royals))
+
+# 3. Content words, and what fraction of the book they are
+content = alice_df[~alice_df["word"].isin(stopwords)]
+print(len(content))
+print(len(content) / len(alice_df))
+```
+
+## Counting
+
+``` python
+# 1. Content words per chapter
+content = alice_df[~alice_df["word"].isin(stopwords)]
+print(content["chapter"].value_counts())
+
+# 2. Top content words in Chapter 7 ("A Mad Tea-Party")
+ch7_content = alice_df[(alice_df["chapter"] == 7) & (~alice_df["word"].isin(stopwords))]
+print(ch7_content["word"].value_counts().head(10))
+```
+
+<!-- F26 REWRITE: pandas = a tool for asking questions of linguistic data. One dataset all day (Alice, one row per word, with its chapter), so every tool answers a real question. F25 version archived in _archive_resequencing. -->
