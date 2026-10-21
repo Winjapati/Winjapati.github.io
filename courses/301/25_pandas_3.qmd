@@ -1,0 +1,812 @@
+---
+title: "Computation for Linguists"
+subtitle: "Pandasmonium, Day 3: Making New Information"
+date: "October 21, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+# How Today Works
+
+## Working on Your Own Today
+
+-   Today you'll work through these slides **on your own**, at your own pace
+-   Open your `LIN_301` repo in VS Code
+-   Make a new file, `day25.qmd`, in the **same folder** as Monday's work (so the file paths still work)
+-   Every code block on a slide gets its **own** chunk in `day25.qmd`:
+
+```` markdown
+```{{python}}
+alice_df.head()
+```
+````
+
+-   Click **Run Cell** above each chunk, and look at the output before moving on
+
+## Notes Go Outside the Chunks
+
+-   Write your notes and answers as plain text **between** chunks:
+
+```` markdown
+## Where is the Queen?
+
+She takes over in Chapter 8.
+
+```{{python}}
+queen = alice_df[alice_df["word"] == "queen"]
+queen["chapter"].value_counts().sort_index()
+```
+````
+
+-   Use `##` headings to keep track of which slide you're on
+
+## How to Read Today's Slides
+
+-   **Check:** what you should see when you run the code
+    -   Your numbers may be a little different if your copy of the book is different. *Close* is fine.
+-   **Questions:** when a slide asks you something, answer it first (in your head or as a note), **then** press → to see the answer
+-   **Activity:** try it yourself first. Answers are at the [end of the slides](#/answers).
+-   Stuck? See [If You Get Stuck](#stuck) near the end.
+
+# Setup
+
+## Step 0: Rebuild `alice_df`
+
+-   On Monday, we built `alice_df` (one row per word, with its chapter)
+-   On the next slide is **all** of Monday's code in one block
+-   Copy the whole block into the **first** chunk of `day25.qmd` and run it
+-   It also saves `alice_words.csv`, so you'll have it from now on
+-   **One change from Monday:** we split on `[\W_]+` instead of `[\W]+`
+    -   Gutenberg marks *italics* with underscores: `_very_`
+    -   `\W` treats `_` as part of a word, so Monday's code kept words like `_very_` and `_un_important`
+    -   Adding `_` to the brackets splits on underscores too: `_very_` → `very`
+
+## Step 0: Rebuild `alice_df` {.scrollable}
+
+``` python
+import re
+import pandas as pd
+
+# Stopwords (from Day 18)
+stopwords = ["the", "to", "and", "of", "a", "her", "i", "in", "was", "it",
+             "she", "he", "be", "that", "you", "not", "had", "as", "his", "for",
+             "with", "is", "have", "but", "at", "so", "all", "my", "been", "him",
+             "on", "by", "could", "would", "very", "no", "what", "which", "they",
+             "were", "there", "me", "an", "must", "this", "said", "from", "or",
+             "will", "any", "much", "than", "such", "their", "them", "if", "do",
+             "did", "one", "when", "your", "more", "are", "we", "who", "up",
+             "out", "down", "into", "s", "t"]
+
+# 1. Load Alice and cut off the Gutenberg header and footer
+with open("../../data/gutenberg/alice.txt", "r", encoding="utf-8") as f:
+    alice_lines = f.readlines()
+
+while not alice_lines[0].startswith("*** START"):
+    alice_lines = alice_lines[1:]
+alice_lines = alice_lines[1:]
+
+while not alice_lines[-1].startswith("*** END"):
+    alice_lines = alice_lines[:-1]
+alice_lines = alice_lines[:-1]
+
+alice_text = "".join(alice_lines)
+
+# 2. Split into chapters (and drop everything before Chapter I)
+chapters = re.split(r"\nCHAPTER [IVXL]+", alice_text)
+chapters = chapters[1:]
+
+# 3. One row per word, with its chapter
+rows = []
+chapter_num = 0
+
+for chapter in chapters:
+    chapter_num += 1
+    words = re.split(r"[\W_]+", chapter.lower())   # split on \W AND on _
+    words = [w for w in words if w != ""]
+    for w in words:
+        rows.append({"word": w, "chapter": chapter_num})
+
+alice_df = pd.DataFrame(rows)
+
+# 4. Save it for next time
+alice_df.to_csv("alice_words.csv", index=False, encoding="utf-8-sig")
+```
+
+## Check Your Setup
+
+``` python
+print(len(alice_df))
+print(alice_df["chapter"].nunique())
+print(alice_df.head())
+```
+
+-   **Check:** about **27,300** rows, **12** chapters, and the first words are *down the rabbit hole alice*...
+-   `FileNotFoundError`? Your `alice.txt` is somewhere else. Fix the path in `open(...)` to match where your file lives.
+
+# Review
+
+## Recap from Last Time
+
+-   One column: `df["word"]`
+-   Filter: `df[df["word"] == "queen"]`
+    -   String methods: `df["word"].str.endswith("ly")`
+    -   Two conditions: `(...) & (...)`, `(...) | (...)`
+    -   A list: `df["word"].isin(stopwords)`, flipped with `~`
+
+## `.value_counts()`
+
+-   Counts how many times each value appears in a column, most common first:
+
+``` python
+alice_df["word"].value_counts()
+```
+
+-   Now just the **content words**, top 10:
+
+``` python
+content = alice_df[~alice_df["word"].isin(stopwords)]
+content["word"].value_counts().head(10)
+```
+
+-   **Check:** the top content word should be a name you know
+
+## How Long Is Each Chapter?
+
+-   Each row is one word, so counting rows **per chapter** = chapter length:
+
+``` python
+alice_df["chapter"].value_counts()
+```
+
+-   `.value_counts()` sorts by count. To sort by chapter number instead:
+
+``` python
+alice_df["chapter"].value_counts().sort_index()
+```
+
+-   **Check:** with `.sort_index()`, the chapters go 1, 2, 3... 12
+
+## Review Activity
+
+-   What are the 5 most common **content words** in **Chapter 1**?
+-   We'll build the answer in three steps:
+    1.  Start with the content words
+    2.  Keep only the Chapter 1 rows
+    3.  Count the words
+
+## Step 1: Start with Content Words
+
+-   You already made `content` on the `.value_counts()` slide:
+
+``` python
+content = alice_df[~alice_df["word"].isin(stopwords)]
+```
+
+-   Every row in `content` is a word that is **not** a stopword
+-   So the "content word" part is already done!
+
+## Step 2: Keep Only Chapter 1
+
+-   Filter `content` the same way we filtered `alice_df` on Monday:
+
+``` python
+ch1_content = content[content["chapter"] == ___]
+print(ch1_content.head())
+```
+
+-   Fill in the blank and run it
+-   **Check:** every row in the `chapter` column should say `1`
+
+## Step 3: Count the Words
+
+-   `.value_counts()` counts **one column**. So pick the column first, then count:
+
+``` python
+ch1_content[___].value_counts().head(___)
+```
+
+-   Which column has the words? How many do we want?
+-   **Check:** the top word should be a name you know
+
+## Watch Out!
+
+-   Inside `df[ ... ]`, each piece has to be a **True/False test**:
+
+``` python
+content[content["chapter"] == 1]     # a test: True or False for each row
+content[content["word"]]             # NOT a test: just the column. Error!
+```
+
+-   `.value_counts` needs its parentheses: `.value_counts()`
+-   Pick a column **before** you count: `ch1_content["word"].value_counts()`
+    -   On the whole table, `.value_counts()` counts word **+** chapter pairs, not just words
+
+## Bonus: All in One Line
+
+-   Steps 1 and 2 can be one filter on `alice_df`, with **two** conditions:
+
+``` python
+ch1_content = alice_df[(alice_df["chapter"] == 1) & (~alice_df["word"].isin(stopwords))]
+ch1_content["word"].value_counts().head(5)
+```
+
+-   Same answer! Run it and compare.
+-   Use whichever version makes more sense to you.
+
+## Review: Filtering -- Where Is the Queen?
+
+-   Filter first, then count:
+
+``` python
+queen = alice_df[alice_df["word"] == "queen"]
+queen["chapter"].value_counts().sort_index()
+```
+
+-   When does the Queen first show up in the story? When does she take over?
+
+. . .
+
+-   She's **mentioned** in Chapters 6 and 7 (just a few times)
+-   She **takes over** in Chapter 8: about 36 times!
+-   Filter + count = a map of where a character lives in the book
+
+## Activity: Filter, then Count
+
+1.  In which chapters does the **cat** appear? The **hatter**?
+2.  How many *-ly* words are there in each chapter?
+
+-   **Challenge:** The **Mock Turtle** and the **Gryphon** show up late in the book. Do they always appear in the same chapters? Count both, chapter by chapter.
+-   Answers at the [end of the slides](#/answers)
+
+## The Old Way vs. the Pandas Way
+
+-   Here's the Queen question with just loops and dicts:
+
+``` python
+queen_by_chapter = {}
+
+for w, ch in zip(alice_df["word"], alice_df["chapter"]):
+    if w == "queen":
+        if ch in queen_by_chapter:
+            queen_by_chapter[ch] += 1
+        else:
+            queen_by_chapter[ch] = 1
+
+print(queen_by_chapter)
+```
+
+-   And the pandas way:
+
+``` python
+alice_df[alice_df["word"] == "queen"]["chapter"].value_counts().sort_index()
+```
+
+-   Run both. Do you get the same numbers?
+
+# New Columns
+
+## Remember Adding Aspiration?
+
+-   Last week, we added a new key to every stop, one at a time, with a loop:
+
+``` python
+for ph, features in stops.items():
+    if features["voice"] == "voiceless":
+        stops[ph]["aspirated"] = True
+    else:
+        stops[ph]["aspirated"] = False
+```
+
+-   In pandas, we add a new **column** to every row at once.
+
+## Adding a Column
+
+-   How long is each word?
+
+``` python
+alice_df["length"] = alice_df["word"].str.len()
+alice_df.head()
+```
+
+-   **Check:** a new `length` column: *down* = 4, *the* = 3, *rabbit* = 6...
+-   Or, with a list comprehension (same result!):
+
+``` python
+alice_df["length"] = [len(w) for w in alice_df["word"]]
+```
+
+## True/False Columns
+
+-   A column can also hold `True`/`False`, the same filters we used on Monday:
+
+``` python
+alice_df["is_ly"] = alice_df["word"].str.endswith("ly")
+alice_df["is_stopword"] = alice_df["word"].isin(stopwords)
+alice_df.head(10)
+```
+
+-   **Check:** *the* should be `True` under `is_stopword`; *rabbit* should be `False`
+
+## A Column with One Value
+
+-   We can also give *every* row the same value:
+
+``` python
+alice_df["text"] = "alice"
+alice_df.head()
+```
+
+-   You may be wondering...
+    - Why on earth would we want a column where every row says `"alice"`?
+    - This will be useful when we put **two books in one table** (in a few slides).
+
+# Types, Tokens & Sorting
+
+## Tokens & Types, Again
+
+-   Remember type-token ratio from Day 14?
+
+``` python
+tokens = len(alice_df)
+types = alice_df["word"].nunique()     # number of unique words
+
+print(tokens, types, types / tokens)
+```
+
+-   `.nunique()` = "number of unique values"; like `len(set(...))`
+-   **Check:** about 27,300 tokens, about 2,560 types, ratio about 0.09
+
+## Sorting
+
+-   `.sort_values()` sorts the rows by a column:
+
+``` python
+alice_df.sort_values("length", ascending=False).head(10)
+```
+
+-   **Run the Above Code:** What's wrong with this list?
+
+. . .
+
+-   Repeats! *contemptuously* shows up twice. `.drop_duplicates()` keeps just the first row for each word:
+
+``` python
+alice_types = alice_df.drop_duplicates("word")
+alice_types.sort_values("length", ascending=False).head(10)
+```
+
+-   **Check:** the longest words in *Alice* are 14 letters long: *contemptuously*, *disappointment*, *affectionately*, *multiplication*
+
+# Two Texts, One Table
+
+## Building *Mansfield Park*
+
+-   Same steps as Alice, new file. Copy and run this whole block:
+-   **Check:** about **161,000** rows and **48** chapters
+
+## Building *Mansfield Park* {.scrollable}
+
+``` python
+with open("../../data/gutenberg/mansfield_park.txt", "r", encoding="utf-8") as f:
+    mp_lines = f.readlines()
+
+while not mp_lines[0].startswith("*** START"):
+    mp_lines = mp_lines[1:]
+mp_lines = mp_lines[1:]
+
+while not mp_lines[-1].startswith("*** END"):
+    mp_lines = mp_lines[:-1]
+mp_lines = mp_lines[:-1]
+
+mp_text = "".join(mp_lines)
+
+mp_chapters = re.split(r"\nCHAPTER [IVXL]+", mp_text)
+mp_chapters = mp_chapters[1:]
+
+mp_rows = []
+chapter_num = 0
+
+for chapter in mp_chapters:
+    chapter_num += 1
+    words = re.split(r"[\W_]+", chapter.lower())   # split on \W AND on _
+    words = [w for w in words if w != ""]
+    for w in words:
+        mp_rows.append({"word": w, "chapter": chapter_num})
+
+mp_df = pd.DataFrame(mp_rows)
+
+print(len(mp_df))
+print(mp_df["chapter"].nunique())
+```
+
+-   Notice how much code we copied from Alice? Week 10's **functions** will fix that.
+
+## Adding the Same Columns
+
+``` python
+mp_df["length"] = mp_df["word"].str.len()
+mp_df["is_ly"] = mp_df["word"].str.endswith("ly")
+mp_df["is_stopword"] = mp_df["word"].isin(stopwords)
+mp_df["text"] = "mansfield"
+```
+
+-   Now both tables have the same columns, including `text`
+
+## Stacking Two Tables
+
+-   `pd.concat()` stacks tables on top of each other:
+
+``` python
+books = pd.concat([alice_df, mp_df], ignore_index=True)
+
+print(len(alice_df), len(mp_df), len(books))
+books["text"].value_counts()
+```
+
+-   `ignore_index=True` renumbers the rows 0, 1, 2... all the way down
+-   **Check:** `len(books)` = `len(alice_df)` + `len(mp_df)` (about 188,700)
+-   The word `text` above the counts is just a label: it tells you the counts are of the `text` column
+
+## That's Why We Needed `text`
+
+-   In `books`, every row still knows which book it came from:
+
+``` python
+books.head()
+books.tail()
+```
+
+-   Without the `text` column, we couldn't tell an Alice word from an Austen word anymore
+-   Next: use `text` to compare the two books
+
+# Grouping
+
+## The Old Way
+
+-   In Detective Gutenberg, you found the average word length of two books:
+
+``` python
+alice_total = 0
+for w in alice_words:
+    alice_total += len(w)
+print(alice_total / len(alice_words))
+
+mp_total = 0
+for w in mansfield_words:
+    mp_total += len(w)
+print(mp_total / len(mansfield_words))
+```
+
+-   ...and a third book meant copying it all again.
+-   (Don't run this code: it's just a reminder.)
+
+## The Pandas Way: `.groupby()`
+
+``` python
+books.groupby("text")["length"].mean()
+```
+
+-   Read it left to right:
+    1.  `books.groupby("text")`: split the rows into groups by `text`
+    2.  `["length"]`: in each group, take the `length` column
+    3.  `.mean()`: average it
+-   One line, however many books are in the table.
+
+## Other Things to Do with Groups
+
+-   Run each of these:
+
+``` python
+books.groupby("text").size()                # how many rows (tokens)?
+```
+
+``` python
+books.groupby("text")["word"].nunique()     # how many types?
+```
+
+``` python
+books.groupby("text")["length"].max()       # longest word?
+```
+
+-   **Question:** *Mansfield Park* has about 3 times as many types as *Alice*. Does that mean Austen has a richer vocabulary?
+
+. . .
+
+-   Not necessarily! *Mansfield Park* is about **6 times longer**. A longer book has more chances to use new words.
+-   Comparing raw counts across texts of different sizes is a trap...
+
+# Counting Fairly
+
+## Raw Counts Mislead
+
+``` python
+books[books["is_ly"]]["text"].value_counts()
+```
+
+-   **Check:** *Mansfield Park* has about 2,700 *-ly* words; *Alice* about 430
+-   So Austen loves *-ly* words way more than Carroll?
+-   Remember Day 20: we compare **rates**, not raw counts
+
+## Rates with `.mean()`
+
+-   Here's a trick: Python counts `True` as `1` and `False` as `0`
+
+``` python
+books.groupby("text")["is_ly"].mean()
+```
+
+-   So the **mean** of a True/False column = the **proportion** of rows that are `True`
+-   Multiply by 1,000 for a rate per 1,000 words:
+
+``` python
+ly_rate = books.groupby("text")["is_ly"].mean() * 1000
+ly_rate
+```
+
+-   Look at the two rates. What happened to the big difference?
+
+. . .
+
+-   It mostly disappeared: about **16** vs. **17** *-ly* words per 1,000. The two writers are nearly the same!
+
+## Proportions with `.value_counts()`
+
+-   `.value_counts()` can give proportions instead of counts:
+
+``` python
+alice_df["word"].value_counts(normalize=True).head(10)
+```
+
+``` python
+mp_df["word"].value_counts(normalize=True).head(10)
+```
+
+-   Now we can compare the two books fairly, word by word.
+-   **Check:** *the* is #1 in both books: about 6% of *Alice*, about 4% of *Mansfield Park*
+
+# Plotting
+
+## One Line to a Chart
+
+-   A grouped result can go straight to a bar chart:
+
+``` python
+import matplotlib.pyplot as plt
+
+ly_rate.plot(kind="bar")
+plt.title("-ly Words per 1,000 Words")
+plt.xlabel("Text")
+plt.ylabel("Rate per 1,000 words")
+plt.show()
+```
+
+-   Same `plt.title()`, `plt.xlabel()`, `plt.ylabel()` as Day 18!
+-   **Check:** a chart appears below the chunk, with two bars of about the same height
+
+# Pandas Cheat Sheet
+
+## Pandas Cheat Sheet
+
+-   Before the activity: here's every pandas tool we've used so far, in one place
+-   Four slides:
+    1.  Building, saving & looking
+    2.  Filtering
+    3.  Counting & sorting
+    4.  New columns, grouping & plotting
+-   Come back to these whenever you get stuck!
+
+## Cheat Sheet 1: Building, Saving & Looking
+
+``` python
+df = pd.DataFrame(rows)          # list of dicts → table (dicts = rows, keys = columns)
+
+df.to_csv("file.csv", index=False, encoding="utf-8-sig")   # save
+df = pd.read_csv("file.csv")                                # load
+
+df.head()           # first 5 rows   (df.head(20) = first 20)
+df.tail()           # last 5 rows
+len(df)             # how many rows
+df.columns          # the column names
+df["word"]          # one column
+```
+
+## Cheat Sheet 2: Filtering
+
+-   Pattern: `df[ test ]` keeps the rows where the test is `True`
+
+``` python
+df[df["word"] == "queen"]                 # equals
+df[df["word"] != "under"]                 # does not equal
+df[df["word"].str.endswith("ly")]         # ends with
+df[df["word"].str.startswith("un")]       # starts with
+df[df["word"].isin(stopwords)]            # is in a list
+df[~df["word"].isin(stopwords)]           # ~ flips it: NOT in a list
+
+df[(df["word"] == "queen") & (df["chapter"] == 8)]    # & = and
+df[(df["word"] == "king") | (df["word"] == "queen")]  # | = or
+```
+
+-   Each condition gets its **own parentheses**
+
+## Cheat Sheet 3: Counting & Sorting
+
+``` python
+df["word"].value_counts()                  # count each value, most common first
+df["word"].value_counts().head(10)         # top 10
+df["word"].value_counts(normalize=True)    # proportions instead of counts
+df["chapter"].value_counts().sort_index()  # sort by the label (1, 2, 3...)
+
+df["word"].nunique()                       # how many unique values (types)
+df["length"].mean()                        # average
+df["length"].max()                         # biggest
+
+df.sort_values("length", ascending=False)  # sort rows, biggest first
+df.drop_duplicates("word")                 # keep one row per word
+```
+
+## Cheat Sheet 4: New Columns, Grouping & Plotting {.scrollable}
+
+``` python
+import matplotlib.pyplot as plt               # needed for plotting
+
+df["length"] = df["word"].str.len()           # new column from a string method
+df["is_ly"] = df["word"].str.endswith("ly")   # new True/False column
+df["is_she"] = df["word"] == "she"            # new True/False column from a test
+df["text"] = "alice"                          # same value in every row
+
+books = pd.concat([df1, df2], ignore_index=True)   # stack two tables
+
+books.groupby("text").size()                  # rows per group
+books.groupby("text")["length"].mean()        # average per group
+books.groupby("text")["word"].nunique()       # types per group
+books.groupby("text")["is_ly"].mean() * 1000  # True/False mean = rate per 1,000
+
+rate = books.groupby("text")["is_ly"].mean() * 1000
+rate.plot(kind="bar")                         # bar chart (.plot() alone = line chart)
+plt.title("Title")
+plt.xlabel("x-axis label")
+plt.ylabel("y-axis label")
+plt.show()
+```
+
+# Activity: Carroll vs. Austen
+
+## Activity: Carroll vs. Austen
+
+1.  Which book has longer words on average? Are you surprised?
+2.  Add a True/False column `is_she` (is the word *she*?), and one for *he*. What is the rate of each per 1,000 words, in each book?
+3.  What proportion of each book is **stopwords**?
+
+-   Add your new columns to `books` (not `alice_df` or `mp_df`)
+
+## Activity: Carroll vs. Austen
+
+4.  Make a **bar chart** of one of your comparisons, with a title and axis labels.
+5.  In 2–3 sentences: what do your numbers tell you about these two books? Write your answer as plain text (not in a chunk) at the bottom of `day25.qmd`.
+
+-   **Challenge:** Find the average word length in **each chapter** of *Alice*, and plot it with `.plot()` (a line chart). Does Carroll's vocabulary change over the book?
+-   Answers at the [end of the slides](#/answers)
+
+# Wrapping Up
+
+## If You Get Stuck {#stuck}
+
+-   `FileNotFoundError`: Python can't find the book. Check the path in `open(...)`.
+-   `KeyError: 'length'`: that column doesn't exist yet. Did you skip the slide that makes it?
+-   Using `&` or `|`? Put **each** condition in its own parentheses. Without them, you may get a `TypeError`, or worse, a wrong answer with no error at all!
+-   `NameError: name 'stopwords' is not defined`: run the Step 0 block first
+-   Chart never shows up: make sure you have `plt.show()` at the end
+-   Still stuck? Bring your question to class on Friday.
+
+## Before Friday
+
+1.  Work through all of today's slides and activities
+2.  Make sure `day25.qmd` runs from top to bottom with no errors (try **Run All**)
+3.  Commit and push `day25.qmd` to your `LIN_301` repo
+4.  Friday: a practice day with pandas
+
+-   Course project: Component 2 (due Nov 2) is only cleaning, loading, and storing your data. Today's counting and comparing tools are for **Component 3**.
+
+# Activity Answers {#answers}
+
+## Review Activity
+
+``` python
+# Step by step
+content = alice_df[~alice_df["word"].isin(stopwords)]
+ch1_content = content[content["chapter"] == 1]
+print(ch1_content["word"].value_counts().head(5))
+
+# Or in one filter
+ch1_content = alice_df[(alice_df["chapter"] == 1) & (~alice_df["word"].isin(stopwords))]
+print(ch1_content["word"].value_counts().head(5))
+
+# alice is #1 (28 times), then little, way, herself, think
+```
+
+## Filter, then Count
+
+``` python
+# 1. Where are the cat and the hatter?
+cat = alice_df[alice_df["word"] == "cat"]
+print(cat["chapter"].value_counts().sort_index())
+# mostly Chapters 6 and 8 (the Cheshire Cat)
+
+hatter = alice_df[alice_df["word"] == "hatter"]
+print(hatter["chapter"].value_counts().sort_index())
+# Chapters 7 (the tea party) and 11 (the trial)
+
+# 2. -ly words per chapter
+ly = alice_df[alice_df["word"].str.endswith("ly")]
+print(ly["chapter"].value_counts().sort_index())
+```
+
+## Filter, then Count: Challenge
+
+``` python
+turtle = alice_df[alice_df["word"] == "turtle"]
+print(turtle["chapter"].value_counts().sort_index())
+
+gryphon = alice_df[alice_df["word"] == "gryphon"]
+print(gryphon["chapter"].value_counts().sort_index())
+
+# Both live in Chapters 9 and 10, and come back briefly at the trial.
+# But the Gryphon also shows up in Chapter 11, and the Turtle doesn't.
+```
+
+## Carroll vs. Austen: 1–3
+
+``` python
+# 1. Average word length: Austen's words are longer (about 4.3 vs. 4.0 letters)
+print(books.groupby("text")["length"].mean())
+
+# 2. she and he, per 1,000 words
+books["is_she"] = books["word"] == "she"
+books["is_he"] = books["word"] == "he"
+print(books.groupby("text")["is_she"].mean() * 1000)   # alice ~20, mansfield ~14
+print(books.groupby("text")["is_he"].mean() * 1000)    # alice ~4.6, mansfield ~9.7
+
+# 3. Proportion of stopwords: about half of each book!
+print(books.groupby("text")["is_stopword"].mean())
+```
+
+## Carroll vs. Austen: 4
+
+``` python
+import matplotlib.pyplot as plt
+
+she_rate = books.groupby("text")["is_she"].mean() * 1000
+
+she_rate.plot(kind="bar")
+plt.title("'She' per 1,000 Words")
+plt.xlabel("Text")
+plt.ylabel("Rate per 1,000 words")
+plt.show()
+```
+
+## Carroll vs. Austen: Challenge
+
+``` python
+alice_only = books[books["text"] == "alice"]
+alice_lengths = alice_only.groupby("chapter")["length"].mean()
+
+alice_lengths.plot()
+plt.title("Average Word Length in Alice, by Chapter")
+plt.xlabel("Chapter")
+plt.ylabel("Average word length")
+plt.show()
+
+# Pretty flat: every chapter is between about 3.8 and 4.1 letters.
+```
+
+<!-- F26: Day 25 restructured for self-paced work (no class meeting). Step 0 rebuilds alice_df + saves alice_words.csv in one block; Check lines verified against the Gutenberg texts. -->
