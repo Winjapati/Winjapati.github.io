@@ -1,0 +1,139 @@
+---
+title: "Computation for Linguists"
+subtitle: "Pandasmonium, Day 4: Your Fandom in a Table"
+date: "October 23, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+# How Today Works
+
+## A Work Day
+
+-   Today you'll spend class working on **HW 5**, on your own
+-   A few slides first, then the rest of class is yours
+-   HW 5 is due **Wednesday, October 28**
+
+## Plan for Today
+
+1.  What HW 5 asks you to do
+2.  Two handy tools for your new columns
+3.  Starting the assignment
+
+# HW 5: Your Fandom in a Table
+
+## The Assignment
+
+-   Pick a show, movie, or band you love
+-   Find a **script** (at least one episode or movie) or **lyrics** (at least five songs)
+-   Turn it into a table with **one row per line**, add some columns of your own, and save it as a CSV
+-   The whole assignment is one paragraph. Read it carefully!
+
+## Where to Find Your Text
+
+-   **TV scripts:** [Forever Dreaming](https://transcripts.foreverdreaming.org/), or your show's fan wiki on [Fandom](https://www.fandom.com/) (look for "Transcripts")
+-   **Movie scripts:** [IMSDb](https://imsdb.com/)
+-   **Lyrics:** [Genius](https://genius.com/) or any other lyrics site
+-   **Plays:** [Project Gutenberg](https://www.gutenberg.org/)
+
+## Transcript or Screenplay?
+
+-   A **transcript** puts the speaker and the line together:
+
+```
+JOEY: How you doin'?
+```
+
+-   A **screenplay** puts the name on its own line, with the dialogue below:
+
+```
+                    JOEY
+          How you doin'?
+```
+
+-   Transcripts are **much** easier to clean. Look at a few pages before you pick!
+
+## Saving Your Text
+
+-   Select the text in your browser, copy it, and paste it into a new file in VS Code
+-   Save it as `hw5_raw.txt`, in `homework/hw5`
+-   Write down where you got it: you'll need to say so in the homework
+
+## Remember *Alice*?
+
+-   On Monday, we went from raw text to a table:
+    1.  Read the file with `.readlines()`
+    2.  Loop through it, keeping only what we wanted
+    3.  Build a **list of dicts**, one dict per row
+    4.  `pd.DataFrame()` it
+-   The structure of the assignment is the same!
+
+## Look Before You Code
+
+-   Open your `hw5_raw.txt` and read through it **before** you write any code
+-   What's in there besides lines? Titles? Scene headings? *\[Chorus\]*? Blank lines?
+-   How can you tell who's speaking, or which song you're in?
+-   Your answers to these questions **are** your cleaning plan
+
+# Two Handy Tools
+
+## `.str.lower()`
+
+-   Lowercases **every row** of a column at once
+-   Keep the original, and add a new column:
+
+``` python
+df["lower"] = df["line"].str.lower()
+```
+
+## `.str.contains()`
+
+-   Checks whether a string appears **anywhere** in each row, and gives one True or False per row:
+
+``` python
+df["mentions_love"] = df["lower"].str.contains("love")
+```
+
+-   Note: **regex** works! `r"\blove\b"` matches *love* but not *glove* (`\b` = word boundary)
+-   `?`, `.`, `(`, and `)` are special in regex: put a `\` in front to search for the real character
+
+## No Code Hints
+
+-   The homework doesn't tell you which code to use. Figuring that out **is** the homework.
+-   The end of the file lists **every operation** you'll need, all from class
+-   GenAI: OK to explain an error, not OK to write your solutions. Disclose it either way.
+
+# Starting the Assignment
+
+## Get Started
+
+1.  Read the HW 5 instructions on the course website (don't type your answers into that file!)
+2.  Make a `hw5` folder inside your `homework/` folder, with your own `hw5_pandas_lastname_firstname.qmd` in it
+3.  Find your text and save it as `hw5_raw.txt`
+4.  Make your `.gitignore` (see **Submission** in the homework), so your text stays off GitHub
+5.  Goal: by the end of class, have your text read into Python and your first DataFrame built
+
+## If You Get Stuck {#stuck}
+
+-   `FileNotFoundError`: is `hw5_raw.txt` in the **same folder** as your `.qmd`?
+-   `UnicodeDecodeError`: add `encoding="utf-8"` to `open()`
+-   Lines full of `\n`: `.strip()` them
+-   `KeyError`: that column doesn't exist yet. Check the spelling in your dicts.
+-   `error: nothing to repeat`, or way too many matches: you searched for `?`, `.`, or `(` without a `\` in front
+-   Still stuck? Write your question as a note in your file, move on, and bring it to class on Monday.
+
+## Before You Leave
+
+1.  Commit and push what you have of HW 5 so far
+2.  **HW 5** is due **Wednesday, October 28**
+3.  **Project Component 2** is due **Monday, November 2**

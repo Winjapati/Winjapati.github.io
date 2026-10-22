@@ -1,0 +1,113 @@
+---
+title: "HW 5 — Pandas-monium: Your Fandom in a Table"
+subtitle: "LIN 301: Computation for Linguists"
+author: "Dr. Andrew M. Byrd"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-tools: true
+jupyter: python3
+fontsize: 12pt
+---
+
+**Due:** Wednesday, October 28, 2026. We'll start this in class on Friday, October 23.
+
+## The Assignment
+
+Pick a show, movie, or band you love, and find the **script** of at least one episode or movie, or the **lyrics** of at least five songs by one artist, online (see [Where to Find Your Text](#where) below). Copy the text into a plain text file called `hw5_raw.txt` in your `homework/hw5` folder. Then make a Quarto document called `hw5_pandas_lastname_firstname.qmd` in the same folder, and start it with a note saying where you got your text. In that document, read the file into Python, clean it, and turn it into a DataFrame with **one row per line**: one line of dialogue, or one line of a song. Throw out anything that isn't really a line, such as blank lines, titles, scene headings, stage directions, or labels like *\[Chorus\]*. Your table must have at least **three columns taken from the text itself**: the line, who says it (for a script) or which song it's from (for lyrics), and one more of your choosing (a scene number, a line number within the song, verse vs. chorus...). Then add at least **three new columns** with pandas, such as the length of each line, a lowercase version of it, whether it's a question, or whether it mentions a word you care about. Finally, save your table as `hw5_lastname_firstname.csv`, load it back in, and show its number of rows and its first 10 rows to prove it worked. End with a short paragraph: what does one row of your table stand for, what did you throw out and why, and what is one thing you noticed in your new columns? As always, explain in your own words what your code does, and say whether and how you used any AI tool. (The syllabus does not allow GenAI to *write* your homework solutions.)
+
+## Where to Find Your Text {#where}
+
+-   **TV scripts:** [Forever Dreaming](https://transcripts.foreverdreaming.org/) has fan-typed transcripts of many shows. Many shows' fan wikis on [Fandom](https://www.fandom.com/) also have a "Transcripts" page for each episode (search for your show's wiki plus *transcript*).
+-   **Movie scripts:** [IMSDb](https://imsdb.com/), the Internet Movie Script Database
+-   **Lyrics:** [Genius](https://genius.com/) or any other lyrics site
+-   **Plays:** [Project Gutenberg](https://www.gutenberg.org/) has thousands of plays, from Shakespeare to Oscar Wilde, in plain text
+
+**Tip:** a **transcript**, where each line looks like `JOEY: How you doin'?`, is much easier to clean than a **screenplay**, where the character's name sits on its own line and the dialogue is on the lines below it. Look at a few pages before you pick! (Transcripts on Fandom wikis are often tables: when you paste one into VS Code, the speaker and the line may be separated by a tab instead of a colon. In Python, a tab is written `"\t"`.)
+
+Select the text in your browser, copy it, and paste it into a new file in VS Code. Save it as `hw5_raw.txt`.
+
+------------------------------------------------------------------------
+
+## No Code Hints
+
+There are **no code hints** here: working out which tools to use is part of the assignment. Everything you need is in the [list at the end](#toolkit), and all of it was covered in class.
+
+------------------------------------------------------------------------
+
+## Submission
+
+Your script or lyrics are someone else's copyrighted work, and your `LIN_301` repo is public, so your text and your CSV stay **off** GitHub and go to Canvas instead.
+
+1.  Make sure your `.qmd` renders cleanly to HTML.
+2.  In your `homework/hw5` folder, make a file called `.gitignore` (with the dot!) containing these two lines. Git will now leave those files out of your repo:
+
+    ```
+    hw5_raw.txt
+    hw5_*.csv
+    ```
+
+3.  Commit and push your `homework/hw5` folder (your `.qmd`, the rendered `.html`, and `.gitignore`) to your `LIN_301` repo. Check on github.com that `hw5_raw.txt` and your CSV are **not** there.
+4.  On Canvas, submit the link to your `homework/hw5` folder on GitHub, and upload `hw5_raw.txt` and your CSV. The link will look like `https://github.com/your-username/LIN_301/tree/main/homework/hw5`
+
+------------------------------------------------------------------------
+
+## Grading Rubric (100 pts total)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| Raw text file of at least one episode or movie, or five songs, with its source noted | 10 |
+| Text read in and cleaned: only real lines are left | 20 |
+| DataFrame with one row per line and at least three columns from the text | 20 |
+| At least three new columns made with pandas | 15 |
+| CSV saved, loaded back in, and checked | 10 |
+| Closing paragraph: what one row stands for, what was thrown out and why, one thing noticed | 10 |
+| Explanation of the code holds up, and AI use is honestly disclosed | 10 |
+| File names correct; document renders without errors; GitHub link points to the `hw5` folder; text and CSV uploaded to Canvas, not GitHub | 5 |
+
+------------------------------------------------------------------------
+
+## Your Toolkit {#toolkit}
+
+**Reading and cleaning text**
+
+-   `open()` with `encoding="utf-8"`
+-   `.readlines()`
+-   `.strip()`
+-   `.split()`
+-   `.lower()`
+-   `.startswith()`
+-   `in`
+-   `!=`
+
+**Building a table**
+
+-   `for` loops
+-   `if` / `elif` / `else`
+-   a counter (`+= 1`)
+-   a list of dicts
+-   `.append()`
+-   `pd.DataFrame()`
+
+**Looking**
+
+-   `len()`
+-   `.columns`
+-   `.head()`
+-   `.tail()`
+-   `df["column"]`
+
+**New columns**
+
+-   `df["new_column"] = ...`
+-   `.str.len()`
+-   `.str.lower()`
+-   `.str.contains()`
+-   `.str.startswith()`
+-   `.str.endswith()`
+
+**Saving and checking**
+
+-   `.to_csv()` with `index=False` and `encoding="utf-8-sig"`
+-   `pd.read_csv()`
