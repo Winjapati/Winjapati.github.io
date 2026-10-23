@@ -19,10 +19,12 @@ Pick a show, movie, or band you love, and find the **script** of at least one ep
 
 ## Where to Find Your Text {#where}
 
--   **TV scripts:** [Forever Dreaming](https://transcripts.foreverdreaming.org/) has fan-typed transcripts of many shows. Many shows' fan wikis on [Fandom](https://www.fandom.com/) also have a "Transcripts" page for each episode (search for your show's wiki plus *transcript*).
+-   **TV scripts:** many shows' fan wikis on [Fandom](https://www.fandom.com/) have a "Transcripts" page for each episode (search for your show's wiki plus *transcript*).
 -   **Movie scripts:** [IMSDb](https://imsdb.com/), the Internet Movie Script Database
 -   **Lyrics:** [Genius](https://genius.com/) or any other lyrics site
 -   **Plays:** [Project Gutenberg](https://www.gutenberg.org/) has thousands of plays, from Shakespeare to Oscar Wilde, in plain text
+
+**Stay safe:** you only ever need to **copy text** from a web page. Never download a file, install anything, or click "Allow" on a pop-up to get your text. If a page says your computer is infected, or that you need to update something, it's a scam: close the tab. Script and lyrics sites are full of ads, so use an ad blocker if you can (for example, uBlock Origin). If you think something got onto your computer, contact UK's IT Service Desk.
 
 **Tip:** a **transcript**, where each line looks like `JOEY: How you doin'?`, is much easier to clean than a **screenplay**, where the character's name sits on its own line and the dialogue is on the lines below it. Look at a few pages before you pick! (Transcripts on Fandom wikis are often tables: when you paste one into VS Code, the speaker and the line may be separated by a tab instead of a colon. In Python, a tab is written `"\t"`.)
 

@@ -41,10 +41,18 @@ editor: source
 
 ## Where to Find Your Text
 
--   **TV scripts:** [Forever Dreaming](https://transcripts.foreverdreaming.org/), or your show's fan wiki on [Fandom](https://www.fandom.com/) (look for "Transcripts")
+-   **TV scripts:** your show's fan wiki on [Fandom](https://www.fandom.com/) (look for "Transcripts")
 -   **Movie scripts:** [IMSDb](https://imsdb.com/)
 -   **Lyrics:** [Genius](https://genius.com/) or any other lyrics site
 -   **Plays:** [Project Gutenberg](https://www.gutenberg.org/)
+
+## Stay Safe
+
+-   You only ever need to **copy text** from a web page
+-   **Never** download a file, install anything, or click "Allow" on a pop-up
+-   A page says your computer is infected, or needs an update? It's a **scam**. Close the tab.
+-   Use an ad blocker if you can (for example, uBlock Origin)
+-   Think something got onto your computer? Contact UK's IT Service Desk.
 
 ## Transcript or Screenplay?
 
