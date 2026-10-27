@@ -1,0 +1,929 @@
+---
+title: "Computation for Linguists"
+subtitle: "Functions, Day 1: Simplifying Your Code"
+date: "October 28, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Time
+
+-   HW 5: raw text → **list of dicts** → DataFrame → CSV
+-   `.str.lower()` and `.str.contains()` work on a **whole column** at once
+-   **HW 5 is due today.** Commit and push if you haven't!
+
+## Today's File
+
+-   Make a new file, `day27.qmd`, in the **same folder** as your Day 25 work
+    -   That way `../../data/gutenberg/` still points to your books
+-   Every code block on a slide gets its **own** chunk:
+
+```` markdown
+```{{python}}
+print("hello")
+```
+````
+
+# The Problem: Copy and Paste
+
+## Remember Detective Gutenberg?
+
+-   On Days 19–20 you compared *Alice* and *Mansfield Park*:
+    1.  Load the file
+    2.  Chop off the Gutenberg header and footer
+    3.  Split into words
+    4.  Measure: TTR, TTR on the first 10,000 words, average word length
+-   You did all four steps **twice**, once per book
+
+## Here's the Code with Three Authors {.scrollable}
+
+-   Here's the code with *The Odyssey* added.
+
+```python
+import re
+import matplotlib.pyplot as plt
+
+try:
+    with open("../../data/gutenberg/mansfield_park.txt", "r", encoding="utf-8") as f:
+        mansfield_lines = f.readlines()
+    with open("../../data/gutenberg/alice.txt", "r", encoding="utf-8") as f:
+        alice_lines = f.readlines()
+except FileNotFoundError:
+    print("Couldn't find a file — check the filename and location.")
+
+## alice text
+
+while not alice_lines[0].startswith("*** START"):
+    alice_lines = alice_lines[1:]     # chop off the first line
+alice_lines = alice_lines[1:]         # chop off the *** START line itself
+
+while not alice_lines[-1].startswith("*** END"):
+    alice_lines = alice_lines[:-1]    # chop off the last line
+alice_lines = alice_lines[:-1]        # chop off the *** END line itself
+
+alice_text = "".join(alice_lines)
+
+## mansfield park text
+
+while not mansfield_lines[0].startswith("*** START"):
+    mansfield_lines = mansfield_lines[1:]     # chop off the first line
+mansfield_lines = mansfield_lines[1:]         # chop off the *** START line itself
+
+while not mansfield_lines[-1].startswith("*** END"):
+    mansfield_lines = mansfield_lines[:-1]    # chop off the last line
+mansfield_lines = mansfield_lines[:-1]        # chop off the *** END line itself
+
+mansfield_text = "".join(mansfield_lines)
+
+## cleaning and splitting
+
+alice_words = re.split(r"[\W]+", alice_text.lower())
+alice_words = [w for w in alice_words if w != ""]
+
+mansfield_words = re.split(r"[\W]+", mansfield_text.lower())
+mansfield_words = [w for w in mansfield_words if w != ""]
+
+
+## TTR, total
+
+alice_ttr = len(set(alice_words)) / len(alice_words)
+mansfield_ttr = len(set(mansfield_words)) / len(mansfield_words)
+print("Alice TTR:", alice_ttr)
+print("Mansfield Park TTR:", mansfield_ttr)
+
+## TTR, 10000
+
+alice_ttr_10000 = len(set(alice_words[:10000])) / len(alice_words[:10000])
+mansfield_ttr_10000 = len(set(mansfield_words[:10000])) / len(mansfield_words[:10000])
+print("Alice TTR (10,000 words):", alice_ttr_10000)
+print("Mansfield Park TTR (10,000 words):", mansfield_ttr_10000)
+
+## Explore 3: Average Word Length
+
+alice_wd_len_total = 0
+for w in alice_words:
+    alice_wd_len_total += len(w)
+alice_avg_word_len = alice_wd_len_total / len(alice_words)
+
+mansfield_wd_len_total = 0
+for w in mansfield_words:
+    mansfield_wd_len_total += len(w)
+mansfield_avg_word_len = mansfield_wd_len_total / len(mansfield_words)
+
+print("Mansfield Park Average Word Length:", mansfield_avg_word_len)
+print("Alice Average Word Length:", alice_avg_word_len)
+
+## Plotting it Out
+
+plt.bar(["Lewis Carroll", "Jane Austen"], [alice_ttr_10000, mansfield_ttr_10000])
+plt.title("TTR Comparison: Alice vs Mansfield Park")
+plt.xlabel("Author")
+plt.ylabel("TTR")
+plt.show()
+
+## Adding a Third Author
+
+try:
+    with open("../../data/gutenberg/odyssey.txt", "r", encoding="utf-8") as f:
+        odyssey_lines = f.readlines()
+except FileNotFoundError:
+    print("Couldn't find a file — check the filename and location.")
+
+## odyssey text
+
+while not odyssey_lines[0].startswith("*** START"):
+    odyssey_lines = odyssey_lines[1:]     # chop off the first line
+odyssey_lines = odyssey_lines[1:]         # chop off the *** START line itself
+
+while not odyssey_lines[-1].startswith("*** END"):
+    odyssey_lines = odyssey_lines[:-1]    # chop off the last line
+odyssey_lines = odyssey_lines[:-1]        # chop off the *** END line itself
+
+odyssey_text = "".join(odyssey_lines)
+
+## cleaning and splitting
+
+odyssey_words = re.split(r"[\W]+", odyssey_text.lower())
+odyssey_words = [w for w in odyssey_words if w != ""]
+
+## TTR, total
+
+odyssey_ttr = len(set(odyssey_words)) / len(odyssey_words)
+print("The Odyssey TTR:", odyssey_ttr)
+
+## TTR, 10000
+
+odyssey_ttr_10000 = len(set(odyssey_words[:10000])) / len(odyssey_words[:10000])
+print("The Odyssey TTR (10,000 words):", odyssey_ttr_10000)
+
+## Explore 3: Average Word Length
+
+odyssey_wd_len_total = 0
+for w in odyssey_words:
+    odyssey_wd_len_total += len(w)
+odyssey_avg_word_len = odyssey_wd_len_total / len(odyssey_words)
+
+print("Mansfield Park Average Word Length:", mansfield_avg_word_len)
+print("Alice Average Word Length:", alice_avg_word_len)
+print("The Odyssey Average Word Length:", odyssey_avg_word_len)
+
+## Plotting it Out
+
+plt.bar(["Lewis Carroll", "Jane Austen", "Homer (tr. Butler)"], [alice_ttr_10000, mansfield_ttr_10000, odyssey_ttr_10000])
+plt.title("TTR Comparison: Alice vs Mansfield Park vs The Odyssey")
+plt.xlabel("Author")
+plt.ylabel("TTR")
+plt.show()
+```
+
+## Question {.scrollable}
+
+-   Compare the *Alice*, *Mansfield Park*, and the *Odyssey* blocks
+-   How are they **similar**? How are they **different**?
+
+```python
+import re
+import matplotlib.pyplot as plt
+
+try:
+    with open("../../data/gutenberg/mansfield_park.txt", "r", encoding="utf-8") as f:
+        mansfield_lines = f.readlines()
+    with open("../../data/gutenberg/alice.txt", "r", encoding="utf-8") as f:
+        alice_lines = f.readlines()
+except FileNotFoundError:
+    print("Couldn't find a file — check the filename and location.")
+
+## alice text
+
+while not alice_lines[0].startswith("*** START"):
+    alice_lines = alice_lines[1:]     # chop off the first line
+alice_lines = alice_lines[1:]         # chop off the *** START line itself
+
+while not alice_lines[-1].startswith("*** END"):
+    alice_lines = alice_lines[:-1]    # chop off the last line
+alice_lines = alice_lines[:-1]        # chop off the *** END line itself
+
+alice_text = "".join(alice_lines)
+
+## mansfield park text
+
+while not mansfield_lines[0].startswith("*** START"):
+    mansfield_lines = mansfield_lines[1:]     # chop off the first line
+mansfield_lines = mansfield_lines[1:]         # chop off the *** START line itself
+
+while not mansfield_lines[-1].startswith("*** END"):
+    mansfield_lines = mansfield_lines[:-1]    # chop off the last line
+mansfield_lines = mansfield_lines[:-1]        # chop off the *** END line itself
+
+mansfield_text = "".join(mansfield_lines)
+
+## cleaning and splitting
+
+alice_words = re.split(r"[\W]+", alice_text.lower())
+alice_words = [w for w in alice_words if w != ""]
+
+mansfield_words = re.split(r"[\W]+", mansfield_text.lower())
+mansfield_words = [w for w in mansfield_words if w != ""]
+
+
+## TTR, total
+
+alice_ttr = len(set(alice_words)) / len(alice_words)
+mansfield_ttr = len(set(mansfield_words)) / len(mansfield_words)
+print("Alice TTR:", alice_ttr)
+print("Mansfield Park TTR:", mansfield_ttr)
+
+## TTR, 10000
+
+alice_ttr_10000 = len(set(alice_words[:10000])) / len(alice_words[:10000])
+mansfield_ttr_10000 = len(set(mansfield_words[:10000])) / len(mansfield_words[:10000])
+print("Alice TTR (10,000 words):", alice_ttr_10000)
+print("Mansfield Park TTR (10,000 words):", mansfield_ttr_10000)
+
+## Explore 3: Average 
+odyssey_wd_len_total = 0
+for w in odyssey_words:
+    odyssey_wd_len_total += len(w)
+odyssey_avg_word_len = odyssey_wd_len_total / len(odyssey_words)
+
+print("Mansfield Park Average Word Length:", mansfield_avg_word_len)
+print("Alice Average Word Length:", alice_avg_word_len)
+print("The Odyssey Average Word Length:", odyssey_avg_word_len)
+
+## Plotting it Out
+
+plt.bar(["Lewis Carroll", "Jane Austen", "Homer (tr. Butler)"], [alice_ttr_10000, mansfield_ttr_10000, odyssey_ttr_10000])
+plt.title("TTR Comparison: Alice vs Mansfield Park vs The Odyssey")
+plt.xlabel("Author")
+plt.ylabel("TTR")
+plt.show()
+```
+
+## Similarities and Differences
+
+-   **Differences**:
+    - the **names**: `alice_lines` → `odyssey_lines`, `alice_words` → `odyssey_words`...
+    - the **filename**: `alice.txt` → `odyssey.txt`
+-   **Similarities**:
+    -   Every other character is the same
+-   About 30 lines of code per book. Ten books = 300 lines!
+
+## Activity: Spot the Bug
+
+-   Someone copied the *Mansfield Park* code to make the *Odyssey* version. Find the mistake:
+
+```python
+odyssey_words = re.split(r"[\W]+", odyssey_text.lower())
+odyssey_words = [w for w in odyssey_words if w != ""]
+
+odyssey_ttr = len(set(odyssey_words)) / len(mansfield_words)
+odyssey_ttr_10000 = len(set(odyssey_words[:10000])) / len(odyssey_words[:10000])
+```
+
+## Answer
+
+-   Problem:
+    - The TTR line divides *Odyssey* types by *Mansfield Park* **tokens**
+    -   Python won't give you an error! Both lists exist, so Python happily gives you a number
+        -   It's just the wrong number
+-   This is the real danger of copy and paste: a **wrong answer that's computed**
+
+## The Fix
+
+-   Write the steps **once**
+-   Give those steps a **name**
+-   Then **reuse** the name, once per book
+-   This what is called a **function**
+
+# Functions You Already Know
+
+## You've Been Using Functions All Semester
+
+```python
+print("Alice")
+len(alice_words)
+sorted(counts)
+open("alice.txt", "r", encoding="utf-8")
+pd.read_csv("alice_words.csv")
+```
+
+-   Function syntax: a name, then parentheses, with something inside
+-   Someone else wrote these. Today you'll write your own.
+
+## Input → Output
+
+```python
+len("wonderland")
+```
+
+-   **Input:** the string `"wonderland"`
+    -   What you put in the parentheses is called an **argument**
+-   **Output:** the number `10`
+    -   What comes back is called the **return value**
+-   `len()` doesn't care *which* string you give it: that's what makes it reusable
+
+## More Than One Input
+
+-   Some functions take two or more arguments, separated by commas:
+
+```python
+round(0.15625, 2)
+re.split(r"[\W]+", "Down the Rabbit-Hole")
+```
+
+-   **Check:** `0.16` and `['Down', 'the', 'Rabbit', 'Hole']`
+-   Order matters: `round(2, 0.15625)` is an error
+
+# Writing Your Own
+
+## Your First Function
+
+```python
+def pluralize(noun):
+    plural = noun + "s"
+    return plural
+```
+
+-   `def`: "I'm defining a function"
+-   `pluralize`: its name (you choose it)
+-   `(noun)`: the **parameter**, a variable that holds the input
+-   `:` and **indent**: the body, just like `for` and `if`
+-   `return`: what the function hands back
+
+## Defining Doesn't Run Anything
+
+-   Put `pluralize` in a chunk and run it
+-   What happened?
+-   Nothing! `def` only **teaches** Python the steps
+    -   Like writing down a recipe: nobody has cooked anything yet
+
+## Calling the Function
+
+```python
+pluralize("cat")
+```
+
+-   **Check:** `'cats'`
+
+## What Just Happened?
+
+-   `pluralize("cat")`:
+    1.  Python jumps into the function, with `noun = "cat"`
+    2.  The body runs: `plural = "cat" + "s"`
+    3.  `return plural` sends `"cats"` back
+    4.  `"cats"` takes the place of `pluralize("cat")`
+
+-   Call it again with `"dog"`: same steps, new input
+
+## Calling the Function
+
+-   You can store the return value in a variable, just like `n = len(words)`
+
+```python
+animals = pluralize("hedgehog")
+print(animals)
+```
+
+
+## Activity 1: Write Two Functions
+
+1.  Write `past_tense(verb)`, which adds `"ed"` to a verb
+    -   Test it on *walk*, *jump*, and *talk*
+    
+2.  Write `ttr(words)`, which returns the type-token ratio of a list of words
+    -   Test it on this list:
+
+```python
+test = ["the", "cat", "saw", "the", "dog"]
+```
+
+-   **Check:** `ttr(test)` gives `0.8` (4 types, 5 tokens)
+-   Answers are at the [end of the slides](#/answers)
+
+# `return` vs. `print`
+
+## Two Versions of `ttr`
+
+```python
+def ttr_print(words):
+    print(len(set(words)) / len(words))
+
+def ttr_return(words):
+    return len(set(words)) / len(words)
+```
+
+-   Run both on `test`. What happens?
+
+## Now Use the Result
+
+```python
+a = ttr_return(test)
+print(a * 100)
+```
+
+```python
+b = ttr_print(test)
+print(b * 100)
+```
+
+## What happened?
+
+-   **For ttr_return:** `80.0`\
+-   **For ttr_print:** `0.8`, then an error:
+    -   `TypeError: unsupported operand type(s) for *: 'NoneType' and 'int'`
+    -   `ttr_print` **showed** you the number, but never **gave** it back
+    -   A function without `return` gives back `None`: "nothing"
+
+## The Rule
+
+-   `print()` shows a value to **you**
+-   `return` hands a value back to **your code**
+-   If you want to use the result later (save it, plot it, put it in a DataFrame), you need `return`
+
+# Parameters
+
+## Two Parameters
+
+- We need to make an adjustment to our TTR function.
+- Remember how longer texts have lower TTRs? We need to compare the **same number** of words.
+
+```python
+def ttr_first(words, n):
+    return len(set(words[:n])) / len(words[:n])
+```
+
+## Parameters
+
+-   Arguments line up with parameters **in order**:
+
+```python
+ttr_first(test, 3)
+```
+-   `words = test`, `n = 3` 
+    - **Check:** `1.0`
+
+## Order Matters
+
+```python
+ttr_first(3, test)
+```
+
+-   **Check:** `TypeError: 'int' object is not subscriptable`
+    -   Python tried to do `3[:test]`
+-   You can also name the arguments, and then the order doesn't matter:
+
+```python
+ttr_first(n=3, words=test)
+```
+
+## Default Values
+
+-   We often want the first 10,000 words. Let's make that the **default** in defining our function:
+
+```python
+def ttr_first(words, n=10000):
+    return len(set(words[:n])) / len(words[:n])
+```
+
+- Default parameter:
+
+```python
+ttr_first(test)       # n is 10000
+```
+
+- Parameter defined:
+```python
+ttr_first(test, 3)    # n is 3
+```
+
+## Activity 2: Average Word Length
+
+-   Here's the old average-word-length code:
+
+```python
+alice_wd_len_total = 0
+for w in alice_words:
+    alice_wd_len_total += len(w)
+alice_avg_word_len = alice_wd_len_total / len(alice_words)
+```
+
+1.  Turn it into a function, `avg_word_len(words)`
+    -   Hint: the names inside a function don't need `alice_` anymore
+2.  Test it: `avg_word_len(["a", "bb", "ccc"])`
+    -   **Check:** `2.0`
+
+# Simplifying Detective Gutenberg
+
+## Step 1: What Repeats?
+
+-   For every book, we:
+    1.  Open the file and read its lines
+    2.  Chop off the header and footer
+    3.  Join, lowercase and split into words
+-   What changes from book to book?
+-   What do we want back at the end?
+
+## What changes? What do we want back?
+
+-   What changes: the **filename** → that's our parameter
+-   What we want back: the **list of words** → that's our `return`
+
+```python
+def load_words(filename):
+    # 1. open the file and read its lines
+    # 2. chop off the header and footer
+    # 3. join, lowercase, split, and remove empty strings
+    return words
+```
+
+## Activity 3: `load_words()`
+
+1.  Fill in the body of `load_words(filename)`, using the old *Alice* code
+    -   Open `"../../data/gutenberg/" + filename`
+    -   Rename `alice_lines` → `lines`, `alice_text` → `text`, `alice_words` → `words`
+
+```python
+import re
+
+try:
+    with open("../../data/gutenberg/alice.txt", "r", encoding="utf-8") as f:
+        alice_lines = f.readlines()
+except FileNotFoundError:
+    print("Couldn't find a file — check the filename and location.")
+
+## alice text
+
+while not alice_lines[0].startswith("*** START"):
+    alice_lines = alice_lines[1:]     # chop off the first line
+alice_lines = alice_lines[1:]         # chop off the *** START line itself
+
+while not alice_lines[-1].startswith("*** END"):
+    alice_lines = alice_lines[:-1]    # chop off the last line
+alice_lines = alice_lines[:-1]        # chop off the *** END line itself
+
+alice_text = "".join(alice_lines)
+
+## cleaning and splitting
+alice_words = re.split(r"[\W]+", alice_text.lower())
+alice_words = [w for w in alice_words if w != ""]
+```
+
+## Activity 3: What Would a Function Look Like?
+
+```python
+import re
+
+def load_words(filename):
+    with open("../../data/gutenberg/" + filename, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+
+    while not lines[0].startswith("*** START"):
+        lines = lines[1:]
+    lines = lines[1:]
+
+    while not lines[-1].startswith("*** END"):
+        lines = lines[:-1]
+    lines = lines[:-1]
+
+    text = "".join(lines)
+    words = re.split(r"[\W]+", text.lower())
+    words = [w for w in words if w != ""]
+    return words
+```
+
+## Activity 3: Test `load_words()`
+
+```python
+alice_words = load_words("alice.txt")
+mansfield_words = load_words("mansfield_park.txt")
+print(len(alice_words), len(mansfield_words))
+```
+
+-   **Check:** about **27,400** and **161,600**
+-   Your numbers may be a little different if your copy of the book is different
+
+## Step 2: One Report Per Book
+
+-   The measuring was repeated, too. Here's a function that does all three measures at once:
+
+```python
+def report(title, words):
+    ttr = len(set(words)) / len(words)
+    ttr_10000 = len(set(words[:10000])) / len(words[:10000])
+
+    letters = 0
+    for w in words:
+        letters += len(w)
+
+    print(title, "TTR:", ttr)
+    print(title, "TTR (10,000 words):", ttr_10000)
+    print(title, "Average Word Length:", letters / len(words))
+    return ttr_10000
+```
+
+## 
+
+-   What does it **print**? What does it **return**? Why both?
+
+## Answer
+
+-   It **prints** all three measures, so we can read them
+-   It **returns** only `ttr_10000`, because that's the number we need for the bar chart
+-   One function can do both: show you some things, and hand back what the code needs next
+
+## The Whole Thing {.scrollable}
+
+```python
+import re
+import matplotlib.pyplot as plt
+
+def load_words(filename):
+    with open("../../data/gutenberg/" + filename, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+
+    while not lines[0].startswith("*** START"):   # chop the header
+        lines = lines[1:]
+    lines = lines[1:]
+    while not lines[-1].startswith("*** END"):    # chop the footer
+        lines = lines[:-1]
+    lines = lines[:-1]
+
+    text = "".join(lines)
+    words = re.split(r"[\W]+", text.lower())
+    return [w for w in words if w != ""]
+
+def report(title, words):
+    ttr = len(set(words)) / len(words)
+    ttr_10000 = len(set(words[:10000])) / len(words[:10000])
+
+    letters = 0
+    for w in words:
+        letters += len(w)
+
+    print(title, "TTR:", ttr)
+    print(title, "TTR (10,000 words):", ttr_10000)
+    print(title, "Average Word Length:", letters / len(words))
+    return ttr_10000
+
+alice_ttr_10000 = report("Alice", load_words("alice.txt"))
+mansfield_ttr_10000 = report("Mansfield Park", load_words("mansfield_park.txt"))
+odyssey_ttr_10000 = report("The Odyssey", load_words("odyssey.txt"))
+
+plt.bar(["Lewis Carroll", "Jane Austen", "Homer (tr. Butler)"], [alice_ttr_10000, mansfield_ttr_10000, odyssey_ttr_10000])
+plt.title("TTR Comparison: Alice vs Mansfield Park vs The Odyssey")
+plt.xlabel("Author")
+plt.ylabel("TTR")
+plt.show()
+```
+
+## Before and After
+
+-   **Before:** about 130 lines, and every new book adds 30 more
+-   **After:** about 40 lines, and every new book adds **one**
+-   And no `mansfield_words` hiding in the *Odyssey* code
+
+## Change Once, Fix Everywhere
+
+-   Remember Day 25? We switched from `[\W]+` to `[\W_]+` to split on Gutenberg's underscores (`_very_`)
+-   **Before:** change it in every copy, and hope you didn't miss one
+-   **After:** change it in `load_words()`, and *every* book is fixed
+-   Try it: make the change, rerun, and watch the numbers move
+
+# Saving Your Functions
+
+## Copy and Paste... Again?
+
+-   Next time, you'll want `load_words()` and `ttr()` again
+-   Copying them into every new notebook is the same problem we started with!
+-   Fix: put your functions in their **own file**, and **import** it, just like `re` and `pandas`
+
+## Step 1: Make `lin301.py`
+
+-   In VS Code, make a new file in your `data` folder (next to `gutenberg/`)
+-   Name it `lin301.py`
+    -   Not `301.py`: Python names can't start with a number
+-   This file will grow all semester: every useful function you write goes here
+
+## Step 2: The Header
+
+-   Paste these lines at the very top of `lin301.py`:
+
+```python
+import os
+import re
+
+HERE = os.path.dirname(__file__)   # the folder lin301.py lives in: data/
+```
+
+-   `import re`: your functions use `re`, so the file needs it, even if your notebook already imported it
+-   `HERE`: lets `lin301.py` find `gutenberg/` no matter where your notebook is. Don't worry about how `__file__` works.
+
+## Activity 4: Move Your Functions In
+
+1.  Paste `ttr()`, `ttr_first()`, `avg_word_len()`, `load_words()` and `report()` into `lin301.py`, below the header
+2.  In `load_words()`, change the `open()` line to:
+
+```python
+    with open(os.path.join(HERE, "gutenberg", filename), "r", encoding="utf-8") as f:
+```
+
+3.  **Only** the `def` blocks go in the file: no test calls like `ttr(test)`
+4.  Save the file
+
+## Step 3: Import It
+
+-   Back in `day27.qmd`, in a new chunk:
+
+```python
+import sys
+sys.path.append("../../data")   # look for files in data/, too
+import lin301
+
+alice_words = lin301.load_words("alice.txt")
+lin301.ttr_first(alice_words)
+```
+
+-   **Check:** the same 10,000-word TTR you got for *Alice* earlier today
+-   `lin301.ttr_first`: "the `ttr_first` that lives in `lin301`"
+
+## Changed `lin301.py`? Restart!
+
+-   Python reads `lin301.py` **once**, when you import it
+-   If you edit the file afterwards, your notebook won't see the change until you:
+    1.  Click **Restart** at the top of the notebook
+    2.  Run your chunks again, starting with the `import`
+
+## Activity 5: A Fourth Author (if there's time)
+
+1.  Pick another Gutenberg book you've downloaded (from HW 4, or a new one)
+2.  Using **only** `lin301`, add it to the comparison: one `lin301.report()` line, plus one more bar
+3.  Which of your four authors has the richest vocabulary (highest TTR on 10,000 words)?
+
+## Before You Leave
+
+1.  Commit and push `lin301.py` along with `day27.qmd`
+2.  From now on, every notebook can start with the three `import` lines
+
+# Wrapping Up
+
+## Rules of Thumb
+
+-   Copied the same code **twice**? Make it a function.
+-   Name it with a **verb** for what it does: `load_words`, `report`, `pluralize`
+-   One function, **one job**
+-   If the result is needed later, **return** it
+
+## Next Time
+
+-   Functions that use **other** functions
+-   Functions that build **DataFrames**: fixing all the *Mansfield Park* code we copied from *Alice* on Day 25
+-   What happens to variables **inside** a function?
+-   All of it goes into `lin301.py`
+
+# Answers {#answers}
+
+## Activity 1
+
+```python
+def past_tense(verb):
+    return verb + "ed"
+
+past_tense("walk")    # 'walked'
+past_tense("jump")    # 'jumped'
+past_tense("talk")    # 'talked'
+
+def ttr(words):
+    return len(set(words)) / len(words)
+
+test = ["the", "cat", "saw", "the", "dog"]
+ttr(test)             # 0.8
+```
+
+-   Try `past_tense("run")`. Functions only know the rules you give them!
+
+## Activity 2
+
+```python
+def avg_word_len(words):
+    total = 0
+    for w in words:
+        total += len(w)
+    return total / len(words)
+
+avg_word_len(["a", "bb", "ccc"])   # 2.0
+```
+
+## Activity 3
+
+```python
+def load_words(filename):
+    with open("../../data/gutenberg/" + filename, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+
+    while not lines[0].startswith("*** START"):
+        lines = lines[1:]
+    lines = lines[1:]
+
+    while not lines[-1].startswith("*** END"):
+        lines = lines[:-1]
+    lines = lines[:-1]
+
+    text = "".join(lines)
+    words = re.split(r"[\W]+", text.lower())
+    words = [w for w in words if w != ""]
+    return words
+```
+
+## Activity 4: `lin301.py` {.scrollable}
+
+```python
+import os
+import re
+
+HERE = os.path.dirname(__file__)   # the folder lin301.py lives in: data/
+
+def ttr(words):
+    return len(set(words)) / len(words)
+
+def ttr_first(words, n=10000):
+    return len(set(words[:n])) / len(words[:n])
+
+def avg_word_len(words):
+    total = 0
+    for w in words:
+        total += len(w)
+    return total / len(words)
+
+def load_words(filename):
+    with open(os.path.join(HERE, "gutenberg", filename), "r", encoding="utf-8") as f:
+        lines = f.readlines()
+
+    while not lines[0].startswith("*** START"):
+        lines = lines[1:]
+    lines = lines[1:]
+    while not lines[-1].startswith("*** END"):
+        lines = lines[:-1]
+    lines = lines[:-1]
+
+    text = "".join(lines)
+    words = re.split(r"[\W_]+", text.lower())
+    return [w for w in words if w != ""]
+
+def report(title, words):
+    print(title, "TTR:", ttr(words))
+    print(title, "TTR (10,000 words):", ttr_first(words))
+    print(title, "Average Word Length:", avg_word_len(words))
+    return ttr_first(words)
+```
+
+-   Yours may look a little different (e.g., your original `report()`). That's fine, as long as it runs!
+
+## Activity 5
+
+```python
+import sys
+sys.path.append("../../data")
+import lin301
+import matplotlib.pyplot as plt
+
+alice_ttr_10000 = lin301.report("Alice", lin301.load_words("alice.txt"))
+mansfield_ttr_10000 = lin301.report("Mansfield Park", lin301.load_words("mansfield_park.txt"))
+odyssey_ttr_10000 = lin301.report("The Odyssey", lin301.load_words("odyssey.txt"))
+moby_ttr_10000 = lin301.report("Moby-Dick", lin301.load_words("moby_dick.txt"))
+
+plt.bar(["Lewis Carroll", "Jane Austen", "Homer (tr. Butler)", "Herman Melville"],
+        [alice_ttr_10000, mansfield_ttr_10000, odyssey_ttr_10000, moby_ttr_10000])
+plt.title("TTR Comparison: Four Authors")
+plt.xlabel("Author")
+plt.ylabel("TTR")
+plt.show()
+```
+
+-   Use your own book's filename and author
+
+# If You Get Stuck {#stuck}
+
+## Common Errors {.scrollable}
+
+-   `NameError: name 'pluralize' is not defined`: run the chunk with the `def` first (or check the spelling)
+-   `IndentationError`: the body of a function must be indented, just like a `for` loop
+-   `TypeError: ... missing 1 required positional argument`: you gave the function fewer arguments than it has parameters
+-   `NoneType` in an error: your function is missing `return`
+-   `FileNotFoundError`: is `day27.qmd` in the same folder as your Day 25 work?
+-   `ModuleNotFoundError: No module named 'lin301'`: is the file in `data/`, named exactly `lin301.py`? Did you run the `sys.path.append("../../data")` line first?
+-   `NameError: name 're' is not defined` (or `os`): the header is missing from the top of `lin301.py`
+-   `AttributeError: module 'lin301' has no attribute ...`: you added or renamed a function after importing. Restart and rerun!
