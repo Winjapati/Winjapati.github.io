@@ -1,0 +1,632 @@
+---
+title: "Computation for Linguists"
+subtitle: "Functions, Day 2: Simplifying Our Code"
+date: "October 30, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+# Review
+
+-   What did you learn last time?
+
+## Recap from Last Time
+
+```python
+def ttr_first(words, n=10000):
+    return len(set(words[:n])) / len(words[:n])
+```
+
+-   `def` **defines** a function; nothing runs until you **call** it
+-   **Parameters** (`words`, `n`) hold the inputs; arguments line up with them in order
+-   `n=10000` is a **default**: you can leave it out
+-   `return` hands the result back to your code (`print` only shows it to you)
+
+## Today's File {.smaller}
+
+-   First chunk: import Wednesday's functions
+
+```python
+import sys
+sys.path.append("../../data")
+from lin301 import *    # this allows you to call up all of the functions in the file, without using the lin301. initial part
+import re
+```
+
+-   No need to copy anymore! `lin301.load_words()`, `lin301.ttr()`, `lin301.ttr_first()`, `lin301.avg_word_len()` are all ready
+-   `lin301.py` not working? Copy the one at the end of Wednesday's slides into `data/`
+
+## Warm-Up:
+
+- Download "The Wonderful Wizard of Oz" ([https://www.gutenberg.org/cache/epub/55/pg55.txt](https://www.gutenberg.org/cache/epub/55/pg55.txt))
+- Save it as `oz.txt` in your `gutenberg` folder
+- Run:
+```python
+oz_words = load_words("oz.txt")
+print('The TTR of "The Wonderful Wizard of Oz" for the first 1000 words is: ', ttr_first(oz_words))
+print('The average word length in "The Wonderful Wizard of Oz" is: ', avg_word_len(oz_words))
+```
+
+# What Happens Inside a Function
+
+## Variables Inside Stay Inside
+
+-   After running `load_words()`, we can try to look at one of its variables:
+
+```python
+alice_words = load_words("alice.txt")
+print(lines)
+```
+## Variables Inside Stay Inside
+
+-   `lines` only exists **while** the function runs. When it returns, its variables are gone.
+-   Only the **return value** gets out
+
+```python
+alice_words = load_words("alice.txt")
+print(lines)
+```
+
+## Why That's a Good Thing
+
+```python
+alice_words = load_words("alice.txt")
+mansfield_words = load_words("mansfield_park.txt")
+```
+
+-   Both calls make their own `lines`, `text` and `words`
+-   They never step on each other, so we don't need `alice_lines`, `mansfield_lines`, `odyssey_lines`...
+-   Each call starts fresh
+
+# Functions That Use Functions
+
+## Building Blocks
+
+-   On Wednesday we wrote small functions, each with one job:
+    -   `ttr(words)`
+    -   `ttr_first(words, n=10000)`
+    -   `avg_word_len(words)`
+-   They're all in `lin301.py` now
+-   Small functions can be used **inside** bigger ones
+
+## A Shorter `report()` {.smaller}
+
+-   Wednesday's `report()` did all the math itself. Now it can just ask the building blocks:
+
+```python
+def report(title, words):
+    print(title, "TTR:", ttr(words))
+    print(title, "TTR (10,000 words):", ttr_first(words))
+    print(title, "Average Word Length:", avg_word_len(words))
+    return ttr_first(words)
+
+report("Alice", load_words("alice.txt"))
+```
+
+-   Each function does one thing, and the names tell you what's happening
+-   We'll write today's functions in the notebook first, then move them into `lin301.py` at the end
+
+## Activity 1: An *-ly* Rate
+
+1.  Write `ly_rate(words)`, which returns the number of words ending in *-ly* per 1,000 words
+    -   Remember `.endswith("ly")`
+    -   Multiply your return * 1000
+    -   Test: `ly_rate(["quickly", "fox", "only", "the"])` gives `500.0`
+2.  Next, add your `ly_rate(words)` to `lin301.py`, and then add a line to your new `report()` that prints the *-ly* rate, and run it on *Alice* and *Mansfield Park*
+    -   **Check:** about **16** for *Alice* and **17** for *Mansfield Park*. 
+
+## Activity 1: `ly` Function
+
+```python
+def ly_rate(words):
+    total = 0
+    for w in words:
+        if w.endswith("ly"):
+            total += 1
+    return total / len(words) * 1000
+```
+
+## Activity 1: Building Up Your Report
+
+```python
+import sys
+sys.path.append("../../data")
+from lin301 import *    
+
+def report(title, words):
+    print(title, "TTR:", ttr(words))
+    print(title, "TTR (10,000 words):", ttr_first(words))
+    print(title, "Average Word Length:", avg_word_len(words))
+    print(title, "-ly words per 1,000:", ly_rate(words))
+    return ttr_first(words)
+
+report("Alice", alice_words)
+print("---------------------------------------------")
+report("Mansfield Park", mansfield_words)
+```
+
+# Adding `pandas` to Our Functions
+
+## Remember This?
+
+-   On Day 25 we learned how to build a dataframe, like `alice_df`. To do so, we used the text file to build the dataframe:
+
+```python
+with open("../../data/gutenberg/mansfield_park.txt", "r", encoding="utf-8") as f:
+    mp_lines = f.readlines()
+# ... chop the header and footer (just like Alice) ...
+mp_chapters = re.split(r"\nCHAPTER [IVXL]+", mp_text)
+mp_chapters = mp_chapters[1:]
+# ... one row per word, with its chapter (just like Alice) ...
+mp_df = pd.DataFrame(mp_rows)
+mp_df["text"] = "mansfield"
+```
+
+## Question
+
+-   We want a function that turns a book into a DataFrame
+-   What changes from book to book? (→ parameters)
+    - the starting file, the variable name
+-   What do we want back? (→ `return`)
+    - The `df`!
+
+## Pandas Function
+
+```python
+def book_to_df(filename, label):
+    # 1. open the file and read its lines
+    # 2. chop off the header and footer
+    # 3. split into chapters
+    # 4. one row per word, with its chapter
+    # 5. build the DataFrame, add the text column
+    return df
+```
+
+## Pandas Function
+
+```python
+def book_to_df(filename, label):
+    # 1. open the file and read its lines
+    with open("../../data/gutenberg/mansfield_park.txt", "r", encoding="utf-8") as f:
+        mp_lines = f.readlines()
+    # 2. chop off the header and footer
+    ###???????????#####
+    # 3. split into chapters
+    mp_chapters = re.split(r"\nCHAPTER [IVXL]+", mp_text)
+    # 4. one row per word, with its chapter
+    mp_chapters = mp_chapters[1:]
+    # 5. build the DataFrame, add the text column
+    mp_df = pd.DataFrame(mp_rows)
+    mp_df["text"] = "mansfield"
+    return df
+```
+
+## Wait: Haven't We Written Step 1 and 2 Already?
+
+-   `load_words()` does steps 1 and 2, but then it splits the whole book into words, and we lose the chapters
+-   So let's pull steps 1 and 2 out into their **own** function:
+
+```python
+
+HERE = os.path.dirname(__file__)   # the folder lin301.py lives in: data/
+
+def load_text(filename):
+    with open(os.path.join(HERE, "gutenberg", filename), "r", encoding="utf-8") as f:
+        lines = f.readlines()
+
+    while not lines[0].startswith("*** START"):
+        lines = lines[1:]
+    lines = lines[1:]
+    while not lines[-1].startswith("*** END"):
+        lines = lines[:-1]
+    lines = lines[:-1]
+
+    return "".join(lines)
+```
+
+## Now `load_words()` Gets Shorter, Too
+
+- And then simplify `load_words()` accordingly:
+
+```python
+def load_words(filename):
+    text = load_text(filename)
+    words = re.split(r"[\W_]+", text.lower())
+    return [w for w in words if w != ""]
+```
+
+-   `load_text()`: a book → its text, without the Gutenberg wrapper
+-   `load_words()`: a book → a list of words
+-   `book_to_df()`: a book → a DataFrame, one row per word (which we'll build momentarily)
+
+## Update both of these in your `lin301.py` file
+
+```python
+HERE = os.path.dirname(__file__)   # the folder lin301.py lives in: data/
+
+def load_text(filename):
+    with open(os.path.join(HERE, "gutenberg", filename), "r", encoding="utf-8") as f:
+        lines = f.readlines()
+
+    while not lines[0].startswith("*** START"):
+        lines = lines[1:]
+    lines = lines[1:]
+    while not lines[-1].startswith("*** END"):
+        lines = lines[:-1]
+    lines = lines[:-1]
+
+    return "".join(lines)
+```
+
+```python
+def load_words(filename):
+    text = load_text(filename)
+    words = re.split(r"[\W_]+", text.lower())
+    return [w for w in words if w != ""]
+```
+
+## Re-run Import
+
+```python
+import sys
+sys.path.append("../../data")
+from lin301 import *    
+```
+
+
+## Activity 2: `book_to_df()`
+
+1.  Write `book_to_df(filename, label)`
+    -   Start with:
+```python
+text = load_text(filename)
+```
+    -   Model your code off of past code (next slide)
+    -   Last two lines: make the DataFrame, then set its `"text"` column to `label`
+
+```python
+    df["text"] = label
+```
+2.  Test it (2 slides later)
+
+## Activity 2: Past Code
+
+```python
+# 2. Split into chapters (and drop everything before Chapter I)
+chapters = re.split(r"\nCHAPTER [IVXL]+", alice_text)
+chapters = chapters[1:]
+
+# 3. One row per word, with its chapter
+rows = []
+chapter_num = 0
+
+for chapter in chapters:
+    chapter_num += 1
+    words = re.split(r"[\W_]+", chapter.lower())   # split on \W AND on _
+    words = [w for w in words if w != ""]
+    for w in words:
+        rows.append({"word": w, "chapter": chapter_num})
+
+alice_df = pd.DataFrame(rows)
+```
+
+## Activity 2: Test `book_to_df()`
+
+```python
+alice_df = book_to_df("alice.txt", "alice")
+mp_df = book_to_df("mansfield_park.txt", "mansfield")
+print(len(alice_df), alice_df["chapter"].nunique())
+print(len(mp_df), mp_df["chapter"].nunique())
+```
+## Activity 2: `book_to_df()`
+
+```python
+def book_to_df(filename, label):
+    text = load_text(filename)
+
+    chapters = re.split(r"\nCHAPTER [IVXL]+", text)
+    chapters = chapters[1:]
+
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        words = re.split(r"[\W_]+", chapter.lower())
+        words = [w for w in words if w != ""]
+        for w in words:
+            rows.append({"word": w, "chapter": chapter_num})
+
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+```
+-   **Check:** about **27,300** rows and **12** chapters; about **161,000** rows and **48** chapters
+
+## Activity 2: `book_to_df()`
+
+- Let's add `book_to_df()` to `lin301.py`
+- Re-import it:
+
+```python
+import sys
+sys.path.append("../../data")
+from lin301 import *    
+```
+
+## Activity 3: `add_columns()`
+
+-   On Day 25 we added the same three columns to both books. 
+
+```python
+mp_df["length"] = mp_df["word"].str.len()
+mp_df["is_ly"] = mp_df["word"].str.endswith("ly")
+mp_df["is_stopword"] = mp_df["word"].isin(stopwords)
+```
+
+## Activity 3: `add_columns()` (Stopwords)
+
+- We need those stopwords first!
+
+```python
+stopwords = ["the", "to", "and", "of", "a", "her", "i", "in", "was", "it",
+             "she", "he", "be", "that", "you", "not", "had", "as", "his", "for",
+             "with", "is", "have", "but", "at", "so", "all", "my", "been", "him",
+             "on", "by", "could", "would", "very", "no", "what", "which", "they",
+             "were", "there", "me", "an", "must", "this", "said", "from", "or",
+             "will", "any", "much", "than", "such", "their", "them", "if", "do",
+             "did", "one", "when", "your", "more", "are", "we", "who", "up",
+             "out", "down", "into", "s", "t"]
+```
+
+
+## Activity 3: `add_columns()`
+
+Write a function for that, too:
+
+```python
+def add_columns(df, stopwords):
+    # add "length", "is_ly" and "is_stopword"
+    return df
+```
+
+-   Test: `alice_df = add_columns(alice_df, stopwords)`, then `alice_df.head()`
+    -   **Check:** `the` is `True` under `is_stopword`; `rabbit` is `False`
+
+## Activity 3: `add_columns()`
+
+Write a function for that, too:
+
+```python
+def add_columns(df, stopwords):
+    df["length"] = df["word"].str.len()
+    df["is_ly"] = df["word"].str.endswith("ly")
+    df["is_stopword"] = df["word"].isin(stopwords)
+    return df
+```
+
+## Activity 4: Update `lin301.py` {.smaller}
+
+- Let's make sure that our function file is up-to-date.
+- You'll need to make sure that:
+
+1.  Add `import pandas as pd` to the header of `lin301.py`
+2.  Copy the stopwords list into lin301.py, below the imports.
+3.  Save, then **restart** the notebook/session and run your import chunk again
+
+```python
+import sys
+sys.path.append("../../data")
+from lin301 import *    
+```
+
+# Incorporating `.groupby()`
+
+## Putting It All Together {.smaller}
+
+- Last week we learned the `.groupby()` method, which groups rows in a DataFrame by shared values in a column
+
+```python
+book_files = {"alice.txt": "alice",
+              "mansfield_park.txt": "mansfield"}
+
+tables = []
+for filename, label in book_files.items():
+    df = book_to_df(filename, label)
+    df = add_columns(df, stopwords)
+    tables.append(df)
+
+books = pd.concat(tables, ignore_index=True)
+books.groupby("text")["is_ly"].mean() * 1000
+```
+
+-   **Check:** about **16** and **17** *-ly* words per 1,000, just like Day 25
+
+## Adding Additional Books
+
+-   How many lines are required to add a **third** book?
+
+```python
+book_files = {"alice.txt": "alice",
+              "mansfield_park.txt": "mansfield"}
+```
+
+## Answer
+
+-   **One!** Add it to `book_files`:
+
+```python
+book_files = {"alice.txt": "alice",
+              "mansfield_park.txt": "mansfield",
+              "moby_dick.txt": "moby_dick"}
+```
+
+-   The loop does the rest. Every `.groupby()` from Day 25 now covers all three books.
+
+## Activity 5: Your Own Comparison
+
+1.  Add "Moby Dick" & "The Wonderful Wizard of Oz" to `book_files`. To get these work, we have to modify the regex to be a bit more lenient in the `book_to_df` function.
+
+```python
+chapters = re.split(r"(?im)^\s*CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+```
+
+2.  Run the loop again
+3.  Compare all your books with `.groupby()`: average word length, *-ly* rate, stopword rate
+
+## Activity 5: Answers
+
+```python
+book_files = {"alice.txt": "alice",
+              "mansfield_park.txt": "mansfield",
+              "moby_dick.txt": "moby_dick",
+              "oz.txt":"oz"}
+
+tables = []
+for filename, label in book_files.items():
+    df = book_to_df(filename, label)
+    df = add_columns(df, stopwords)
+    tables.append(df)
+
+books = pd.concat(tables, ignore_index=True)
+
+print(books.groupby("text")["length"].mean())
+print(books.groupby("text")["is_ly"].mean() * 1000)
+print(books.groupby("text")["is_stopword"].mean())
+```
+
+# Final Functions File
+
+## Copy this into `lin301.py`
+
+```python
+import os
+import re
+import pandas as pd
+
+HERE = os.path.dirname(__file__)   # the folder lin301.py lives in: data/
+
+stopwords = ["the", "to", "and", "of", "a", "her", "i", "in", "was", "it",
+             "she", "he", "be", "that", "you", "not", "had", "as", "his", "for",
+             "with", "is", "have", "but", "at", "so", "all", "my", "been", "him",
+             "on", "by", "could", "would", "very", "no", "what", "which", "they",
+             "were", "there", "me", "an", "must", "this", "said", "from", "or",
+             "will", "any", "much", "than", "such", "their", "them", "if", "do",
+             "did", "one", "when", "your", "more", "are", "we", "who", "up",
+             "out", "down", "into", "s", "t"]
+
+def ttr(words):
+    return len(set(words)) / len(words)
+
+def ttr_first(words, n=10000):
+    return len(set(words[:n])) / len(words[:n])
+
+def avg_word_len(words):
+    total = 0
+    for w in words:
+        total += len(w)
+    return total / len(words)
+
+def ly_rate(words):
+    count = 0
+    for w in words:
+        if w.endswith("ly"):
+            count += 1
+    return count / len(words) * 1000
+
+def stopword_rate(words, stopwords):
+    count = 0
+    for w in words:
+        if w in stopwords:
+            count += 1
+    return count / len(words)
+
+def load_text(filename):
+    with open(os.path.join(HERE, "gutenberg", filename), "r", encoding="utf-8") as f:
+        lines = f.readlines()
+    while not lines[0].startswith("*** START"):
+        lines = lines[1:]
+    lines = lines[1:]
+    while not lines[-1].startswith("*** END"):
+        lines = lines[:-1]
+    lines = lines[:-1]
+    return "".join(lines)
+
+def load_words(filename):
+    text = load_text(filename)
+    words = re.split(r"[\W_]+", text.lower())
+    return [w for w in words if w != ""]
+
+def report(title, words):
+    print(title, "TTR:", ttr(words))
+    print(title, "TTR (10,000 words):", ttr_first(words))
+    print(title, "Average Word Length:", avg_word_len(words))
+    print(title, "-ly words per 1,000:", ly_rate(words))
+    return ttr_first(words)
+
+def book_to_df(filename, label):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^\s*CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        words = re.split(r"[\W_]+", chapter.lower())
+        words = [w for w in words if w != ""]
+        for w in words:
+            rows.append({"word": w, "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+
+def add_columns(df, stopwords):
+    df["length"] = df["word"].str.len()
+    df["is_ly"] = df["word"].str.endswith("ly")
+    df["is_stopword"] = df["word"].isin(stopwords)
+    return df
+```
+
+
+# Wrapping Up
+
+## How to Write a Function
+
+1.  Find the code you **repeated**
+2.  What **changes** each time? Those are your parameters
+3.  What do you need **back**? That's your `return`
+4.  **Test** it on something small, where you already know the answer
+
+## Your Project
+
+-   **Project Component 2** is due **Monday, November 2**
+-   Look at your cleaning code: did you do the same steps more than once? (Two files? Two speakers? Two albums?)
+-   That's a function! Write it, test it, and put it in `lin301.py`
+
+
+# If You Get Stuck {#stuck}
+
+## Common Errors {.scrollable}
+
+-   `NameError: name 'load_text' is not defined`: run the chunk with its `def` first. A function can only use functions Python already knows.
+-   `NameError: name 'lin301' is not defined` *inside* `lin301.py`: drop the `lin301.` in front of function names inside the file
+-   `NameError: name 'pd' is not defined` (from `lin301.py`): add `import pandas as pd` to its header
+
+## Common Errors {.scrollable}
+
+-   Your change to `lin301.py` isn't showing up: save the file, **Restart** the notebook, and rerun the import
+-   `NameError: name 'stopwords' is not defined`: copy the `stopwords` list from Day 25 and run it
+-   `KeyError: 'word'`: `book_to_df()` built an empty table (0 chapters). Check how your book marks its chapters.
+-   Your function returns `None`: is `return` the **last** line, and indented inside the `def`?
+-   `return` inside the `for` loop: the function stops after the first chapter. Un-indent it!
+
+
