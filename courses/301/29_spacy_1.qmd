@@ -1,0 +1,685 @@
+---
+title: "Computation for Linguists"
+subtitle: "From Pandas to spaCy: What Are We Counting?"
+date: "November 2, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+# Where We Left Off
+
+
+
+## Setup: Import Our Functions
+
+-   Make `day29.qmd` in `classwork/day_29/`, and start with this chunk:
+
+```python
+import sys
+sys.path.append("../../data")
+from lin301 import *
+```
+
+-   Every class from now on starts this way.
+-   First, though: copy the updated `lin301.py` on the next slide into `data/`.
+
+## Updated `lin301.py`
+
+-   Replace everything in your `lin301.py` with this. (It fixes a bug in `book_to_df()`: it was counting the table of contents as chapters.)
+-   Save it, then **Restart** your notebook.
+
+```python
+import os
+import re
+import pandas as pd
+
+HERE = os.path.dirname(__file__)   # the folder lin301.py lives in: data/
+
+stopwords = ["the", "to", "and", "of", "a", "her", "i", "in", "was", "it",
+             "she", "he", "be", "that", "you", "not", "had", "as", "his", "for",
+             "with", "is", "have", "but", "at", "so", "all", "my", "been", "him",
+             "on", "by", "could", "would", "very", "no", "what", "which", "they",
+             "were", "there", "me", "an", "must", "this", "said", "from", "or",
+             "will", "any", "much", "than", "such", "their", "them", "if", "do",
+             "did", "one", "when", "your", "more", "are", "we", "who", "up",
+             "out", "down", "into", "s", "t"]
+
+def ttr(words):
+    return len(set(words)) / len(words)
+
+def ttr_first(words, n=10000):
+    return len(set(words[:n])) / len(words[:n])
+
+def avg_word_len(words):
+    total = 0
+    for w in words:
+        total += len(w)
+    return total / len(words)
+
+def ly_rate(words):
+    count = 0
+    for w in words:
+        if w.endswith("ly"):
+            count += 1
+    return count / len(words) * 1000
+
+def stopword_rate(words, stopwords):
+    count = 0
+    for w in words:
+        if w in stopwords:
+            count += 1
+    return count / len(words)
+
+def load_text(filename):
+    with open(os.path.join(HERE, "gutenberg", filename), "r", encoding="utf-8") as f:
+        lines = f.readlines()
+    while not lines[0].startswith("*** START"):
+        lines = lines[1:]
+    lines = lines[1:]
+    while not lines[-1].startswith("*** END"):
+        lines = lines[:-1]
+    lines = lines[:-1]
+    return "".join(lines)
+
+def load_words(filename):
+    text = load_text(filename)
+    words = re.split(r"[\W_]+", text.lower())
+    return [w for w in words if w != ""]
+
+def report(title, words):
+    print(title, "TTR:", ttr(words))
+    print(title, "TTR (10,000 words):", ttr_first(words))
+    print(title, "Average Word Length:", avg_word_len(words))
+    print(title, "-ly words per 1,000:", ly_rate(words))
+    return ttr_first(words)
+
+def book_to_df(filename, label):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        words = re.split(r"[\W_]+", chapter.lower())
+        words = [w for w in words if w != ""]
+        for w in words:
+            rows.append({"word": w, "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+
+def add_columns(df, stopwords):
+    df["length"] = df["word"].str.len()
+    df["is_ly"] = df["word"].str.endswith("ly")
+    df["is_stopword"] = df["word"].isin(stopwords)
+    return df
+```
+
+## Friday's Table
+
+```python
+alice = book_to_df("alice.txt", "Alice")
+alice = add_columns(alice, stopwords)
+alice.head()
+```
+
+```
+     word  chapter   text  length  is_ly  is_stopword
+0    down        1  Alice       4  False         True
+1     the        1  Alice       3  False         True
+2  rabbit        1  Alice       6  False        False
+3    hole        1  Alice       4  False        False
+4   alice        1  Alice       5  False        False
+```
+
+-   How is each of these columns generated?
+
+## Where the Columns Come From
+
+-   `length`: how many letters (`.str.len()`)
+-   `is_ly`: whether it ends in *-ly* (`.str.endswith()`)
+-   `is_stopword`: whether it's on **our** list (`.isin(stopwords)`)
+
+Every column was computed from the word's **string** value.
+
+## The *-ly* Column
+
+-   On Friday, we used *-ly* words as a stand-in for **adverbs**.
+-   Is that a good stand-in?
+
+```python
+ly_words = alice[alice["is_ly"]]
+ly_words.groupby("word").size().sort_values(ascending=False).head(20)
+```
+
+## The *-ly* Column
+
+```
+only          50
+hastily       16
+certainly     14
+anxiously     14
+really        13
+suddenly      13
+...
+melancholy     6
+reply          5
+likely         5
+```
+
+-   Which of these aren't adverbs?
+-   What about *the **only** way out*?
+
+## What About Adverbs Without *-ly*?
+
+-   *very*, *so*, *then*, *again*, *now*, *never*...
+-   Spelling can't find these.
+
+## Another Problem: Forms of a Word
+
+```python
+say_forms = alice[alice["word"].isin(["say", "says", "said", "saying"])]
+say_forms.groupby("word").size()
+```
+
+```
+said      462
+say        51
+saying     15
+says        4
+```
+
+-   Are these four words, or one?
+-   How would we get Python to count them together?
+
+## Activity 1: Spelling Isn't Enough
+
+Using `alice`: count the forms of *go*: *go*, *goes*, *went*, *going*, *gone*.
+
+## What We Need
+
+-   A **lemma** for each word: *said* → *say*, *went* → *go*
+-   A **part of speech** for each word: *quickly* = adverb, *ugly* = adjective
+-   We can't get these from the spelling. We need a tool that knows English.
+
+# What spaCy Adds
+
+## What Is spaCy?
+
+-   A Python library for natural language processing (NLP).
+-   It comes with trained **models** of languages.
+-   For each word, a model **predicts**:
+    -   its lemma
+    -   its part of speech
+    -   (and much more, later this week)
+
+## Install spaCy
+
+In the **terminal** (once):
+
+```bash
+python -m pip install spacy
+python -m spacy download en_core_web_sm
+```
+
+-   `spacy` is the library; `en_core_web_sm` is a small English model.
+-   Installed it while your notebook was running? Restart it.
+
+## Load spaCy
+
+Add this to your setup chunk:
+
+```python
+import spacy
+nlp = spacy.load("en_core_web_sm")
+```
+
+-   `nlp` is now a function: give it text, and it gives back an analyzed document.
+
+## Our First Document
+
+```python
+doc = nlp("Alice quickly went down the hole, but the only way out was very ugly.")
+
+for token in doc:
+    print(token.text)
+```
+
+-   `doc` looks like a list of words...
+-   ... but each **token** knows more than its spelling.
+
+## What a Token Knows
+
+```python
+for token in doc:
+    print(token.text, token.lemma_, token.pos_)
+```
+
+## What a Token Knows
+
+| Attribute | What it tells us |
+|---|---|
+| `token.text` | the word as spelled |
+| `token.lemma_` | its lemma (*went* → *go*) |
+| `token.pos_` | its part of speech |
+| `token.is_stop` | on spaCy's stopword list? |
+| `token.is_alpha` | letters only? (no punctuation, no numbers) |
+
+-   Compare *quickly*, *only*, *very* and *ugly* to our `is_ly` column!
+
+## Activity 2: Explore a Sentence
+
+```python
+doc = nlp("The Queen said that Alice was only a silly little girl.")
+```
+
+1.  Print each token's text, lemma, and POS.
+2.  What is the lemma of *said*? Of *was*?
+3.  What POS does spaCy give *only* here? Why is it different from before?
+4.  Would our earlier `is_ly` column incorrectly identify any words as adverbs?
+
+# Same Pattern, New Columns
+
+## Remember How We Built Tables?
+
+```python
+rows = []
+for w in words:
+    rows.append({"word": w, "chapter": chapter_num})
+df = pd.DataFrame(rows)
+```
+
+-   A list of dictionaries, one per word
+-   Then `pd.DataFrame(rows)`
+
+## Now With spaCy
+
+```python
+doc = nlp("Alice quickly went down the hole, but the only way out was very ugly.")
+
+rows = []
+for token in doc:
+    if token.is_alpha:
+        rows.append({"word": token.text.lower(),
+                     "lemma": token.lemma_.lower(),
+                     "pos": token.pos_,
+                     "is_stop": token.is_stop})
+df = pd.DataFrame(rows)
+df
+```
+
+-   Same pattern -- just more columns, and spaCy fills them in.
+
+## Familiar Pandas
+
+- We can use `.groupby()` to organize our entries using these new properties.
+
+```python
+df.groupby("pos").size()
+```
+```python
+df.groupby("lemma").size()
+```
+
+## Remember `book_to_df()`?
+
+```{.python code-line-numbers="2|3-4|5-8|9-10|11-12|13-15"}
+def book_to_df(filename, label):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        words = re.split(r"[\W_]+", chapter.lower())
+        words = [w for w in words if w != ""]
+        for w in words:
+            rows.append({"word": w, "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+```
+
+-   What does each highlighted part do?
+
+## What Each Part Does
+
+-   Which of these jobs could spaCy do instead?
+
+1.  Load the book
+2.  Split it into chapters
+3.  Get ready to loop through the chapters
+4.  **Split a chapter into words**
+5.  **Make one row per word**
+6.  Turn the rows into a DataFrame
+
+
+
+## What Changes?
+
+-   Only jobs 4 and 5 -- what happens **inside** each chapter.
+-   Everything else stays the same.
+-   We'll make the changes one at a time.
+
+## Change 1: Split a Chapter
+
+Before:
+
+```python
+words = re.split(r"[\W_]+", chapter.lower())
+words = [w for w in words if w != ""]
+```
+
+After:
+
+```python
+doc = nlp(chapter)
+```
+
+-   spaCy does the splitting for us, and it analyzes every token as it goes.
+
+## Change 2: Loop Through the Tokens
+
+Before:
+
+```python
+for w in words:
+```
+
+After:
+
+```python
+for token in doc:
+    if token.is_alpha:
+```
+
+-   `spacy` code `if token.is_alpha:` is similar to `re` code `[\W_]+` and `w != ""`
+
+## Change 2: Loop Through the Tokens
+
+-   Before, our regex threw away punctuation, and we removed empty strings.
+-   spaCy keeps punctuation as tokens: `,`  `.`  `"`
+-   `is_alpha` keeps only the tokens made of letters.
+
+## Change 3: Build the Row
+
+Before:
+
+```python
+rows.append({"word": w, "chapter": chapter_num})
+```
+
+After:
+
+```python
+rows.append({"word": token.text.lower(),
+             "lemma": token.lemma_.lower(),
+             "pos": token.pos_,
+             "is_stop": token.is_stop,
+             "chapter": chapter_num})
+```
+
+-   Note `.lower()` on the token and lemma
+
+## Change 4: Pass In `nlp`
+
+```python
+def book_to_spacy_df(filename, label, nlp):
+```
+
+-   Loading a spaCy model takes a few seconds.
+-   We load it **once** in our setup chunk, and hand it to the function every time we call it.
+-   The function can then use whatever model we give it.
+    - Every language that is supported by `spacy` has its own model!
+
+## Activity 3: `book_to_spacy_df()`
+
+Let's copy `book_to_spacy_df(filename, label, nlp)` into your notebook.
+
+```python
+def book_to_spacy_df(filename, label, nlp):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        doc = nlp(chapter)
+        for token in doc:
+            if token.is_alpha:
+                rows.append({"word": token.text.lower(),
+                             "lemma": token.lemma_.lower(),
+                             "pos": token.pos_,
+                             "is_stop": token.is_stop,
+                             "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+```
+
+## Activity 3: `book_to_spacy_df()`
+
+Let's test it:
+
+```python
+alice_sp = book_to_spacy_df("alice.txt", "Alice", nlp)
+alice_sp.head()
+```
+
+- Compare `len(alice)` and `len(alice_sp)`. Are they the same?
+```python
+alice = book_to_df('alice.txt', "Alice")
+```
+
+
+## Why Different Lengths?
+
+```
+len(alice)      27312
+len(alice_sp)   26578
+```
+
+-   spaCy splits *don't* into *do* + *n't*, and *Alice's* into *Alice* + *'s*.
+-   `is_alpha` then throws out *n't* and *'s*, which aren't all letters.
+-   Our regex split *don't* into *don* + *t*, and *Alice's* into *alice* + *s* -- extra "words"!
+-   Different tokenizers, different counts.
+
+# Back to *Alice*
+
+## Which *-ly* Words Are Adverbs?
+
+```python
+alice_sp["is_ly"] = alice_sp["word"].str.endswith("ly")
+alice_sp[alice_sp["is_ly"]].groupby("pos").size().sort_values(ascending=False)
+```
+
+```
+ADV     390
+ADJ      24
+NOUN      8
+VERB      3
+PROPN     1
+```
+
+-   Most *-ly* words are adverbs... but not all of them.
+
+## The Ones That Aren't
+
+```python
+not_adv = alice_sp[alice_sp["is_ly"] & (alice_sp["pos"] != "ADV")]
+not_adv.groupby("word").size().sort_values(ascending=False)
+```
+
+```
+melancholy    6
+likely        5
+only          5
+reply         5
+fly           3
+lonely        2
+ugly          2
+lovely        2
+...
+```
+
+## The Adverbs We Missed
+
+```python
+adverbs = alice_sp[alice_sp["pos"] == "ADV"]
+adverbs.groupby("lemma").size().sort_values(ascending=False).head(10)
+```
+
+```
+very     143
+so       141
+then      92
+again     82
+now       59
+...
+never     47
+```
+
+-   *-ly* words: about **16** per 1,000 words
+-   Adverbs: about **77** per 1,000 words
+
+## Counting Lemmas
+
+```python
+content = alice_sp[~alice_sp["is_stop"]]
+content.groupby("lemma").size().sort_values(ascending=False).head(10)
+```
+
+```
+say      481
+alice    396
+think    134
+go       129
+little   128
+know     107
+...
+```
+
+-   *said*, *say*, *saying* and *says* are now counted together.
+
+## Predictions, Not Facts
+
+```python
+alice_sp.head()
+```
+
+```
+     word   lemma    pos  is_stop  chapter   text
+0    down    down    ADP     True        1  Alice
+1     the     the    DET     True        1  Alice
+2  rabbit  rabbit  PROPN    False        1  Alice
+3    hole    hole  PROPN    False        1  Alice
+4   alice   alice  PROPN    False        1  Alice
+```
+
+-   Why does spaCy think *rabbit* and *hole* are proper nouns? (Hint: these words come from the chapter title, *Down the Rabbit-Hole*.)
+-   spaCy's labels are **predictions** -- always check them.
+-   Found a mistake? You can fix it yourself.
+
+## Fixing a Label
+
+-   `.loc[rows, column]` picks out cells in a DataFrame -- and lets you change them.
+
+```python
+alice_sp.loc[[2, 3], "pos"] = "NOUN"
+alice_sp.head()
+```
+
+```
+     word   lemma    pos  is_stop  chapter   text
+0    down    down    ADP     True        1  Alice
+1     the     the    DET     True        1  Alice
+2  rabbit  rabbit   NOUN    False        1  Alice
+3    hole    hole   NOUN    False        1  Alice
+4   alice   alice  PROPN    False        1  Alice
+```
+
+-   `[2, 3]`: the row numbers (the index on the left)
+-   `"pos"`: the column to change
+
+## Fix Every *rabbit*?
+
+```python
+rabbits = alice_sp[alice_sp["word"] == "rabbit"]
+rabbits.groupby("pos").size()
+```
+
+```
+NOUN      9
+PROPN    41
+```
+
+-   Should we change all 41 to `NOUN`?
+-   Who is *the White Rabbit*?
+
+## Activity 4: Compare Two Books
+
+1.  Run `book_to_spacy_df()` on *Mansfield Park*. (It's a long book -- give it about 20 seconds.)
+2.  For each book, compute adverbs per 1,000 words, and *-ly* words per 1,000 words. (Hint: revisit your `add_columns()` function and use the `.mean()` method)
+3.  Which book uses more adverbs? Does the *-ly* rate tell the same story?
+
+## Activity 4: Possible Answer
+
+```python
+mp_sp = book_to_spacy_df("mansfield_park.txt", "Mansfield Park", nlp)
+alice_sp = add_columns(alice_sp, stopwords)   # adds is_ly (and length, is_stopword)
+mp_sp = add_columns(mp_sp, stopwords)
+
+alice_sp["is_adv"] = alice_sp["pos"] == "ADV"
+mp_sp["is_adv"] = mp_sp["pos"] == "ADV"
+
+print("Alice adverbs per 1,000:", alice_sp["is_adv"].mean() * 1000)
+print("Alice -ly per 1,000:", alice_sp["is_ly"].mean() * 1000)
+print("Mansfield adverbs per 1,000:", mp_sp["is_adv"].mean() * 1000)
+print("Mansfield -ly per 1,000:", mp_sp["is_ly"].mean() * 1000)
+```
+
+```
+Alice adverbs per 1,000: 77.50771314621115
+Alice -ly per 1,000: 16.028294077808713
+Mansfield adverbs per 1,000: 69.47163654618474
+Mansfield -ly per 1,000: 17.093373493975903
+```
+
+## Activity 4: What Did We Find?
+
+|  | Adverbs per 1,000 | *-ly* words per 1,000 |
+|---|---|---|
+| *Alice* | 77.5 | 16.0 |
+| *Mansfield Park* | 69.5 | 17.1 |
+
+-   *Alice* uses **more** adverbs...
+-   ... but **fewer** *-ly* words.
+-   The *-ly* rate tells the **opposite** story! Spelling gave us the wrong answer.
+
+
+
+# Looking Ahead
+
+## What Did spaCy Add?
+
+-   **Before:** columns computed from spelling
+-   **Now:** columns predicted by a model of English -- lemmas and parts of speech
+-   **Still using:** functions, list of dictionaries, DataFrames, `.groupby()`
+
+## Your Project
+
+-   **Project Component 2** is due **today**.
+-   Thinking ahead to **Component 3**, which looks at counting and analysis: which of your questions need lemmas or parts of speech?
