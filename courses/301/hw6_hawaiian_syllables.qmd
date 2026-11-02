@@ -1,0 +1,169 @@
+---
+title: "HW 6 — Functions: Hawaiian Syllables"
+subtitle: "LIN 301: Computation for Linguists"
+author: "Dr. Andrew M. Byrd"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-tools: true
+jupyter: python3
+fontsize: 12pt
+---
+
+**Due:** Monday, November 9, 2026, at 11:59 am.
+
+## The Assignment
+
+You'll write a small set of **functions** that break Hawaiian words into syllables, add them to your `lin301.py` file, and then use them to explore a list of 45 Hawaiian words in pandas.
+
+Download [`hawaiian_words.csv`](hawaiian_words.csv) and save it in your `homework/hw6` folder. Then make a Quarto document called `hw6_functions_lastname_firstname.qmd` in the same folder. Write your functions in `lin301.py` (in your `data/` folder), and import them into your `.qmd` the way we do in class. As always, explain in your own words what your code does, and say whether and how you used any AI tool. (The syllabus does not allow GenAI to *write* your homework solutions.)
+
+------------------------------------------------------------------------
+
+## Some Hawaiian Phonology
+
+Hawaiian has one of the smallest sound inventories of any language:
+
+-   **8 consonants:** *h, k, l, m, n, p, w*, and the **ʻokina** *ʻ*, a glottal stop ([ʔ])
+-   **5 vowels:** *a, e, i, o, u*, each of which can also be long. A long vowel is written with a **kahakō** (macron): *ā, ē, ī, ō, ū*
+
+Hawaiian syllables are very simple: every syllable is either a **vowel** (V) or **one consonant plus a vowel** (CV). There are no consonant clusters, and no word ends in a consonant. So a word like *aloha* breaks up like this:
+
+| Word | Meaning | CV pattern | Syllables |
+|---|---|---|---|
+| *aloha* | love; hello; goodbye | VCVCV | a.lo.ha |
+| *ʻohana* | family | CVCVCV | ʻo.ha.na |
+| *nēnē* | Hawaiian goose | CVCV | nē.nē |
+| *kīlauea* | Kīlauea (the volcano) | CVCVVVV | kī.la.u.e.a |
+
+Two things to notice:
+
+1.  The ʻokina is a **consonant**, just like *h* or *k*.
+2.  A long vowel like *ē* counts as **one** vowel.
+
+(Real Hawaiian treats some vowel pairs, like the *au* in *kīlauea*, as a single **diphthong**. For this assignment, every vowel is its own syllable. See the [challenge](#challenge) at the end if you want to do better.)
+
+Need to type the long vowels? Copy them from here: **a e i o u ā ē ī ō ū**
+
+------------------------------------------------------------------------
+
+## Part 1: Write Your Functions
+
+Write these four functions in `lin301.py`. Each one should **return** its answer, not print it. Test each one on a few words where you already know the answer before you move on.
+
+1.  **`is_vowel(letter)`** takes one letter, and returns `True` if it is a Hawaiian vowel (short or long), and `False` otherwise.
+    -   `is_vowel("a")` → `True`
+    -   `is_vowel("ū")` → `True`
+    -   `is_vowel("k")` → `False`
+    -   `is_vowel("ʻ")` → `False`
+
+2.  **`cv_pattern(word)`** takes a word, and returns a string with `"C"` for every consonant and `"V"` for every vowel. It must use `is_vowel()`.
+    -   `cv_pattern("aloha")` → `"VCVCV"`
+    -   `cv_pattern("ʻohana")` → `"CVCVCV"`
+
+3.  **`syllabify(word)`** takes a word, and returns a **list** of its syllables. It must use `is_vowel()`. (Hint: in Hawaiian, a syllable always **ends** with a vowel.)
+    -   `syllabify("aloha")` → `["a", "lo", "ha"]`
+    -   `syllabify("kīlauea")` → `["kī", "la", "u", "e", "a"]`
+
+4.  **`count_syllables(word)`** takes a word, and returns how many syllables it has. It must use `syllabify()`.
+    -   `count_syllables("aloha")` → `3`
+
+------------------------------------------------------------------------
+
+## Part 2: Explore the Word List
+
+In your `.qmd`, import your functions from `lin301.py`, and read `hawaiian_words.csv` into a DataFrame. It has two columns, `word` and `meaning`.
+
+1.  Add three new columns, using your functions:
+    -   `cv`: the CV pattern of each word
+    -   `syllables`: the syllables of each word, joined with dots (*a.lo.ha*)
+    -   `n_syllables`: the number of syllables in each word
+2.  What is the average number of syllables per word? Which word has the most?
+3.  How many words have each number of syllables (2, 3, 4...)?
+4.  Use your `cv` column to check the claims above. Does any word have two consonants in a row? Does any word end in a consonant?
+5.  Make a second DataFrame with **one row per syllable** (with columns for the syllable and the word it came from). What are the 10 most common syllables in the list?
+
+------------------------------------------------------------------------
+
+## Part 3: Try English
+
+Run `cv_pattern()` and `syllabify()` on three English words: *banana*, *splash*, and *strengths*. (Treat the English vowels as *a, e, i, o, u*.)
+
+In a short paragraph: which of the three words come out right, and which don't? What goes wrong, and why does it never go wrong for Hawaiian? What does this tell you about how English syllables differ from Hawaiian ones?
+
+------------------------------------------------------------------------
+
+## Challenge (Optional): Diphthongs {#challenge}
+
+In Hawaiian, the vowel pairs *ai, ae, ao, au, ei, eu, oi, ou* and *iu* can form a single syllable, a diphthong: *Maui* is really *mau.i*, and *kai* 'sea' is one syllable. Write a new function, `syllabify_diphthongs(word)`, that keeps these pairs together, and compare its results with `syllabify()`. Which words change? (Don't change `syllabify()` itself.)
+
+------------------------------------------------------------------------
+
+## No Code Hints
+
+There are **no code hints** here: working out which tools to use is part of the assignment. Everything you need is in the [list at the end](#toolkit), and all of it was covered in class.
+
+------------------------------------------------------------------------
+
+## Submission
+
+1.  Make sure your `.qmd` renders cleanly to HTML.
+2.  Commit and push your `homework/hw6` folder (your `.qmd`, the rendered `.html`, and `hawaiian_words.csv`) **and** your updated `data/lin301.py` to your `LIN_301` repo.
+3.  On Canvas, submit the link to your `homework/hw6` folder on GitHub. The link will look like `https://github.com/your-username/LIN_301/tree/main/homework/hw6`
+
+------------------------------------------------------------------------
+
+## Grading Rubric (100 pts total)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| `is_vowel()` works for short vowels, long vowels, consonants, and the ʻokina | 10 |
+| `cv_pattern()` works, and uses `is_vowel()` | 15 |
+| `syllabify()` works, and uses `is_vowel()` | 20 |
+| `count_syllables()` works, and uses `syllabify()` | 5 |
+| All four functions are in `lin301.py` and imported into the `.qmd` | 10 |
+| DataFrame with `cv`, `syllables`, and `n_syllables` columns | 10 |
+| Part 2 questions answered with pandas (average and longest; counts by number of syllables; consonant check; 10 most common syllables) | 15 |
+| Part 3 paragraph: what goes wrong for English, and why | 5 |
+| Explanation of the code holds up, and AI use is honestly disclosed | 5 |
+| File names correct; document renders without errors; GitHub link points to the `hw6` folder; `lin301.py` pushed | 5 |
+
+------------------------------------------------------------------------
+
+## Your Toolkit {#toolkit}
+
+**Functions**
+
+-   `def`
+-   parameters
+-   `return`
+-   calling one function inside another
+-   `import sys`, `sys.path.append()`, `from lin301 import *`
+
+**Strings and lists**
+
+-   `for` loops over the letters of a string
+-   `if` / `else`
+-   `in`
+-   an empty string `""` and `+=`
+-   an empty list `[]` and `.append()`
+-   `len()`
+-   `".".join()`
+
+**Building tables**
+
+-   `pd.read_csv()` with `encoding="utf-8"`
+-   `df["new_column"] = ...`
+-   list comprehensions
+-   a list of dicts
+-   `pd.DataFrame()`
+
+**Looking**
+
+-   `.mean()`
+-   `.sort_values()`
+-   `.head()`
+-   `.groupby()` and `.size()`
+-   `.str.contains()`
+-   `.str.endswith()`

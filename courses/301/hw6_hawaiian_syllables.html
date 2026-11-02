@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dr.&nbsp;Andrew M. Byrd">
+
+<title>HW 6 — Functions: Hawaiian Syllables</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="hw6_hawaiian_syllables_files/libs/clipboard/clipboard.min.js"></script>
+<script src="hw6_hawaiian_syllables_files/libs/quarto-html/quarto.js"></script>
+<script src="hw6_hawaiian_syllables_files/libs/quarto-html/popper.min.js"></script>
+<script src="hw6_hawaiian_syllables_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="hw6_hawaiian_syllables_files/libs/quarto-html/anchor.min.js"></script>
+<link href="hw6_hawaiian_syllables_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="hw6_hawaiian_syllables_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="hw6_hawaiian_syllables_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="hw6_hawaiian_syllables_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="hw6_hawaiian_syllables_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#the-assignment" id="toc-the-assignment" class="nav-link active" data-scroll-target="#the-assignment">The Assignment</a></li>
+  <li><a href="#some-hawaiian-phonology" id="toc-some-hawaiian-phonology" class="nav-link" data-scroll-target="#some-hawaiian-phonology">Some Hawaiian Phonology</a></li>
+  <li><a href="#part-1-write-your-functions" id="toc-part-1-write-your-functions" class="nav-link" data-scroll-target="#part-1-write-your-functions">Part 1: Write Your Functions</a></li>
+  <li><a href="#part-2-explore-the-word-list" id="toc-part-2-explore-the-word-list" class="nav-link" data-scroll-target="#part-2-explore-the-word-list">Part 2: Explore the Word List</a></li>
+  <li><a href="#part-3-try-english" id="toc-part-3-try-english" class="nav-link" data-scroll-target="#part-3-try-english">Part 3: Try English</a></li>
+  <li><a href="#challenge" id="toc-challenge" class="nav-link" data-scroll-target="#challenge">Challenge (Optional): Diphthongs</a></li>
+  <li><a href="#no-code-hints" id="toc-no-code-hints" class="nav-link" data-scroll-target="#no-code-hints">No Code Hints</a></li>
+  <li><a href="#submission" id="toc-submission" class="nav-link" data-scroll-target="#submission">Submission</a></li>
+  <li><a href="#grading-rubric-100-pts-total" id="toc-grading-rubric-100-pts-total" class="nav-link" data-scroll-target="#grading-rubric-100-pts-total">Grading Rubric (100 pts total)</a></li>
+  <li><a href="#toolkit" id="toc-toolkit" class="nav-link" data-scroll-target="#toolkit">Your Toolkit</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">HW 6 — Functions: Hawaiian Syllables</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">LIN 301: Computation for Linguists</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Dr.&nbsp;Andrew M. Byrd </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>Due:</strong> Monday, November 9, 2026, at 11:59 am.</p>
+<section id="the-assignment" class="level2">
+<h2 class="anchored" data-anchor-id="the-assignment">The Assignment</h2>
+<p>You’ll write a small set of <strong>functions</strong> that break Hawaiian words into syllables, add them to your <code>lin301.py</code> file, and then use them to explore a list of 45 Hawaiian words in pandas.</p>
+<p>Download <a href="hawaiian_words.csv"><code>hawaiian_words.csv</code></a> and save it in your <code>homework/hw6</code> folder. Then make a Quarto document called <code>hw6_functions_lastname_firstname.qmd</code> in the same folder. Write your functions in <code>lin301.py</code> (in your <code>data/</code> folder), and import them into your <code>.qmd</code> the way we do in class. As always, explain in your own words what your code does, and say whether and how you used any AI tool. (The syllabus does not allow GenAI to <em>write</em> your homework solutions.)</p>
+<hr>
+</section>
+<section id="some-hawaiian-phonology" class="level2">
+<h2 class="anchored" data-anchor-id="some-hawaiian-phonology">Some Hawaiian Phonology</h2>
+<p>Hawaiian has one of the smallest sound inventories of any language:</p>
+<ul>
+<li><strong>8 consonants:</strong> <em>h, k, l, m, n, p, w</em>, and the <strong>ʻokina</strong> <em>ʻ</em>, a glottal stop ([ʔ])</li>
+<li><strong>5 vowels:</strong> <em>a, e, i, o, u</em>, each of which can also be long. A long vowel is written with a <strong>kahakō</strong> (macron): <em>ā, ē, ī, ō, ū</em></li>
+</ul>
+<p>Hawaiian syllables are very simple: every syllable is either a <strong>vowel</strong> (V) or <strong>one consonant plus a vowel</strong> (CV). There are no consonant clusters, and no word ends in a consonant. So a word like <em>aloha</em> breaks up like this:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Word</th>
+<th>Meaning</th>
+<th>CV pattern</th>
+<th>Syllables</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em>aloha</em></td>
+<td>love; hello; goodbye</td>
+<td>VCVCV</td>
+<td>a.lo.ha</td>
+</tr>
+<tr class="even">
+<td><em>ʻohana</em></td>
+<td>family</td>
+<td>CVCVCV</td>
+<td>ʻo.ha.na</td>
+</tr>
+<tr class="odd">
+<td><em>nēnē</em></td>
+<td>Hawaiian goose</td>
+<td>CVCV</td>
+<td>nē.nē</td>
+</tr>
+<tr class="even">
+<td><em>kīlauea</em></td>
+<td>Kīlauea (the volcano)</td>
+<td>CVCVVVV</td>
+<td>kī.la.u.e.a</td>
+</tr>
+</tbody>
+</table>
+<p>Two things to notice:</p>
+<ol type="1">
+<li>The ʻokina is a <strong>consonant</strong>, just like <em>h</em> or <em>k</em>.</li>
+<li>A long vowel like <em>ē</em> counts as <strong>one</strong> vowel.</li>
+</ol>
+<p>(Real Hawaiian treats some vowel pairs, like the <em>au</em> in <em>kīlauea</em>, as a single <strong>diphthong</strong>. For this assignment, every vowel is its own syllable. See the <a href="#challenge">challenge</a> at the end if you want to do better.)</p>
+<p>Need to type the long vowels? Copy them from here: <strong>a e i o u ā ē ī ō ū</strong></p>
+<hr>
+</section>
+<section id="part-1-write-your-functions" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-write-your-functions">Part 1: Write Your Functions</h2>
+<p>Write these four functions in <code>lin301.py</code>. Each one should <strong>return</strong> its answer, not print it. Test each one on a few words where you already know the answer before you move on.</p>
+<ol type="1">
+<li><strong><code>is_vowel(letter)</code></strong> takes one letter, and returns <code>True</code> if it is a Hawaiian vowel (short or long), and <code>False</code> otherwise.
+<ul>
+<li><code>is_vowel("a")</code> → <code>True</code></li>
+<li><code>is_vowel("ū")</code> → <code>True</code></li>
+<li><code>is_vowel("k")</code> → <code>False</code></li>
+<li><code>is_vowel("ʻ")</code> → <code>False</code></li>
+</ul></li>
+<li><strong><code>cv_pattern(word)</code></strong> takes a word, and returns a string with <code>"C"</code> for every consonant and <code>"V"</code> for every vowel. It must use <code>is_vowel()</code>.
+<ul>
+<li><code>cv_pattern("aloha")</code> → <code>"VCVCV"</code></li>
+<li><code>cv_pattern("ʻohana")</code> → <code>"CVCVCV"</code></li>
+</ul></li>
+<li><strong><code>syllabify(word)</code></strong> takes a word, and returns a <strong>list</strong> of its syllables. It must use <code>is_vowel()</code>. (Hint: in Hawaiian, a syllable always <strong>ends</strong> with a vowel.)
+<ul>
+<li><code>syllabify("aloha")</code> → <code>["a", "lo", "ha"]</code></li>
+<li><code>syllabify("kīlauea")</code> → <code>["kī", "la", "u", "e", "a"]</code></li>
+</ul></li>
+<li><strong><code>count_syllables(word)</code></strong> takes a word, and returns how many syllables it has. It must use <code>syllabify()</code>.
+<ul>
+<li><code>count_syllables("aloha")</code> → <code>3</code></li>
+</ul></li>
+</ol>
+<hr>
+</section>
+<section id="part-2-explore-the-word-list" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-explore-the-word-list">Part 2: Explore the Word List</h2>
+<p>In your <code>.qmd</code>, import your functions from <code>lin301.py</code>, and read <code>hawaiian_words.csv</code> into a DataFrame. It has two columns, <code>word</code> and <code>meaning</code>.</p>
+<ol type="1">
+<li>Add three new columns, using your functions:
+<ul>
+<li><code>cv</code>: the CV pattern of each word</li>
+<li><code>syllables</code>: the syllables of each word, joined with dots (<em>a.lo.ha</em>)</li>
+<li><code>n_syllables</code>: the number of syllables in each word</li>
+</ul></li>
+<li>What is the average number of syllables per word? Which word has the most?</li>
+<li>How many words have each number of syllables (2, 3, 4…)?</li>
+<li>Use your <code>cv</code> column to check the claims above. Does any word have two consonants in a row? Does any word end in a consonant?</li>
+<li>Make a second DataFrame with <strong>one row per syllable</strong> (with columns for the syllable and the word it came from). What are the 10 most common syllables in the list?</li>
+</ol>
+<hr>
+</section>
+<section id="part-3-try-english" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-try-english">Part 3: Try English</h2>
+<p>Run <code>cv_pattern()</code> and <code>syllabify()</code> on three English words: <em>banana</em>, <em>splash</em>, and <em>strengths</em>. (Treat the English vowels as <em>a, e, i, o, u</em>.)</p>
+<p>In a short paragraph: which of the three words come out right, and which don’t? What goes wrong, and why does it never go wrong for Hawaiian? What does this tell you about how English syllables differ from Hawaiian ones?</p>
+<hr>
+</section>
+<section id="challenge" class="level2">
+<h2 class="anchored" data-anchor-id="challenge">Challenge (Optional): Diphthongs</h2>
+<p>In Hawaiian, the vowel pairs <em>ai, ae, ao, au, ei, eu, oi, ou</em> and <em>iu</em> can form a single syllable, a diphthong: <em>Maui</em> is really <em>mau.i</em>, and <em>kai</em> ‘sea’ is one syllable. Write a new function, <code>syllabify_diphthongs(word)</code>, that keeps these pairs together, and compare its results with <code>syllabify()</code>. Which words change? (Don’t change <code>syllabify()</code> itself.)</p>
+<hr>
+</section>
+<section id="no-code-hints" class="level2">
+<h2 class="anchored" data-anchor-id="no-code-hints">No Code Hints</h2>
+<p>There are <strong>no code hints</strong> here: working out which tools to use is part of the assignment. Everything you need is in the <a href="#toolkit">list at the end</a>, and all of it was covered in class.</p>
+<hr>
+</section>
+<section id="submission" class="level2">
+<h2 class="anchored" data-anchor-id="submission">Submission</h2>
+<ol type="1">
+<li>Make sure your <code>.qmd</code> renders cleanly to HTML.</li>
+<li>Commit and push your <code>homework/hw6</code> folder (your <code>.qmd</code>, the rendered <code>.html</code>, and <code>hawaiian_words.csv</code>) <strong>and</strong> your updated <code>data/lin301.py</code> to your <code>LIN_301</code> repo.</li>
+<li>On Canvas, submit the link to your <code>homework/hw6</code> folder on GitHub. The link will look like <code>https://github.com/your-username/LIN_301/tree/main/homework/hw6</code></li>
+</ol>
+<hr>
+</section>
+<section id="grading-rubric-100-pts-total" class="level2">
+<h2 class="anchored" data-anchor-id="grading-rubric-100-pts-total">Grading Rubric (100 pts total)</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 56%">
+<col style="width: 43%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Criteria</th>
+<th style="text-align: center;">Points</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>is_vowel()</code> works for short vowels, long vowels, consonants, and the ʻokina</td>
+<td style="text-align: center;">10</td>
+</tr>
+<tr class="even">
+<td><code>cv_pattern()</code> works, and uses <code>is_vowel()</code></td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr class="odd">
+<td><code>syllabify()</code> works, and uses <code>is_vowel()</code></td>
+<td style="text-align: center;">20</td>
+</tr>
+<tr class="even">
+<td><code>count_syllables()</code> works, and uses <code>syllabify()</code></td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="odd">
+<td>All four functions are in <code>lin301.py</code> and imported into the <code>.qmd</code></td>
+<td style="text-align: center;">10</td>
+</tr>
+<tr class="even">
+<td>DataFrame with <code>cv</code>, <code>syllables</code>, and <code>n_syllables</code> columns</td>
+<td style="text-align: center;">10</td>
+</tr>
+<tr class="odd">
+<td>Part 2 questions answered with pandas (average and longest; counts by number of syllables; consonant check; 10 most common syllables)</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr class="even">
+<td>Part 3 paragraph: what goes wrong for English, and why</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="odd">
+<td>Explanation of the code holds up, and AI use is honestly disclosed</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="even">
+<td>File names correct; document renders without errors; GitHub link points to the <code>hw6</code> folder; <code>lin301.py</code> pushed</td>
+<td style="text-align: center;">5</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="toolkit" class="level2">
+<h2 class="anchored" data-anchor-id="toolkit">Your Toolkit</h2>
+<p><strong>Functions</strong></p>
+<ul>
+<li><code>def</code></li>
+<li>parameters</li>
+<li><code>return</code></li>
+<li>calling one function inside another</li>
+<li><code>import sys</code>, <code>sys.path.append()</code>, <code>from lin301 import *</code></li>
+</ul>
+<p><strong>Strings and lists</strong></p>
+<ul>
+<li><code>for</code> loops over the letters of a string</li>
+<li><code>if</code> / <code>else</code></li>
+<li><code>in</code></li>
+<li>an empty string <code>""</code> and <code>+=</code></li>
+<li>an empty list <code>[]</code> and <code>.append()</code></li>
+<li><code>len()</code></li>
+<li><code>".".join()</code></li>
+</ul>
+<p><strong>Building tables</strong></p>
+<ul>
+<li><code>pd.read_csv()</code> with <code>encoding="utf-8"</code></li>
+<li><code>df["new_column"] = ...</code></li>
+<li>list comprehensions</li>
+<li>a list of dicts</li>
+<li><code>pd.DataFrame()</code></li>
+</ul>
+<p><strong>Looking</strong></p>
+<ul>
+<li><code>.mean()</code></li>
+<li><code>.sort_values()</code></li>
+<li><code>.head()</code></li>
+<li><code>.groupby()</code> and <code>.size()</code></li>
+<li><code>.str.contains()</code></li>
+<li><code>.str.endswith()</code></li>
+</ul>
+<!-- -->
+
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "HW 6 — Functions: Hawaiian Syllables"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "LIN 301: Computation for Linguists"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Dr. Andrew M. Byrd"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-depth: 2</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="an">jupyter:</span><span class="co"> python3</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="an">fontsize:</span><span class="co"> 12pt</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>**Due:** Monday, November 9, 2026, at 11:59 am.</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## The Assignment</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>You'll write a small set of **functions** that break Hawaiian words into syllables, add them to your <span class="in">`lin301.py`</span> file, and then use them to explore a list of 45 Hawaiian words in pandas.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>Download <span class="co">[</span><span class="ot">`hawaiian_words.csv`</span><span class="co">](hawaiian_words.csv)</span> and save it in your <span class="in">`homework/hw6`</span> folder. Then make a Quarto document called <span class="in">`hw6_functions_lastname_firstname.qmd`</span> in the same folder. Write your functions in <span class="in">`lin301.py`</span> (in your <span class="in">`data/`</span> folder), and import them into your <span class="in">`.qmd`</span> the way we do in class. As always, explain in your own words what your code does, and say whether and how you used any AI tool. (The syllabus does not allow GenAI to *write* your homework solutions.)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## Some Hawaiian Phonology</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>Hawaiian has one of the smallest sound inventories of any language:</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**8 consonants:** *h, k, l, m, n, p, w*, and the **ʻokina** *ʻ*, a glottal stop (<span class="co">[</span><span class="ot">ʔ</span><span class="co">]</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**5 vowels:** *a, e, i, o, u*, each of which can also be long. A long vowel is written with a **kahakō** (macron): *ā, ē, ī, ō, ū*</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>Hawaiian syllables are very simple: every syllable is either a **vowel** (V) or **one consonant plus a vowel** (CV). There are no consonant clusters, and no word ends in a consonant. So a word like *aloha* breaks up like this:</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>| Word | Meaning | CV pattern | Syllables |</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>|---|---|---|---|</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>| *aloha* | love; hello; goodbye | VCVCV | a.lo.ha |</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>| *ʻohana* | family | CVCVCV | ʻo.ha.na |</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>| *nēnē* | Hawaiian goose | CVCV | nē.nē |</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>| *kīlauea* | Kīlauea (the volcano) | CVCVVVV | kī.la.u.e.a |</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>Two things to notice:</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>The ʻokina is a **consonant**, just like *h* or *k*.</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>A long vowel like *ē* counts as **one** vowel.</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>(Real Hawaiian treats some vowel pairs, like the *au* in *kīlauea*, as a single **diphthong**. For this assignment, every vowel is its own syllable. See the <span class="co">[</span><span class="ot">challenge</span><span class="co">](#challenge)</span> at the end if you want to do better.)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>Need to type the long vowels? Copy them from here: **a e i o u ā ē ī ō ū**</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 1: Write Your Functions</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>Write these four functions in <span class="in">`lin301.py`</span>. Each one should **return** its answer, not print it. Test each one on a few words where you already know the answer before you move on.</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**`is_vowel(letter)`** takes one letter, and returns <span class="in">`True`</span> if it is a Hawaiian vowel (short or long), and <span class="in">`False`</span> otherwise.</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`is_vowel("a")`</span> → <span class="in">`True`</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`is_vowel("ū")`</span> → <span class="in">`True`</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`is_vowel("k")`</span> → <span class="in">`False`</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`is_vowel("ʻ")`</span> → <span class="in">`False`</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**`cv_pattern(word)`** takes a word, and returns a string with <span class="in">`"C"`</span> for every consonant and <span class="in">`"V"`</span> for every vowel. It must use <span class="in">`is_vowel()`</span>.</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`cv_pattern("aloha")`</span> → <span class="in">`"VCVCV"`</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`cv_pattern("ʻohana")`</span> → <span class="in">`"CVCVCV"`</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**`syllabify(word)`** takes a word, and returns a **list** of its syllables. It must use `is_vowel()`. (Hint: in Hawaiian, a syllable always **ends** with a vowel.)</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`syllabify("aloha")`</span> → <span class="in">`["a", "lo", "ha"]`</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`syllabify("kīlauea")`</span> → <span class="in">`["kī", "la", "u", "e", "a"]`</span></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**`count_syllables(word)`** takes a word, and returns how many syllables it has. It must use <span class="in">`syllabify()`</span>.</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`count_syllables("aloha")`</span> → <span class="in">`3`</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 2: Explore the Word List</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>In your <span class="in">`.qmd`</span>, import your functions from <span class="in">`lin301.py`</span>, and read <span class="in">`hawaiian_words.csv`</span> into a DataFrame. It has two columns, <span class="in">`word`</span> and <span class="in">`meaning`</span>.</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Add three new columns, using your functions:</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`cv`</span>: the CV pattern of each word</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`syllables`</span>: the syllables of each word, joined with dots (*a.lo.ha*)</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span><span class="in">`n_syllables`</span>: the number of syllables in each word</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>What is the average number of syllables per word? Which word has the most?</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>How many words have each number of syllables (2, 3, 4...)?</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Use your <span class="in">`cv`</span> column to check the claims above. Does any word have two consonants in a row? Does any word end in a consonant?</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Make a second DataFrame with **one row per syllable** (with columns for the syllable and the word it came from). What are the 10 most common syllables in the list?</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 3: Try English</span></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>Run <span class="in">`cv_pattern()`</span> and <span class="in">`syllabify()`</span> on three English words: *banana*, *splash*, and *strengths*. (Treat the English vowels as *a, e, i, o, u*.)</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>In a short paragraph: which of the three words come out right, and which don't? What goes wrong, and why does it never go wrong for Hawaiian? What does this tell you about how English syllables differ from Hawaiian ones?</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="fu">## Challenge (Optional): Diphthongs {#challenge}</span></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>In Hawaiian, the vowel pairs *ai, ae, ao, au, ei, eu, oi, ou* and *iu* can form a single syllable, a diphthong: *Maui* is really *mau.i*, and *kai* 'sea' is one syllable. Write a new function, <span class="in">`syllabify_diphthongs(word)`</span>, that keeps these pairs together, and compare its results with <span class="in">`syllabify()`</span>. Which words change? (Don't change <span class="in">`syllabify()`</span> itself.)</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## No Code Hints</span></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>There are **no code hints** here: working out which tools to use is part of the assignment. Everything you need is in the <span class="co">[</span><span class="ot">list at the end</span><span class="co">](#toolkit)</span>, and all of it was covered in class.</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a><span class="fu">## Submission</span></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Make sure your <span class="in">`.qmd`</span> renders cleanly to HTML.</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Commit and push your <span class="in">`homework/hw6`</span> folder (your <span class="in">`.qmd`</span>, the rendered <span class="in">`.html`</span>, and <span class="in">`hawaiian_words.csv`</span>) **and** your updated <span class="in">`data/lin301.py`</span> to your <span class="in">`LIN_301`</span> repo.</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>On Canvas, submit the link to your <span class="in">`homework/hw6`</span> folder on GitHub. The link will look like <span class="in">`https://github.com/your-username/LIN_301/tree/main/homework/hw6`</span></span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a><span class="fu">## Grading Rubric (100 pts total)</span></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>| Criteria | Points |</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>|-----------------------------------------|:-----------------------------:|</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>| <span class="in">`is_vowel()`</span> works for short vowels, long vowels, consonants, and the ʻokina | 10 |</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>| <span class="in">`cv_pattern()`</span> works, and uses <span class="in">`is_vowel()`</span> | 15 |</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>| <span class="in">`syllabify()`</span> works, and uses <span class="in">`is_vowel()`</span> | 20 |</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>| <span class="in">`count_syllables()`</span> works, and uses <span class="in">`syllabify()`</span> | 5 |</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>| All four functions are in <span class="in">`lin301.py`</span> and imported into the <span class="in">`.qmd`</span> | 10 |</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>| DataFrame with <span class="in">`cv`</span>, <span class="in">`syllables`</span>, and <span class="in">`n_syllables`</span> columns | 10 |</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>| Part 2 questions answered with pandas (average and longest; counts by number of syllables; consonant check; 10 most common syllables) | 15 |</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>| Part 3 paragraph: what goes wrong for English, and why | 5 |</span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>| Explanation of the code holds up, and AI use is honestly disclosed | 5 |</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>| File names correct; document renders without errors; GitHub link points to the <span class="in">`hw6`</span> folder; <span class="in">`lin301.py`</span> pushed | 5 |</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a><span class="fu">## Your Toolkit {#toolkit}</span></span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>**Functions**</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`def`</span></span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>parameters</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`return`</span></span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>calling one function inside another</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`import sys`</span>, <span class="in">`sys.path.append()`</span>, <span class="in">`from lin301 import *`</span></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>**Strings and lists**</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`for`</span> loops over the letters of a string</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`if`</span> / <span class="in">`else`</span></span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`in`</span></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>an empty string <span class="in">`""`</span> and <span class="in">`+=`</span></span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>an empty list <span class="in">`[]`</span> and <span class="in">`.append()`</span></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`len()`</span></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`".".join()`</span></span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>**Building tables**</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`pd.read_csv()`</span> with <span class="in">`encoding="utf-8"`</span></span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`df["new_column"] = ...`</span></span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>list comprehensions</span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>a list of dicts</span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`pd.DataFrame()`</span></span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>**Looking**</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`.mean()`</span></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`.sort_values()`</span></span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`.head()`</span></span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`.groupby()`</span> and <span class="in">`.size()`</span></span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`.str.contains()`</span></span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="in">`.str.endswith()`</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
