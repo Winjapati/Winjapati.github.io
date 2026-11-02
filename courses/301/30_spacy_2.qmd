@@ -1,0 +1,702 @@
+---
+title: "Computation for Linguists"
+subtitle: "spaCy, Day 2: Sentences & Syntax"
+date: "November 4, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+# Where We Left Off
+
+## Updated `lin301.py` {.scrollable}
+
+-   Replace **everything** in your `lin301.py` with this version, then save it and **Restart** your notebook.
+-   New: `book_to_spacy_df()` from Monday, now with a `sentence` column. (It also has Monday's chapter fix.)
+-   `add_columns(df, stopwords)` revised, since `spaCy` already gives us `is_stop`.
+
+```python
+import os
+import re
+import pandas as pd
+
+HERE = os.path.dirname(__file__)   # the folder lin301.py lives in: data/
+
+def ttr(words):
+    return len(set(words)) / len(words)
+
+def ttr_first(words, n=10000):
+    return len(set(words[:n])) / len(words[:n])
+
+def avg_word_len(words):
+    total = 0
+    for w in words:
+        total += len(w)
+    return total / len(words)
+
+def ly_rate(words):
+    count = 0
+    for w in words:
+        if w.endswith("ly"):
+            count += 1
+    return count / len(words) * 1000
+
+def stopword_rate(words, stopwords):
+    count = 0
+    for w in words:
+        if w in stopwords:
+            count += 1
+    return count / len(words)
+
+def load_text(filename):
+    with open(os.path.join(HERE, "gutenberg", filename), "r", encoding="utf-8") as f:
+        lines = f.readlines()
+    while not lines[0].startswith("*** START"):
+        lines = lines[1:]
+    lines = lines[1:]
+    while not lines[-1].startswith("*** END"):
+        lines = lines[:-1]
+    lines = lines[:-1]
+    return "".join(lines)
+
+def load_words(filename):
+    text = load_text(filename)
+    words = re.split(r"[\W_]+", text.lower())
+    return [w for w in words if w != ""]
+
+def report(title, words):
+    print(title, "TTR:", ttr(words))
+    print(title, "TTR (10,000 words):", ttr_first(words))
+    print(title, "Average Word Length:", avg_word_len(words))
+    print(title, "-ly words per 1,000:", ly_rate(words))
+    return ttr_first(words)
+
+def book_to_df(filename, label):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        words = re.split(r"[\W_]+", chapter.lower())
+        words = [w for w in words if w != ""]
+        for w in words:
+            rows.append({"word": w, "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+
+def add_columns(df):
+    df["length"] = df["word"].str.len()
+    df["is_ly"] = df["word"].str.endswith("ly")
+    return df
+
+def book_to_spacy_df(filename, label, nlp):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        doc = nlp(chapter)
+        sentence_num = 0
+        for sent in doc.sents:
+            sentence_num += 1
+            for token in sent:
+                if token.is_alpha:
+                    rows.append({"word": token.text.lower(),
+                                 "lemma": token.lemma_.lower(),
+                                 "pos": token.pos_,
+                                 "is_stop": token.is_stop,
+                                 "sentence": sentence_num,
+                                 "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+```
+
+## Setup: Import Our Functions
+
+-   Make `day30.qmd` in `classwork/day_30/`, and start with this chunk:
+
+```python
+import sys
+sys.path.append("../../data")
+from lin301 import *
+
+import spacy
+from spacy import displacy
+nlp = spacy.load("en_core_web_sm")
+```
+
+## Recap from Last Time
+
+-   spaCy gives every token a **lemma** and a **part of speech**.
+-   We put them in a DataFrame and used `.groupby()`, just like before.
+-   *Alice* has more adverbs than *Mansfield Park*, but fewer *-ly* words.
+
+## A Problem
+
+From Chapter 1 of *Alice*:
+
+> "Do cats eat bats? Do cats eat bats?" and sometimes, "Do bats eat cats?"
+
+-   Count the lemmas and parts of speech in *Do cats eat bats?* and *Do bats eat cats?*
+-   What's the same? What's different?
+
+## A Problem
+
+| *Do cats eat bats?* | *Do bats eat cats?* |
+|---|---|
+| do (AUX) | do (AUX) |
+| cat (NOUN) | bat (NOUN) |
+| eat (VERB) | eat (VERB) |
+| bat (NOUN) | cat (NOUN) |
+
+-   Same lemmas, same parts of speech, same counts.
+-   But they don't mean the same thing! **Who eats whom?**
+-   To answer that, we need **syntax**.
+
+# Sentences
+
+## Splitting Text into Sentences
+
+-   spaCy also splits a `doc` into sentences: `doc.sents`
+
+```python
+doc = nlp("I am delighted to be here today. We meet in an hour of change and challenge. Do cats eat bats?")
+
+for sent in doc.sents:
+    print(sent.text)
+```
+-   Why not just split on periods? 
+    - Are periods used for anything else besides sentence breaks?
+
+## Our New `sentence` Column
+
+```python
+alice_sp = book_to_spacy_df("alice.txt", "Alice", nlp)
+alice_sp.head()
+```
+
+```
+     word   lemma    pos  is_stop  sentence  chapter   text
+0    down    down    ADP     True         2        1  Alice
+1     the     the    DET     True         2        1  Alice
+2  rabbit  rabbit  PROPN    False         2        1  Alice
+3    hole    hole  PROPN    False         2        1  Alice
+4   alice   alice  PROPN    False         2        1  Alice
+```
+
+-   Why do you think Chapter 1 starts at sentence **2**?
+
+## How Long Is a Sentence?
+
+-   Each row is one word, so the number of rows in a sentence is its length.
+-   We can `.groupby()` **two** columns at once:
+
+```python
+lengths = alice_sp.groupby(["chapter", "sentence"]).size()
+lengths.head()
+```
+
+```
+chapter  sentence
+1        2          61
+         3          56
+         4          29
+         5           2
+         6           4
+dtype: int64
+```
+
+## Activity 1: Sentence Length
+
+1.  Using `.groupby(["chapter", "sentence"]).size().mean()`, find the average sentence length in *Alice*
+2.  Run `book_to_spacy_df()` on *Mansfield Park*, and find its average sentence length.
+3.  Who writes longer sentences, Carroll or Austen?
+4.  Bonus: find the **longest** sentence in *Alice* (Hint: `.sort_values()`).
+
+## Activity 1: Possible Answer
+
+```python
+alice_lengths_avg = alice_sp.groupby(["chapter", "sentence"]).size().mean()
+print("Alice:", alice_lengths_avg)
+
+mp_sp = book_to_spacy_df("mansfield_park.txt", "Mansfield Park", nlp)
+mp_lengths_avg = mp_sp.groupby(["chapter", "sentence"]).size().mean()
+print("Mansfield Park:", mp_lengths_avg)
+```
+
+```
+Alice: 19.790022338049145
+Mansfield Park: 24.419246092552864
+```
+
+-   Austen's sentences are about **5 words longer**, on average.
+
+## Activity 1: Bonus
+
+```python
+alice_lengths = alice_sp.groupby(["chapter", "sentence"]).size()
+alice_lengths.sort_values(ascending=False).head(3)
+```
+
+```
+chapter  sentence
+4        116         180
+8        70          166
+12       97          119
+```
+-   180 words! Chapter 4, sentence 116: 
+
+```python
+longest = alice_sp[(alice_sp["chapter"] == 4) & (alice_sp["sentence"] == 116)]
+print(len(longest))
+print(" ".join(longest["word"]))
+```
+
+# Dependencies
+
+## How Words Depend on Each Other
+
+-   In a sentence, every word is attached to another word: its **head**.
+-   The label on that attachment is its **dependency** (`dep_`).
+
+```python
+doc = nlp("Do cats eat bats?")
+
+for token in doc:
+    print(token.text, token.dep_, token.head.text)
+```
+
+```
+Do aux eat
+cats nsubj eat
+eat ROOT eat
+bats dobj eat
+? punct eat
+```
+
+## Who Eats Whom?
+
+```python
+doc = nlp("Do bats eat cats?")
+
+for token in doc:
+    print(token.text, token.dep_, token.head.text)
+```
+
+```
+Do aux eat
+bats nsubj eat
+eat ROOT eat
+cats dobj eat
+? punct eat
+```
+
+-   `nsubj` = **subject**: who's eating
+-   `dobj` = **direct object**: what's being eaten
+
+## Seeing the Tree: displaCy
+
+```python
+from spacy import displacy
+
+doc = nlp("Do cats eat bats?")
+svg = displacy.render(doc, style="dep")
+with open("cats_eat_bats.svg", "w", encoding="utf-8") as f:
+    f.write(svg)
+```
+
+-   This saves the tree as a picture in your `day_30/` folder. Open it in VS Code or a browser.
+
+## Activity: 
+
+- Render an image of `Do bats eat cats?` and save it as `bats_eat_cats.svg`, and then open it.
+
+## Activity: Possible Answer
+
+```python
+doc = nlp("Do bats eat cats?")
+svg = displacy.render(doc, style="dep")
+with open("bats_eat_cats.svg", "w", encoding="utf-8") as f:
+    f.write(svg)
+```
+
+-   Compare your picture with the one for *Do cats eat bats?* on the next slide.
+
+## Seeing the Tree: displaCy
+
+![](cats_eat_bats.svg)
+
+![](bats_eat_cats.svg)
+
+## Common Dependency Labels
+
+| Label | Meaning | Example |
+|---|---|---|
+| `nsubj` | subject | ***cats*** *eat bats* |
+| `dobj` | direct object | *cats eat* ***bats*** |
+| `ROOT` | main verb of the sentence | *cats* ***eat*** *bats* |
+| `det` | determiner | ***the*** *cat* |
+| `amod` | adjective modifier | *a* ***little*** *cake* |
+| `prep` | preposition | *a song* ***about*** *soup* |
+| `pobj` | object of a preposition | *a song about* ***soup*** |
+
+-   [Full list of spaCy's labels](https://github.com/explosion/spaCy/blob/master/spacy/glossary.py)
+
+## A Word's Dependents: `.children`
+
+-   `token.head` goes **up** the tree; `token.children` goes **down**.
+
+```python
+doc = nlp("The Mock Turtle sang a song about soup.")
+```
+
+```python
+for token in doc:
+    print(token.text, token.dep_, [child.text for child in token.children])
+```
+
+```
+The det []
+Mock compound []
+Turtle nsubj ['The', 'Mock']
+sang ROOT ['Turtle', 'song', '.']
+a det []
+song dobj ['a', 'about']
+about prep ['soup']
+soup pobj []
+. punct []
+```
+
+## Activity 2: Parse a Sentence
+
+```python
+doc = nlp("The Hatter dropped his teacup on the floor.")
+```
+
+1.  Print each token's text, dependency, and head.
+2.  What is the subject of *dropped*? Its direct object?
+3.  What does *on* attach to: *dropped* or *teacup*? Compare *about* in *a song about soup*.
+4.  Save the tree with `displacy`, and open it.
+
+## Activity 2: Possible Answer
+
+```python
+doc = nlp("The Hatter dropped his teacup on the floor.")
+
+for token in doc:
+    print(token.text, token.dep_, token.head.text)
+```
+
+```
+The det Hatter
+Hatter nsubj dropped
+dropped ROOT dropped
+his poss teacup
+teacup dobj dropped
+on prep dropped
+the det floor
+floor pobj on
+. punct dropped
+```
+
+-   Subject of *dropped*: *Hatter* (`nsubj`). Direct object: *teacup* (`dobj`).
+-   *on* attaches to the **verb** *dropped*.
+
+```python
+svg = displacy.render(doc, style="dep")
+with open("hatter_teacup.svg", "w", encoding="utf-8") as f:
+    f.write(svg)
+```
+
+## Activity 2: The Tree
+
+![](hatter_teacup.svg)
+
+-   *on the floor* attaches to *dropped*: it tells us **where** he dropped it.
+-   *about soup* attached to *song*: it told us **which** song.
+-   Same kind of phrase, different attachment!
+
+# Who Does What to Whom?
+
+## Subject + Verb + Object
+
+-   For every verb, look at its children: is there a subject? An object?
+
+```python
+doc = nlp("Do cats eat bats?")
+
+for token in doc:
+    if token.pos_ == "VERB":
+        subjects = [c for c in token.children if c.dep_ == "nsubj"]
+        objects = [c for c in token.children if c.dep_ == "dobj"]
+        if subjects and objects:
+            print(subjects[0].lemma_, token.lemma_, objects[0].lemma_)
+```
+
+```
+cat eat bat
+```
+
+-   `if subjects and objects:` means "if both lists are non-empty"
+
+## Same Pattern: A Table of Who Did What
+
+-   We've seen this before: a list of dictionaries, one per verb.
+
+```python
+def book_to_svo_df(filename, label, nlp):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        doc = nlp(chapter)
+        for token in doc:
+            if token.pos_ == "VERB":
+                subjects = [c for c in token.children if c.dep_ == "nsubj"]
+                objects = [c for c in token.children if c.dep_ == "dobj"]
+                if subjects and objects:
+                    rows.append({"subject": subjects[0].lemma_.lower(),
+                                 "verb": token.lemma_.lower(),
+                                 "object": objects[0].lemma_.lower(),
+                                 "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+```
+
+## Add it to `lin301.py`
+
+-   Paste `book_to_svo_df()` into `lin301.py`, below `book_to_spacy_df()`.
+-   Save, **Restart**, and rerun your setup chunk.
+
+```python
+import sys
+sys.path.append("../../data")
+from lin301 import *
+
+import spacy
+from spacy import displacy
+nlp = spacy.load("en_core_web_sm")
+```
+
+## Reload `alice.txt`
+
+```python
+alice_svo = book_to_svo_df("alice.txt", "Alice", nlp)
+alice_svo.head()
+```
+
+```
+  subject   verb   object  chapter   text
+0      it   have  picture        1  Alice
+1   alice  think       it        1  Alice
+2     she  think       it        1  Alice
+3  rabbit   take    watch        1  Alice
+4     she    see   rabbit        1  Alice
+```
+
+## Who Does the Most?
+
+```python
+alice_svo.groupby("subject").size().sort_values(ascending=False).head(8)
+```
+
+```
+i        163
+she      161
+you       91
+it        66
+they      42
+he        39
+alice     33
+we        17
+```
+
+-   *Alice* is a subject only 33 times. Why do you think?
+
+## Note: spaCy Doesn't Know Who *She* Is
+
+-   Figuring out what a pronoun refers to is called **coreference**.
+-   spaCy's small English model doesn't do coreference.
+-   So *she* stays *she*, even when it's Alice.
+
+## What Does *She* Do?
+
+```python
+she = alice_svo[alice_svo["subject"] == "she"]
+she.groupby("verb").size().sort_values(ascending=False).head(8)
+```
+
+```
+say     12
+have    10
+hear    10
+find     7
+see      6
+put      6
+give     5
+make     4
+```
+
+## What Gets Eaten?
+
+```python
+eaten = alice_svo[alice_svo["verb"] == "eat"]
+eaten.groupby("object").size().sort_values(ascending=False)
+```
+
+```
+bat     4
+bird    1
+cake    1
+cat     1
+egg     1
+it      1
+one     1
+what    1
+```
+
+## Activity 3: Who Does What?
+
+Using `alice_svo`:
+
+1.  What are the 10 most common verbs?
+2.  What does the *Queen* do? The *Hatter*? The *Rabbit*?
+3.  What gets *said*? (Hint: what are the objects of *say*?)
+
+## Activity 3: Possible Answer
+
+```python
+alice_svo.groupby("verb").size().sort_values(ascending=False).head(10)
+```
+
+```
+have    59
+take    37
+see     29
+say     28
+do      27
+tell    22
+give    20
+hear    20
+put     20
+know    18
+```
+
+## Activity 3: Possible Answer
+
+```python
+alice_svo[alice_svo["subject"] == "queen"]
+```
+```python
+alice_svo[alice_svo["subject"] == "hatter"]
+```
+```python
+alice_svo[alice_svo["subject"] == "rabbit"]
+```
+
+## Activity 3: Possible Answer
+
+```python
+said = alice_svo[alice_svo["verb"] == "say"]
+said.groupby("object").size().sort_values(ascending=False).head(6)
+```
+
+```
+what       6
+this       6
+nothing    4
+word       3
+pig        2
+it         2
+```
+
+# Groups of Words
+
+## What Food Is in *Alice*?
+
+-   Let's make our own list of food words:
+
+```python
+food = ["cake", "tart", "soup", "tea", "bread", "butter", "egg", "jam", "pie"]
+
+alice_svo[alice_svo["object"].isin(food)]
+```
+
+```
+    subject    verb  object  chapter   text
+60      one     eat    cake        1  Alice
+313     you   taste     egg        5  Alice
+...
+680     who   steal    tart       11  Alice
+...
+723       i     cut   bread       11  Alice
+```
+
+## Activity 4: Make Your Own Group
+
+1.  Make a list of 8--10 words from one meaning group: **animals**, **body parts**, or **clothing**.
+2.  Find every row of `alice_svo` where the **object** is in your list.
+3.  Which verbs go with your group?
+4.  Did you miss any? How would you know?
+
+## Activity 4: Possible Answer
+
+```python
+animals = ["cat", "dog", "bat", "bird", "rabbit", "mouse", "pig",
+           "turtle", "lobster", "caterpillar"]
+
+animal_rows = alice_svo[alice_svo["object"].isin(animals)]
+animal_rows.groupby(["verb", "object"]).size().sort_values(ascending=False).head(6)
+```
+
+```
+verb    object
+eat     bat       4
+see     rabbit    2
+say     pig       2
+see     turtle    2
+catch   bat       1
+eat     bird      1
+```
+
+-   Did you miss any? We can't know without reading the whole book -- or a dictionary of meanings.
+
+## The Problem with Our Lists
+
+-   We had to **think** of every word ourselves.
+-   We'll always miss some: *treacle*? *marmalade*? *mushroom*?
+-   What if there were a dictionary that already knew that a tart is a kind of food?
+
+**Friday:** WordNet.
+
+# Looking Ahead
+
+## What Did We Add Today?
+
+-   **Sentences:** `doc.sents`, and a `sentence` column for sentence length
+-   **Dependencies:** `token.dep_`, `token.head`, `token.children`, and `displacy`
+-   **Who did what to whom:** `book_to_svo_df()`, one row per subject + verb + object
+
+## Your Project
+
+-   **Component 3** is counting and analysis.
+-   Would sentence length, or who-does-what, answer one of your questions?
