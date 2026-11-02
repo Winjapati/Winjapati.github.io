@@ -286,8 +286,7 @@ doc = nlp("The Queen said that Alice was only a silly little girl.")
 
 1.  Print each token's text, lemma, and POS.
 2.  What is the lemma of *said*? Of *was*?
-3.  What POS does spaCy give *only* here? Why is it different from before?
-4.  Would our earlier `is_ly` column incorrectly identify any words as adverbs?
+3.  Would our earlier `is_ly` column incorrectly identify any words as adverbs?
 
 # Same Pattern, New Columns
 
