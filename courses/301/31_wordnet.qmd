@@ -1,0 +1,671 @@
+---
+title: "Computation for Linguists"
+subtitle: "WordNet: What Do Words Mean?"
+date: "November 6, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+# Where We Left Off
+
+
+## Setup: updated `lin301.py` {.scrollable}
+
+-   Replace **everything** in your `lin301.py` with this version, then save it and **Restart** your notebook.
+-   New: `book_to_svo_df()` from Wednesday.
+
+```python
+import os
+import re
+import pandas as pd
+
+HERE = os.path.dirname(__file__)   # the folder lin301.py lives in: data/
+
+def ttr(words):
+    return len(set(words)) / len(words)
+
+def ttr_first(words, n=10000):
+    return len(set(words[:n])) / len(words[:n])
+
+def avg_word_len(words):
+    total = 0
+    for w in words:
+        total += len(w)
+    return total / len(words)
+
+def ly_rate(words):
+    count = 0
+    for w in words:
+        if w.endswith("ly"):
+            count += 1
+    return count / len(words) * 1000
+
+def stopword_rate(words, stopwords):
+    count = 0
+    for w in words:
+        if w in stopwords:
+            count += 1
+    return count / len(words)
+
+def load_text(filename):
+    with open(os.path.join(HERE, "gutenberg", filename), "r", encoding="utf-8") as f:
+        lines = f.readlines()
+    while not lines[0].startswith("*** START"):
+        lines = lines[1:]
+    lines = lines[1:]
+    while not lines[-1].startswith("*** END"):
+        lines = lines[:-1]
+    lines = lines[:-1]
+    return "".join(lines)
+
+def load_words(filename):
+    text = load_text(filename)
+    words = re.split(r"[\W_]+", text.lower())
+    return [w for w in words if w != ""]
+
+def report(title, words):
+    print(title, "TTR:", ttr(words))
+    print(title, "TTR (10,000 words):", ttr_first(words))
+    print(title, "Average Word Length:", avg_word_len(words))
+    print(title, "-ly words per 1,000:", ly_rate(words))
+    return ttr_first(words)
+
+def book_to_df(filename, label):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        words = re.split(r"[\W_]+", chapter.lower())
+        words = [w for w in words if w != ""]
+        for w in words:
+            rows.append({"word": w, "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+
+def add_columns(df):
+    df["length"] = df["word"].str.len()
+    df["is_ly"] = df["word"].str.endswith("ly")
+    return df
+
+def book_to_spacy_df(filename, label, nlp):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        doc = nlp(chapter)
+        sentence_num = 0
+        for sent in doc.sents:
+            sentence_num += 1
+            for token in sent:
+                if token.is_alpha:
+                    rows.append({"word": token.text.lower(),
+                                 "lemma": token.lemma_.lower(),
+                                 "pos": token.pos_,
+                                 "is_stop": token.is_stop,
+                                 "sentence": sentence_num,
+                                 "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+
+def book_to_svo_df(filename, label, nlp):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        doc = nlp(chapter)
+        for token in doc:
+            if token.pos_ == "VERB":
+                subjects = [c for c in token.children if c.dep_ == "nsubj"]
+                objects = [c for c in token.children if c.dep_ == "dobj"]
+                if subjects and objects:
+                    rows.append({"subject": subjects[0].lemma_.lower(),
+                                 "verb": token.lemma_.lower(),
+                                 "object": objects[0].lemma_.lower(),
+                                 "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+```
+
+## Setup: Import Our Functions
+
+-   Make `day31.qmd` in `classwork/day_31/`, and start with this chunk:
+
+```python
+import sys
+sys.path.append("../../data")
+from lin301 import *
+
+import spacy
+nlp = spacy.load("en_core_web_sm")
+
+alice_svo = book_to_svo_df("alice.txt", "Alice", nlp)
+```
+
+## Recap from Last Time
+
+-   `doc.sents` splits a text into sentences.
+-   `token.dep_`, `token.head` and `token.children` tell us how words attach to each other.
+-   `book_to_svo_df()` gives one row per **subject + verb + object**.
+
+## The Problem with Our Lists
+
+```python
+food = ["cake", "tart", "soup", "tea", "bread", "butter", "egg", "jam", "pie"]
+alice_svo[alice_svo["object"].isin(food)]
+```
+
+-   We had to think of every food word ourselves.
+-   Did anyone have *treacle*? *wine*? *pepper*?
+-   We need a dictionary that knows what words **mean**.
+
+# What Is WordNet?
+
+## WordNet
+
+-   A **lexical database** of English, built at Princeton University
+-   Groups words into **synsets**: sets of words that share one meaning
+-   Connects synsets to each other:
+    -   *cat* is a kind of *feline*, which is a kind of *mammal*... (**hyponyms**)
+    -   *wheel* is a part of *car* (**meronyms**)
+    -   *fast* is the opposite of *slow* (**antonyms**)
+
+## Install WordNet
+
+In the **terminal** (once):
+
+```bash
+python -m pip install nltk
+```
+
+In your notebook (once):
+
+```python
+import nltk
+nltk.download("wordnet")
+```
+
+-   **NLTK** is another NLP library. We'll use it just for WordNet.
+
+## Load WordNet
+
+Add this to your setup chunk:
+
+```python
+from nltk.corpus import wordnet as wn
+```
+
+-   `wn` is now our door into WordNet.
+
+# One Word, Many Meanings
+
+## Synsets
+
+```python
+wn.synsets("bat")
+```
+
+```
+[Synset('bat.n.01'), Synset('bat.n.02'), Synset('squash_racket.n.01'),
+ Synset('cricket_bat.n.01'), Synset('bat.n.05'), Synset('bat.v.01'),
+ Synset('bat.v.02'), Synset('bat.v.03'), Synset('bat.v.04'), Synset('cream.v.02')]
+```
+
+-   Each synset is one **meaning** of *bat*.
+-   `bat.n.01`: the word *bat*, as a **n**oun, sense number **01**
+
+## What Does Each Synset Mean?
+
+```python
+for synset in wn.synsets("bat"):
+    print(synset.name(), "→", synset.definition())
+```
+
+```
+bat.n.01 → nocturnal mouselike mammal with forelimbs modified to form membranous wings...
+bat.n.02 → (baseball) a turn trying to get a hit
+squash_racket.n.01 → a small racket with a long handle used for playing squash
+cricket_bat.n.01 → the club used in playing cricket
+bat.n.05 → a club used for hitting a ball in various games
+bat.v.01 → strike with, or as if with a baseball bat
+bat.v.02 → wink briefly
+...
+```
+
+-   Which *bat* do cats eat?
+
+## More About a Synset
+
+```python
+bat = wn.synset("bat.n.01")
+
+print(bat.definition())
+print(bat.lemma_names())
+print(wn.synset("bat.v.02").examples())
+```
+
+```
+nocturnal mouselike mammal with forelimbs modified to form membranous wings...
+['bat', 'chiropteran']
+["bat one's eyelids"]
+```
+
+-   `.lemma_names()`: all the words that share this meaning
+-   `.examples()`: example uses (not every synset has them)
+
+## Only the Nouns, Please
+
+```python
+wn.synsets("bat", pos=wn.NOUN)
+```
+
+```
+[Synset('bat.n.01'), Synset('bat.n.02'), Synset('squash_racket.n.01'),
+ Synset('cricket_bat.n.01'), Synset('bat.n.05')]
+```
+
+-   `wn.NOUN`, `wn.VERB`, `wn.ADJ`, `wn.ADV`
+-   spaCy can tell us a word's POS -- and then we only look up the right ones.
+
+## Activity 1: How Many Meanings?
+
+For *bank*, *duck*, and *soup*:
+
+1.  How many synsets does each word have?
+2.  How many are nouns? How many are verbs?
+3.  Print the definitions of the noun senses of *soup*. Which one is in *Alice*?
+
+## Activity 1: Possible Answer
+
+```python
+for word in ["bank", "duck", "soup"]:
+    print(word, len(wn.synsets(word)),
+          len(wn.synsets(word, pos=wn.NOUN)),
+          len(wn.synsets(word, pos=wn.VERB)))
+```
+
+```
+bank 18 10 8
+duck 8 4 4
+soup 4 3 1
+```
+
+```python
+for synset in wn.synsets("soup", pos=wn.NOUN):
+    print(synset.name(), "→", synset.definition())
+```
+
+```
+soup.n.01 → liquid food especially of meat or fish or vegetable stock
+soup.n.02 → any composition having a consistency suggestive of soup
+soup.n.03 → an unfortunate situation
+```
+
+-   *Alice*'s soup (the Mock Turtle's "Beautiful Soup") is `soup.n.01`.
+
+# Going Up: Hypernyms
+
+## What Kind of Thing Is It?
+
+-   A **hypernym** is a more general word: *soup* is a kind of *dish*.
+
+```python
+soup = wn.synset("soup.n.01")
+soup.hypernyms()
+```
+
+```
+[Synset('dish.n.02')]
+```
+
+-   And the reverse, a more specific word, is a **hyponym**: *soup* is a hyponym of *dish*.
+
+## All the Way Up
+
+```python
+for path in soup.hypernym_paths():
+    print(" > ".join([s.name() for s in path]))
+```
+
+```
+entity.n.01 > physical_entity.n.01 > matter.n.03 > substance.n.07 >
+food.n.01 > nutriment.n.01 > dish.n.02 > soup.n.01
+```
+
+-   Every noun goes up to `entity.n.01`.
+-   *soup* is a kind of **food**!
+
+## Activity 2: Climb the Tree
+
+1.  Print the hypernym path of `cat.n.01`. How many steps up to `entity.n.01`?
+2.  Look at the noun synsets of *cake*. Which one is the cake Alice eats?
+3.  Print that synset's hypernym path. Is it food?
+
+## Activity 2: Possible Answer
+
+```python
+for path in wn.synset("cat.n.01").hypernym_paths():
+    print(" > ".join([s.name() for s in path]))
+```
+
+```
+entity.n.01 > physical_entity.n.01 > object.n.01 > whole.n.02 > living_thing.n.01 >
+organism.n.01 > animal.n.01 > chordate.n.01 > vertebrate.n.01 > mammal.n.01 >
+placental.n.01 > carnivore.n.01 > feline.n.01 > cat.n.01
+```
+
+```python
+for synset in wn.synsets("cake", pos=wn.NOUN):
+    print(synset.name(), "→", synset.definition())
+```
+
+```
+cake.n.01 → a block of solid substance (such as soap or wax)
+patty.n.01 → small flat mass of chopped food
+cake.n.03 → baked goods made from or based on a mixture of flour, sugar, eggs, and fat
+```
+
+-   Alice's cake is `cake.n.03`... and its path goes through `food.n.02`.
+
+# Is It Food?
+
+## Two Kinds of Food
+
+```python
+print(wn.synset("food.n.01").definition())
+print(wn.synset("food.n.02").definition())
+```
+
+```
+any substance that can be metabolized by an animal to give energy and build tissue
+any solid substance (as opposed to liquid) that is used as a source of nourishment
+```
+
+-   *soup* is `food.n.01`; *cake* is `food.n.02`.
+-   `food.n.01` is the broader one -- but Alice's cake (`cake.n.03`) isn't under it!
+
+## A Function: `is_a()`
+
+-   Is any noun sense of a word under a category?
+
+```python
+def is_a(word, category):
+    for synset in wn.synsets(word, pos=wn.NOUN):
+        for path in synset.hypernym_paths():
+            if category in path:
+                return True
+    return False
+```
+
+```python
+food = wn.synset("food.n.01")
+print(is_a("soup", food))
+print(is_a("hatter", food))
+```
+
+```
+True
+False
+```
+
+## Add It to `lin301.py`
+
+1.  Add this line to the header of `lin301.py`, with the other imports:
+
+```python
+from nltk.corpus import wordnet as wn
+```
+
+2.  Paste `is_a()` below `book_to_svo_df()`.
+3.  Save, **Restart**, and rerun your setup chunk.
+
+## Food in *Alice*
+
+-   A list comprehension gives us one `True`/`False` per row: a new column!
+
+```python
+food = wn.synset("food.n.01")
+alice_svo["is_food"] = [is_a(w, food) for w in alice_svo["object"]]
+
+eaten = alice_svo[alice_svo["is_food"]]
+eaten.groupby("object").size().sort_values(ascending=False)
+```
+
+```
+tea        4
+egg        3
+course     2
+rose       2
+treacle    2
+pepper     2
+bread      1
+dish       1
+cup        1
+butter     1
+cake       1
+table      1
+soup       1
+water      1
+wine       1
+```
+
+## Wait -- *table*? *rose*?
+
+```python
+for synset in wn.synsets("table", pos=wn.NOUN):
+    print(synset.name(), "→", synset.definition())
+```
+
+-   `board.n.04` → *food or meals in general* ("she sets a fine table")
+-   *rose* has a sense `blush_wine.n.01`: rosé wine
+-   *cup* has a sense `cup.n.06`: a kind of punch
+-   `is_a()` says `True` if **any** sense is food.
+
+## Which Sense?
+
+-   WordNet doesn't know which sense is used in a sentence.
+-   Picking the right sense in context is called **word sense disambiguation**.
+-   One shortcut: senses are roughly ordered by frequency, so try just the **first** sense.
+
+```python
+wn.synsets("queen", pos=wn.NOUN)[0].definition()
+```
+
+```
+the only fertile female in a colony of social insects such as bees and ants and termites...
+```
+
+-   ... but that has problems too!
+
+## Activity 3: Animals in *Alice*
+
+1.  Make `animal = wn.synset("animal.n.01")`.
+2.  Add a column `subject_is_animal` to `alice_svo`, using `is_a()` on the **subject**.
+3.  Which animals are subjects? Count them with `.groupby()`.
+4.  Find one word that isn't really an animal in *Alice*. Which sense made `is_a()` say `True`?
+
+## Activity 3: Possible Answer
+
+```python
+animal = wn.synset("animal.n.01")
+alice_svo["subject_is_animal"] = [is_a(w, animal) for w in alice_svo["subject"]]
+
+animals = alice_svo[alice_svo["subject_is_animal"]]
+animals.groupby("subject").size().sort_values(ascending=False).head(10)
+```
+
+```
+dormouse       8
+mouse          5
+queen          5
+turtle         4
+cat            3
+hare           3
+rabbit         3
+caterpillar    2
+creature       2
+panther        2
+```
+
+-   *queen*: `tabby.n.02`, a female cat! (and *world* sneaks in further down)
+
+# Other Relations
+
+## Opposites: Antonyms
+
+-   Antonyms belong to **lemmas** (words), not synsets.
+
+```python
+antonyms = []
+for synset in wn.synsets("slow"):
+    for lemma in synset.lemmas():
+        for ant in lemma.antonyms():
+            antonyms.append(ant.name())
+print(antonyms)
+```
+
+```
+['accelerate', 'fast', 'fast', 'fast', 'quickly']
+```
+
+## Parts and Wholes: Meronyms
+
+```python
+wn.synset("car.n.01").part_meronyms()[:6]
+```
+
+```
+[Synset('car_mirror.n.01'), Synset('first_gear.n.01'), Synset('car_door.n.01'),
+ Synset('reverse.n.02'), Synset('stabilizer_bar.n.01'), Synset('bumper.n.02')]
+```
+
+-   A **meronym** is a part: a *car door* is part of a *car*.
+-   The opposite, `part_holonyms()`, gives the whole.
+
+## Verbs: Entailments
+
+```python
+print(wn.synset("snore.v.01").entailments())
+print(wn.synset("buy.v.01").entailments())
+```
+
+```
+[Synset('sleep.v.01')]
+[Synset('choose.v.01'), Synset('pay.v.01')]
+```
+
+-   If you snore, you must be sleeping. If you buy, you choose and pay.
+
+## How Similar? Wu–Palmer Similarity
+
+-   How close are two synsets in the tree? From 0 (unrelated) to 1 (the same).
+
+```python
+dog = wn.synset("dog.n.01")
+for other in ["cat.n.01", "rabbit.n.01", "bat.n.01", "cake.n.03"]:
+    print(other, dog.wup_similarity(wn.synset(other)))
+```
+
+```
+cat.n.01 0.8571428571428571
+rabbit.n.01 0.7857142857142857
+bat.n.01 0.8461538461538461
+cake.n.03 0.25
+```
+
+-   The closer their shared ancestor is to them, the higher the score.
+
+## Activity 4: Explore
+
+1.  Find the antonyms of *good*, *open*, and *happy*.
+2.  What are the parts (`part_meronyms()`) of `tree.n.01`? Of `hand.n.01`?
+3.  How similar are *cat* and *mouse*? *Queen* and *king*? Pick the right synsets first!
+
+## Activity 4: Possible Answer
+
+```python
+for word in ["good", "open", "happy"]:
+    antonyms = []
+    for synset in wn.synsets(word):
+        for lemma in synset.lemmas():
+            for ant in lemma.antonyms():
+                antonyms.append(ant.name())
+    print(word, set(antonyms))
+```
+
+```
+good {'evil', 'evilness', 'bad', 'badness', 'ill'}
+open {'close', 'fold', 'shut', 'closed', 'unreceptive', 'covert'}
+happy {'unhappy'}
+```
+
+-   `set()` removes the repeats.
+
+## Activity 4: Possible Answer
+
+```python
+print(wn.synset("tree.n.01").part_meronyms())
+print(wn.synset("hand.n.01").part_meronyms())
+```
+
+```
+[Synset('stump.n.01'), Synset('crown.n.07'), Synset('burl.n.02'),
+ Synset('trunk.n.01'), Synset('limb.n.02')]
+[Synset('metacarpal_artery.n.01'), Synset('intercapitular_vein.n.01'),
+ Synset('ball.n.10'), Synset('palm.n.01'), Synset('digital_arteries.n.01'),
+ Synset('metacarpal_vein.n.01'), Synset('finger.n.01'), Synset('metacarpus.n.01')]
+```
+
+## Activity 4: Possible Answer
+
+```python
+cat = wn.synset("cat.n.01")        # the feline, not cat.n.03!
+mouse = wn.synset("mouse.n.01")    # the rodent, not the computer mouse
+print(cat.wup_similarity(mouse))
+
+queen = wn.synset("queen.n.02")    # a female sovereign ruler
+king = wn.synset("king.n.01")      # a male sovereign
+print(queen.wup_similarity(king))
+```
+
+```
+0.8148148148148148
+0.5714285714285714
+```
+
+-   A cat and a mouse are closer in WordNet than a queen and a king! Why might that be?
+
+# Looking Ahead
+
+## What Did We Add Today?
+
+-   **Synsets:** `wn.synsets()`, `.definition()`, `.lemma_names()`, `.examples()`
+-   **Hypernyms:** `.hypernyms()`, `.hypernym_paths()`
+-   **`is_a()`:** does a word belong to a category? (Any sense!)
+-   **Other relations:** antonyms, meronyms, entailments, similarity
+
+## Next Week
+
+-   **Monday & Wednesday:** working with languages other than English
+-   **Friday:** an in-class activity putting spaCy and WordNet together -- which becomes your homework
