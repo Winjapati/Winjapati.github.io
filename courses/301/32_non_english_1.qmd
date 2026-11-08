@@ -1,0 +1,764 @@
+---
+title: "Computation for Linguists"
+subtitle: "Beyond English, Part 1: Unicode & Other Languages in spaCy"
+date: "November 9, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+# Where We Left Off
+
+## Setup: updated `lin301.py` {.scrollable}
+
+-   Replace **everything** in your `lin301.py` with this version, then save it and **Restart** your notebook.
+-   New: the WordNet import and `is_a()` from Friday.
+
+```python
+import os
+import re
+import pandas as pd
+from nltk.corpus import wordnet as wn
+
+HERE = os.path.dirname(__file__)   # the folder lin301.py lives in: data/
+
+def ttr(words):
+    return len(set(words)) / len(words)
+
+def ttr_first(words, n=10000):
+    return len(set(words[:n])) / len(words[:n])
+
+def avg_word_len(words):
+    total = 0
+    for w in words:
+        total += len(w)
+    return total / len(words)
+
+def ly_rate(words):
+    count = 0
+    for w in words:
+        if w.endswith("ly"):
+            count += 1
+    return count / len(words) * 1000
+
+def stopword_rate(words, stopwords):
+    count = 0
+    for w in words:
+        if w in stopwords:
+            count += 1
+    return count / len(words)
+
+def load_text(filename):
+    with open(os.path.join(HERE, "gutenberg", filename), "r", encoding="utf-8") as f:
+        lines = f.readlines()
+    while not lines[0].startswith("*** START"):
+        lines = lines[1:]
+    lines = lines[1:]
+    while not lines[-1].startswith("*** END"):
+        lines = lines[:-1]
+    lines = lines[:-1]
+    return "".join(lines)
+
+def load_words(filename):
+    text = load_text(filename)
+    words = re.split(r"[\W_]+", text.lower())
+    return [w for w in words if w != ""]
+
+def report(title, words):
+    print(title, "TTR:", ttr(words))
+    print(title, "TTR (10,000 words):", ttr_first(words))
+    print(title, "Average Word Length:", avg_word_len(words))
+    print(title, "-ly words per 1,000:", ly_rate(words))
+    return ttr_first(words)
+
+def book_to_df(filename, label):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        words = re.split(r"[\W_]+", chapter.lower())
+        words = [w for w in words if w != ""]
+        for w in words:
+            rows.append({"word": w, "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+
+def add_columns(df):
+    df["length"] = df["word"].str.len()
+    df["is_ly"] = df["word"].str.endswith("ly")
+    return df
+
+def book_to_spacy_df(filename, label, nlp):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        doc = nlp(chapter)
+        sentence_num = 0
+        for sent in doc.sents:
+            sentence_num += 1
+            for token in sent:
+                if token.is_alpha:
+                    rows.append({"word": token.text.lower(),
+                                 "lemma": token.lemma_.lower(),
+                                 "pos": token.pos_,
+                                 "is_stop": token.is_stop,
+                                 "sentence": sentence_num,
+                                 "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+
+def book_to_svo_df(filename, label, nlp):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        doc = nlp(chapter)
+        for token in doc:
+            if token.pos_ == "VERB":
+                subjects = [c for c in token.children if c.dep_ == "nsubj"]
+                objects = [c for c in token.children if c.dep_ == "dobj"]
+                if subjects and objects:
+                    rows.append({"subject": subjects[0].lemma_.lower(),
+                                 "verb": token.lemma_.lower(),
+                                 "object": objects[0].lemma_.lower(),
+                                 "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+
+def is_a(word, category):
+    for synset in wn.synsets(word, pos=wn.NOUN):
+        for path in synset.hypernym_paths():
+            if category in path:
+                return True
+    return False
+```
+
+## Setup: Import Our Functions
+
+-   Make `day32.qmd` in `classwork/day_32/`, and start with this chunk:
+
+```python
+import sys
+sys.path.append("../../data")
+from lin301 import *
+
+import unicodedata
+import spacy
+nlp = spacy.load("en_core_web_sm")
+```
+
+## Recap from Last Time
+
+-   **WordNet** groups words into **synsets**, one per meaning.
+-   `.hypernym_paths()` tells us what kind of thing a word is.
+-   `is_a()` checks whether **any** sense of a word is under a category.
+
+## Everything So Far Has Been English
+
+-   `en_core_web_sm`: an **English** model
+-   WordNet: an **English** dictionary
+-   `book_to_df()`: looks for the word **CHAPTER**
+-   What would break if we tried *Alice* in French or Italian?
+
+# Text Is Numbers: Unicode
+
+## Every Character Is a Number
+
+-   Computers store text as numbers. **Unicode** gives every character in every writing system its own number.
+
+```python
+print(ord("a"))
+print(ord("é"))
+print(ord("γ"))
+print(ord("猫"))
+print(chr(233))
+```
+
+```
+97
+233
+947
+29483
+é
+```
+
+-   `ord()`: character → number; `chr()`: number → character
+
+## Every Character Has a Name
+
+```python
+print(unicodedata.name("é"))
+print(unicodedata.name("γ"))
+print(unicodedata.name("ā"))
+print(unicodedata.name("ʻ"))
+```
+
+```
+LATIN SMALL LETTER E WITH ACUTE
+GREEK SMALL LETTER GAMMA
+LATIN SMALL LETTER A WITH MACRON
+MODIFIER LETTER TURNED COMMA
+```
+
+-   Remember the kahakō and ʻokina from HW 6? They're Unicode characters too.
+-   The ʻokina is **not** an apostrophe (`'`): it's a different character, with a different number.
+
+## Same Look, Different String
+
+-   *é* can be written two ways: one character, or *e* plus a combining accent.
+
+```python
+a = "é"
+b = "e\u0301"   # e + COMBINING ACUTE ACCENT
+print(a, b)
+print(len(a), len(b))
+print(a == b)
+```
+
+```
+é é
+1 2
+False
+```
+
+-   They look identical, but Python says they're different!
+
+## Normalizing
+
+```python
+print([unicodedata.name(c) for c in b])
+print(unicodedata.normalize("NFC", b) == a)
+```
+
+```
+['LATIN SMALL LETTER E', 'COMBINING ACUTE ACCENT']
+True
+```
+
+-   `"NFC"` combines letters and accents into single characters wherever it can.
+-   Normalize text from different sources before you compare or count it.
+
+## Activity 1: Unicode
+
+1.  Print the number and name of every letter in *naïve*.
+2.  Now print the number and name of *ñ*, *ß*, *ж*, and *ك*.
+3.  Make `"n\u0303"` (*n* + COMBINING TILDE). How long is it? Normalize it. Is it now equal to `"ñ"`?
+
+## Activity 1: Possible Answer
+
+```python
+for c in "naïve":
+    print(c, ord(c), unicodedata.name(c))
+```
+
+```
+n 110 LATIN SMALL LETTER N
+a 97 LATIN SMALL LETTER A
+ï 239 LATIN SMALL LETTER I WITH DIAERESIS
+v 118 LATIN SMALL LETTER V
+e 101 LATIN SMALL LETTER E
+```
+
+```python
+for c in "ñßжك":
+    print(c, ord(c), unicodedata.name(c))
+
+n_tilde = "n\u0303"
+print(len(n_tilde), unicodedata.normalize("NFC", n_tilde) == "ñ")
+```
+
+```
+ñ 241 LATIN SMALL LETTER N WITH TILDE
+ß 223 LATIN SMALL LETTER SHARP S
+ж 1078 CYRILLIC SMALL LETTER ZHE
+ك 1603 ARABIC LETTER KAF
+2 True
+```
+
+# Files Are Bytes: Encodings
+
+## What `encoding="utf-8"` Means
+
+-   A file stores **bytes**, not characters.
+-   An **encoding** is the rule for turning characters into bytes, and back.
+-   **UTF-8** is today's standard: it can store every Unicode character.
+-   That's why we always write `open(..., encoding="utf-8")`.
+
+## Older Files, Older Encodings
+
+- Let's save a sentence from the Spanish *Alice* in an older encoding, **Latin-1**, and then read it back as UTF-8.
+
+```python
+with open("spanish_latin1.txt", "w", encoding="latin-1") as f:
+    f.write("Alicia, la niña, era matemática.")
+
+with open("spanish_latin1.txt", "r", encoding="utf-8") as f:
+    text = f.read()
+```
+
+## Older Files, Older Encodings
+
+- This gives the following error:
+
+```
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xf1 in position 13:
+invalid continuation byte
+```
+
+-   In **Latin-1**, *ñ* is one byte (`0xf1`). UTF-8 doesn't allow that byte on its own.
+
+## Reading It Correctly
+
+```python
+with open("spanish_latin1.txt", "r", encoding="latin-1") as f:
+    print(f.read())
+```
+
+```
+Alicia, la niña, era matemática.
+```
+
+-   Same file, right encoding: no problem.
+
+## The Opposite Mistake
+
+```python
+with open("spanish_utf8.txt", "w", encoding="utf-8") as f:
+    f.write("Alicia, la niña, era matemática.")
+
+with open("spanish_utf8.txt", "r", encoding="latin-1") as f:
+    print(f.read())
+```
+
+```
+Alicia, la niÃ±a, era matemÃ¡tica.
+```
+
+-   No error -- just garbled characters! This is called **mojibake**.
+-   If you see *Ã±* or *Ã¡* in a text, it's UTF-8 read with the wrong encoding.
+
+
+# spaCy Speaks Other Languages
+
+## spaCy's Models (+ About 20 More)
+
+| Language | Model |
+|---|---|
+| French | `fr_core_news_sm` |
+| Italian | `it_core_news_sm` |
+| Spanish | `es_core_news_sm` |
+| German | `de_core_news_sm` |
+| Greek | `el_core_news_sm` |
+| Chinese | `zh_core_web_sm` |
+| Japanese | `ja_core_news_sm` |
+| Russian | `ru_core_news_sm` |
+
+## Download French and Italian
+
+In the **terminal** (once):
+
+```bash
+python -m spacy download fr_core_news_sm
+python -m spacy download it_core_news_sm
+```
+
+Add this to your setup chunk:
+
+```python
+nlp_fr = spacy.load("fr_core_news_sm")
+nlp_it = spacy.load("it_core_news_sm")
+```
+
+## Do Cats Eat Bats? In Italian
+
+```python
+doc = nlp_it("I gatti mangiano i pipistrelli?")
+
+for token in doc:
+    print(token.text, token.lemma_, token.pos_)
+```
+
+```
+I il DET
+gatti gatto NOUN
+mangiano mangiare VERB
+i il DET
+pipistrelli pipistrello NOUN
+? ? PUNCT
+```
+
+-   Same attributes as English: `.text`, `.lemma_`, `.pos_`
+-   And the lemmas work: *gatti* → *gatto*, *mangiano* → *mangiare*
+
+## Morphology: `token.morph`
+
+```python
+for token in doc:
+    print(token.text, token.morph)
+```
+
+```
+I Definite=Def|Gender=Masc|Number=Plur|PronType=Art
+gatti Gender=Masc|Number=Plur
+mangiano Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin
+i Definite=Def|Gender=Masc|Number=Plur|PronType=Art
+pipistrelli Gender=Masc|Number=Plur
+?
+```
+
+-   **Gender**, **number**, **person**, **tense**, **mood**: everything the endings tell us
+
+## Compare English
+
+```python
+for token in nlp("Do cats eat bats?"):
+    print(token.text, token.morph)
+```
+
+```
+Do Mood=Ind|Tense=Pres|VerbForm=Fin
+cats Number=Plur
+eat VerbForm=Inf
+bats Number=Plur
+? PunctType=Peri
+```
+
+-   No gender, and *eat* doesn't show person or number. Why not?
+
+## Predictions, Not Facts (Again)
+
+```python
+doc = nlp_fr("Les chats mangent-ils les chauves-souris ?")
+for token in doc:
+    print(token.text, token.lemma_, token.pos_)
+```
+
+```
+Les le DET
+chats chat NOUN
+mangent manger ADV
+-ils il PRON
+les le DET
+chauves chauve NOUN
+- - NOUN
+souris souris ADJ
+? ? PUNCT
+```
+
+-   *mangent* as an adverb? *chauves-souris* split into three?
+-   Bigger models (`fr_core_news_md`, `fr_core_news_lg`) get *mangent* right -- but every model splits *chauves-souris* at the hyphens: the tokenizer works before the model does.
+-   Small models are fast and light; the large French model is about 35 times bigger.
+
+## Activity 2: Morphology
+
+```python
+doc = nlp_it("Alice cominciava a sentirsi stanca.")
+```
+
+1.  Print each token's text, lemma, POS, and morphology.
+2.  What does the morphology of *cominciava* tell you?
+3.  Find two mistakes spaCy makes in this sentence.
+
+## Activity 2: Possible Answer
+
+```python
+for token in doc:
+    print(token.text, token.lemma_, token.pos_, token.morph)
+```
+
+```
+Alice Alice ADV
+cominciava cominciare VERB Mood=Ind|Number=Sing|Person=3|Tense=Imp|VerbForm=Fin
+a a ADP
+sentirsi sentire si VERB Clitic=Yes|Person=3|PronType=Prs|VerbForm=Inf
+stanca stancare VERB Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin
+. . PUNCT
+```
+
+-   *cominciava*: indicative, 3rd person singular, **imperfect** ('she was beginning')
+-   Mistakes: *Alice* is not an adverb; *stanca* is the adjective 'tired', not the verb *stancare*
+
+# Same Book, Three Languages
+
+## What's English-Specific in Our Function?
+
+```python
+chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+```
+
+-   French *Alice* has *CHAPITRE PREMIER*, *CHAPITRE II*...
+-   Italian *Alice* has *CAPITOLO I*, *CAPITOLO II*...
+-   The word for *chapter* should be a **parameter**!
+
+## A Parameter with a Default
+
+-   Remember `ttr_first(words, n=10000)`? If you don't give `n`, it uses `10000`.
+-   We'll do the same: `chapter_word="CHAPTER"`
+
+```python
+def book_to_spacy_df(filename, label, nlp, chapter_word="CHAPTER"):
+    text = load_text(filename)
+    chapters = re.split(r"(?m)^" + chapter_word + r"\b.*$", text)
+```
+
+-   `r"(?m)^" + chapter_word + r"\b.*$"`: a line that **starts** with the chapter word, and everything after it on that line
+-   English calls still work: `book_to_spacy_df("alice.txt", "English", nlp)`
+
+## One More Column: Morphology
+
+```python
+rows.append({"word": token.text.lower(),
+             "lemma": token.lemma_.lower(),
+             "pos": token.pos_,
+             "morph": str(token.morph),
+             "is_stop": token.is_stop,
+             "sentence": sentence_num,
+             "chapter": chapter_num})
+```
+
+-   `str()` turns spaCy's morphology into a plain string we can search.
+
+## The New `book_to_spacy_df()`
+
+```python
+def book_to_spacy_df(filename, label, nlp, chapter_word="CHAPTER"):
+    text = load_text(filename)
+    chapters = re.split(r"(?m)^" + chapter_word + r"\b.*$", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        doc = nlp(chapter)
+        sentence_num = 0
+        for sent in doc.sents:
+            sentence_num += 1
+            for token in sent:
+                if token.is_alpha:
+                    rows.append({"word": token.text.lower(),
+                                 "lemma": token.lemma_.lower(),
+                                 "pos": token.pos_,
+                                 "morph": str(token.morph),
+                                 "is_stop": token.is_stop,
+                                 "sentence": sentence_num,
+                                 "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+```
+
+## Update `lin301.py`
+
+1.  Replace the old `book_to_spacy_df()` in `lin301.py` with the new one.
+2.  Download [`alice_fr.txt`](https://www.gutenberg.org/cache/epub/55456/pg55456.txt) and [`alice_it.txt`](https://www.gutenberg.org/cache/epub/28371/pg28371.txt) into `data/gutenberg/`.
+
+## Update `lin301.py`
+
+3.  Save, **Restart**, and rerun your setup chunk.
+
+```python
+import sys
+sys.path.append("../../data")
+from lin301 import *
+
+import unicodedata
+import spacy
+nlp = spacy.load("en_core_web_sm")
+nlp_fr = spacy.load("fr_core_news_sm")
+nlp_it = spacy.load("it_core_news_sm")
+
+en = book_to_spacy_df("alice.txt", "English", nlp)
+fr = book_to_spacy_df("alice_fr.txt", "French", nlp_fr, "CHAPITRE")
+it = book_to_spacy_df("alice_it.txt", "Italian", nlp_it, "CAPITOLO")
+
+for df in [en, fr, it]:
+    print(df["text"][0], len(df), df["chapter"].max())
+```
+
+```
+English 26578 12
+French 25789 12
+Italian 23182 12
+```
+
+## Sentence Length in Three Languages
+
+```python
+for df in [en, fr, it]:
+    print(df["text"][0], df.groupby(["chapter", "sentence"]).size().mean())
+```
+
+```
+English 19.790022338049145
+French 15.792406613594611
+Italian 14.041187159297396
+```
+
+-   Same story, very different sentence lengths. Is that the language, or the translator?
+
+## Pronouns per 1,000 Words
+
+```python
+for df in [en, fr, it]:
+    print(df["text"][0], round((df["pos"] == "PRON").mean() * 1000, 1))
+```
+
+```
+English 153.1
+French 132.7
+Italian 84.7
+```
+
+-   `round(x, 1)` rounds a number to 1 decimal place.
+-   Italian uses far fewer pronouns. Why do you think that is?
+
+## Italian Is Pro-Drop
+
+-   English: *She was beginning to get tired.* (*She* is required)
+-   French: ***Elle** commençait à se fatiguer.* (*Elle* is required)
+-   Italian: *Cominciava a stancarsi.* (no pronoun needed!)
+-   The verb ending *-a* already tells us 'she/he', so the subject pronoun can be **dropped**.
+-   Our numbers found a real typological difference!
+
+## Searching the Morphology
+
+```python
+it_nouns = it[it["pos"] == "NOUN"]
+print("Feminine:", it_nouns["morph"].str.contains("Gender=Fem").sum())
+print("Masculine:", it_nouns["morph"].str.contains("Gender=Masc").sum())
+```
+
+```
+Feminine: 1715
+Masculine: 2047
+```
+
+-   `.str.contains()` searches inside the `morph` string.
+-   `.sum()` counts the `True`s.
+
+## Any Part of Speech, per 1,000 Words
+
+-   The pronoun code works for **any** part of speech: just change `"PRON"`.
+
+```python
+(df["pos"] == "PRON").mean() * 1000
+```
+
+-   `df["pos"] == "PRON"` gives a `True`/`False` for every word.
+-   `.mean()` of `True`s and `False`s is the **share** that are `True` (`True` = 1, `False` = 0).
+-   `* 1000` turns that share into "per 1,000 words."
+
+## Activity 3: Determiners
+
+1.  Find the number of determiners (`DET`) per 1,000 words in each language.
+2.  Which language uses the fewest?
+
+## Activity 3: Determiners
+
+```python
+for df in [en, fr, it]:
+    print(df["text"][0], round((df["pos"] == "DET").mean() * 1000, 1))
+```
+
+```
+English 103.2
+French 123.0
+Italian 122.2
+```
+
+## Activity 3: Determiners
+
+-   English uses fewer determiners. Why? Compare:
+
+| English | French | Italian |
+|---|---|---|
+| *Cats love milk.* | ***Les** chats aiment **le** lait.* | ***I** gatti amano **il** latte.* |
+| *Do cats eat bats?* | ***Les** chats mangent **les** chauves-souris ?* | ***I** gatti mangiano **i** pipistrelli?* |
+
+-   When English talks about things **in general**, it uses no article. French and Italian need one.
+
+## Activity 3: Auxiliaries
+
+1.  Now do the same for auxiliaries (`AUX`).
+2.  Which language uses the **most** auxiliaries?
+
+## Activity 3: Auxiliaries
+
+```python
+for df in [en, fr, it]:
+    print(df["text"][0], round((df["pos"] == "AUX").mean() * 1000, 1))
+```
+
+```
+English 61.0
+French 34.5
+Italian 42.2
+```
+
+## Activity 3: Auxiliaries
+
+-   English uses almost twice as many. Why? Compare:
+
+| English | French | Italian |
+|---|---|---|
+| ***Do** cats eat bats?* | *Les chats mangent les chauves-souris ?* | *I gatti mangiano i pipistrelli?* |
+| *She **will** eat the cake.* | *Elle mange**ra** le gâteau.* | *Mange**rà** la torta.* |
+| *She **was** beginning to get tired.* | *Elle commen**çait** à se fatiguer.* | *Comincia**va** a stancarsi.* |
+
+-   English uses separate words (*do*, *will*, *was*) where French and Italian use **endings**.
+
+## Activity 3: Gender
+
+-   Count masculine and feminine nouns in French. Is the split like Italian's?
+
+## Activity 3: Gender
+
+```python
+fr_nouns = fr[fr["pos"] == "NOUN"]
+print("Feminine:", fr_nouns["morph"].str.contains("Gender=Fem").sum())
+print("Masculine:", fr_nouns["morph"].str.contains("Gender=Masc").sum())
+```
+
+```
+Feminine: 1966
+Masculine: 2379
+```
+
+-   French: 45% feminine. Italian: 46% feminine. Very similar!
+
+# Looking Ahead
+
+## What Did We Add Today?
+
+-   **Unicode:** `ord()`, `chr()`, `unicodedata.name()`, `unicodedata.normalize()`
+-   **Encodings:** UTF-8 vs. older ones like Latin-1
+-   **spaCy in other languages:** new models, and `token.morph`
+-   **`book_to_spacy_df()`:** a `chapter_word` parameter, and a `morph` column
+
+## Wednesday
+
+-   Scripts that aren't Latin: Greek, Chinese, Japanese
+-   Languages without spaces between words
+-   WordNet in other languages
