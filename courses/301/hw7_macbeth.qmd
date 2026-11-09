@@ -1,0 +1,142 @@
+---
+title: "HW 7 — Semantic Analysis: *Macbeth* in Three Languages"
+subtitle: "LIN 301: Computation for Linguists"
+author: "Dr. Andrew M. Byrd"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-tools: true
+jupyter: python3
+fontsize: 12pt
+---
+
+**Due:** Monday, November 16, 2026, at 11:59 am. We'll start this in class on Friday, November 13.
+
+## The Assignment
+
+You'll compare Shakespeare's *Macbeth* in **English**, in a language written in the **Latin** alphabet (**Finnish**), and in a language written in a **non-Latin** script (**Greek**). Using spaCy, WordNet, and pandas, you'll build a table for each version, then choose **two** ways to compare them, and explain what you find.
+
+Make a Quarto document called `hw7_macbeth_lastname_firstname.qmd` in your `homework/hw7` folder, and import your functions from `lin301.py` the way we do in class. As always, explain in your own words what your code does, and say whether and how you used any AI tool. (The syllabus does not allow GenAI to *write* your homework solutions.)
+
+------------------------------------------------------------------------
+
+## The Texts
+
+Download each text from Project Gutenberg (Plain Text UTF-8), and save it in your `data/gutenberg/` folder under the name given here:
+
+| Language | Translator | Download | Save as | Act headings look like |
+|---|---|---|---|---|
+| English | (original) | [ebook 1533](https://www.gutenberg.org/ebooks/1533) | `macbeth_en.txt` | `ACT I` |
+| Finnish | Paavo Cajander (1885) | [ebook 16893](https://www.gutenberg.org/ebooks/16893) | `macbeth_fi.txt` | `ENSIMMÄINEN NÄYTÖS.` |
+| Greek | Dimitrios Vikelas (1896) | [ebook 34434](https://www.gutenberg.org/ebooks/34434) | `macbeth_el.txt` | `ΠΡΑΞΙΣ ΠΡΩΤΗ` |
+
+Each file must contain **only the play** before you analyze it:
+
+-   The English file begins with a **table of contents** whose lines also start with `ACT`. Delete it.
+-   The Greek file ends with the translator's **notes** (starting at the heading `ΣΗΜΕΙΩΣΕΙΣ`, after `ΤΕΛΟΣ` 'The End'). Delete them, but keep the `*** END` line.
+
+You will also need the spaCy models `fi_core_news_sm` and `el_core_news_sm`, and the `omw-2.0` WordNet data.
+
+------------------------------------------------------------------------
+
+## Part 1: Build Your Tables
+
+Make one DataFrame per language with `book_to_spacy_df()`, with one chapter per **act**. Show that each table has exactly **5** acts, and give the number of words in each version.
+
+------------------------------------------------------------------------
+
+## Part 2: Investigate (Choose Two)
+
+Choose **two** of these five investigations. For each, show your code and results, and write a short paragraph explaining what you found and why.
+
+**A. Parts of speech.** Choose three parts of speech. How many of each are there per 1,000 words in each version? Explain the biggest difference.
+
+**B. Morphology.** Choose one feature: **case** in Finnish (`Nom`, `Gen`, `Par`, `Ine`, `Ela`, `Ill`, `Ade`, `Abl`, `All`, `Ess`, `Tra`), or **gender** (`Masc`, `Fem`, `Neut`) or **case** (`Nom`, `Gen`, `Acc`, `Voc`) in Greek. Count the nouns with each value. How does English express this information, if at all?
+
+**C. The witches' line.** Find *Fair is foul, and foul is fair* (Act I, Scene 1) in all three versions. Show each token's text, lemma, POS, and morphology. What does each language do differently? Does spaCy make any mistakes?
+
+**D. Scripts.** For each version, count how many words begin with a character from each script (`LATIN`, `GREEK`...). Are there any words in an unexpected script? What are they, and how might they have got there?
+
+**E. Meaning.** Choose one WordNet category: `animal.n.01`, `bird.n.01`, `weapon.n.01`, `food.n.01`, or `body_part.n.01`. List the noun lemmas in your category in each version, using `is_a()` with the right language code (`eng`, `fin`, `ell`). Find **one** word that doesn't belong, and the WordNet sense that let it in. Why might one version find far fewer words than the others?
+
+------------------------------------------------------------------------
+
+## Part 3: Reflection
+
+In a short paragraph: do your differences come from the **languages**, or might some come from the **translators**, the fact that this is a **play in verse**, or the **models**?
+
+------------------------------------------------------------------------
+
+## No Code Hints
+
+There are **no code hints** here: working out which tools to use is part of the assignment. Everything you need is in the [list at the end](#toolkit), and all of it was covered in class.
+
+------------------------------------------------------------------------
+
+## Submission
+
+1.  Make sure your `.qmd` renders cleanly to HTML.
+2.  Commit and push your `homework/hw7` folder (your `.qmd` and the rendered `.html`) to your `LIN_301` repo. (The Gutenberg texts are public domain, so they can go in your `data/gutenberg/` folder on GitHub too.)
+3.  On Canvas, submit the link to your `homework/hw7` folder on GitHub. The link will look like `https://github.com/your-username/LIN_301/tree/main/homework/hw7`
+
+------------------------------------------------------------------------
+
+## Grading Rubric (100 pts total)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| Texts downloaded and trimmed to the play only; three tables with 5 acts each, with word counts | 25 |
+| First investigation: code and results | 15 |
+| First investigation: paragraph explaining the results | 15 |
+| Second investigation: code and results | 15 |
+| Second investigation: paragraph explaining the results | 15 |
+| Part 3: reflection | 5 |
+| Explanation of the code holds up, and AI use is honestly disclosed | 5 |
+| File names correct; document renders without errors; GitHub link points to the `hw7` folder | 5 |
+
+------------------------------------------------------------------------
+
+## Your Toolkit {#toolkit}
+
+**Setup**
+
+-   `import sys`, `sys.path.append("../../data")`, `from lin301 import *`
+-   `import spacy`, `spacy.load()`
+-   `import unicodedata`
+-   `python -m spacy download ...` (in the terminal)
+-   `import nltk`, `nltk.download()`
+
+**Our functions (in `lin301.py`)**
+
+-   `book_to_spacy_df(filename, label, nlp, chapter_word="CHAPTER")`
+    -   `chapter_word` is placed into a regular expression: `r"(?m)^" + chapter_word + r"\b.*$"`
+-   `is_a(word, category, lang="eng")`
+
+**Regular expressions**
+
+-   `^` (start of a line), `.` (any character), `*` (zero or more), `\b` (word boundary)
+
+**spaCy**
+
+-   `nlp(text)`, `for token in doc:`
+-   `token.text`, `token.lemma_`, `token.pos_`, `token.morph`
+
+**pandas**
+
+-   `len()`, `.head()`, `.max()`, `.mean()`, `.sum()`, `round()`
+-   `df[df["column"] == value]`, `&`, `.isin()`
+-   `.groupby()`, `.size()`, `.sort_values()`, `.unique()`
+-   `.str.contains()`
+-   a list of dicts, `pd.DataFrame()`
+-   list comprehensions
+
+**Unicode**
+
+-   `unicodedata.name()`, `.split()`, `[0]`
+
+**WordNet**
+
+-   `from nltk.corpus import wordnet as wn`
+-   `wn.synset()`, `wn.synsets(word, pos=wn.NOUN, lang=...)`
+-   `.name()`, `.definition()`, `.hypernym_paths()`
