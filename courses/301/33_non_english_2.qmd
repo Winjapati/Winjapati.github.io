@@ -1,0 +1,709 @@
+---
+title: "Computation for Linguists"
+subtitle: "Beyond English, Part 2: Other Scripts & Other WordNets"
+date: "November 11, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+jupyter: python3
+editor: source
+---
+
+# Where We Left Off
+
+## Setup: updated `lin301.py` {.scrollable}
+
+-   Replace **everything** in your `lin301.py` with this version, then save it and **Restart** your notebook.
+-   New: `book_to_spacy_df()` with a `chapter_word` parameter and a `morph` column, from Monday.
+
+```python
+import os
+import re
+import pandas as pd
+from nltk.corpus import wordnet as wn
+
+HERE = os.path.dirname(__file__)   # the folder lin301.py lives in: data/
+
+def ttr(words):
+    return len(set(words)) / len(words)
+
+def ttr_first(words, n=10000):
+    return len(set(words[:n])) / len(words[:n])
+
+def avg_word_len(words):
+    total = 0
+    for w in words:
+        total += len(w)
+    return total / len(words)
+
+def ly_rate(words):
+    count = 0
+    for w in words:
+        if w.endswith("ly"):
+            count += 1
+    return count / len(words) * 1000
+
+def stopword_rate(words, stopwords):
+    count = 0
+    for w in words:
+        if w in stopwords:
+            count += 1
+    return count / len(words)
+
+def load_text(filename):
+    with open(os.path.join(HERE, "gutenberg", filename), "r", encoding="utf-8") as f:
+        lines = f.readlines()
+    while not lines[0].startswith("*** START"):
+        lines = lines[1:]
+    lines = lines[1:]
+    while not lines[-1].startswith("*** END"):
+        lines = lines[:-1]
+    lines = lines[:-1]
+    return "".join(lines)
+
+def load_words(filename):
+    text = load_text(filename)
+    words = re.split(r"[\W_]+", text.lower())
+    return [w for w in words if w != ""]
+
+def report(title, words):
+    print(title, "TTR:", ttr(words))
+    print(title, "TTR (10,000 words):", ttr_first(words))
+    print(title, "Average Word Length:", avg_word_len(words))
+    print(title, "-ly words per 1,000:", ly_rate(words))
+    return ttr_first(words)
+
+def book_to_df(filename, label):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        words = re.split(r"[\W_]+", chapter.lower())
+        words = [w for w in words if w != ""]
+        for w in words:
+            rows.append({"word": w, "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+
+def add_columns(df):
+    df["length"] = df["word"].str.len()
+    df["is_ly"] = df["word"].str.endswith("ly")
+    return df
+
+def book_to_spacy_df(filename, label, nlp, chapter_word="CHAPTER"):
+    text = load_text(filename)
+    chapters = re.split(r"(?m)^" + chapter_word + r"\b.*$", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        doc = nlp(chapter)
+        sentence_num = 0
+        for sent in doc.sents:
+            sentence_num += 1
+            for token in sent:
+                if token.is_alpha:
+                    rows.append({"word": token.text.lower(),
+                                 "lemma": token.lemma_.lower(),
+                                 "pos": token.pos_,
+                                 "morph": str(token.morph),
+                                 "is_stop": token.is_stop,
+                                 "sentence": sentence_num,
+                                 "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+
+def book_to_svo_df(filename, label, nlp):
+    text = load_text(filename)
+    chapters = re.split(r"(?im)^CHAPTER\s+(?:[IVXLCDM]+|\d+)\b", text)
+    chapters = chapters[1:]
+    rows = []
+    chapter_num = 0
+    for chapter in chapters:
+        chapter_num += 1
+        doc = nlp(chapter)
+        for token in doc:
+            if token.pos_ == "VERB":
+                subjects = [c for c in token.children if c.dep_ == "nsubj"]
+                objects = [c for c in token.children if c.dep_ == "dobj"]
+                if subjects and objects:
+                    rows.append({"subject": subjects[0].lemma_.lower(),
+                                 "verb": token.lemma_.lower(),
+                                 "object": objects[0].lemma_.lower(),
+                                 "chapter": chapter_num})
+    df = pd.DataFrame(rows)
+    df["text"] = label
+    return df
+
+def is_a(word, category):
+    for synset in wn.synsets(word, pos=wn.NOUN):
+        for path in synset.hypernym_paths():
+            if category in path:
+                return True
+    return False
+```
+
+## Setup: Import Our Functions
+
+-   Make `day33.qmd` in `classwork/day_33/`, and start with this chunk:
+
+```python
+import sys
+sys.path.append("../../data")
+from lin301 import *
+
+import unicodedata
+import spacy
+nlp_it = spacy.load("it_core_news_sm")
+```
+
+## Recap from Last Time
+
+-   Every character has a Unicode number (`ord()`) and name (`unicodedata.name()`).
+-   Files are bytes: read them with the right **encoding**.
+-   spaCy has models for many languages, and `token.morph` shows gender, number, tense...
+-   Italian *Alice* has far fewer pronouns: Italian is **pro-drop**.
+
+# Other Scripts
+
+## Unicode Knows the Script
+
+```python
+for c in "aγж猫はコ":
+    print(c, unicodedata.name(c))
+```
+
+```
+a LATIN SMALL LETTER A
+γ GREEK SMALL LETTER GAMMA
+ж CYRILLIC SMALL LETTER ZHE
+猫 CJK UNIFIED IDEOGRAPH-732B
+は HIRAGANA LETTER HA
+コ KATAKANA LETTER KO
+```
+
+-   The **first word** of each name is the script.
+-   *CJK* = Chinese, Japanese, Korean: the characters (*hanzi*, *kanji*) these languages share
+
+## A Function: `script_of()`
+
+```python
+def script_of(char):
+    return unicodedata.name(char).split()[0]
+
+print(script_of("γ"), script_of("猫"), script_of("は"))
+```
+
+```
+GREEK CJK HIRAGANA
+```
+
+-   `.split()` breaks the name into words; `[0]` takes the first one.
+
+## Japanese Mixes Three Scripts
+
+```python
+ja = "猫はコウモリを食べるの？"   # 'Do cats eat bats?'
+
+rows = []
+for c in ja:
+    if c.isalpha():
+        rows.append({"char": c, "script": script_of(c)})
+
+pd.DataFrame(rows).groupby("script").size()
+```
+
+```
+script
+CJK         2
+HIRAGANA    5
+KATAKANA    4
+```
+
+-   **Kanji** for content words (猫 'cat', 食 'eat'), **hiragana** for endings and particles (は, を), **katakana** for loanwords and some animal names (コウモリ 'bat')
+
+## Activity 1: Which Script?
+
+```python
+el = "Η γάτα κοιμάται στον καναπέ."
+ru = "Кошка спит на диване."
+ja2 = "猫はソファで寝ます。"
+```
+
+-   Each means 'The cat sleeps on the sofa.'
+
+1.  Count the letters in each script, for each sentence.
+2.  Which characters in the Japanese sentence are kanji? Hiragana? Katakana?
+
+## Activity 1: Possible Answer
+
+```python
+for sentence in [el, ru, ja2]:
+    rows = []
+    for c in sentence:
+        if c.isalpha():
+            rows.append({"char": c, "script": script_of(c)})
+    print(pd.DataFrame(rows).groupby("script").size().to_dict())
+```
+
+```
+{'GREEK': 23}
+{'CYRILLIC': 17}
+{'CJK': 2, 'HIRAGANA': 4, 'KATAKANA': 3}
+```
+
+-   Kanji: 猫 'cat', 寝 'sleep'. Hiragana: は, で, ま, す. Katakana: ソ, フ, ァ
+-   *ソファ* (*sofa*) is from English: katakana is used for loanwords.
+
+# Where Are the Spaces?
+
+## Splitting on Spaces Fails
+
+```python
+zh = "猫吃蝙蝠吗？"           # 'Do cats eat bats?'
+print(zh.split())
+print(ja.split())
+```
+
+```
+['猫吃蝙蝠吗？']
+['猫はコウモリを食べるの？']
+```
+
+-   Chinese and Japanese don't put spaces between words.
+-   Finding the words is called **segmentation** -- and it's a hard problem.
+
+## spaCy Can Segment
+
+In the **terminal** (once):
+
+```bash
+python -m spacy download zh_core_web_sm
+python -m spacy download ja_core_news_sm
+python -m spacy download el_core_news_sm
+python -m spacy download ru_core_news_sm
+```
+
+```python
+nlp_zh = spacy.load("zh_core_web_sm")
+nlp_ja = spacy.load("ja_core_news_sm")
+nlp_el = spacy.load("el_core_news_sm")
+nlp_ru = spacy.load("ru_core_news_sm")
+```
+
+## Chinese
+
+```python
+for token in nlp_zh("猫吃蝙蝠吗？"):
+    print(token.text, token.lemma_, token.pos_)
+```
+
+```
+猫  NOUN
+吃  VERB
+蝙蝠  NOUN
+吗  PART
+？  PUNCT
+```
+
+-   蝙蝠 *biānfú* 'bat' is one word, written with two characters.
+-   No lemmas! Why not? (Hint: does Chinese have endings?)
+-   吗 *ma* turns a statement into a yes/no question.
+
+## Japanese
+
+```python
+for token in nlp_ja("猫はコウモリを食べるの？"):
+    print(token.text, token.lemma_, token.pos_)
+```
+
+```
+猫 猫 NOUN
+は は ADP
+コウモリ コウモリ NOUN
+を を ADP
+食べる 食べる VERB
+の の SCONJ
+？ ? VERB
+```
+
+-   は marks the topic, を the object: spaCy calls them adpositions (`ADP`).
+-   Japanese is **SOV**: the verb comes last.
+-   And a question mark tagged as a verb? Predictions, not facts!
+
+## Greek
+
+```python
+for token in nlp_el("Η γάτα τρώει τη νυχτερίδα;"):
+    print(token.text, token.lemma_, token.pos_)
+```
+
+```
+Η ο DET
+γάτα γάτα NOUN
+τρώει τρώει NOUN
+τη ο DET
+νυχτερίδα νυχτερίδα NOUN
+; ; PUNCT
+```
+
+-   Greek uses `;` as its question mark!
+-   *τρώει* 'eats' is a verb, not a noun. Small models make more mistakes in languages with less training data.
+
+## Russian
+
+```python
+for token in nlp_ru("Кошки едят летучих мышей?"):
+    print(token.text, token.lemma_, token.pos_)
+```
+
+```
+Кошки кошка NOUN
+едят есть VERB
+летучих летучий ADJ
+мышей мышь NOUN
+? ? PUNCT
+```
+
+-   *летучих мышей* 'bats' is literally 'flying mice'!
+-   The lemmas undo the endings: *мышей* → *мышь* 'mouse', *едят* → *есть* 'eat'
+
+## Russian Has Case
+
+```python
+for token in nlp_ru("Кошки едят летучих мышей?"):
+    print(token.text, token.morph.get("Case"))
+```
+
+```
+Кошки ['Nom']
+едят []
+летучих ['Acc']
+мышей ['Acc']
+? []
+```
+
+-   `token.morph.get("Case")` pulls out just one feature.
+-   **Nominative** for the subject, **accusative** for the object: the endings tell you who eats whom, even if you change the word order!
+
+## Activity: Russian
+
+1.  Run `ru` (*Кошка спит на диване.*, from Activity 1) through `nlp_ru`. Print each token's text, lemma, and POS.
+2.  What case is *диване* in? 
+
+## Activity: Russian -- Possible Answer
+
+```python
+for token in nlp_ru(ru):
+    print(token.text, token.lemma_, token.pos_, token.morph.get("Case"))
+```
+
+```
+Кошка кошка NOUN ['Nom']
+спит спать VERB []
+на на ADP []
+диване диван NOUN ['Loc']
+. . PUNCT []
+```
+
+-   *диване* is **locative** (`Loc`): the case Russian uses after *на* 'on' and *в* 'in' for location.
+
+## Activity 2: Segment and Tag
+
+1.  Run `el`, `ja2`, and `"猫在沙发上睡觉。"` (Chinese) through the right models.
+2.  Print each token's text, lemma, and POS.
+3.  How many words does spaCy find in the Chinese sentence? In the Japanese one?
+4.  What is the lemma of 寝 in Japanese? Of *καναπέ* in Greek?
+
+## Activity 2: Possible Answer
+
+```python
+for model, sentence in [(nlp_el, el), (nlp_ja, ja2), (nlp_zh, "猫在沙发上睡觉。")]:
+    print([(t.text, t.lemma_, t.pos_) for t in model(sentence)])
+```
+
+```
+[('Η', 'ο', 'DET'), ('γάτα', 'γάτα', 'NOUN'), ('κοιμάται', 'κοιμάται', 'VERB'),
+ ('στον', 'σε ο', 'ADP'), ('καναπέ', 'καναπές', 'NOUN'), ('.', '.', 'PUNCT')]
+[('猫', '猫', 'NOUN'), ('は', 'は', 'ADP'), ('ソファ', 'ソファ', 'NOUN'), ('で', 'で', 'ADP'),
+ ('寝', '寝る', 'VERB'), ('ます', 'ます', 'AUX'), ('。', '。', 'PUNCT')]
+[('猫', '', 'NOUN'), ('在', '', 'ADP'), ('沙发', '', 'NOUN'), ('上', '', 'PART'),
+ ('睡觉', '', 'VERB'), ('。', '', 'PUNCT')]
+```
+
+-   Chinese: 5 words (plus punctuation); Japanese: 6
+-   寝 → 寝る *neru* 'sleep'; *καναπέ* → *καναπές* 'sofa'
+-   *στον* = *σε* 'in' + *τον* 'the': its lemma is two words!
+
+# Romanization
+
+## The Quick Way: `unidecode`
+
+In the **terminal** (once):
+
+```bash
+python -m pip install unidecode pypinyin pykakasi
+```
+
+```python
+from unidecode import unidecode
+
+print(unidecode("Η γάτα τρώει τη νυχτερίδα;"))
+print(unidecode("猫吃蝙蝠吗？"))
+print(unidecode("猫はコウモリを食べるの？"))
+```
+
+```
+E gata troei te nukhterida;
+Mao Chi Bian Fu Ma ?
+Mao hakoumoriwoShi beruno?
+```
+
+-   Greek: pretty good. Chinese: no tones. Japanese: **wrong**!
+
+## Why Is the Japanese Wrong?
+
+-   `unidecode` reads every CJK character the **Chinese** way: 猫 → *Mao*, 食 → *Shi*.
+-   In Japanese, 猫 is *neko* and 食べる is *taberu*.
+-   And it doesn't know where words begin and end: *hakoumoriwo*
+-   Romanization is **language-specific**. Use a tool built for the language.
+
+## Chinese: `pypinyin`
+
+```python
+from pypinyin import pinyin
+
+syllables = pinyin("猫吃蝙蝠吗？")
+print(syllables)
+print(" ".join([s[0] for s in syllables]))
+```
+
+```
+[['māo'], ['chī'], ['biān'], ['fú'], ['ma'], ['？']]
+māo chī biān fú ma ？
+```
+
+-   `pinyin()` gives a list of lists, one per character; `s[0]` takes each one out.
+-   The tone marks are back!
+
+## Japanese: `pykakasi`
+
+```python
+import pykakasi
+
+kks = pykakasi.kakasi()
+result = kks.convert("猫はコウモリを食べるの？")
+print(" ".join([item["hepburn"] for item in result]))
+```
+
+```
+neko ha koumori wo tabe runo ？
+```
+
+-   *neko* and *taberu*: the Japanese readings
+-   は and を are written *ha* and *wo*, but pronounced *wa* and *o* as particles!
+
+## Activity 3: Romanize
+
+1.  Romanize `el`, `ja2`, and `"猫在沙发上睡觉。"` with `unidecode`.
+2.  Romanize the Chinese with `pypinyin`, and the Japanese with `pykakasi`.
+3.  Where does `unidecode` go wrong?
+
+## Activity 3: Possible Answer
+
+```python
+for sentence in [el, ja2, "猫在沙发上睡觉。"]:
+    print(unidecode(sentence))
+
+print(" ".join([s[0] for s in pinyin("猫在沙发上睡觉。")]))
+print(" ".join([item["hepburn"] for item in kks.convert(ja2)]))
+```
+
+```
+E gata koimatai ston kanape.
+Mao hasohuadeQin masu.
+Mao Zai Sha Fa Shang Shui Jue .
+māo zài shā fā shàng shuì jiào 。
+neko ha sofa de nema su .
+```
+
+-   `unidecode` reads 寝 as Chinese *Qin*; the Japanese word is *ne(ru)*.
+
+# WordNet in Other Languages
+
+## The Open Multilingual Wordnet
+
+-   Translators have linked words in many languages to WordNet's **English** synsets.
+-   In your notebook (once):
+
+```python
+import nltk
+nltk.download("omw-2.0")
+```
+
+```python
+print(sorted(wn.langs()))
+```
+
+```
+['als', 'arb', 'bul', 'cat', 'cmn', 'dan', 'ell', 'eng', 'eus', 'fin', 'fra', 'glg',
+ 'heb', 'hrv', 'ind', 'isl', 'ita', 'ita_iwn', 'jpn', 'lit', 'nld', 'nno', 'nob',
+ 'pol', 'por', 'ron', 'slk', 'slv', 'spa', 'swe', 'tha', 'zsm']
+```
+
+-   Three-letter **ISO 639-3** codes: `fra` French, `ita` Italian, `jpn` Japanese, `cmn` Mandarin...
+
+## One Synset, Many Languages
+
+```python
+cat = wn.synset("cat.n.01")
+for lang in ["fra", "ita", "spa", "fin", "ell", "jpn", "cmn", "arb", "heb"]:
+    print(lang, cat.lemma_names(lang))
+```
+
+```
+fra ['chat']
+ita ['gatto']
+spa ['felis_silvestris_catus', 'gata', 'gato']
+fin ['kissa', 'kissaeläin']
+ell ['γάτα', 'γατί']
+jpn ['キャット', 'にゃんにゃん', 'ネコ', '猫']
+cmn ['猫']
+arb ['قِطّ', 'قِطّة', 'هِرّ', 'هِرّة']
+heb ['חָתוּל']
+```
+
+## Wait -- Where's German?
+
+```python
+cat.lemma_names("deu")
+```
+
+```
+WordNetError: Language deu is not supported.
+```
+
+-   No German. No Russian. No Hindi, Swahili, or Korean either.
+-   Most of the world's languages have **no** WordNet at all.
+-   Which languages get resources like this? Who decides?
+
+## Going the Other Way
+
+-   Look up a word **in** another language:
+
+```python
+wn.synsets("gatto", lang="ita")
+```
+
+```
+[Synset('cat.n.01'), Synset('domestic_cat.n.01'), Synset('catkin.n.01')]
+```
+
+-   *gatto* is linked to the same synsets as English *cat*.
+
+## Updating `is_a()`: One More Parameter
+
+```{.python code-line-numbers="1,2"}
+def is_a(word, category, lang="eng"):
+    for synset in wn.synsets(word, pos=wn.NOUN, lang=lang):
+        for path in synset.hypernym_paths():
+            if category in path:
+                return True
+    return False
+```
+
+-   Replace `is_a()` in `lin301.py` with this version. Save, **Restart**, and rerun your setup chunk.
+-   `lang="eng"` is the default, so your English code still works.
+
+## Food in Italian *Alice*
+
+```python
+it = book_to_spacy_df("alice_it.txt", "Italian", nlp_it, "CAPITOLO")
+it_nouns = it[it["pos"] == "NOUN"]
+
+food = wn.synset("food.n.01")
+lemmas = it_nouns["lemma"].unique()
+it_food = [lemma for lemma in lemmas if is_a(lemma, food, "ita")]
+print(sorted(it_food))
+```
+
+```
+['aceto', 'acqua', 'amaro', 'bocconcino', 'burro', 'camomilla', 'crema', 'crostino',
+ 'desinare', 'erba', 'latte', 'liquore', 'minerale', 'minestra', 'pane', 'pasto',
+ 'piatto', 'rosso', 'tè', 'uovo', 'vino']
+```
+
+-   `.unique()` gives each lemma once.
+-   *minestra* 'soup', *burro* 'butter', *tè* 'tea', *uovo* 'egg', *vino* 'wine'... and *rosso* 'red'?
+
+## Is Alice an Animal?
+
+```python
+animal = wn.synset("animal.n.01")
+it_animals = [lemma for lemma in lemmas if is_a(lemma, animal, "ita")]
+print("alice" in it_animals)
+print(wn.synsets("alice", lang="ita"))
+```
+
+```
+True
+[Synset('anchovy.n.02'), Synset('anchovy.n.01')]
+```
+
+-   In Italian, *alice* means 'anchovy'!
+-   WordNet can't tell a name from a common noun -- and spaCy tagged *Alice* as a `NOUN` somewhere.
+
+## Activity 4: French *Alice*
+
+1.  Run `nlp_fr = spacy.load("fr_core_news_sm")` and then make `fr` with `book_to_spacy_df()` (remember `"CHAPITRE"`), and keep only the nouns.
+2.  Use `is_a()` with `lang="fra"` to find the food words.
+3.  Find three words in your list that aren't food. Which senses let them in?
+
+## Activity 4: Possible Answer
+
+```python
+nlp_fr = spacy.load("fr_core_news_sm")
+fr = book_to_spacy_df("alice_fr.txt", "French", nlp_fr, "CHAPITRE")
+fr_lemmas = fr[fr["pos"] == "NOUN"]["lemma"].unique()
+
+fr_food = [lemma for lemma in fr_lemmas if is_a(lemma, food, "fra")]
+print(sorted(fr_food))
+```
+
+```
+['assiette', 'baguette', 'beurre', 'bleu', 'bouillie', 'carte', 'casserole', 'centre',
+ 'choix', 'confiture', 'dîner', 'eau', 'entrée', 'esprit', 'farce', 'foule', 'fromage',
+ 'gelée', 'goûter', 'grain', 'gâteau', 'herbe', 'lait', 'moutarde', 'mélange', 'mélasse',
+ 'orge', 'pain', 'plat', 'poivre', 'pomme', 'potage', 'rafraîchissement', 'repas', 'rose',
+ 'soupe', 'sucre', 'sucrerie', 'table', 'tartine', 'tasse', 'thé', 'verre', 'vin',
+ 'vinaigre', 'œuf']
+```
+
+-   *bleu* (a blue cheese), *carte* ('menu'), *esprit* ('spirits'), *foule*, *verre* ('a glass of something')...
+-   Every extra sense in every language lets more words in.
+
+# Looking Ahead
+
+## What Did We Add Today?
+
+-   **Scripts:** `script_of()` with `unicodedata.name()`
+-   **Segmentation:** spaCy models for Chinese, Japanese, Greek, and Russian
+-   **Romanization:** `unidecode` (quick, lossy), `pypinyin`, `pykakasi`
+-   **WordNet in other languages:** `lemma_names(lang)`, `wn.synsets(word, lang=...)`, and `is_a(..., lang=...)`
+
+## Friday
+
+-   An in-class activity putting spaCy and WordNet together -- which becomes your homework
