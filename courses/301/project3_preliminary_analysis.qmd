@@ -1,0 +1,264 @@
+---
+title: "Project Component 3 — Preliminary Analysis"
+subtitle: "LIN 301: Computation for Linguists"
+author: "Dr. Andrew M. Byrd"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+fontsize: 12pt
+---
+
+## Overview
+
+**Due:** Monday, November 30, 2026\
+**Weight:** 5% of your final grade
+
+In Component 2 you got your data into a clean table. Now you get to find out what's in it. Your job in this component is to load your `.csv` from Component 2, run **at least two analyses** on it with the tools we've built in class, make **at least one chart**, and explain what you found.
+
+This is a **preliminary** analysis. It doesn't need to be your final word on your data, and it's fine if a result surprises you or doesn't come out the way you expected. You'll get feedback from me on this component before you trade drafts with a classmate (Component 4) and build your final website and video (Component 5). Much of what you write here will end up on your project page, so it's worth doing carefully now.
+
+By the end, you should have:
+
+1.  Python code that loads your Component 2 `.csv` and checks it.
+2.  At least two analyses, each answering a question from Component 1 (or a better question you've found since).
+3.  At least one clear, labeled chart.
+4.  A short write-up of what you asked, what you did, and what you found.
+5.  A new `.csv`, if you added any columns.
+
+::: callout-tip
+## See a model
+
+My own Component 3 is posted on the course website: [Example: Dr. Byrd's Component 3](https://winjapati.github.io/courses/301/project3_example_byrd.html). It picks up from [my Component 2](https://winjapati.github.io/courses/301/project2_example_byrd.html), where I listed what was still messy in my dictionary data. As before, my data is unusual, so focus on the overall shape: load, check, analyze, chart, explain.
+:::
+
+------------------------------------------------------------------------
+
+## Instructions
+
+Do all of your work in a single Quarto document named `project3_lastname_firstname.qmd` in your `course_project` folder. Your code goes in `{python}` chunks, and your explanations go in the text around them.
+
+### 1. Load and Check Your Data
+
+Start from the `.csv` you saved in Component 2, **not** from your raw file. Read it in with `pd.read_csv()`, and check it the same way you did when you reloaded it last time: `len()`, `.head()`, `.tail()`. Is everything there?
+
+Then go back to Section 4 of your Component 2 write-up, *Still Messy*. If any of those problems would get in the way of the questions you're about to ask, fix them here, in code, before you start counting. If you change your cleaning in a big way, it's fine to go back and fix your Component 2 code instead; just say so in your write-up.
+
+::: callout-important
+## Using our class functions
+
+If you want to use any of the functions in our class file, `lin301.py`, import it at the top of your document. Your `course_project` folder is one level down from your `data` folder (not two, as in class), so the path is:
+
+``` python
+import sys
+sys.path.append("../data")
+from lin301 import *
+```
+:::
+
+### 2. Plan Your Analysis
+
+Before you write any analysis code, write a short paragraph (**3–5 sentences**) saying:
+
+-   What you want to learn from your data;
+-   Which questions you're going to ask in this component (go back to your Preliminary Questions from Component 1, Section 4);
+-   What you **expect** to find, and why.
+
+Write this *before* you see your results, and don't change it afterwards. If your results turn out differently, that's interesting, and it's something to talk about in your write-up.
+
+### 3. Analyze Your Data
+
+Do **at least two** different analyses. "Different" means they ask different questions, or answer one question in two different ways: counting the top 10 words in one text and then the top 10 in another is one analysis, not two. Comparing them *is* an analysis, though.
+
+Which analyses make sense depends on your data and your questions. Here are the types of analysis from Component 1 again, with the kinds of things you can now do for each:
+
+| Type of analysis | Things you can do now |
+|----------------------|--------------------------------------------------|
+| **Frequency & vocabulary** | most common words, type-token ratio, average word length; compare them across texts, chapters, or speakers |
+| **Pattern matching** | how many words have a certain spelling, affix, or shape (`.str.contains()`, `.str.endswith()`, regular expressions); what share of all words is that? |
+| **Comparison** | split your rows into groups (by text, author, year, language...) with `.groupby()`, and compare counts, averages, or rates |
+| **Grammatical analysis** | run spaCy over your text; count parts of speech, find the most common lemmas, compare nouns vs. verbs |
+| **Semantic analysis** | look up your words in WordNet; how many senses do they have? which belong to a category like *food* or *animal* (`is_a()`)? |
+| **Cross-linguistic / non-English** | any of the above with a spaCy model or WordNet for another language; compare the same measure across languages |
+
+Most analyses involve **adding a new column** to your table (word length, part of speech, a True/False test, a category) and then **counting or grouping** by it.
+
+::: callout-warning
+## Raw counts vs. rates
+
+If you're comparing groups of different sizes (a long text and a short one, a big chapter and a small one), raw counts will mislead you: the longer text will have more of *everything*. Compare **rates** instead, like we did with *-ly* words in *Alice* and *Mansfield Park*: count per 1,000 words, or a percentage.
+:::
+
+For each analysis, write a sentence or two *right below the code* saying what the output shows. Don't leave a table or a list of numbers sitting there without explanation.
+
+### 4. Visualize
+
+Make **at least one chart** of a result from your analysis, using `matplotlib` or `.plot()`, as we did in class. Your chart must have:
+
+-   a **title** (`plt.title()`);
+-   **axis labels** (`plt.xlabel()`, `plt.ylabel()`) that say what's being measured, including units where needed ("Rate per 1,000 words," not "count");
+-   labels on the bars or points you can actually read. If your labels overlap, plot fewer items (top 10 instead of top 50) or tilt them with `plt.xticks(rotation=45)`.
+
+Pick the chart that fits the result: a **bar chart** to compare groups or show the most frequent items; a **line chart** (`.plot()`) to show change across something ordered, like chapters or years.
+
+::: callout-tip
+## Saving your chart for your website
+
+You'll want your charts again for your final project page. If you'd like to save one as an image, put `plt.savefig("figures/chart_name.png")` right before `plt.show()`, after making a `figures` folder inside `course_project`. This is optional for Component 3.
+:::
+
+### 5. Save Your Results
+
+If you added any new columns to your table, save the new version as a `.csv` with the same settings as last time:
+
+``` python
+df.to_csv("project3_lastname_firstname.csv", index=False, encoding="utf-8-sig")
+```
+
+Keep your Component 2 `.csv` as it is, so you always have the clean table to go back to.
+
+------------------------------------------------------------------------
+
+## Deliverables
+
+Your `course_project` folder should now also contain:
+
+1.  `project3_lastname_firstname.qmd`, your code and write-up
+2.  `project3_lastname_firstname.html`, the rendered version
+3.  `project3_lastname_firstname.csv`, if you added columns
+4.  Optional: a `figures` folder with any charts you saved
+
+Your `.qmd` must **render from top to bottom without errors**, and your chart(s) must show up in the `.html`. Open the `.html` in your browser and check before you push.
+
+Alongside your code, include a write-up with these sections, using these headings. Your plan (Section 1) comes **before** your analysis code; the other sections can go with the code they describe, or at the end.
+
+### 1. Analysis Plan
+
+-   The 3–5 sentence paragraph from step 2 above: your goals, your questions, and what you expect.
+
+### 2. Data Check
+
+-   Did your `.csv` load correctly? How many rows?
+-   Did you fix anything from your *Still Messy* list? What, and how?
+
+### 3. Analyses
+
+-   For each analysis: the question it answers, what you did (which columns you added, what you counted or grouped), and what the result was, in a sentence or two.
+
+### 4. Interpretation
+
+A paragraph of **4–6 sentences** explaining:
+
+-   What your analyses revealed, taken together. What's the most interesting thing you found?
+-   Did the results match what you expected in your plan? If not, why do you think that is?
+-   What *can't* your results tell you? (Is your data too small? Did your cleaning choices from Component 2 affect a count?)
+-   How you might extend or refine this analysis for your final project.
+
+::: callout-note
+## Using AI
+
+Per the syllabus, you're allowed to use GenAI on the final project, including for help writing your analysis code. If you do, add a short note at the end of your write-up saying what you used and how (e.g., "Used ChatGPT to figure out how to put two lines on one chart"). You're still responsible for understanding every line of your code, and for checking that the results are correct. AI tools are especially likely to give you code that runs but counts the wrong thing, so check a few results by hand.
+:::
+
+::: callout-warning
+## Copyright, again
+
+The same rules as Component 2 apply. If your data is copyrighted, keep your raw file and any `.csv` that contains the full text out of your public repo (your `.gitignore` takes care of this, if you set it up last time). Your `.qmd` and `.html` are fine to push, as long as they show counts and short examples rather than long stretches of the text.
+:::
+
+------------------------------------------------------------------------
+
+## Submission
+
+As with Components 1 and 2, you'll submit a **link** to your folder on GitHub instead of uploading files.
+
+1.  **Render your document** to HTML and make sure the code runs, the output looks right, and your chart(s) show up.
+2.  **Push everything.** Stage, commit, and push your `course_project` folder (your `.qmd`, `.html`, any new `.csv`, and any `figures`) to your `LIN_301` GitHub repo.
+3.  **Get the folder's GitHub address.** It's the same link as before:
+
+    ```
+    https://github.com/your-username/LIN_301/tree/main/course_project
+    ```
+
+4.  **Submit that link on Canvas.**
+5.  Be sure to replace "lastname_firstname" with your actual last and first name in your filenames.
+
+------------------------------------------------------------------------
+
+## Grading Rubric (100 pts total)
+
+| Criteria | Points |
+|---------------------------------------------------|:-----------------:|
+| **Data Setup:** Component 2 `.csv` loaded with `pd.read_csv()` and checked; relevant *Still Messy* problems addressed in code | 15 |
+| **Analysis Plan:** clear goals and questions, connected to Component 1; expectations stated and explained | 15 |
+| **Analyses:** at least two distinct, valid analyses appropriate to the data and questions; new columns, counts, or groups used sensibly; rates used where group sizes differ; each result explained below its code | 30 |
+| **Visualization:** at least one chart that fits the result, with a title, axis labels, and readable labels | 15 |
+| **Interpretation:** 4–6 sentences covering findings, expectations, limits, and next steps; thoughtful reflection | 20 |
+| **Presentation:** files named correctly, `.qmd` renders without errors, headings used, GitHub link points to `course_project` | 5 |
+
+------------------------------------------------------------------------
+
+## Checklist
+
+1.  `pd.read_csv()` your Component 2 `.csv`, and check it: `len()`, `.head()`, `.tail()`
+2.  Fix anything from *Still Messy* that gets in your way
+3.  Write your plan **before** you analyze
+4.  Analysis 1: new column(s), then count or group
+5.  Analysis 2: a different question, or a different way in
+6.  Chart it: title, axis labels, readable labels
+7.  Explain what you found
+8.  `.to_csv()` any new columns
+
+Then, before you submit:
+
+-   [ ] Plan written before the analysis
+-   [ ] At least two analyses, each with a sentence or two below the code
+-   [ ] At least one labeled chart that shows up in the `.html`
+-   [ ] All four write-up sections written
+-   [ ] Copyrighted data kept out of your public repo (if that applies to you)
+-   [ ] Rendered, pushed, and submitted your GitHub link on Canvas
+
+------------------------------------------------------------------------
+
+## Your Toolkit {#toolkit}
+
+Everything below was covered in class. You won't need all of it: pick what fits your questions.
+
+**Setup**
+
+-   `import pandas as pd`, `import matplotlib.pyplot as plt`, `from collections import Counter`, `import re`
+-   `import sys`, `sys.path.append("../data")`, `from lin301 import *`
+-   `import spacy`, `spacy.load()`
+-   `from nltk.corpus import wordnet as wn`
+
+**pandas**
+
+-   `pd.read_csv()`, `.to_csv(..., index=False, encoding="utf-8-sig")`
+-   `len()`, `.head()`, `.tail()`, `.unique()`, `.value_counts()`
+-   new columns: `df["new"] = ...`, `.str.len()`, `.str.contains()`, `.str.endswith()`, `.isin()`, `==`, list comprehensions
+-   filtering: `df[df["column"] == value]`, `&`
+-   `.groupby()`, `.size()`, `.mean()`, `.sum()`, `.max()`, `.sort_values()`, `round()`
+
+**Counting with Python**
+
+-   `Counter()`, `.most_common(n)`
+-   `set()`, type-token ratio (`len(set(words)) / len(words)`)
+
+**Our functions (in `lin301.py`)**
+
+-   `ttr()`, `avg_word_len()`, `book_to_spacy_df()`, `is_a()`, and anything else you've added
+
+**spaCy**
+
+-   `nlp(text)`, `for token in doc:`
+-   `token.text`, `token.lemma_`, `token.pos_`, `token.morph`
+
+**WordNet**
+
+-   `wn.synsets(word, pos=wn.NOUN, lang=...)`, `wn.synset()`
+-   `.name()`, `.definition()`, `.lemma_names()`, `.hypernyms()`, `.hypernym_paths()`
+
+**Charts**
+
+-   `plt.bar()`, `.plot()`, `.plot(kind="bar")`
+-   `plt.title()`, `plt.xlabel()`, `plt.ylabel()`, `plt.xticks(rotation=45)`, `plt.show()`, `plt.savefig()`

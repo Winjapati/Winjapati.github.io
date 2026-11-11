@@ -1,0 +1,240 @@
+---
+title: "Project Component 3 — Example"
+subtitle: "Roots of the Proto-Indo-European Lexicon: A First Look at Pokorny's Roots"
+author: "Dr. Andrew M. Byrd"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-tools: true
+jupyter: python3
+fontsize: 12pt
+---
+
+::: callout-note
+This is my own Component 3, written as a model for yours. It picks up where [my Component 2](https://winjapati.github.io/courses/301/project2_example_byrd.html) left off: a clean table of 2,077 roots from Pokorny's dictionary. As before, my data is unusual, so focus on the overall shape: plan, load and check, add columns, count, chart, explain.
+:::
+
+## 1. Analysis Plan
+
+In Component 1 I asked four questions about Pokorny's roots. Here I'm taking on two of them. First: **which sounds begin PIE roots, and is *b* really as rare as handbooks say?** I expect *b* to be the rarest of the plain stops at the start of a root, far rarer than *p* or *bh*. Second: **which branches of Indo-European does Pokorny cite most often?** I expect Indo-Iranian, Greek, Latin, and Germanic at the top, since those are the classic languages of 19th-century comparative grammar, and Anatolian (Hittite) and Tocharian at the bottom, since they were only deciphered in the early 20th century and were still new when Pokorny was writing.
+
+## 2. Data Check
+
+I start from my Component 2 `.csv`, not from the web page:
+
+```{python}
+import re
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("project2_byrd_andrew.csv")
+
+print(len(df))
+df.head()
+```
+
+```{python}
+df.tail()
+```
+
+2,077 rows and six columns, the same as when I saved it. In my Component 2 *Still Messy* list I named a few problems. Two of them get in the way of my questions here, so I fix them in the analyses below:
+
+-   **Several forms per entry.** To ask how a root begins, I need one form per root (Analysis 1).
+-   **The material is unstructured**, and languages are marked only by abbreviations. I need a lookup table from abbreviation to branch (Analysis 2).
+
+The others (subscript letters, the varied English meanings) don't affect these two questions, so I'm leaving them for later.
+
+## 3. Analysis 1: How Do PIE Roots Begin?
+
+### Picking one form per root
+
+The `forms` column often has several forms, separated by commas, colons, or semicolons:
+
+```{python}
+df["forms"].head(12)
+```
+
+Pokorny lists his main form first, so I keep everything before the first `,`, `:`, or `;`. I also take out two kinds of notation that would get in the way:
+
+-   The **s-mobile**, written `(s)`, as in `(s)kel-`. This is an *s* that shows up in some daughter languages and not others. I want to know what the root itself starts with, so I remove it: `(s)kel-` counts as a *k*-root.
+-   Other **parentheses, brackets, and asterisks**, which Pokorny uses for doubtful or optional parts (`(demə-)`, `lē[i]-`, `*gʷhēi-`). I keep the letters inside and drop the marks.
+
+I write this as a function, so I can use it in a list comprehension to make a new column:
+
+```{python}
+def first_form(forms):
+    form = re.split(r"[,:;]", forms)[0]
+    for mark in ["(s)", "(", ")", "[", "]", "*"]:
+        form = form.replace(mark, "")
+    return form.strip()
+
+df["root"] = [first_form(f) for f in df["forms"]]
+df[["forms", "root"]].head(12)
+```
+
+*What this costs me:* about 80 roots, like `(s)kel-`, now count as *k*-roots, not *s*-roots. That's the choice that fits my question, but it means my *s* count is lower than Pokorny's own alphabetical order would suggest.
+
+### Finding the first sound
+
+The first *character* isn't always the first *sound*. In Pokorny's notation, `bh`, `gʷ`, and `k̂` are each one sound, written with more than one character. So I make a list of these multi-character sounds and check them first. The longest ones (`gʷh`) have to come before the shorter ones they start with (`gʷ`), or `gʷh-` would be counted as `gʷ`.
+
+```{python}
+multi = ["gʷh", "ĝh", "k̂h", "gʷ", "kʷ", "bh", "dh", "gh",
+         "ph", "th", "kh", "k̂", "u̯", "i̯"]
+
+def first_sound(root):
+    for sound in multi:
+        if root.startswith(sound):
+            return sound
+    return root[0]
+
+df["first_sound"] = [first_sound(r) for r in df["root"]]
+df[["root", "first_sound"]].head(12)
+```
+
+Now I can count:
+
+```{python}
+df["first_sound"].value_counts().head(25)
+```
+
+### The stops
+
+My question is really about the **stops**, the consonants like *p*, *t*, *k*. PIE is usually reconstructed with three series of them: plain voiceless (*p*), plain voiced (*b*), and voiced aspirated (*bh*), at five places in the mouth. Here are the counts for all fifteen:
+
+```{python}
+stops = ["p", "b", "bh",
+         "t", "d", "dh",
+         "k̂", "ĝ", "ĝh",
+         "k", "g", "gh",
+         "kʷ", "gʷ", "gʷh"]
+
+counts = df["first_sound"].value_counts()
+stop_counts = [counts[s] for s in stops]
+
+for s in stops:
+    print(s, counts[s])
+```
+
+```{python}
+plt.bar(stops, stop_counts)
+plt.title("Root-Initial Stops in Pokorny's IEW")
+plt.xlabel("First sound of the root")
+plt.ylabel("Number of roots")
+plt.show()
+```
+
+*b* is rare, but it isn't actually the rarest: *ĝ* has only 22 roots to *b*'s 28. That's not what I predicted. But *ĝ* is part of a row that's small across the board (the palatals), while *b* sits next to two of the biggest columns in the chart: 133 *p*-roots and 130 *bh*-roots. *b* has less than a quarter as many roots as either of its neighbors. At every other place, the plain voiced stop has at least half as many roots as the aspirate (*d* 57 vs. *dh* 67, *g* 50 vs. *gh* 57). The gap at the lips is real.
+
+What are those 28 *b*-roots?
+
+```{python}
+b_roots = df[df["first_sound"] == "b"]
+b_roots[["entry", "forms", "english"]]
+```
+
+A lot of them aren't ordinary vocabulary at all. Many are **sound-symbolic**: 'barbaric speech', 'murmur, babble', 'sound of barking', 'sheep's bleating', 'to bleat', 'to chat', 'hoarse', 'lip, kiss'. Several are 'to swell', often listed with variants in *bh-* and *p-* (`bab-, bhabh-, pap-`), which is typical of expressive words. And a few look like loanwords (`badi̯os` 'gold, brown'). So *b* isn't just rare: where it does show up, it's mostly in words that don't follow the normal sound rules anyway.
+
+## 4. Analysis 2: Which Branches Does Pokorny Cite?
+
+### A lookup table of abbreviations
+
+Pokorny names languages with German abbreviations at the start of each citation: `ai.` (*altindisch*, Sanskrit), `ahd.` (*althochdeutsch*, Old High German), `aksl.` (*altkirchenslavisch*, Old Church Slavonic), and so on. To get from languages to **branches**, I made a dictionary: each key is a branch, and each value is a list of the abbreviations that belong to it. I built the list by counting every short word followed by a period in the material and looking up the common ones in Pokorny's list of abbreviations.
+
+```{python}
+branches = {
+    "Indo-Iranian": ["ai", "av", "ap", "apers", "npers", "osset"],
+    "Greek": ["gr", "hom", "att", "dor", "ion"],
+    "Italic": ["lat", "alat", "osk", "umbr"],
+    "Celtic": ["air", "mir", "nir", "ir", "cymr", "acymr", "mcymr", "ncymr",
+               "bret", "abret", "mbret", "nbret", "corn", "acorn", "gall"],
+    "Germanic": ["got", "ahd", "mhd", "nhd", "ags", "aisl", "an", "anord",
+                 "isl", "nisl", "as", "mnd", "nd", "engl", "mengl", "norw",
+                 "schwed", "aschwed", "dän", "afries", "ndl", "mndl", "asächs"],
+    "Balto-Slavic": ["lit", "alit", "lett", "apr", "aksl", "ksl", "russ",
+                     "aruss", "poln", "čech", "ačech", "serb", "skr",
+                     "sloven", "slov", "bulg", "klr"],
+    "Armenian": ["arm"],
+    "Albanian": ["alb"],
+    "Tocharian": ["toch"],
+    "Anatolian": ["hitt", "luw", "lyk", "lyd"],
+}
+```
+
+Two traps I found by checking matches in context. `skr.` is Serbo-Croatian, not Sanskrit (I noted this in Component 2), so it goes in Balto-Slavic. And `pal.` looked like Palaic, an Anatolian language, but in Pokorny it almost always means *palatal*, so I left it out.
+
+### One True/False column per branch
+
+Five roots have no material at all (Component 2, *Still Messy*), so they can't tell me anything about branches. I set them aside first. `.notna()` is True when a cell is *not* empty (not `NaN`):
+
+```{python}
+has_material = df[df["material"].notna()].copy()
+has_material["material_lower"] = has_material["material"].str.lower()
+print(len(has_material))
+```
+
+(`.copy()` tells pandas this is a new table of its own, so it doesn't warn me when I add columns to it.)
+
+Now, for each branch, I build a regular expression that matches any of its abbreviations, and use `.str.contains()` to make a True/False column. `\b` makes sure `ir.` doesn't match inside `air.`, and `\.` matches an actual period. The `|` joins them: `\bai\.|\bav\.|...`
+
+```{python}
+for branch, abbrevs in branches.items():
+    pattern = "|".join([r"\b" + a + r"\." for a in abbrevs])
+    has_material[branch] = has_material["material_lower"].str.contains(pattern)
+
+has_material[["entry", "forms", "Greek", "Anatolian", "Tocharian"]].head()
+```
+
+Spot-checking entry 2, *ab-* 'water, river': its material cites Latin *amnis*, Old Irish *ab*, Welsh *afon*, German river names in *-affa*, and a Latvian river name, but nothing in Greek, Indo-Iranian, Hittite, or Tocharian. The columns get all of that right.
+
+### What share of roots does each branch attest?
+
+Since every root is either True or False for a branch, the `.mean()` of a column is the share of roots that cite that branch. Times 100, it's a percentage:
+
+```{python}
+rates = {}
+for branch in branches:
+    rates[branch] = round(has_material[branch].mean() * 100, 1)
+
+rates = pd.Series(rates).sort_values(ascending=False)
+rates
+```
+
+```{python}
+rates.plot(kind="bar")
+plt.title("Share of Pokorny's Roots Cited in Each Branch")
+plt.xlabel("Branch")
+plt.ylabel("Percent of roots (n = 2,072)")
+plt.xticks(rotation=45)
+plt.show()
+```
+
+Germanic comes first (71%), then Balto-Slavic (68%) and Greek (64%), with Indo-Iranian (57%) only fourth. Anatolian is last, at under 10%, and Tocharian is barely ahead of it.
+
+### How many branches per root?
+
+Python counts `True` as 1 and `False` as 0, so if I add up the branch columns for each row, I get the number of branches each root is cited in. `.sum(axis=1)` adds *across* each row instead of down each column, and `.sort_index()` puts the result in order by number of branches instead of by count:
+
+```{python}
+has_material["n_branches"] = has_material[list(branches)].sum(axis=1)
+has_material["n_branches"].value_counts().sort_index()
+```
+
+Two or three branches is most common. Only 27 roots are found in all ten, and about two dozen are cited in only one branch.
+
+## 5. Interpretation
+
+I asked two questions of Pokorny's roots: what sounds they begin with, and which branches of Indo-European he cites for them. To answer them, I added a `root` column with one form per entry and a `first_sound` column using a list of multi-character sounds, then counted with `.value_counts()`; for branches, I built a lookup table of abbreviations and made one True/False column per branch with `.str.contains()`, comparing them as percentages. The *b* result mostly held up: *ĝ* turned out to be slightly rarer, but only 28 roots begin with *b*, under a quarter as many as begin with *p* or *bh*, and most of those 28 are sound-symbolic or expressive words like 'to bleat' and 'babble'. The branch result partly surprised me: Anatolian and Tocharian are at the bottom, as I predicted, but Germanic and Balto-Slavic beat Indo-Iranian, which may say more about Pokorny than about PIE, since he was a German scholar citing dozens of Germanic dialects, and my lookup table has 23 Germanic abbreviations but only one for Armenian. My numbers also can't separate a branch that *lacks* a root from one where Pokorny just didn't cite it, and the roots found in only one branch probably include abbreviations my table is missing. For the final project, I want to check which branches pair up most often in the same root, look at the vowel question from Component 1 (*e* vs. *a*), and run the English meanings through WordNet to see which semantic fields the *b*-roots and the one-branch roots belong to.
+
+## 6. Save
+
+```{python}
+has_material.to_csv("project3_byrd_andrew.csv", index=False, encoding="utf-8-sig")
+```
+
+Like my Component 2 file, this `.csv` contains the full material text, so it's in my `.gitignore` and not in my public repo.
+
+## AI Use
+
+I used Claude to help build the abbreviation table, to check the regular expressions, and to draft parts of this write-up.
