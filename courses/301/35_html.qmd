@@ -1,0 +1,361 @@
+---
+title: "Computation for Linguists"
+subtitle: "Building a Website, Day 1: HTML"
+date: "November 16, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: source
+---
+
+# Our Goal
+
+## The Next Three Classes
+
+-   **Today:** HTML, the *structure* of a web page
+-   **Wednesday:** CSS, the *style* of a web page
+-   **Friday:** you'll work with AI to build your own website (or build it yourself!)
+
+## HW 8: Your Website
+
+-   By the end, you'll have a website with three pages:
+    -   a **homepage** about you
+    -   a **CV**
+    -   a **research** page, where your final project will live
+-   Today: you'll take apart a website that's already built, and then build and publish the first page of your own.
+
+# A Website Is Just Files
+
+## Meet Dr. Mabel Hatter
+
+-   Download [`hatter_site.zip`](hatter_site.zip), and unzip it into `classwork/day_35/`.
+-   Open `index.html` in your browser.
+-   Click around: Home, CV, Research.
+
+## What's in the Folder?
+
+```
+hatter_site/
+├── index.html      ← the homepage
+├── cv.html         ← the CV page
+├── research.html   ← the research page
+├── style.css       ← how everything looks (Wednesday!)
+└── teacup.svg      ← a picture
+```
+
+-   A website is a **folder of text files**.
+-   Your browser reads them and turns them into what you see.
+
+## Two Ways to Look at a Page
+
+1.  **The browser** shows you the page.
+2.  **VS Code** shows you the code behind it.
+
+-   Open `index.html` in VS Code, too. Put the two windows side by side.
+-   Find *Dr. Mabel Hatter* in both.
+
+## How Today Works
+
+-   **Three rounds** of hunting through Dr. Hatter's files.
+-   Each round: work with a partner, then we go over what you found.
+-   Then you'll use everything you found to build **your own** homepage, and put it online.
+-   No AI today!
+
+# Hunt 1: Text
+
+## Hunt 1: `index.html`, `cv.html`
+
+1.  Find `<p>` and `</p>`. What's the difference between them? What's *between* them?
+2.  *Dr. Mabel Hatter* and *About Me* are both headings. What tags make them?
+3.  Find the **bold** words and the *italic* word on the homepage. What makes them bold and italic?
+
+## Hunt 1: `index.html`, `cv.html`
+4.  *Contact* has a bulleted list; *Publications* on the CV has a numbered list. What's different in the code?
+5.  Find the *Teaching* table on the CV. List every tag it uses, and guess what each one stands for.
+6.  Change `<h2>About Me</h2>` to `<h3>About Me</h3>`. Save and reload. What changes? (Then change it back.)
+
+## Tags Mark Up Text
+
+```html
+<p>I study how people talk at tea parties.</p>
+```
+
+-   `<p>` is an **opening tag**; `</p>` is a **closing tag** (with a `/`).
+-   Together with the text between them, they make an **element**.
+-   `p` means **paragraph**.
+
+## Tags Inside Tags
+
+```html
+<p>My research uses Python to analyze <em>conversation</em> in literature.</p>
+```
+
+-   `<em>` (**emphasis**) is *inside* the `<p>`: it makes *conversation* italic.
+-   Tags **nest**: the inner one has to close before the outer one.
+
+## Lists
+
+```html
+<ul>                                <ol>
+  <li>Office: ...</li>                <li>Hatter, M. (2025)...</li>
+  <li>Office hours: ...</li>          <li>Hatter, M. &amp; Hare, M. (2023)...</li>
+</ul>                               </ol>
+```
+
+-   `<ul>`: **unordered** list (bullets); `<ol>`: **ordered** list (numbers)
+-   Each item is an `<li>` (**list item**), either way.
+-   With `<ol>`, the browser does the numbering for you.
+
+## Tables
+
+```html
+<table>
+  <tr>
+    <th>Course</th>
+    <th>Title</th>
+  </tr>
+  <tr>
+    <td>LIN 101</td>
+    <td>Introduction to Nonsense</td>
+  </tr>
+</table>
+```
+
+-   `<tr>`: a **table row**
+-   `<th>`: a **table header** cell; `<td>`: a **table data** cell
+-   A table is built **row by row**, like a list of lists in Python.
+
+## Hunt 1: Possible Answer
+
+1.  `</p>` has a `/`: it **closes** the paragraph. The text in between is what you see.
+2.  `<h1>Dr. Mabel Hatter</h1>` and `<h2>About Me</h2>`: `h1` is the biggest.
+3.  `<strong>` for bold, `<em>` for italic
+4.  `<ul>` vs. `<ol>`; the items are `<li>` in both.
+5.  `<table>`, `<tr>`, `<th>`, `<td>`
+6.  *About Me* gets smaller, and loses its purple line. (Why? We'll see on Wednesday!)
+
+## Common Tags
+
+| Tag | What it is |
+|---|---|
+| `<h1>`, `<h2>`, `<h3>` | headings (1 is the biggest) |
+| `<p>` | a paragraph |
+| `<strong>`, `<em>` | bold, italic |
+| `<ul>`, `<ol>`, `<li>` | bulleted list, numbered list, list item |
+| `<table>`, `<tr>`, `<th>`, `<td>` | table, row, header cell, cell |
+
+# Hunt 2: Links and Pictures
+
+## Hunt 2: `index.html`, `cv.html`
+
+1.  Find the three links in the navigation bar (*Home*, *CV*, *Research*). What do they have in common?
+2.  Find the link to *Project Gutenberg* on the research page. How is it different from the navigation links?
+3.  Find Dr. Hatter's email address. What happens when you click it? What in the code makes that happen?
+
+## Hunt 2: `index.html`, `cv.html`
+
+4.  Find the teacup. Which part of the code says *which* picture to show?
+5.  The teacup's code has a second part, with a description in it. Change `teacup.svg` to `teapot.svg`, save, and reload. When does the description show up?
+6.  Every tag so far has had a closing tag. Which one doesn't? Why not?
+
+## Tags Can Carry Information
+
+```html
+<a href="cv.html">CV</a>
+```
+
+-   `<a>` makes a **link** (*a* for **anchor**).
+-   `href="cv.html"` is an **attribute**: it says *where* the link goes.
+-   Attributes go **inside** the opening tag: `name="value"`
+
+## Three Kinds of Links
+
+```html
+<a href="cv.html">CV</a>
+<a href="https://www.gutenberg.org/ebooks/11">Project Gutenberg</a>
+<a href="mailto:mhatter@wonderland.example">mhatter@wonderland.example</a>
+```
+
+-   `cv.html`: another file in the **same folder**
+-   `https://...`: a page on **another website**
+-   `mailto:`: opens an **email**
+
+## Images
+
+```html
+<img src="teacup.svg" alt="A drawing of a steaming teacup">
+```
+
+-   `src`: the image **file** (**source**)
+-   `alt`: a **description**, for screen readers and for when the image doesn't load
+-   `<img>` has **no closing tag**: there's no text inside it.
+
+## Hunt 2: Possible Answer
+
+1.  They're all `<a href="...">`, and each `href` is a file in the **same folder**.
+2.  Its `href` starts with `https://`: it's on **another website**.
+3.  Your email program opens: `href="mailto:..."`
+4.  `src="teacup.svg"`
+5.  The picture disappears, and the `alt` text shows up instead.
+6.  `<img>`: there's no text to wrap, so there's nothing to close.
+
+# Hunt 3: The Shape of a Page
+
+## Hunt 3: all three `.html` files
+
+1.  Look at the **tab** at the top of your browser window: it says *Dr. Mabel Hatter*. Click over to the CV: what does the tab say now? Find where that text comes from in the code. Is it inside `<body>`?
+2.  Find something between `<!--` and `-->`. Does it show up on the page?
+3.  Find `<header>`, `<nav>`, `<main>`, and `<footer>`. Which ones are **inside** which?
+
+## Hunt 3: all three `.html` files
+
+4.  In the browser, **right-click** on *About Me* and choose **Inspect**. Hover over the lines in the panel that opens. What happens?
+5.  Compare `index.html`, `cv.html`, and `research.html`. Which parts are **exactly the same** in all three?
+
+## The Skeleton
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Dr. Mabel Hatter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  ...everything you see...
+</body>
+</html>
+```
+
+-   `<head>`: information **about** the page (the title in the browser tab, the stylesheet)
+-   `<body>`: everything you **see**
+
+## Comments
+
+```html
+<!-- The BODY holds everything you see. -->
+```
+
+-   Anything between `<!--` and `-->` is a **comment**: notes for people, ignored by the browser.
+-   Just like `#` in Python.
+
+## Boxes Inside Boxes
+
+```html
+<body>
+  <header>
+    <h1>Dr. Mabel Hatter</h1>
+    <nav> ...the links... </nav>
+  </header>
+  <main> ...the content... </main>
+  <footer> ...the copyright line... </footer>
+</body>
+```
+
+-   `<header>`, `<nav>`, `<main>`, `<footer>`: tags that say what **part** of the page something is
+-   The **indentation** shows the nesting -- like a syntax tree!
+
+## Inspect Element
+
+-   **Right-click → Inspect** works on **any** website, not just Dr. Hatter's.
+-   The browser shows you the element, and every box it's inside.
+-   Hovering over a line highlights that box on the page.
+
+## Hunt 3: Possible Answer
+
+1.  `<title>`, inside `<head>`, not `<body>`
+2.  Comments never show up on the page.
+3.  `<nav>` is inside `<header>`; `<header>`, `<main>`, and `<footer>` are all inside `<body>`.
+4.  The browser highlights each box on the page.
+5.  The `<head>` (except the `<title>`), the whole `<header>` and `<nav>`, and the `<footer>`: they're **copied** into every page.
+
+# Your Turn
+
+## A Home for Your Website
+
+1.  On GitHub, make a new **public** repository named exactly `your-username.github.io`, with your GitHub username, in lowercase. Check **Add a README**.
+2.  In VS Code: Command Palette → **Git: Clone** → paste its URL. Put it in your `computation_4_linguists` folder, **next to** `LIN_301/`, not inside it.
+3.  Copy `style.css` and `teacup.svg` from `hatter_site/` into your new repo. (Dr. Hatter's style for now: on Wednesday, you'll learn how to change it.)
+
+## Build Your Own Homepage
+
+-   In your new repo, make a **new, empty** file: `index.html`. (It has to be called `index.html`: that's the page GitHub shows first.)
+-   Write it **by hand**. You can look at Dr. Hatter's files as much as you like, but don't copy and paste the whole thing!
+-   Everything you push here is **public**: use your UK email, and no phone number or address.
+
+## Your Homepage Needs...
+
+From **Hunt 3**:
+
+-   the skeleton: `<!DOCTYPE html>`, `<head>`, `<body>`
+-   a `<title>` with your name, and the `<link>` to `style.css`
+-   a `<header>`, a `<main>`, and a `<footer>`
+-   at least one comment
+
+## ...and...
+
+From **Hunts 1 and 2**:
+
+-   an `<h1>` with your name
+-   a `<nav>` with links to `index.html`, `cv.html`, and `research.html`
+-   at least two `<h2>` sections (*About Me*, *Contact*, *Interests*...)
+-   a paragraph with something in `<strong>` and something in `<em>`
+-   a bulleted list
+-   a link to **another website**, and an email link
+-   a picture, with `alt` text (`teacup.svg` is fine for now!)
+
+## Check Your Work
+
+-   Open your `index.html` in your browser. Does it look the way you expected?
+-   **Inspect** it: are your boxes inside the boxes you meant?
+-   Trade with your neighbor. Go down the checklist: what's missing from their page?
+-   Then publish it!
+
+## Publish It
+
+1.  Commit and push:
+
+```bash
+git add .
+git commit -m "My first homepage"
+git push
+```
+
+2.  On GitHub: **Settings → Pages → Deploy from a branch → `main` → `/ (root)`** → **Save**.
+
+-   After a minute or two, your page is live at `https://your-username.github.io`!
+-   Your *CV* and *Research* links lead to an error page for now. On Friday, you'll fill them in.
+
+## If You Finish Early
+
+1.  Make `cv.html`, with an `<ol>` and a `<table>`. (Hint: copy *your* `index.html`, and change the `<main>`.) Push it: does your *CV* link work now?
+2.  Make `teaching.html`, and add a *Teaching* link to the navigation bar.
+3.  Does your new link show up on **every** page? Why not?
+
+## If You Finish Early: Possible Answer
+
+-   The navigation bar is **copied** into every page. To add a link, you have to edit **every** file!
+-   On Friday, Quarto will fix this: you'll write the navigation bar **once**.
+-   What you wrote about yourself today is a first draft of your HW 8 homepage: on Friday, it moves into Quarto, in this same repo.
+
+# Looking Ahead
+
+## What Did We Learn Today?
+
+-   A website is a folder of **text files**.
+-   **Tags** mark up text: `<h1>`, `<p>`, `<ul>`, `<li>`, `<table>`...
+-   **Attributes** add information: `href`, `src`, `alt`
+-   `<head>` vs. `<body>`; boxes inside boxes
+-   **Inspect Element** shows you how any page is built.
+
+## Wednesday
+
+-   CSS: why is the header purple? Why is the picture round?
+-   And: borrowing CSS from other websites.
