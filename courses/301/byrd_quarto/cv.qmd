@@ -1,0 +1,35 @@
+---
+title: "Curriculum Vitae"
+---
+
+## Education
+
+- **Ph.D., Indo-European Studies**, University of California, Los Angeles, 2010
+- **Visiting Student, Linguistics**, Harvard University, 2003–2004
+- **B.A., Linguistics** (minors: Latin, German, and Italian), University of Georgia, 2002
+
+## Positions
+
+- Associate Professor of Linguistics, University of Kentucky, 2017–present
+- Assistant Professor of Linguistics, University of Kentucky, 2014–2017
+- Lecturer of Linguistics, University of Kentucky, 2011–2014
+
+## Selected Publications
+
+1. Khoshsirat, Z. & Byrd, A. M. (2023). "The Indo-Iranian labial-extended causative
+   suffix." *Indo-European Linguistics* 11: 64–95.
+2. Vinogradov, A., Byrd, A. M. & Harrison, B. (2021). "Mistake Captioning: A Machine
+   Learning Approach for Detecting Mistakes and Generating Instructive Feedback."
+   *Proceedings of Recent Advances in Natural Language Processing*, 1455–1462.
+3. Byrd, A. M. & Byrd, B. R. (2020). "Teaching Proto-Indo-European as a Constructed
+   Language." In *Language Invention in Linguistics Pedagogy*, 186–207.
+4. Byrd, A. M. (2015). *The Indo-European Syllable*. Leiden: Brill.
+
+## Teaching
+
+| Course  | Title                                                        | Semester    |
+|---------|--------------------------------------------------------------|-------------|
+| LIN 200 | How to Create Your Own Language                              | Fall 2026   |
+| LIN 301 | Computation for Linguists                                    | Fall 2026   |
+| LIN 221 | Introduction to Linguistics                                  | Spring 2027 |
+| LIN 317 | Immersive Proto-Indo-European: Repartee like it's 3999 (BCE) | Spring 2027 |

@@ -1,0 +1,74 @@
+---
+title: "Research"
+---
+
+## Current Project: Roots of the PIE Lexicon
+
+**Question:** Which sounds begin the roots of Proto-Indo-European? Is *b* really as
+rare as the handbooks say?
+
+**Data:** Julius Pokorny's *Indogermanisches etymologisches Wörterbuch* (1959), the
+standard 20th-century dictionary of PIE roots, from its
+[online edition](https://aeb.win.tue.nl/natlang/ie/pokorny.html). I cleaned it into a
+table of 2,077 roots with Python and pandas.
+
+**Preliminary results:** I found the first sound of every root, and counted how many
+roots begin with each of the fifteen stops:
+
+| Place      | Voiceless | Voiced  | Voiced aspirated |
+|------------|-----------|---------|------------------|
+| Labial     | *p* 133   | *b* 28  | *bh* 130         |
+| Dental     | *t* 108   | *d* 57  | *dh* 67          |
+| Palatal    | *k̂* 92    | *ĝ* 22  | *ĝh* 44          |
+| Velar      | *k* 187   | *g* 50  | *gh* 57          |
+| Labiovelar | *kʷ* 24   | *gʷ* 36 | *gʷh* 12         |
+
+Only 28 roots begin with *b*, under a quarter as many as begin with *p* or *bh*. At
+every other place, the voiced stop has at least half as many roots as the aspirate.
+The gap at the lips is real.
+
+::: {.note}
+Most of the 28 *b*-roots aren't ordinary words at all: they mean things like 'to
+bleat', 'babble', and 'sound of barking'. Sound-symbolic words often break the normal
+rules.
+:::
+
+## Other Projects
+
+::: {.cards}
+::: {.card}
+### [DERBi PIE](https://derbi-pie.org)
+A database of PIE roots, with search tools for researchers and students.
+:::
+
+::: {.card}
+### The Indo-European Syllable
+My 2015 book on how PIE divided words into syllables.
+:::
+
+::: {.card}
+### Immersive PIE
+A textbook and novellas for learning PIE as a living language.
+:::
+:::
+
+## Hear It Spoken
+
+What does reconstructed PIE sound like? In this 2022 interview, Jackson Crawford and
+I talk about speaking Proto-Indo-European.
+
+<!-- Quarto passes raw HTML straight through to the page: -->
+
+<iframe class="video"
+  src="https://www.youtube.com/embed/LnZMuAHmmvo"
+  title="Speaking Proto-Indo-European, with Dr. Andrew Byrd"
+  allowfullscreen>
+</iframe>
+
+## Methods
+
+- Tools: Python, regular expressions, pandas, matplotlib
+- My project so far:
+  [Component 1](https://winjapati.github.io/courses/301/project1_example_byrd.html),
+  [Component 2](https://winjapati.github.io/courses/301/project2_example_byrd.html),
+  [Component 3](https://winjapati.github.io/courses/301/project3_example_byrd.html)

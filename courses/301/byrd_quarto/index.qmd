@@ -1,0 +1,51 @@
+---
+title: "Andrew M. Byrd"
+---
+
+<!-- ::: {.profile} makes a <div class="profile">. Its style is in styles.css -->
+
+::: {.profile}
+![](byrd.jpg){fig-alt="A photo of Andrew Byrd, smiling, in glasses and a checked shirt"}
+
+::: {}
+**Associate Professor of Linguistics**\
+[Department of Linguistics](https://linguistics.as.uky.edu/), University of Kentucky
+
+I work on historical phonology, Proto-Indo-European, and constructed languages.
+:::
+:::
+
+## About Me
+
+My research is about finding **new ways** to solve hard problems in historical
+linguistics, more and more often with computers. I especially work on
+*Proto-Indo-European* (PIE), the reconstructed ancestor of most of the languages of
+Europe, Iran, and northern India.
+
+I also try to bring PIE to the public, through constructed languages for games and
+TV, translations, and interviews.
+
+## What I Work On
+
+::: {.cards}
+::: {.card}
+### DERBi PIE
+A searchable database of PIE roots, built from several etymological dictionaries.
+:::
+
+::: {.card}
+### Immersive PIE
+With Brenna Byrd: a textbook and four novellas that teach PIE through stories.
+:::
+
+::: {.card}
+### Conlangs
+Languages for games like *Far Cry Primal* and *Flintlock: The Siege of Dawn*.
+:::
+:::
+
+## Contact
+
+- Office: Funkhouser Hall, University of Kentucky
+- Email: [andrewbyrd@uky.edu](mailto:andrewbyrd@uky.edu)
+- My full website: [winjapati.github.io](https://winjapati.github.io)

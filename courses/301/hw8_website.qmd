@@ -1,0 +1,151 @@
+---
+title: "HW 8 — Your Website"
+subtitle: "LIN 301: Computation for Linguists"
+author: "Dr. Andrew M. Byrd"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+fontsize: 12pt
+---
+
+**Due:** Monday, November 30, 2026, at 11:59 am. We'll start this in class on Friday, November 20.
+
+## The Assignment
+
+You'll finish the website you started on Monday, November 16: a public, three-page academic website at `https://your-username.github.io`, with a **homepage**, a **CV**, and a **research** page. Your research page is where your final project will live in December.
+
+You may build it in one of two ways:
+
+-   **Path A:** a **Quarto** website, built with help from an AI tool.
+-   **Path B:** **HTML and CSS** by hand, as on Monday and Wednesday.
+
+Both paths are worth the same, and are graded on the same rubric.
+
+My own website is your model. Browse it online, in [HTML](byrd_site_hw8/index.html) (Path B) or [Quarto](byrd_quarto/docs/index.html) (Path A), and download the files: [`byrd_site_hw8.zip`](byrd_site_hw8.zip) and [`byrd_quarto.zip`](byrd_quarto.zip). Its research page has the Pokorny project I've modeled for you in Components 1–3. Use it as a reference for what each page needs, but your site should be about **you**. (I'm a professor, so my CV has different sections from yours.)
+
+**On AI:** For this homework only, Path A lets an AI tool write a first draft of your site's files. Everything on your site still has to be **true** and in **your own words**: an AI doesn't know your degree, your courses, or your project, and it will make things up. You must be able to explain every file in your repo. Path B is to be done without AI, as with every other homework. Either way, say how you used AI in your `README.md`.
+
+**Everything here is public.** Use your UK email, and no phone number or home address.
+
+------------------------------------------------------------------------
+
+## What Your Site Needs
+
+### Every Page
+
+-   The same navigation bar, with working links to **Home**, **CV**, and **Research**
+-   Your own style, carried over from Wednesday: the UK blue header (or Quarto navbar) and your borrowed rules, each with a comment saying where it came from
+
+### Homepage
+
+-   Your name, and a short introduction in your own words: your year, your major, and what interests you about language
+-   A picture, with `alt` text (of you, or of something that represents you)
+-   Contact information, with an email link
+-   At least one link to another website
+
+### CV
+
+-   Sections for **Education**, **Experience**, **Skills**, and **Coursework**
+-   **Experience** can be jobs, volunteering, research, or campus organizations
+-   **Coursework** includes LIN 301 and at least two other courses
+-   At least one numbered list or table
+
+### Research
+
+Your LIN 301 final project, as it stands now:
+
+-   The project's title, and your research question
+-   Your dataset, with a link to where it came from
+-   A table of some of your preliminary results from Component 3
+-   A paragraph explaining what the table shows
+
+### Today's Techniques
+
+At least **two** of these three, on any page, and working:
+
+-   An embedded `<iframe>` (a video, a map...) that's relevant to the page
+-   A grid of cards, using `display: grid`
+-   A media query that changes your layout on narrow screens
+
+### Your `README.md`
+
+Replace the text in the `README.md` GitHub made for your repo with a short section, **How I Built This Site**, that says:
+
+-   which path you took
+-   how you used AI, if at all: what it wrote, and what you changed
+-   which of today's techniques you used, and where
+-   one thing that didn't work at first, and how you fixed it
+
+------------------------------------------------------------------------
+
+## No Code Hints
+
+There are **no code hints** here: working out which tags, rules, and settings to use is part of the assignment. Everything you need is in the [list at the end](#toolkit), and all of it was covered in class.
+
+------------------------------------------------------------------------
+
+## Submission
+
+1.  Check every page at `https://your-username.github.io`, and click every link. Make your browser narrow: does it still work?
+2.  **Path A:** run `quarto render`, so `docs/` is up to date.
+3.  Commit and push your `your-username.github.io` repo.
+4.  On Canvas, submit **two** links:
+    -   your website: `https://your-username.github.io`
+    -   your repo: `https://github.com/your-username/your-username.github.io`
+
+------------------------------------------------------------------------
+
+## Grading Rubric (100 pts total)
+
+| Criteria | Points |
+|-----------------------------------------|:-----------------------------:|
+| Site is live; all three pages have working navigation; your own style, with comments | 15 |
+| Homepage: introduction, picture with `alt` text, contact, outside link | 15 |
+| CV: Education, Experience, Skills, Coursework; a numbered list or table | 15 |
+| Research: title, question, dataset with link, results table, paragraph | 20 |
+| Two of the three techniques (iframe, grid, media query), working | 15 |
+| `README.md`: path, AI use, techniques, one fix | 10 |
+| Everything on the site is true and in your own words; you can explain your files | 10 |
+
+------------------------------------------------------------------------
+
+## Your Toolkit {#toolkit}
+
+**HTML**
+
+-   `<!DOCTYPE html>`, `<html>`, `<head>`, `<body>`, `<title>`
+-   `<meta charset="UTF-8">`, `<meta name="viewport" ...>`, `<link rel="stylesheet" href="...">`
+-   `<header>`, `<nav>`, `<main>`, `<section>`, `<div>`, `<footer>`
+-   `<h1>`--`<h3>`, `<p>`, `<strong>`, `<em>`, `<br>`
+-   `<ul>`, `<ol>`, `<li>`, `<table>`, `<tr>`, `<th>`, `<td>`
+-   `<a href="...">`, `mailto:`, `<img src="..." alt="...">`, `<iframe src="..." title="...">`
+-   `class="..."`, `<!-- comments -->`
+
+**CSS**
+
+-   `selector { property: value; }`, `/* comments */`
+-   selectors: `h2`, `.card`, `nav a`, `:hover`
+-   `color`, `background-color`, `font-family`, `font-size`, `font-weight`, `text-align`, `text-decoration`
+-   `padding`, `margin`, `border`, `border-radius`, `width`, `max-width`, `aspect-ratio`
+-   `display: flex`, `flex-direction`, `gap`, `align-items`
+-   `display: grid`, `grid-template-columns`, `fr`
+-   `@media (max-width: ...px) { ... }`
+
+**Quarto (Path A)**
+
+-   `_quarto.yml`: `project:`, `type: website`, `output-dir: docs`, `website:`, `navbar:`, `href:`, `text:`, `format:`, `theme:`, `css:`
+-   Markdown: `## Heading`, `**bold**`, `*italic*`, `- list item`, `1. numbered item`, tables, `[text](https://...)`, `![](picture.jpg){fig-alt="..."}`
+-   `::: {.class}` ... `:::` (a `<div>` with a class)
+-   raw HTML (like an `<iframe>`) inside a `.qmd`
+-   `quarto preview`, `quarto render`, `.nojekyll`
+
+**Git and GitHub Pages**
+
+-   `git add .`, `git commit -m "..."`, `git push`
+-   Settings → Pages → Deploy from a branch → `main` → `/ (root)` (Path B) or `/docs` (Path A)
+-   `Ctrl + Shift + R` (Mac: `Cmd + Shift + R`)
+
+**Your browser**
+
+-   Inspect Element

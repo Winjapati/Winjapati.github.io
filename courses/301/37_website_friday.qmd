@@ -1,0 +1,346 @@
+---
+title: "Computation for Linguists"
+subtitle: "Building a Website, Day 3: Beyond the Basics"
+date: "November 20, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: source
+---
+
+# Where We Left Off
+
+## The Week So Far
+
+- **Monday:** HTML gives a page its **structure**. You built and published `index.html`.
+- **Wednesday:** CSS gives it **style**. You changed `style.css` and borrowed styles from other sites.
+- **Today:** Make your website do more, then choose how to build the rest of it.
+
+## My Website for HW 8
+
+- Click around it [online](byrd_site_hw8/index.html), then download [`byrd_site_hw8.zip`](byrd_site_hw8.zip) and unzip it into `classwork/day_37/`.
+- Open `index.html` in your browser. Click around: Home, CV, Research.
+- This is the **model for HW 8**. Its research page has my **Pokorny project**.
+- What's new since Dr. Hatter's site? Look for **three things** mine does.
+
+## Two Paths, One Goal
+
+- **Path A — AI-assisted:** Use AI to help turn your site into a three-page **Quarto** website.
+- **Path B — Build it yourself:** Keep your HTML/CSS site and add more sophisticated features by hand.
+- **Both paths:** A homepage, a CV page, and a research page, published at `https://your-username.github.io`.
+- First, we'll hunt for **three new techniques** in my site. Then you'll choose your path.
+
+## How Today Works
+
+- **First ~23 minutes:** Three short hunts and explanations: iframes, CSS Grid, responsive design.
+- **Then ~5 minutes:** What HW 8 needs.
+- **Next ~17 minutes:** Work on your own website, with or without AI.
+- **Last ~5 minutes:** Test, commit, and push.
+- Keep your browser and VS Code side by side: **save, reload, repeat**.
+
+# Hunt 1: A Page Inside a Page
+
+## Hunt 1: `research.html`
+
+With a partner, scroll to **Hear It Spoken** on the research page. Find the code for it in VS Code.
+
+1. Which tag puts the video on the page? Which attribute reminds you of `<img>`?
+2. Look in my folder. Is the video **in** it? Where is the browser getting it from?
+3. Find `.video` in `style.css`. Make your browser window narrower: what does `width: 100%` do?
+
+## Hunt 1: `research.html`
+
+4. In the `src`, change `embed/` to `watch?v=`, save, and reload. What happens?
+5. Open the video on YouTube, and click **Share → Embed**. Which address does YouTube give you?
+
+(Change it back when you're done!)
+
+## An `iframe` Embeds Another Page
+
+- An **iframe** (*inline frame*) displays another web document **inside** your page.
+- `<a href="...">` sends you **to** another page.
+- `<img src="...">` displays an **image**.
+- `<iframe src="...">` displays an **embedded page or player**.
+- The content still comes from the other website: you're not copying it into your repo.
+
+## What Can You Embed?
+
+- A **YouTube video**: Share → Embed → copy the iframe code.
+- A **map**: OpenStreetMap (Share → HTML) or Google Maps (Share → Embed a map).
+- Some interactive charts, presentations, and other web resources.
+- **Not every site permits embedding.** A normal webpage URL often won't work; look for the site's **Embed** option.
+
+## Hunt 1: Possible Answer
+
+1. `<iframe>`. Its `src`, like `<img>`'s, says where to find something.
+2. The video **isn't** in the folder: it comes from **YouTube**.
+3. The video shrinks with the window. (`aspect-ratio` keeps its shape.)
+4. With `watch?v=`, YouTube **refuses** to be embedded.
+5. The **`embed/`** address: the one YouTube allows in an iframe.
+
+# Hunt 2: Beyond Flexbox
+
+## Hunt 2: `index.html`, `style.css`
+
+On Wednesday, `display: flex` put Dr. Hatter's menu items side by side. Now look at **What I Work On** on my homepage: it has **rows and columns**.
+
+1. Find the three cards in `index.html`. What `class` holds all three? What `class` does each one have?
+2. Find that class in `style.css`. What's new?
+
+## Hunt 2: `style.css`, `research.html`
+
+3. Change `1fr 1fr 1fr` to `1fr 1fr`. Where does the **third** card go?
+4. Change it to `1fr 2fr 1fr`. What happens?
+5. Change `gap: 16px` to `gap: 40px`. What changes?
+6. Look at **Other Projects** on the research page. How did it get the same layout? Did I write any new CSS for it?
+
+## CSS Grid
+
+```css
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+```
+
+- `display: grid` arranges **children** into a grid.
+- `grid-template-columns` defines the columns.
+- `fr` means a **fraction of the available space**.
+- `gap` separates the boxes, just like in Flexbox.
+- Good for projects, publications, interests, and image galleries.
+
+## Hunt 2: Possible Answer
+
+1. `<div class="cards">` holds three `<div class="card">` boxes.
+2. `display: grid` and `grid-template-columns`.
+3. **Two** columns; the third card starts a **second row**.
+4. The middle column is **twice as wide** as the others.
+5. More space appears **between** the cards.
+6. Its cards use the **same classes**, so the **same rule** styles both pages. No new CSS!
+
+# Hunt 3: What About Phones?
+
+## Hunt 3: `style.css`
+
+Put `1fr 1fr 1fr` back. Now make your browser window narrower and narrower.
+
+1. At some point, the cards **stack**. What else changes on the homepage?
+2. Find `@media` at the **bottom** of `style.css`. What **three** things does it change?
+3. Change `600px` to `900px`. When do the cards stack now?
+4. Why do you think this rule comes **last** in the file?
+
+## Responsive Design
+
+- A **responsive** website adapts to the size of the screen.
+- A **media query** applies CSS only when a condition is true.
+
+```css
+@media (max-width: 600px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
+```
+
+- At **600px wide or less**, the grid switches to one column.
+- The HTML stays the same: only the **CSS** changes.
+
+## Responsive Design
+
+- On a real phone, this line in the `<head>` is what makes media queries work:
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+```
+
+- Without it, phones pretend to be a wide desktop screen and shrink the whole page.
+- It's been in every `<head>` since Monday: make sure it's in yours!
+
+## Hunt 3: Possible Answer
+
+1. My photo moves **above** the text, and the edges get less padding.
+2. Less **padding** in the header and main; the profile stacks (`flex-direction: column`); the cards become **one column**.
+3. The cards now stack at **900px**, while the window is still fairly wide.
+4. When two rules conflict, the **later** one wins. Putting the media query last lets it override the rules above it.
+
+# HW 8: What Your Site Needs
+
+## HW 8: Your Website
+
+- **Three pages**, published at `https://your-username.github.io`: **Home**, **CV**, and **Research**.
+- **Path A** (Quarto, with AI) or **Path B** (HTML and CSS by hand): same rubric, same points.
+- My website is the model: compare yours with it, page by page.
+- **Due:** Monday, November 30, at 11:59 am.
+
+## Every Page
+
+- The **same navigation bar**, with working links to Home, CV, and Research
+- **Your own style** from Wednesday: UK blue, and your borrowed rules, each with a comment saying where it came from
+- Everything is **public**: your UK email, but no phone number or home address
+
+## Your Homepage
+
+- Your **name**, and a short introduction in your own words: your year, your major, and what interests you about language
+- A **picture**, with `alt` text (of you, or something that represents you)
+- **Contact** information, with an email link
+- At least one link to **another website**
+
+## Your CV
+
+- Sections for **Education**, **Experience**, **Skills**, and **Coursework**
+- **Experience** can be jobs, volunteering, research, or campus organizations.
+- **Coursework** includes LIN 301 and at least two other courses.
+- At least one **numbered list** or **table**
+
+## Your Research Page
+
+Your **final project**, as it stands now:
+
+- The project's **title**, and your **research question**
+- Your **dataset**, with a link to where it came from
+- A **table** of some of your preliminary results from Component 3
+- A **paragraph** explaining what the table shows
+
+In December, this is where your finished project will live.
+
+## Today's Techniques
+
+At least **two** of these three, working:
+
+1. An embedded `<iframe>` (a video, a map...) that's relevant to the page
+2. A **grid** of cards, using `display: grid`
+3. A **media query** that changes your layout on narrow screens
+
+## Your `README.md`
+
+Replace the text in the `README.md` in your repo with a section, **How I Built This Site**:
+
+- which **path** you took
+- how you used **AI**, if at all: what it wrote, and what you changed
+- which of **today's techniques** you used, and where
+- one thing that **didn't work** at first, and how you fixed it
+
+## AI and HW 8
+
+- **Path A:** AI may write the **first draft** of your files.
+- **Path B:** no AI, as with every other homework.
+- Either way, everything on your site has to be **true** and in **your own words**. An AI doesn't know your degree, your courses, or your project: it **will** make things up.
+- You should be able to explain **every file** in your repo.
+
+## Submitting HW 8
+
+1. Click every link on every page. Make your browser narrow: does it still work?
+2. **Path A:** `quarto render` first!
+3. Commit and push.
+4. On Canvas, submit **two** links:
+    - your website: `https://your-username.github.io`
+    - your repo: `https://github.com/your-username/your-username.github.io`
+
+# Your Turn
+
+## Choose Your Path: A
+
+**AI-Assisted Quarto**
+
+- Use AI to help build a Quarto site in your existing GitHub Pages repo.
+- Keep your own content and the styling choices you made Wednesday.
+- **Read and test** the generated files. You should be able to explain what changed.
+
+## Choose Your Path: B
+
+**HTML/CSS by Hand**
+
+- Keep developing your existing `index.html` and `style.css`.
+- Make `cv.html` and `research.html` if you haven't already.
+- Use today's techniques to add features yourself.
+
+## Path A: My Site in Quarto
+
+- Download [`byrd_quarto.zip`](byrd_quarto.zip): the **same** website, built with Quarto. ([See it online](byrd_quarto/docs/index.html).)
+- Compare `cv.qmd` with `cv.html`. Which is easier to write?
+- Open `_quarto.yml`: the navigation bar is written **once**, for every page.
+- Open `styles.css`: why does it say `.navbar` instead of `header`?
+
+## Path A: What to Ask For
+
+Tell your AI assistant what you **already have**:
+
+- A GitHub Pages repo, `your-username.github.io`.
+- An `index.html` and `style.css` to keep. (Paste them in!)
+- A goal: **three pages** (Home, CV, Research) in **Quarto**, with `output-dir: docs`.
+- Ask which **files** to create or change, and how to preview and publish.
+
+## Path A: Before You Accept Anything
+
+- **Important:** Before replacing or deleting files, inspect the changes. Don't let it erase your work from Monday and Wednesday.
+
+## Path A: Put the Files in Place
+
+1. Make a folder `html_version/`, and move Monday's `index.html` and `style.css` into it.
+2. Make each new file in the repo itself, and paste in the AI's code.
+3. In the terminal, in your repo: `quarto preview`
+
+- Three tabs? Do they work? If not, read the error, or give it to the AI.
+- The AI doesn't know you: **everything** on your site has to be true!
+
+## Path B: What to Build
+
+Choose **at least two** improvements, as time allows:
+
+1. **Embed something:** a relevant video or map, with an `<iframe>`.
+2. **Make a grid:** projects or interests in cards, with `display: grid`.
+3. **Make it responsive:** a media query for narrow screens.
+4. **Finish your pages:** `cv.html` and `research.html`, with working navigation.
+
+Use my files and Dr. Hatter's as references. **No AI.**
+
+## Check and Publish
+
+1. Open your **homepage**, **CV**, and **research** links. Do they go where you expect?
+2. If you added an iframe, does it load? If not, does the site allow embedding?
+3. Make your browser narrow. Does the layout still work?
+4. Commit and push your changes.
+5. Check `https://your-username.github.io` (a deployed update may take a minute).
+
+## Publishing: Path A
+
+1. Run `quarto render`, so the `docs/` folder is up to date.
+2. Make an empty file named `.nojekyll` (with the dot!) in your repo. Quarto copies it into `docs/`.
+3. Commit and push.
+4. On GitHub: **Settings → Pages**. Change the folder from `/ (root)` to `/docs`, and **Save**.
+
+- **Every time:** `quarto render` first, then commit and push. GitHub shows `docs/`, not your `.qmd` files.
+
+## Publishing: Path B
+
+- Commit and push the edited `.html` and `.css` files: nothing else to do!
+- No change? Press `Ctrl + Shift + R` (Mac: `Cmd + Shift + R`) to reload for real.
+
+## If You Finish Early
+
+1. Add a **fourth** card. Does the grid automatically create another row?
+2. Try a media query for the **navigation menu**, not just the cards.
+3. Embed something relevant to your **LIN 301 final project** on your research page.
+4. Ask a neighbor to open your site on a **phone** and report one thing to improve.
+
+# Looking Ahead
+
+## What Did We Learn Today?
+
+- `<iframe>` embeds supported content from another site.
+- **CSS Grid** arranges boxes in rows and columns.
+- A **media query** changes the layout for different screen sizes.
+- You can build a website **with or without AI**; either way, you need to understand, test, and publish your work.
+
+## HW 8
+
+- **Due:** Monday, November 30, at 11:59 am. The full instructions and rubric are on the course website.
+- The website is yours: make it useful, readable, and something you're comfortable sharing publicly.

@@ -1,0 +1,100 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Andrew M. Byrd",
+    "section": "",
+    "text": "Associate Professor of Linguistics\nDepartment of Linguistics, University of Kentucky\nI work on historical phonology, Proto-Indo-European, and constructed languages."
+  },
+  {
+    "objectID": "index.html#about-me",
+    "href": "index.html#about-me",
+    "title": "Andrew M. Byrd",
+    "section": "About Me",
+    "text": "About Me\nMy research is about finding new ways to solve hard problems in historical linguistics, more and more often with computers. I especially work on Proto-Indo-European (PIE), the reconstructed ancestor of most of the languages of Europe, Iran, and northern India.\nI also try to bring PIE to the public, through constructed languages for games and TV, translations, and interviews."
+  },
+  {
+    "objectID": "index.html#what-i-work-on",
+    "href": "index.html#what-i-work-on",
+    "title": "Andrew M. Byrd",
+    "section": "What I Work On",
+    "text": "What I Work On\n\n\nDERBi PIE\nA searchable database of PIE roots, built from several etymological dictionaries.\n\n\nImmersive PIE\nWith Brenna Byrd: a textbook and four novellas that teach PIE through stories.\n\n\nConlangs\nLanguages for games like Far Cry Primal and Flintlock: The Siege of Dawn."
+  },
+  {
+    "objectID": "index.html#contact",
+    "href": "index.html#contact",
+    "title": "Andrew M. Byrd",
+    "section": "Contact",
+    "text": "Contact\n\nOffice: Funkhouser Hall, University of Kentucky\nEmail: andrewbyrd@uky.edu\nMy full website: winjapati.github.io"
+  },
+  {
+    "objectID": "cv.html",
+    "href": "cv.html",
+    "title": "Curriculum Vitae",
+    "section": "",
+    "text": "Ph.D., Indo-European Studies, University of California, Los Angeles, 2010\nVisiting Student, Linguistics, Harvard University, 2003–2004\nB.A., Linguistics (minors: Latin, German, and Italian), University of Georgia, 2002"
+  },
+  {
+    "objectID": "cv.html#education",
+    "href": "cv.html#education",
+    "title": "Curriculum Vitae",
+    "section": "",
+    "text": "Ph.D., Indo-European Studies, University of California, Los Angeles, 2010\nVisiting Student, Linguistics, Harvard University, 2003–2004\nB.A., Linguistics (minors: Latin, German, and Italian), University of Georgia, 2002"
+  },
+  {
+    "objectID": "cv.html#positions",
+    "href": "cv.html#positions",
+    "title": "Curriculum Vitae",
+    "section": "Positions",
+    "text": "Positions\n\nAssociate Professor of Linguistics, University of Kentucky, 2017–present\nAssistant Professor of Linguistics, University of Kentucky, 2014–2017\nLecturer of Linguistics, University of Kentucky, 2011–2014"
+  },
+  {
+    "objectID": "cv.html#selected-publications",
+    "href": "cv.html#selected-publications",
+    "title": "Curriculum Vitae",
+    "section": "Selected Publications",
+    "text": "Selected Publications\n\nKhoshsirat, Z. & Byrd, A. M. (2023). “The Indo-Iranian labial-extended causative suffix.” Indo-European Linguistics 11: 64–95.\nVinogradov, A., Byrd, A. M. & Harrison, B. (2021). “Mistake Captioning: A Machine Learning Approach for Detecting Mistakes and Generating Instructive Feedback.” Proceedings of Recent Advances in Natural Language Processing, 1455–1462.\nByrd, A. M. & Byrd, B. R. (2020). “Teaching Proto-Indo-European as a Constructed Language.” In Language Invention in Linguistics Pedagogy, 186–207.\nByrd, A. M. (2015). The Indo-European Syllable. Leiden: Brill."
+  },
+  {
+    "objectID": "cv.html#teaching",
+    "href": "cv.html#teaching",
+    "title": "Curriculum Vitae",
+    "section": "Teaching",
+    "text": "Teaching\n\n\n\n\n\n\n\n\nCourse\nTitle\nSemester\n\n\n\n\nLIN 200\nHow to Create Your Own Language\nFall 2026\n\n\nLIN 301\nComputation for Linguists\nFall 2026\n\n\nLIN 221\nIntroduction to Linguistics\nSpring 2027\n\n\nLIN 317\nImmersive Proto-Indo-European: Repartee like it’s 3999 (BCE)\nSpring 2027"
+  },
+  {
+    "objectID": "research.html",
+    "href": "research.html",
+    "title": "Research",
+    "section": "",
+    "text": "Question: Which sounds begin the roots of Proto-Indo-European? Is b really as rare as the handbooks say?\nData: Julius Pokorny’s Indogermanisches etymologisches Wörterbuch (1959), the standard 20th-century dictionary of PIE roots, from its online edition. I cleaned it into a table of 2,077 roots with Python and pandas.\nPreliminary results: I found the first sound of every root, and counted how many roots begin with each of the fifteen stops:\n\n\n\nPlace\nVoiceless\nVoiced\nVoiced aspirated\n\n\n\n\nLabial\np 133\nb 28\nbh 130\n\n\nDental\nt 108\nd 57\ndh 67\n\n\nPalatal\nk̂ 92\nĝ 22\nĝh 44\n\n\nVelar\nk 187\ng 50\ngh 57\n\n\nLabiovelar\nkʷ 24\ngʷ 36\ngʷh 12\n\n\n\nOnly 28 roots begin with b, under a quarter as many as begin with p or bh. At every other place, the voiced stop has at least half as many roots as the aspirate. The gap at the lips is real.\n\nMost of the 28 b-roots aren’t ordinary words at all: they mean things like ‘to bleat’, ‘babble’, and ‘sound of barking’. Sound-symbolic words often break the normal rules."
+  },
+  {
+    "objectID": "research.html#current-project-roots-of-the-pie-lexicon",
+    "href": "research.html#current-project-roots-of-the-pie-lexicon",
+    "title": "Research",
+    "section": "",
+    "text": "Question: Which sounds begin the roots of Proto-Indo-European? Is b really as rare as the handbooks say?\nData: Julius Pokorny’s Indogermanisches etymologisches Wörterbuch (1959), the standard 20th-century dictionary of PIE roots, from its online edition. I cleaned it into a table of 2,077 roots with Python and pandas.\nPreliminary results: I found the first sound of every root, and counted how many roots begin with each of the fifteen stops:\n\n\n\nPlace\nVoiceless\nVoiced\nVoiced aspirated\n\n\n\n\nLabial\np 133\nb 28\nbh 130\n\n\nDental\nt 108\nd 57\ndh 67\n\n\nPalatal\nk̂ 92\nĝ 22\nĝh 44\n\n\nVelar\nk 187\ng 50\ngh 57\n\n\nLabiovelar\nkʷ 24\ngʷ 36\ngʷh 12\n\n\n\nOnly 28 roots begin with b, under a quarter as many as begin with p or bh. At every other place, the voiced stop has at least half as many roots as the aspirate. The gap at the lips is real.\n\nMost of the 28 b-roots aren’t ordinary words at all: they mean things like ‘to bleat’, ‘babble’, and ‘sound of barking’. Sound-symbolic words often break the normal rules."
+  },
+  {
+    "objectID": "research.html#other-projects",
+    "href": "research.html#other-projects",
+    "title": "Research",
+    "section": "Other Projects",
+    "text": "Other Projects\n\n\nDERBi PIE\nA database of PIE roots, with search tools for researchers and students.\n\n\nThe Indo-European Syllable\nMy 2015 book on how PIE divided words into syllables.\n\n\nImmersive PIE\nA textbook and novellas for learning PIE as a living language."
+  },
+  {
+    "objectID": "research.html#hear-it-spoken",
+    "href": "research.html#hear-it-spoken",
+    "title": "Research",
+    "section": "Hear It Spoken",
+    "text": "Hear It Spoken\nWhat does reconstructed PIE sound like? In this 2022 interview, Jackson Crawford and I talk about speaking Proto-Indo-European."
+  },
+  {
+    "objectID": "research.html#methods",
+    "href": "research.html#methods",
+    "title": "Research",
+    "section": "Methods",
+    "text": "Methods\n\nTools: Python, regular expressions, pandas, matplotlib\nMy project so far: Component 1, Component 2, Component 3"
+  }
+]

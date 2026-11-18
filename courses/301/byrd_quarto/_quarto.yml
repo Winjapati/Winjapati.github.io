@@ -1,0 +1,24 @@
+# _quarto.yml: the settings for the WHOLE website.
+# Every .qmd file in this folder becomes a page.
+
+project:
+  type: website
+  output-dir: docs        # the finished HTML goes in docs/ (GitHub Pages shows this folder)
+
+website:
+  title: "Andrew M. Byrd"
+  navbar:                 # the navigation bar: written ONCE, for every page
+    left:
+      - href: index.qmd
+        text: Home
+      - href: cv.qmd
+        text: CV
+      - href: research.qmd
+        text: Research
+  page-footer:
+    center: "© 2026 Andrew M. Byrd. A model website for LIN 301, HW 8."
+
+format:
+  html:
+    theme: journal        # try others: cosmo, flatly, lux, minty, sketchy...
+    css: styles.css       # my own rules, added on top of the theme

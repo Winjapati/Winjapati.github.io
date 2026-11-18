@@ -1,0 +1,156 @@
+/* ============================================
+   style.css: one stylesheet for all three pages
+   ============================================ */
+
+/* ---------- The whole page ---------- */
+body {
+  font-family: Georgia, "Times New Roman", serif;  /* the main font */
+  color: #2b2b2b;                                   /* dark gray text */
+  background-color: #f7f8fb;                        /* a very light gray-blue */
+  margin: 0;                                        /* no gap at the edges */
+  line-height: 1.6;                                 /* space between lines */
+}
+
+/* ---------- The header and navigation bar ---------- */
+/* UK blue, borrowed from uky.edu */
+header {
+  background-color: #0033a0;
+  color: white;
+  padding: 20px 40px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.8em;
+}
+
+nav ul {
+  list-style: none;     /* no bullet points */
+  padding: 0;
+  margin: 10px 0 0 0;
+  display: flex;        /* put the links side by side */
+  gap: 12px;            /* space between the links */
+}
+
+nav a {
+  color: white;
+  text-decoration: none;   /* no underline */
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+/* Hover background, borrowed from winjapati.github.io */
+nav a:hover {
+  background: #eef1fb;
+  color: #0033a0;
+}
+
+/* ---------- The main content ---------- */
+main {
+  max-width: 800px;    /* keep lines from getting too long */
+  margin: 0 auto;      /* center the content */
+  padding: 30px 40px;
+}
+
+h2 {
+  color: #0033a0;
+  border-bottom: 2px solid #d6e0f5;
+  padding-bottom: 4px;
+}
+
+a {
+  color: #0033a0;
+}
+
+/* ---------- The profile box on the homepage ---------- */
+.profile {
+  display: flex;        /* picture and text side by side */
+  gap: 30px;
+  align-items: center;
+}
+
+.profile img {
+  width: 160px;
+  border-radius: 50%;   /* make the picture round */
+}
+
+/* ---------- Cards in a grid (homepage and research page) ---------- */
+.cards {
+  display: grid;                       /* arrange the children in a grid */
+  grid-template-columns: 1fr 1fr 1fr;  /* three columns, each 1 fraction wide */
+  gap: 16px;                           /* space between the cards */
+}
+
+/* Rounded corners and a soft shadow, borrowed from winjapati.github.io */
+.card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 4px 16px;
+}
+
+.card h3 {
+  color: #0033a0;
+  margin-bottom: 0;
+}
+
+/* ---------- Tables (on the CV and research pages) ---------- */
+table {
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+
+th, td {
+  border: 1px solid #c5cfe3;
+  padding: 6px 14px;
+  text-align: left;
+}
+
+th {
+  background-color: #e8edf7;
+}
+
+/* ---------- A highlighted box ---------- */
+.note {
+  background-color: #e8edf7;
+  border-left: 5px solid #0033a0;
+  padding: 10px 16px;
+}
+
+/* ---------- The embedded video (research page) ---------- */
+.video {
+  width: 100%;            /* as wide as main, and it shrinks with the window */
+  max-width: 560px;       /* ...but never wider than 560px */
+  aspect-ratio: 16 / 9;   /* keep a video shape at any width */
+  border: 0;
+}
+
+/* ---------- The footer ---------- */
+footer {
+  text-align: center;
+  font-size: 0.9em;
+  color: #777;
+  padding: 20px;
+}
+
+/* ============================================
+   Narrow screens (phones)
+   These rules ONLY apply when the window is 600px wide or less.
+   They come last, so they win over the rules above.
+   ============================================ */
+@media (max-width: 600px) {
+
+  header, main {
+    padding: 16px 20px;          /* less empty space at the edges */
+  }
+
+  .profile {
+    flex-direction: column;      /* picture ABOVE the text, not beside it */
+    text-align: center;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;  /* one column: the cards stack */
+  }
+}

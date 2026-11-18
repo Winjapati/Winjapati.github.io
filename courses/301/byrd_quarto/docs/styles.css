@@ -1,0 +1,78 @@
+/* styles.css: my own rules, added ON TOP of the Quarto theme.
+   Quarto writes different HTML than I did by hand, so some selectors are new:
+   I found them with Inspect Element. */
+
+/* ---------- The navigation bar ---------- */
+/* UK blue, borrowed from uky.edu.
+   By hand it was <header>; Quarto's is <nav class="navbar"> */
+.navbar {
+  background-color: #0033a0 !important;   /* !important beats the theme's color */
+}
+
+/* ---------- Headings and links ---------- */
+h2 {
+  color: #0033a0;
+  border-bottom: 2px solid #d6e0f5;
+  padding-bottom: 4px;
+}
+
+a {
+  color: #0033a0;
+}
+
+/* ---------- The profile box on the homepage ---------- */
+.profile {
+  display: flex;        /* picture and text side by side */
+  gap: 30px;
+  align-items: center;
+}
+
+.profile img {
+  width: 160px;
+  border-radius: 50%;   /* make the picture round */
+}
+
+/* ---------- Cards in a grid ---------- */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+/* Rounded corners and a soft shadow, borrowed from winjapati.github.io */
+.card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 4px 16px;
+}
+
+.card h3 {
+  color: #0033a0;
+  font-size: 1.2em;
+}
+
+/* ---------- A highlighted box ---------- */
+.note {
+  background-color: #e8edf7;
+  border-left: 5px solid #0033a0;
+  padding: 10px 16px;
+}
+
+/* ---------- The embedded video ---------- */
+.video {
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
+/* ---------- Narrow screens (phones) ---------- */
+@media (max-width: 600px) {
+  .profile {
+    flex-direction: column;
+    text-align: center;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
