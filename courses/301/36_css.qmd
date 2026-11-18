@@ -1,0 +1,300 @@
+---
+title: "Computation for Linguists"
+subtitle: "Building a Website, Day 2: CSS"
+date: "November 18, 2026"
+author: "Dr. Andrew M. Byrd"
+format:
+  revealjs:
+    css: header_shrink.css
+    theme: beige
+    slide-number: true
+    center: true
+    toc: true
+    toc-title: "Plan for the Day"
+    toc-depth: 1
+editor: source
+---
+
+# Where We Left Off
+
+## Recap from Last Time
+
+-   A website is a folder of text files.
+-   **HTML tags** give a page its structure: `<h1>`, `<p>`, `<ul>`, `<a href="...">`...
+-   `<head>` is information about the page; `<body>` is what you see.
+-   Your homepage is live at `https://your-username.github.io` -- wearing Dr. Hatter's style.
+
+## A Question from Monday
+
+-   When we changed `<h2>About Me</h2>` to `<h3>`, it lost its purple color and its line.
+-   Where did the purple come from? It's not in `index.html`...
+
+## How Today Works
+
+-   Same as Monday: you hunt with a partner, then we go over what you found.
+-   Hunts 1--3 are in Dr. Hatter's files: break anything you like! Open `hatter_site` from Monday (or download [`hatter_site.zip`](hatter_site.zip) again into `classwork/day_36/`).
+-   Hunt 4 is on **real** websites.
+-   Then you'll make **your own** site's style.
+
+# Hunt 1: What CSS Does
+
+## Hunt 1
+
+With a partner, in `hatter_site/`.
+
+1.  In `index.html`, find `<link rel="stylesheet" href="style.css">` in the `<head>`. Put `<!--` before it and `-->` after it. Save and reload. What's gone? What's left? (Then undo it.)
+2.  Open `style.css`. Find the part that makes the header plum. What comes before the `{`? What's inside it?
+3.  Answer Monday's question: why did *About Me* lose its purple line when it became an `<h3>`?
+
+## Hunt 1
+
+4.  `#7a4e8c` shows up more than once in `style.css`. Where? In VS Code, hover over it: what pops up?
+5.  Change the header's color, save, and reload. Which pages change? Why?
+
+## HTML vs. CSS
+
+-   **HTML** says what things **are**: a heading, a list, a link
+-   **CSS** says how things **look**: color, font, size, spacing
+-   Without `style.css`, the page still has all its content: just none of its look.
+
+## A CSS Rule
+
+```css
+h2 {
+  color: #7a4e8c;
+  border-bottom: 2px solid #e0d4e6;
+}
+```
+
+-   `h2` is the **selector**: *which* elements to style
+-   `color` and `border-bottom` are **properties**; `#7a4e8c` and `2px solid #e0d4e6` are their **values**
+-   Each property ends with `;`, and the whole rule goes inside `{ }`
+
+## Colors
+
+-   `#7a4e8c` is a **hex code**: red, green, and blue, from `00` (none) to `ff` (full)
+    -   `7a` red, `4e` green, `8c` blue: a plum
+-   You can also use names: `white`, `tomato`, `rebeccapurple`...
+-   In VS Code, hover over a color in `style.css` to get a color picker.
+
+## Hunt 1: Possible Answer
+
+1.  All the color, fonts, and layout disappear: plain black text on white. All the **content** is still there.
+2.  `header { background-color: #7a4e8c; ... }`: a **selector**, then **properties** and **values** inside `{ }`.
+3.  The plum color and the line belong to the `h2` rule. An `<h3>` isn't an `h2`, so the rule doesn't apply.
+4.  In `header`, `h2`, and `a`. VS Code shows a little color box and a color picker.
+5.  **All three** pages change: they all load the same `style.css`.
+
+# Hunt 2: Choosing What to Style
+
+## Hunt 2
+
+With your partner, in `hatter_site/`.
+
+1.  There are two rules for links: `a` and `nav a`. Which links does each one style? Why are the menu links white, but the email link plum?
+2.  Find `.note` in `style.css`. Now find the box it styles in `research.html`. What connects them?
+3.  Add `class="note"` to a `<p>` on the homepage. What happens?
+
+## Hunt 2
+
+4.  Find `:hover` in `style.css`. What does it do? Try it in the browser.
+5.  Find `th, td`. What does the comma do?
+
+## Kinds of Selectors
+
+| Selector | Styles... | Example |
+|---|---|---|
+| `h2` | every `<h2>` | `h2 { color: ... }` |
+| `.note` | every element with `class="note"` | `<p class="note">` |
+| `nav a` | every `<a>` **inside** a `<nav>` | the links in the menu |
+| `th, td` | every `<th>` **and** every `<td>` | the table cells |
+
+-   A `.` means **class**. The class name is up to you!
+
+## Classes
+
+```html
+<p class="note">Most of the tea is in Chapter 7...</p>
+```
+
+```css
+.note {
+  background-color: #f3e9dc;
+  border-left: 5px solid #a0673a;
+  padding: 10px 16px;
+}
+```
+
+-   `class` is an HTML **attribute**; `.note` is the CSS selector that finds it.
+-   Any element with `class="note"` gets the box.
+
+## Hover
+
+```css
+nav a:hover {
+  text-decoration: underline;
+}
+```
+
+-   `:hover` styles an element only while the mouse is **over** it.
+
+## Hunt 2: Possible Answer
+
+1.  `a` styles **every** link; `nav a` styles only the links **inside** `<nav>`. The more specific rule wins, so the menu links are white.
+2.  The class name: `class="note"` in the HTML, `.note` in the CSS.
+3.  That paragraph gets the same box as the one on the research page.
+4.  It underlines a menu link while your mouse is over it.
+5.  It applies one rule to **both** selectors.
+
+# Hunt 3: Boxes
+
+## Hunt 3
+
+With your partner, in `hatter_site/`.
+
+1.  **Inspect** *About Me*. In the Inspect panel, find the diagram of boxes inside boxes (in **Computed**, or at the bottom of **Styles**). Hover over each layer. What are the four layers called?
+2.  In `nav ul`, delete `display: flex;`. What happens to the menu? (Then put it back.)
+3.  `display: flex` shows up one more time. Where? What does it put side by side?
+
+## Hunt 3
+
+4.  Make the teacup **square**. Which line did you change?
+5.  In `main`, change `max-width: 800px;` to `300px`, then `1500px`. What does it do?
+
+## Every Element Is a Box
+
+-   **content**: the text itself
+-   **padding**: space *inside* the box
+-   **border**: the edge of the box
+-   **margin**: space *outside* the box
+
+## Side by Side: `flex`
+
+```css
+nav ul {
+  display: flex;
+  gap: 24px;
+}
+```
+
+-   Normally, boxes stack on top of each other.
+-   `display: flex` puts the boxes inside it **in a row**; `gap` puts space between them.
+
+## Hunt 3: Possible Answer
+
+1.  **content**, **padding**, **border**, **margin**
+2.  The links stack on top of each other, like a normal list (still with no bullets, because of `list-style: none`).
+3.  In `.profile`: it puts the teacup and the introduction side by side.
+4.  `border-radius: 50%;` in `.profile img`: delete it, or make it `0`.
+5.  It sets how wide the content can get. `margin: 0 auto` keeps it in the middle.
+
+# Hunt 4: Someone Else's CSS
+
+## Hunt 4
+
+With your partner, in your browser. Right-click → **Inspect**, and look at the **Styles** panel.
+
+1.  On [uky.edu](https://www.uky.edu), inspect a big heading. Which properties look familiar from Dr. Hatter's `style.css`? What's its `font-family`? Its `color`?
+2.  Find UK's blue. How is it written? (Hint: look for `--color-wildcat-blue`.)
+3.  Next to each rule in the Styles panel, there's a file name. Where does uky.edu's CSS come from?
+
+## Hunt 4
+
+4.  On [winjapati.github.io](https://winjapati.github.io), inspect a menu link. Where does *this* CSS come from? (Hint: it's not a `.css` file.)
+5.  Hover over the menu links on winjapati.github.io. What changes? Which rule does it?
+
+## Every Website's CSS Is Visible
+
+-   Your browser has to download a site's CSS to show it to you.
+-   So you can **see** -- and learn from -- the CSS of any website.
+-   CSS can live in a **separate file** (like `style.css`), or inside a `<style>` tag in the `<head>`.
+
+## How to Borrow a Style
+
+1.  Go to a website whose look you like.
+2.  Right-click on a heading (or a button, or the page background) and choose **Inspect**.
+3.  In the **Styles** panel, find properties like `font-family`, `color`, `background-color`, `font-size`.
+4.  Copy them into a rule in **your** `style.css`, with a comment saying where they came from.
+
+## What Can Go Wrong?
+
+-   **Fonts:** a site may use a font you don't have. Your browser quietly uses the next one on the list.
+-   **Selectors:** their CSS refers to **their** class names, not yours.
+-   **Variables:** a value like `var(--fg)` points somewhere else. Find `--fg` to get the real value.
+-   **Too much:** a big site's CSS can be thousands of lines. Borrow a few properties, not the whole file.
+-   **Fair use:** borrow styles to learn, not logos, images, or whole designs.
+
+## Hunt 4: Possible Answer
+
+1.  Properties you know: `font-size`, `line-height`, `color`... The font is `usual, sans-serif`: *usual* is a font you probably don't have!
+2.  In a **variable**: `--color-wildcat-blue: rgba(0,51,160,1)`. That's 0 red, 51 green, 160 blue: the same color as `#0033a0`.
+3.  From two long `.css` files, with machine-made names like `css_O3K_HbzDV...css`.
+4.  From a `<style>` tag inside `index.html` itself.
+5.  The link gets a light background: `nav a:hover { background: #eef1fb }`. Its color is `var(--fg)`, a **variable** defined at the top, in `:root`.
+
+# Your Turn
+
+## Style Your Own Site
+
+-   Open your `your-username.github.io` repo. Its `style.css` is still Dr. Hatter's.
+-   Time to make it **yours**, by borrowing.
+-   Keep your browser and VS Code side by side: save, reload, repeat.
+
+## Your `style.css` Needs...
+
+-   your header in **UK blue**, borrowed from uky.edu (`rgb(0, 51, 160)` and `#0033a0` both work)
+-   one style borrowed from **winjapati.github.io** (a hover, a shadow, a rounded corner...)
+-   one or two styles borrowed from a site **of your choice** (a museum, a band, a news site, [WALS](https://wals.info)...)
+-   a **comment** on each borrowed rule, saying where it came from
+-   at least one change to a **box**: `padding`, `margin`, `border`, or `border-radius`
+
+## Check and Publish
+
+1.  Does your page look the way you expected? **Inspect** anything that doesn't.
+2.  Commit and push.
+3.  Check `https://your-username.github.io`.
+
+-   No change? Your browser may be keeping an old copy of `style.css`. Press `Ctrl + Shift + R` (Mac: `Cmd + Shift + R`) to reload it for real.
+
+## If You Finish Early
+
+1.  Give something on your page a `class`, and write a rule for it.
+2.  Add a `:hover` rule to something that isn't a link.
+3.  Borrow a color **variable**, like winjapati.github.io's `--accent`.
+
+## Your Turn: Possible Answer
+
+```css
+/* UK blue, borrowed from uky.edu */
+header {
+  background-color: rgb(0, 51, 160);
+  ...
+}
+
+/* Hover background, borrowed from winjapati.github.io */
+nav a:hover {
+  background: #eef1fb;
+  color: #0033a0;
+}
+
+/* Rounded corners, borrowed from winjapati.github.io */
+img {
+  border-radius: 12px;
+}
+```
+
+# Looking Ahead
+
+## What Did We Learn Today?
+
+-   **CSS** says how things look; **HTML** says what they are.
+-   A rule: `selector { property: value; }`
+-   Selectors: tags (`h2`), classes (`.note`), nesting (`nav a`), and `:hover`
+-   Every element is a **box**: content, padding, border, margin
+-   `display: flex` puts things side by side.
+-   You can see -- and borrow -- any website's CSS.
+
+## Friday
+
+-   You'll have AI build your site in **Quarto**, in the same repo.
+-   Bring the styles you borrowed today: you'll add them to your new site.
